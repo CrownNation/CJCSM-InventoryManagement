@@ -17,7 +17,7 @@ namespace Inventory_DAL.Entities
       public string? Province { get; set; }
       public string? PostalCode  { get; set; }
       public string? Email { get; set; }
-      public Boolean IsActive {get; set; }
+      public bool IsActive {get; set; }
       public DateTimeOffset DateOfCreation { get; set; }
       public DateTimeOffset DateOfLastUpdate { get; set; }
 
