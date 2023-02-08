@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Inventory_Models.ViewModels
 {
-   public  class CustomerCreateVM
+   public class CustomerUpdateDto
    {
       public string Name { get; set; }
       public string? Address1 { get; set; }
@@ -15,5 +10,6 @@ namespace Inventory_Models.ViewModels
       public string? Province { get; set; }
       public string? PostalCode { get; set; }
       public string? Email { get; set; }
+      public bool IsActive { get; set; }
    }
 }

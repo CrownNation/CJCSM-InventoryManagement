@@ -2,6 +2,7 @@ using Inventory_API;
 using Inventory_BLL.BL;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
+using Inventory_Models.ViewModels;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
@@ -11,7 +12,7 @@ using System.Reflection;
 static IEdmModel GetEdmModel()
 {
    ODataConventionModelBuilder builder = new();
-   builder.EntitySet<Customer>("Customer");
+   builder.EntitySet<CustomerDto>("Customer");
    return builder.GetEdmModel();
 }
 
