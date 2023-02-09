@@ -8,14 +8,14 @@ namespace Inventory_BLL.Mappings
    {
       public CustomerProfile()
       {
-         CreateMap<Customer, DTOCustomer>();
-         CreateMap<DTOCustomer, Customer>();
+         CreateMap<Customer, CustomerDto>();
+         CreateMap<CustomerDto, Customer>();
 
-         CreateMap<Customer, CustomerCreateVM>();
-         CreateMap<CustomerCreateVM, Customer>();
+         CreateMap<Customer, CustomerCreateDto>();
+         CreateMap<CustomerCreateDto, Customer>();
 
-         CreateMap<Customer, CustomerUpdateVM>();
-         CreateMap<CustomerUpdateVM, Customer>();
+         CreateMap<Customer, CustomerUpdateDto>();
+         CreateMap<CustomerUpdateDto, Customer>();
       }
    }
 }

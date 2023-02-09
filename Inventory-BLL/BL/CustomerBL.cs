@@ -1,8 +1,14 @@
 ﻿using AutoMapper;
+using AutoMapper.AspNet.OData;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
 using Inventory_Models.ViewModels;
-
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Inventory_BLL.BL
 {
@@ -10,6 +16,7 @@ namespace Inventory_BLL.BL
    {
       private readonly InventoryContext _context;
       private readonly IMapper _mapper;
+      
 
       public CustomerBL(InventoryContext context, IMapper mapper)
       {
@@ -17,29 +24,65 @@ namespace Inventory_BLL.BL
          _mapper = mapper;
       }
 
-      public IQueryable<DTOCustomer>? GetCustomerById(Guid guid)
+      public IQueryable<CustomerDto> GetCustomers()
       {
-         IQueryable<Customer>? type = _context.Customer.Where(x => x.CustomerId == guid);
-         if (type != null)
-         {
-            var result = _mapper.Map<IEnumerable<Customer>, IEnumerable<DTOCustomer>>(type);
-            return result.AsQueryable();
-         }
+         IQueryable<Customer> entity = _context.Customer.AsQueryable();
+         IQueryable<CustomerDto> customers = _mapper.ProjectTo<CustomerDto>(entity);
 
-         return null;
+         return customers;
       }
 
-      public IQueryable<DTOCustomer>? GetCustomers()
+      public IQueryable<CustomerDto>? GetCustomerById(Guid guid)
       {
-         IQueryable<Customer>? customers = _context.Customer.AsQueryable();
-         if (customers != null)
+         IQueryable<Customer>? customer = _context.Customer.Where(x => x.CustomerId == guid);
+         if (customer.Any())
          {
-            var result = _mapper.Map<IEnumerable<Customer>, IEnumerable<DTOCustomer>>(customers);
-            return result.AsQueryable();
+            IQueryable<CustomerDto> customerDto = _mapper.ProjectTo<CustomerDto>(customer);
+            return customerDto;
          }
 
-         return null;
+         throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
       }
+
+      public async Task<CustomerDto> CreateCustomer(CustomerCreateDto customerDto)
+      {
+
+         Customer customer = _mapper.Map<Customer>(customerDto);
+
+         customer.CustomerId = new Guid();
+         customer.IsActive = true;
+         customer.DateOfCreation = DateTimeOffset.Now;
+         _context.Customer.Add(customer);
+         await _context.SaveChangesAsync();
+
+         return _mapper.Map<CustomerDto>(customer);
+      }
+
+      public void UpdateCustomer(CustomerUpdateDto customerDto, Guid guid)
+      {
+         Customer? customer = _context.Customer.Find(guid);
+
+         if (customer == null)
+            throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
+
+         _mapper.Map<CustomerUpdateDto, Customer>(customerDto, customer);
+         customer.DateOfLastUpdate = DateTimeOffset.Now;
+         _context.SaveChanges();
+      }
+
+      public void DeleteCustomer(Guid guid)
+      {
+         Customer? customer = _context.Customer.Find(guid);
+
+         if (customer == null)
+            throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
+
+         _context.Customer.Remove(customer);
+         _context.SaveChanges();
+      }
+
+
+
 
    }
 }
