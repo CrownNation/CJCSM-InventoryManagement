@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Diagnostics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_DAL.Entities
+namespace Inventory_Dto.Dto
 {
-    public class Customer
+    public class DtoCustomer
     {
         public Guid CustomerId { get; set; }
         public string Name { get; set; }
@@ -21,6 +20,5 @@ namespace Inventory_DAL.Entities
         public bool IsActive { get; set; }
         public DateTimeOffset DateOfCreation { get; set; }
         public DateTimeOffset DateOfLastUpdate { get; set; }
-
     }
 }

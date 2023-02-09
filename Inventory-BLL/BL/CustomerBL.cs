@@ -17,24 +17,24 @@ namespace Inventory_BLL.BL
          _mapper = mapper;
       }
 
-      public IQueryable<CustomerVM>? GetCustomerById(Guid guid)
+      public IQueryable<DTOCustomer>? GetCustomerById(Guid guid)
       {
          IQueryable<Customer>? type = _context.Customer.Where(x => x.CustomerId == guid);
          if (type != null)
          {
-            var result = _mapper.Map<IEnumerable<Customer>, IEnumerable<CustomerVM>>(type);
+            var result = _mapper.Map<IEnumerable<Customer>, IEnumerable<DTOCustomer>>(type);
             return result.AsQueryable();
          }
 
          return null;
       }
 
-      public IQueryable<CustomerVM>? GetCustomers()
+      public IQueryable<DTOCustomer>? GetCustomers()
       {
          IQueryable<Customer>? customers = _context.Customer.AsQueryable();
          if (customers != null)
          {
-            var result = _mapper.Map<IEnumerable<Customer>, IEnumerable<CustomerVM>>(customers);
+            var result = _mapper.Map<IEnumerable<Customer>, IEnumerable<DTOCustomer>>(customers);
             return result.AsQueryable();
          }
 

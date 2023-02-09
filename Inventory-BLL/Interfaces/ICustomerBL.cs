@@ -5,8 +5,8 @@ namespace Inventory_BLL.Interfaces
 {
    public interface ICustomerBL
    {
-      public IQueryable<CustomerVM>? GetCustomers();
-      public IQueryable<CustomerVM>? GetCustomerById(Guid guid);
+      public IQueryable<DTOCustomer>? GetCustomers();
+      public IQueryable<DTOCustomer>? GetCustomerById(Guid guid);
       
    }
 }
