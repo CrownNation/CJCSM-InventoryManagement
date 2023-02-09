@@ -11,7 +11,7 @@ namespace Inventory_API.Controllers
 {
    [ApiController]
    [Route("[controller]")]
-   public class CustomerController : Controller
+   public class CustomerController : ODataController
    {
 
       private readonly ILogger<CustomerController> _logger;
@@ -24,8 +24,7 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet]
-      [EnableQuery]
-      public ActionResult Get(ODataQueryOptions<CustomerDto> options)
+      public IActionResult Get(ODataQueryOptions<CustomerDto> options)
       {
 
          try
@@ -41,19 +40,18 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet("{key}")]
-      public ActionResult GetCustomer(Guid key, ODataQueryOptions<CustomerDto> options)
+      public IActionResult Get(Guid key, ODataQueryOptions<CustomerDto> options)
       {
-
          try
          {
             IQueryable<CustomerDto>? customer = _customerBl.GetCustomerById(key);
             return Ok(options.ApplyTo(customer));
          }
-         catch(KeyNotFoundException e)
+         catch (KeyNotFoundException e)
          {
             return NotFound();
          }
-         catch(Exception e)
+         catch (Exception e)
          {
             _logger.LogError($"GetCustomerById: " + e.Message);
             throw new Exception($"There was a problem querying for the customer with id {key}.");
@@ -71,7 +69,7 @@ namespace Inventory_API.Controllers
          CustomerDto customerDto;
          try
          {
-           customerDto  = await _customerBl.CreateCustomer(customer);
+            customerDto = await _customerBl.CreateCustomer(customer);
          }
          catch (Exception e)
          {
@@ -81,7 +79,7 @@ namespace Inventory_API.Controllers
 
          // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
          //return CreatedAtAction(nameof(GetCustomerById), new { key = customerDto.CustomerId, odataPath = $"Customer/{customerDto.CustomerId}" }, customerDto);
-         return CreatedAtAction("GetCustomer", new { key = customerDto.CustomerId }, customerDto);
+         return CreatedAtAction("Get", new { key = customerDto.CustomerId }, customerDto);
       }
 
       [HttpPut("{key}")]
@@ -94,7 +92,7 @@ namespace Inventory_API.Controllers
 
          try
          {
-           _customerBl.UpdateCustomer(customer, key);
+            _customerBl.UpdateCustomer(customer, key);
          }
          catch (KeyNotFoundException e)
          {
