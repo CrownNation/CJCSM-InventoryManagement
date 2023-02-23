@@ -47,6 +47,11 @@ namespace Inventory_BLL.BL
       public async Task<CustomerDto> CreateCustomer(CustomerCreateDto customerDto)
       {
 
+         if (customerDto == null)
+            throw new ArgumentNullException("Create Customer failed. The customer data is null");
+         if(String.IsNullOrEmpty(customerDto.Name))
+            throw new ArgumentNullException("Create Customer failed. The customer name cannot be null or empty.");
+
          Customer customer = _mapper.Map<Customer>(customerDto);
 
          customer.CustomerId = new Guid();
