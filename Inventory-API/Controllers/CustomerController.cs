@@ -49,6 +49,7 @@ namespace Inventory_API.Controllers
          }
          catch (KeyNotFoundException e)
          {
+            _logger.LogInformation($"GetCustomerById: " + e.Message);
             return NotFound();
          }
          catch (Exception e)
@@ -70,6 +71,11 @@ namespace Inventory_API.Controllers
          try
          {
             customerDto = await _customerBl.CreateCustomer(customer);
+         }
+         catch (ArgumentNullException e)
+         {
+            _logger.LogError($"CreateCustomer: " + e.Message);
+            return BadRequest(e.Message);
          }
          catch (Exception e)
          {
@@ -96,6 +102,7 @@ namespace Inventory_API.Controllers
          }
          catch (KeyNotFoundException e)
          {
+            _logger.LogInformation($"UpdateCustomer: " + e.Message);
             return NotFound();
          }
          catch (Exception e)
@@ -117,6 +124,7 @@ namespace Inventory_API.Controllers
          }
          catch (KeyNotFoundException e)
          {
+            _logger.LogInformation($"DeleteCustomer: " + e.Message);
             return NotFound();
          }
          catch (Exception e)
