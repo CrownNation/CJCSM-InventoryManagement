@@ -57,6 +57,7 @@ namespace Inventory_BLL.BL
          customer.CustomerId = new Guid();
          customer.IsActive = true;
          customer.DateOfCreation = DateTimeOffset.Now;
+         customer.DateOfLastUpdate = DateTimeOffset.Now;
          _context.Customer.Add(customer);
          await _context.SaveChangesAsync();
 

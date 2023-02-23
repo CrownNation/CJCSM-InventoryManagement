@@ -52,10 +52,11 @@ namespace Inventory_Tests.BL
       }
 
       #region GetCustomerById
-      [Fact]
-      public void GetCustomerById_Valid()
+
+
+      private void SetupDatabase_Get()
       {
-         Customer newCustomer = new Customer
+         _context.Add(new Customer
          {
             CustomerId = _sampleGuids[0],
             Name = "Ghostbusters",
@@ -67,26 +68,69 @@ namespace Inventory_Tests.BL
             Province = "NY",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
-         };
-         _context.Customer.Add(newCustomer);
+         });
+         _context.Add(new Customer
+         {
+            CustomerId = _sampleGuids[1],
+            Name = "Test Company",
+            Address1 = "2 Street",
+            Address2 = "Suite 2",
+            City = "Calgary ",
+            Email = "test@test.com",
+            PostalCode = "2B2B2B",
+            Province = "AB",
+            IsActive = false,
+            DateOfCreation = DateTimeOffset.MaxValue
+         });
+         _context.Add(new Customer
+         {
+            CustomerId = _sampleGuids[2],
+            Name = "CJCSM",
+            Address1 = "3 Street",
+            Address2 = "Suite 3",
+            City = "Red Deer",
+            Email = "cjcsm@test.com",
+            PostalCode = "3C3C3C",
+            Province = "AB",
+            IsActive = true,
+            DateOfCreation = DateTimeOffset.MaxValue
+         });
          _context.SaveChanges();
-
-         // Verify mappings
-         //Assert.NotNull(customer);
-         //Assert.True(customer.Name == createdCustomer.Name);
-         //Assert.True(customer.Address1 == createdCustomer.Address1);
-         //Assert.True(customer.Address2 == createdCustomer.Address2);
-         //Assert.True(customer.City == createdCustomer.City);
-         //Assert.True(customer.Email == createdCustomer.Email);
-         //Assert.True(customer.PostalCode == createdCustomer.PostalCode);
-         //Assert.True(customer.Province == createdCustomer.Province);
-
-         //// Verify logic
-         //Assert.NotEqual(customer.CustomerId, Guid.Empty);
-         //Assert.True(customer.DateOfCreation > DateTimeOffset.MinValue);
-         //Assert.True(customer.DateOfCreation < DateTimeOffset.MaxValue);
-         //Assert.Null(customer.DateOfLastUpdate);
       }
+
+      [Fact]
+      public void GetCustomerById_Valid()
+      {
+         SetupDatabase_Get();
+         Customer? dbCustomer = _context.Customer.FirstOrDefault(x => x.CustomerId == _sampleGuids[2]);
+         IQueryable<CustomerDto>? customerQuery = _customerBl.GetCustomerById(_sampleGuids[2]);
+
+         Assert.NotNull(dbCustomer);
+         Assert.NotNull(customerQuery);
+         Assert.Single(customerQuery);
+
+         CustomerDto customer = customerQuery.ToList()[0];
+
+         Assert.True(dbCustomer.CustomerId == customer.CustomerId);
+         Assert.True(dbCustomer.Name == customer.Name);         
+         Assert.True(dbCustomer.Address1 == customer.Address1);
+         Assert.True(dbCustomer.Address2 == customer.Address2);
+         Assert.True(dbCustomer.City == customer.City);
+         Assert.True(dbCustomer.Province == customer.Province);
+         Assert.True(dbCustomer.PostalCode == customer.PostalCode);
+         Assert.True(dbCustomer.Email == customer.Email);
+         Assert.True(dbCustomer.IsActive == customer.IsActive);
+         Assert.True(dbCustomer.DateOfCreation == customer.DateOfCreation);
+         Assert.True(dbCustomer.DateOfLastUpdate == customer.DateOfLastUpdate);
+      }
+
+      [Fact]
+      public void GetCustomerById_Exc_NotFound()
+      {
+         SetupDatabase_Get();
+         Assert.Throws<KeyNotFoundException>(() => _customerBl.GetCustomerById(_sampleGuids[3]));
+      }
+
 
       #endregion
 
@@ -122,7 +166,8 @@ namespace Inventory_Tests.BL
          Assert.NotEqual(customer.CustomerId, Guid.Empty);
          Assert.True(customer.DateOfCreation > DateTimeOffset.MinValue);
          Assert.True(customer.DateOfCreation < DateTimeOffset.MaxValue);
-         Assert.Null(customer.DateOfLastUpdate);
+         Assert.True(customer.DateOfLastUpdate > DateTimeOffset.MinValue);
+         Assert.True(customer.DateOfLastUpdate < DateTimeOffset.MaxValue);
       }
 
       [Fact]
@@ -149,7 +194,6 @@ namespace Inventory_Tests.BL
 
 
       #endregion
-
       #region DeleteCustomer
       [Fact]
       public void DeleteCustomer_Valid()
