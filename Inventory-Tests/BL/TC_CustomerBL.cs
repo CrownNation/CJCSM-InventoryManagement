@@ -51,8 +51,7 @@ namespace Inventory_Tests.BL
          _context.Database.EnsureCreated();
       }
 
-      #region GetCustomerById
-
+      #region Helpers
 
       private void SetupDatabase_Get()
       {
@@ -97,6 +96,26 @@ namespace Inventory_Tests.BL
          });
          _context.SaveChanges();
       }
+
+      #endregion
+
+      #region GetCustomers
+
+      [Fact]
+      public void GetCustomers_Valid()
+      {
+         SetupDatabase_Get();
+         IQueryable<CustomerDto>? customerQuery = _customerBl.GetCustomers();
+
+         Assert.NotNull(customerQuery);
+         Assert.Equal(3, customerQuery.ToList().Count);
+      }
+
+      // Todo: Will have to figure out how to test the OdataQueryOptions from the Controller rather then the BL.
+
+      #endregion
+
+      #region GetCustomerById
 
       [Fact]
       public void GetCustomerById_Valid()
@@ -194,6 +213,7 @@ namespace Inventory_Tests.BL
 
 
       #endregion
+
       #region DeleteCustomer
       [Fact]
       public void DeleteCustomer_Valid()
