@@ -35,7 +35,7 @@ namespace Inventory_DAL.Entities
 
       [Required]
       public DateTimeOffset DateOfCreation { get; set; }
-      public DateTimeOffset? DateOfLastUpdate { get; set; }
+      public DateTimeOffset DateOfLastUpdate { get; set; }
 
    }
 }
