@@ -29,3 +29,11 @@ $cjcsm-theme: mat.define-light-theme((
 @include mat.core-theme($cjcsm-theme);
 @include mat.all-component-themes($cjcsm-theme);
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.main-heading {
+  text-transform: uppercase;
+  margin: 0 0 20px 0;
+}

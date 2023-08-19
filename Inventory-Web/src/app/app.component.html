@@ -1,9 +1,85 @@
+<div [class]="'theme-wrapper'">
+
+  <mat-sidenav-container>
+
+    <mat-sidenav #sidenav mode="push">
+      <div class="branding">
+        <img [src]="logo" />
+      </div>
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let item of navigationSideMenu" (click)="sidenav.close()" [routerLink]="[item.link]"
+          routerLinkActive="active">
+          {{item.label}}
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <div class="wrapper">
+
+      <div class="toolbar" [style.position]=" 'fixed'">
+        <mat-toolbar color="primary">
+          <button mat-icon-button class="d-md-none" (click)="sidenav.open()">
+            <mat-icon aria-hidden="false" aria-label="Menu" fontIcon="menu"></mat-icon>
+          </button>
+
+          <!-- <span routerLink="" class="branding spacer center d-inline d-sm-none">
+            <img [src]="logo" />            
+          </span>
+          <span routerLink="" class="branding spacer center d-none d-sm-inline d-md-none">
+            <img [src]="logo" />            
+          </span>-->
+          <span routerLink="" class="branding spacer d-none d-md-inline">
+            <img [src]="logo" />            
+          </span> 
+
+          <span class="d-none d-md-inline">
+            <button mat-button class="nav-button" *ngFor="let item of navigation" [routerLink]="[item.link]"
+              routerLinkActive="active">
+              {{item.label}}
+            </button>
+          </span>
+
+          <mat-menu #toolbarUserMenu="matMenu">
+            <button mat-menu-item (click)="onLogoutClick()">
+              <mat-icon aria-hidden="false" aria-label="Logout" fontIcon="home"></mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu> 
+
+        </mat-toolbar>
+      </div>
+
+      <div class="content">
+        <app-login></app-login>
+        <router-outlet></router-outlet>
+      </div>
+
+      <div class="footer">
+        <div class="row">
+          <div class="col-sm-12 links">
+    
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 signature">
+            &#169; <span class="year">{{year}}</span> - CJCSM Inspection
+            <br class="d-block d-sm-none">
+              <span *ngIf="!isProd">{{version}} [{{env}}]</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </mat-sidenav-container>
+
+</div>
 
 
 
 
 <!-- Toolbar -->
-<mat-toolbar color="primary" class="header">
+<!-- <mat-toolbar color="primary" class="header">
     <div>CJCSM</div>
     <span class="nav-tool-items">
       <mat-icon class="hamburger">menu</mat-icon>
@@ -12,4 +88,4 @@
 
   <app-login></app-login>
 
-  <router-outlet></router-outlet>
+  <router-outlet></router-outlet> -->
