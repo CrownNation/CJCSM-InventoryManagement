@@ -24,6 +24,40 @@ namespace Inventory_API.Controllers
          _rackBl = rackBl;
       }
 
+      [HttpGet("dummy/{key}")]
+      public IActionResult GetDummy(ODataQueryOptions<RackDto> options)
+      {
+         RackDto rack = new RackDto();
+         rack.RackId = Guid.NewGuid();
+         rack.Name = "RackTest01";
+
+         return Ok(rack);
+      }
+
+
+      [HttpGet("dummy")]
+      public IActionResult GetDummies(ODataQueryOptions<List<RackDto>> options)
+      {
+         RackDto rack1 = new RackDto();
+         rack1.RackId = Guid.NewGuid();
+         rack1.Name = "RackTest01";
+
+         RackDto rack2 = new RackDto();
+         rack2.RackId = Guid.NewGuid();
+         rack2.Name = "RackTest02";
+
+         RackDto rack3 = new RackDto();
+         rack3.RackId = Guid.NewGuid();
+         rack3.Name = "RackTest03";
+
+         List<RackDto> racks = new List<RackDto>();
+         racks.Add(rack1);
+         racks.Add(rack2);
+         racks.Add(rack3);
+
+         return Ok(racks);
+      }
+
       [HttpGet]
       public IActionResult Get(ODataQueryOptions<RackDto> options)
       {

@@ -9,9 +9,11 @@ namespace Inventory_Dto.Dto
 {
    public class RackDto
    {
+      [Key]
       public Guid RackId { get; set; }
-        [Required(ErrorMessage = "A Name is required")]
-        [StringLength(50)]
-        public string Name { get; set; }
+
+      [Required(ErrorMessage = "A Name is required")]
+      [StringLength(50)]
+      public string Name { get; set; }
    }
 }
