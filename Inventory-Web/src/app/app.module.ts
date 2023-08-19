@@ -5,17 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { StoreModule } from '@ngrx/store';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
-
-// Todo: Move these to a shared module
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
-import {MatMenuModule} from '@angular/material/menu';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { rackReducers } from './stores/rack';
 
 @NgModule({
@@ -25,6 +25,7 @@ import { rackReducers } from './stores/rack';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
@@ -33,13 +34,12 @@ import { rackReducers } from './stores/rack';
     }),
     CoreModule,
     AuthModule,
-
     MatToolbarModule,
     MatIconModule,
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
-    BrowserAnimationsModule,
+    MatButtonModule,
     StoreModule.forRoot({rack: rackReducers}, {})    
   ],
   providers: [],

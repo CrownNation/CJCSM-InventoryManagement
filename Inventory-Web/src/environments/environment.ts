@@ -5,6 +5,7 @@ export const environment = {
     appName: 'CJCSM Inventory Default',
     envName: 'default',    
     cognito:{
+      region: 'us-east-2',
       userPoolId:'ca-central-1_V6ktp1b5L',
       userPoolWebClientId: '2eei3n17p7umeq2hntufsgnoh6'
     },

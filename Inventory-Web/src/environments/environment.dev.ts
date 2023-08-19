@@ -4,7 +4,8 @@ export const environment = {
     production: false,
     appName: 'CJCSM Inventory Dev',
     envName: 'development',    
-    cognito:{
+    cognito: {
+      region: 'us-east-2',
       userPoolId:'us-east-2_RyeY0OlTL',
       userPoolWebClientId: '5ijnmuh5jnbtsj3f8gtik1770m'
     },
