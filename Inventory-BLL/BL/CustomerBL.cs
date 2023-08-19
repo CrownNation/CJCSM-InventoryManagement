@@ -54,7 +54,7 @@ namespace Inventory_BLL.BL
 
          Customer customer = _mapper.Map<Customer>(customerDto);
 
-         customer.CustomerId = new Guid();
+         customer.CustomerId = Guid.NewGuid(); // Todo: Might be set by the database, can remove it db creates it
          customer.IsActive = true;
          customer.DateOfCreation = DateTimeOffset.Now;
          customer.DateOfLastUpdate = DateTimeOffset.Now;

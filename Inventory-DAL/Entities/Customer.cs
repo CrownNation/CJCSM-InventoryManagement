@@ -7,10 +7,10 @@ namespace Inventory_DAL.Entities
    public class Customer
    {
       [Key]
+      [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
       public Guid CustomerId { get; set; }
 
-      [StringLength(50)]
-      [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+      [StringLength(50)]      
       public string Name { get; set; }
 
       [StringLength(30)]
