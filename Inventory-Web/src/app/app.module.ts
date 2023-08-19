@@ -4,6 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { StoreModule } from '@ngrx/store';
+
+import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
 
 // Todo: Move these to a shared module
@@ -13,7 +16,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { rackReducers } from './stores/rack';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    CoreModule,
     AuthModule,
 
     MatToolbarModule,
@@ -35,7 +39,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
-    BrowserAnimationsModule    
+    BrowserAnimationsModule,
+    StoreModule.forRoot({rack: rackReducers}, {})    
   ],
   providers: [],
   bootstrap: [AppComponent]
