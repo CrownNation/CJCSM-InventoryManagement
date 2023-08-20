@@ -22,4 +22,9 @@
     <ProjectReference Include="..\Inventory-Models\Inventory-Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="DBContext\" />
+  </ItemGroup>
+
 </Project>

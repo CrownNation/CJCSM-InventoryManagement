@@ -9,8 +9,8 @@ namespace Inventory_BLL.Interfaces
    {
       public IQueryable<RackDto> GetRacks();
       public IQueryable<RackDto>? GetRackById(Guid guid);
-      public Task<RackDto> CreateRack(RackCreateDto rack);
-      public void UpdateRack(RackUpdateDto rack, Guid guid);
+      public Task<RackDto> CreateRack(DtoRackCreate rack);
+      public void UpdateRack(DtoRackUpdate rack, Guid guid);
       public void DeleteRack(Guid guid);
    }
 }

@@ -94,7 +94,7 @@ namespace Inventory_API.Controllers
       }
 
       [HttpPost]
-      public async Task<IActionResult> Post([FromBody] RackCreateDto rack)
+      public async Task<IActionResult> Post([FromBody] DtoRackCreate rack)
       {
          if (!ModelState.IsValid)
          {
@@ -118,7 +118,7 @@ namespace Inventory_API.Controllers
       }
 
       [HttpPut("{key}")]
-      public IActionResult Put(Guid key, [FromBody] RackUpdateDto rack)
+      public IActionResult Put(Guid key, [FromBody] DtoRackUpdate rack)
       {
          if (!ModelState.IsValid)
          {

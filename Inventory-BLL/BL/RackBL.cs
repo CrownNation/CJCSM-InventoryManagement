@@ -10,7 +10,7 @@ namespace Inventory_BLL.BL
 {
    public class RackBL : IRackBL
    {
-      public Task<RackDto> CreateRack(RackCreateDto rack)
+      public Task<RackDto> CreateRack(DtoRackCreate rack)
       {
          throw new NotImplementedException();
       }
@@ -30,7 +30,7 @@ namespace Inventory_BLL.BL
          throw new NotImplementedException();
       }
 
-      public void UpdateRack(RackUpdateDto rack, Guid guid)
+      public void UpdateRack(DtoRackUpdate rack, Guid guid)
       {
          throw new NotImplementedException();
       }

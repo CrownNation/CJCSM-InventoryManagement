@@ -7,10 +7,10 @@ namespace Inventory_BLL.Interfaces
 {
    public interface IPipeDefinitionBL
    {
-      public IQueryable<PipeDefinitionDto> GetPipeDefintions();
-      public IQueryable<PipeDefinitionDto>? GetPipeDefinitionById(Guid guid);
-      public Task<PipeDefinitionDto> CreatePipeDefinition(PipeDefinitionCreateDto pipedefinition);
-      public void UpdatePipeDefinition(PipeDefinitionUpdateDto pipeDefinition, Guid guid);
+      public IQueryable<DtoPipeDefinition> GetPipeDefintions();
+      public IQueryable<DtoPipeDefinition>? GetPipeDefinitionById(Guid guid);
+      public Task<DtoPipeDefinition> CreatePipeDefinition(DtoPipeDefinitionCreate pipedefinition);
+      public void UpdatePipeDefinition(DtoPipeDefinitionUpdate pipeDefinition, Guid guid);
       public void DeletePipeDefinition(Guid guid);
    }
 }

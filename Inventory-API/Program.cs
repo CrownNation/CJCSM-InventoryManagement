@@ -13,7 +13,7 @@ using System.Reflection;
 static IEdmModel GetEdmModel()
 {
    ODataConventionModelBuilder builder = new();
-   builder.EntitySet<CustomerDto>("Customer");
+   builder.EntitySet<DtoCustomer>("Customer");
    builder.EntitySet<RackDto>("Rack");
    return builder.GetEdmModel();
 }

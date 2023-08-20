@@ -7,10 +7,10 @@ namespace Inventory_BLL.Interfaces
 {
    public interface ISectionBL
    {
-      public IQueryable<SectionDto> GetSections();
-      public IQueryable<SectionDto>? GetSectionById(Guid guid);
-      public Task<SectionDto> CreateSection(SectionCreateDto section);
-      public void UpdateSection(SectionUpdateDto section, Guid guid);
+      public IQueryable<DtoSection> GetSections();
+      public IQueryable<DtoSection>? GetSectionById(Guid guid);
+      public Task<DtoSection> CreateSection(DtoSectionCreate section);
+      public void UpdateSection(DtoSectionUpdate section, Guid guid);
       public void DeleteSection(Guid guid);
    }
 }
