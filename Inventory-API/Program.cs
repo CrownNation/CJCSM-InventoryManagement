@@ -14,7 +14,7 @@ static IEdmModel GetEdmModel()
 {
    ODataConventionModelBuilder builder = new();
    builder.EntitySet<DtoCustomer>("Customer");
-   builder.EntitySet<RackDto>("Rack");
+   //builder.EntitySet<DtoRack>("Rack");
    return builder.GetEdmModel();
 }
 

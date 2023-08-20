@@ -12,6 +12,7 @@ using Inventory_BLL.BL;
 using System.Reflection;
 using Inventory_Models.ViewModels;
 using System.ComponentModel.DataAnnotations;
+using Inventory_Dto.Dto;
 
 namespace Inventory_Tests.BL
 {
@@ -105,7 +106,7 @@ namespace Inventory_Tests.BL
       public void GetCustomers_Valid()
       {
          SetupDatabase_Get();
-         IQueryable<CustomerDto>? customerQuery = _customerBl.GetCustomers();
+         IQueryable<DtoCustomer>? customerQuery = _customerBl.GetCustomers();
 
          Assert.NotNull(customerQuery);
          Assert.Equal(3, customerQuery.ToList().Count);
@@ -122,13 +123,13 @@ namespace Inventory_Tests.BL
       {
          SetupDatabase_Get();
          Customer? dbCustomer = _context.Customer.FirstOrDefault(x => x.CustomerId == _sampleGuids[2]);
-         IQueryable<CustomerDto>? customerQuery = _customerBl.GetCustomerById(_sampleGuids[2]);
+         IQueryable<DtoCustomer>? customerQuery = _customerBl.GetCustomerById(_sampleGuids[2]);
 
          Assert.NotNull(dbCustomer);
          Assert.NotNull(customerQuery);
          Assert.Single(customerQuery);
 
-         CustomerDto customer = customerQuery.ToList()[0];
+         DtoCustomer customer = customerQuery.ToList()[0];
 
          Assert.True(dbCustomer.CustomerId == customer.CustomerId);
          Assert.True(dbCustomer.Name == customer.Name);         
@@ -167,7 +168,7 @@ namespace Inventory_Tests.BL
             PostalCode = "1A1A1A",
             Province = "NY"
          };
-         CustomerDto createdCustomer = _customerBl.CreateCustomer(newCustomer).Result;
+         DtoCustomer createdCustomer = _customerBl.CreateCustomer(newCustomer).Result;
 
          Customer? customer = _context.Customer.Find(createdCustomer.CustomerId);
 
