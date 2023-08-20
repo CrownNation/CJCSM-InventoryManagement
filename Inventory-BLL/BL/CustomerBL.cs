@@ -44,7 +44,7 @@ namespace Inventory_BLL.BL
          throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
       }
 
-      public async Task<CustomerDto> CreateCustomer(CustomerCreateDto customerDto)
+      public async Task<CustomerDto> CreateCustomer(DtoCustomerCreate customerDto)
       {
 
          if (customerDto == null)
@@ -64,14 +64,14 @@ namespace Inventory_BLL.BL
          return _mapper.Map<CustomerDto>(customer);
       }
 
-      public void UpdateCustomer(CustomerUpdateDto customerDto, Guid guid)
+      public void UpdateCustomer(DtoCustomerUpdate customerDto, Guid guid)
       {
          Customer? customer = _context.Customer.Find(guid);
 
          if (customer == null)
             throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
 
-         _mapper.Map<CustomerUpdateDto, Customer>(customerDto, customer);
+         _mapper.Map<DtoCustomerUpdate, Customer>(customerDto, customer);
          customer.DateOfLastUpdate = DateTimeOffset.Now;
          _context.SaveChanges();
       }

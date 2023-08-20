@@ -157,7 +157,7 @@ namespace Inventory_Tests.BL
       [Fact]
       public void CreateCustomer_Valid()
       {
-         CustomerCreateDto newCustomer = new CustomerCreateDto
+         DtoCustomerCreate newCustomer = new DtoCustomerCreate
          {
             Name = "Ghostbusters",
             Address1 = "123 Street",
@@ -192,7 +192,7 @@ namespace Inventory_Tests.BL
       [Fact]
       public async void CreateCustomer_Exc_EmptyName()
       {
-         CustomerCreateDto newCustomer = new CustomerCreateDto
+         DtoCustomerCreate newCustomer = new DtoCustomerCreate
          {
             Name = "",
             Address1 = "123 Street",

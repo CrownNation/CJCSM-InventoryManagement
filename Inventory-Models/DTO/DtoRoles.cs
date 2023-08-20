@@ -8,7 +8,7 @@ namespace Inventory_Dto.Dto
 {
     public class DtoRoles
     {
-        public Guid RolesId { get; set; }
+        public Guid RoleId { get; set; }
         public string UserId { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }

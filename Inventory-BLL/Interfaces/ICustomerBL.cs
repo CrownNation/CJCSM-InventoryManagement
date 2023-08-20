@@ -8,8 +8,8 @@ namespace Inventory_BLL.Interfaces
    {
       public IQueryable<CustomerDto> GetCustomers();
       public IQueryable<CustomerDto>? GetCustomerById(Guid guid);
-      public Task<CustomerDto> CreateCustomer(CustomerCreateDto customer);
-      public void UpdateCustomer(CustomerUpdateDto customer, Guid guid);
+      public Task<CustomerDto> CreateCustomer(DtoCustomerCreate customer);
+      public void UpdateCustomer(DtoCustomerUpdate customer, Guid guid);
       public void DeleteCustomer(Guid guid);
    }
 }

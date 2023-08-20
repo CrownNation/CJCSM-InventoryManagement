@@ -61,7 +61,7 @@ namespace Inventory_API.Controllers
       }
 
       [HttpPost]
-      public async Task<IActionResult> Post([FromBody] CustomerCreateDto customer)
+      public async Task<IActionResult> Post([FromBody] DtoCustomerCreate customer)
       {
          if (!ModelState.IsValid)
          {
@@ -90,7 +90,7 @@ namespace Inventory_API.Controllers
       }
 
       [HttpPut("{key}")]
-      public IActionResult Put(Guid key, [FromBody] CustomerUpdateDto customer)
+      public IActionResult Put(Guid key, [FromBody] DtoCustomerUpdate customer)
       {
          if (!ModelState.IsValid)
          {

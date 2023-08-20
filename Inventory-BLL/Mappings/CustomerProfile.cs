@@ -11,11 +11,11 @@ namespace Inventory_BLL.Mappings
          CreateMap<Customer, CustomerDto>();
          CreateMap<CustomerDto, Customer>();
 
-         CreateMap<Customer, CustomerCreateDto>();
-         CreateMap<CustomerCreateDto, Customer>();
+         CreateMap<Customer, DtoCustomerCreate>();
+         CreateMap<DtoCustomerCreate, Customer>();
 
-         CreateMap<Customer, CustomerUpdateDto>();
-         CreateMap<CustomerUpdateDto, Customer>();
+         CreateMap<Customer, DtoCustomerUpdate>();
+         CreateMap<DtoCustomerUpdate, Customer>();
       }
    }
 }
