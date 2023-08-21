@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace Inventory_Dto.Dto
 {
-    public class SectionDto
+    public class DtoSection
     {
         public Guid SectionId { get; set; }
         [StringLength(30)]
         public string TierId { get; set; }
         [StringLength(30)]
         public string CustomerId { get; set; }
-        public string? Quantity { get; set; }
     }
 }

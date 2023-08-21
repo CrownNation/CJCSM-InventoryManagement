@@ -9,8 +9,7 @@ namespace Inventory_Dto.Dto
    public class DtoTransfer
    {
       public Guid TransferId { get; set; }
-      public string SellCustomerId { get; set; }
-      public string BuyCustomerId { get; set; }
-      public string TallyId { get; set; }
+        public string ShopLocationId { get; set; }
+        public string? Notes { get; set; }
    }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_Dto.Dto
 {
-    public class PipeDefinitionCreateDto
+    public class DtoPipeDefinitionCreate
     {
         public Guid PipeDefinitionId { get; set; }
         [StringLength(30)]

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Inventory_Models.ViewModels
+namespace Inventory_Dto.Dto
 {
-   public  class CustomerCreateDto
+   public  class DtoCustomerCreate
    {
       [Required(ErrorMessage = "A Name is required")]
       [StringLength(50)]

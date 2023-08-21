@@ -1,7 +1,7 @@
 ﻿
-namespace Inventory_Models.ViewModels
+namespace Inventory_Dto.Dto
 {
-   public class CustomerUpdateDto
+   public class DtoCustomerUpdate
    {
       public string Name { get; set; }
       public string? Address1 { get; set; }

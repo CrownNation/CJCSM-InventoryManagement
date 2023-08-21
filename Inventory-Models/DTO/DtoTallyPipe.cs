@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Inventory_Dto.Dto
 {
-    public class DtoTallySection
+    public class DtoTallyPipe
     {
-        public Guid TallySectionId { get; set; }
-        public string SectionId { get; set; }
+        public Guid TallyPipeId { get; set; }
+        public string TallyId { get; set; }
+        public string PipeId { get; set; }
     }
 }

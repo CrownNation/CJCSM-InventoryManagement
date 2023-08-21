@@ -25,12 +25,12 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet]
-      public IActionResult Get(ODataQueryOptions<SectionDto> options)
+      public IActionResult Get(ODataQueryOptions<DtoSection> options)
       {
 
          try
          {
-            IQueryable<SectionDto>? sections = _sectionBl.GetSections();
+            IQueryable<DtoSection>? sections = _sectionBl.GetSections();
             return Ok(options.ApplyTo(sections));
          }
          catch(Exception e)
@@ -41,11 +41,11 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet("{key}")]
-      public IActionResult Get(Guid key, ODataQueryOptions<SectionDto> options)
+      public IActionResult Get(Guid key, ODataQueryOptions<DtoSection> options)
       {
          try
          {
-            IQueryable<SectionDto>? section = _sectionBl.GetSectionById(key);
+            IQueryable<DtoSection>? section = _sectionBl.GetSectionById(key);
             return Ok(options.ApplyTo(section));
          }
          catch (KeyNotFoundException e)
@@ -60,17 +60,17 @@ namespace Inventory_API.Controllers
       }
 
       [HttpPost]
-      public async Task<IActionResult> Post([FromBody] SectionCreateDto section)
+      public async Task<IActionResult> Post([FromBody] DtoSectionCreate section)
       {
          if (!ModelState.IsValid)
          {
             return BadRequest(ModelState);
          }
 
-         SectionDto sectionDto;
+         DtoSection DtoSection;
          try
          {
-            sectionDto = await _sectionBl.CreateSection(section);
+            DtoSection = await _sectionBl.CreateSection(section);
          }
          catch (Exception e)
          {
@@ -79,12 +79,12 @@ namespace Inventory_API.Controllers
          }
 
          // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
-         //return CreatedAtAction(nameof(GetSectionById), new { key = sectionDto.SectionId, odataPath = $"Section/{sectionDto.SectionId}" }, sectionDto);
-         return CreatedAtAction("Get", new { key = sectionDto.SectionId }, sectionDto);
+         //return CreatedAtAction(nameof(GetSectionById), new { key = DtoSection.SectionId, odataPath = $"Section/{DtoSection.SectionId}" }, DtoSection);
+         return CreatedAtAction("Get", new { key = DtoSection.SectionId }, DtoSection);
       }
 
       [HttpPut("{key}")]
-      public IActionResult Put(Guid key, [FromBody] SectionUpdateDto section)
+      public IActionResult Put(Guid key, [FromBody] DtoSectionUpdate section)
       {
          if (!ModelState.IsValid)
          {

@@ -9,6 +9,7 @@ namespace Inventory_Dto.Dto
    public class DtoTallyEquipment
    {
       public Guid TallyEquipmentId { get; set; }
+      public string TallyId { get; set; }
       public string EquipmentId { get; set; }
    }
 }

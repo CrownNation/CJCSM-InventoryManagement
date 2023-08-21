@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_Dto.Dto
 {
-    public class TierDto
+    public class DtoTier
     {
         public Guid TierId { get; set; }
         [StringLength(30)]

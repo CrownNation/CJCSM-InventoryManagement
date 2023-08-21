@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Dto.Dto
+namespace Inventory_DAL.Entities
 {
-   public class RackCreateDto
+   public class Rack
    {
       public Guid RackId { get; set; }
-        [Required(ErrorMessage = "A Name is required")]
-        [StringLength(50)]
-        public string Name { get; set; }
+      [StringLength(50)]
+      public string Name { get; set; }
    }
 }

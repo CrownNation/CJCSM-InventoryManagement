@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Inventory_DAL.Entities;
+using Inventory_Dto.Dto;
 using Inventory_Models.ViewModels;
 
 namespace Inventory_BLL.Mappings
@@ -8,14 +9,14 @@ namespace Inventory_BLL.Mappings
    {
       public CustomerProfile()
       {
-         CreateMap<Customer, CustomerDto>();
-         CreateMap<CustomerDto, Customer>();
+         CreateMap<Customer, DtoCustomer>();
+         CreateMap<DtoCustomer, Customer>();
 
-         CreateMap<Customer, CustomerCreateDto>();
-         CreateMap<CustomerCreateDto, Customer>();
+         CreateMap<Customer, DtoCustomerCreate>();
+         CreateMap<DtoCustomerCreate, Customer>();
 
-         CreateMap<Customer, CustomerUpdateDto>();
-         CreateMap<CustomerUpdateDto, Customer>();
+         CreateMap<Customer, DtoCustomerUpdate>();
+         CreateMap<DtoCustomerUpdate, Customer>();
       }
    }
 }

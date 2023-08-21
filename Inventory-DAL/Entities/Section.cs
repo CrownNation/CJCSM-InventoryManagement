@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Dto.Dto
+namespace Inventory_DAL.Entities
 {
-    public class SectionCreateDto
+    public class Section
     {
         public Guid SectionId { get; set; }
         [StringLength(30)]

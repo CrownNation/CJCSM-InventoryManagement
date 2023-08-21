@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Inventory_Dto.Dto
 {
-   public class RackUpdateDto
+   public class DtoRack
    {
       public Guid RackId { get; set; }
         [Required(ErrorMessage = "A Name is required")]

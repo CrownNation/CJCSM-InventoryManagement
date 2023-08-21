@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Dto.Dto
+namespace Inventory_DAL.Entities
 {
-    public class PipeDefinitionUpdateDto
+    public class PipeDefinition
     {
         public Guid PipeDefinitionId { get; set; }
         [StringLength(30)]

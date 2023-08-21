@@ -2,6 +2,7 @@
 using AutoMapper.AspNet.OData;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
+using Inventory_Dto.Dto;
 using Inventory_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -24,35 +25,35 @@ namespace Inventory_BLL.BL
          _mapper = mapper;
       }
 
-      public IQueryable<CustomerDto> GetCustomers()
+      public IQueryable<DtoCustomer> GetCustomers()
       {
          IQueryable<Customer> entity = _context.Customer.AsQueryable();
-         IQueryable<CustomerDto> customers = _mapper.ProjectTo<CustomerDto>(entity);
+         IQueryable<DtoCustomer> customers = _mapper.ProjectTo<DtoCustomer>(entity);
 
          return customers;
       }
 
-      public IQueryable<CustomerDto>? GetCustomerById(Guid guid)
+      public IQueryable<DtoCustomer>? GetCustomerById(Guid guid)
       {
          IQueryable<Customer>? customer = _context.Customer.Where(x => x.CustomerId == guid);
          if (customer.Any())
          {
-            IQueryable<CustomerDto> customerDto = _mapper.ProjectTo<CustomerDto>(customer);
-            return customerDto;
+            IQueryable<DtoCustomer> DtoCustomer = _mapper.ProjectTo<DtoCustomer>(customer);
+            return DtoCustomer;
          }
 
          throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
       }
 
-      public async Task<CustomerDto> CreateCustomer(CustomerCreateDto customerDto)
+      public async Task<DtoCustomer> CreateCustomer(DtoCustomerCreate DtoCustomer)
       {
 
-         if (customerDto == null)
+         if (DtoCustomer == null)
             throw new ArgumentNullException("Create Customer failed. The customer data is null");
-         if(String.IsNullOrEmpty(customerDto.Name))
+         if(String.IsNullOrEmpty(DtoCustomer.Name))
             throw new ArgumentNullException("Create Customer failed. The customer name cannot be null or empty.");
 
-         Customer customer = _mapper.Map<Customer>(customerDto);
+         Customer customer = _mapper.Map<Customer>(DtoCustomer);
 
          customer.CustomerId = Guid.NewGuid(); // Todo: Might be set by the database, can remove it db creates it
          customer.IsActive = true;
@@ -61,17 +62,17 @@ namespace Inventory_BLL.BL
          _context.Customer.Add(customer);
          await _context.SaveChangesAsync();
 
-         return _mapper.Map<CustomerDto>(customer);
+         return _mapper.Map<DtoCustomer>(customer);
       }
 
-      public void UpdateCustomer(CustomerUpdateDto customerDto, Guid guid)
+      public void UpdateCustomer(DtoCustomerUpdate DtoCustomer, Guid guid)
       {
          Customer? customer = _context.Customer.Find(guid);
 
          if (customer == null)
             throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
 
-         _mapper.Map<CustomerUpdateDto, Customer>(customerDto, customer);
+         _mapper.Map<DtoCustomerUpdate, Customer>(DtoCustomer, customer);
          customer.DateOfLastUpdate = DateTimeOffset.Now;
          _context.SaveChanges();
       }

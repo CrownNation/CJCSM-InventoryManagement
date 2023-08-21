@@ -1,4 +1,5 @@
 ﻿using Inventory_BLL.Interfaces;
+using Inventory_Dto.Dto;
 using Inventory_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
@@ -24,12 +25,12 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet]
-      public IActionResult Get(ODataQueryOptions<CustomerDto> options)
+      public IActionResult Get(ODataQueryOptions<DtoCustomer> options)
       {
 
          try
          {
-            IQueryable<CustomerDto>? customers = _customerBl.GetCustomers();
+            IQueryable<DtoCustomer>? customers = _customerBl.GetCustomers();
             return Ok(options.ApplyTo(customers));
          }
          catch(Exception e)
@@ -40,11 +41,11 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet("{key}")]
-      public IActionResult Get(Guid key, ODataQueryOptions<CustomerDto> options)
+      public IActionResult Get(Guid key, ODataQueryOptions<DtoCustomer> options)
       {
          try
          {
-            IQueryable<CustomerDto>? customer = _customerBl.GetCustomerById(key);
+            IQueryable<DtoCustomer>? customer = _customerBl.GetCustomerById(key);
             // Todo: this should return a SingleResult
             return Ok(options.ApplyTo(customer));
          }
@@ -61,17 +62,17 @@ namespace Inventory_API.Controllers
       }
 
       [HttpPost]
-      public async Task<IActionResult> Post([FromBody] CustomerCreateDto customer)
+      public async Task<IActionResult> Post([FromBody] DtoCustomerCreate customer)
       {
          if (!ModelState.IsValid)
          {
             return BadRequest(ModelState);
          }
 
-         CustomerDto customerDto;
+         DtoCustomer DtoCustomer;
          try
          {
-            customerDto = await _customerBl.CreateCustomer(customer);
+            DtoCustomer = await _customerBl.CreateCustomer(customer);
          }
          catch (ArgumentNullException e)
          {
@@ -85,12 +86,12 @@ namespace Inventory_API.Controllers
          }
 
          // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
-         //return CreatedAtAction(nameof(GetCustomerById), new { key = customerDto.CustomerId, odataPath = $"Customer/{customerDto.CustomerId}" }, customerDto);
-         return CreatedAtAction("Get", new { key = customerDto.CustomerId }, customerDto);
+         //return CreatedAtAction(nameof(GetCustomerById), new { key = DtoCustomer.CustomerId, odataPath = $"Customer/{DtoCustomer.CustomerId}" }, DtoCustomer);
+         return CreatedAtAction("Get", new { key = DtoCustomer.CustomerId }, DtoCustomer);
       }
 
       [HttpPut("{key}")]
-      public IActionResult Put(Guid key, [FromBody] CustomerUpdateDto customer)
+      public IActionResult Put(Guid key, [FromBody] DtoCustomerUpdate customer)
       {
          if (!ModelState.IsValid)
          {
