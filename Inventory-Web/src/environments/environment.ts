@@ -3,7 +3,8 @@ const packageJson = require('../../package.json');
 export const environment = {
     production: false,
     appName: 'CJCSM Inventory Default',
-    envName: 'default',    
+    envName: 'default', 
+    apiUrl: 'https://localhost:7040/',   
     cognito:{
       region: 'us-east-2',
       userPoolId:'ca-central-1_V6ktp1b5L',
