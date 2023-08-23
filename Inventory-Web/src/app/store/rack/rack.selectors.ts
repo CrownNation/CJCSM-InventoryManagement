@@ -1,10 +1,22 @@
-import { createSelector } from "@ngrx/store";
+import { MemoizedSelector, createFeatureSelector, createSelector } from "@ngrx/store";
 import { rackAdapater } from "./rack.reducers";
-import { selectRackFeature } from "../core.state";
+import { AppState, selectRackFeature } from "../core.state";
 import { RackState } from "./rack.state";
+import { Rack } from "../../models/rack.model";
 
 
 const { selectEntities, selectAll } = rackAdapater.getSelectors();
+
+export const selectRackFeature2: MemoizedSelector<AppState, RackState> =
+  createFeatureSelector<RackState>('rack');
+
+export const selectRacks2: MemoizedSelector<AppState, Rack[]> = 
+createSelector(
+    selectRackFeature2,
+  ({ entities }: RackState): Rack[] => 
+    Object.values(entities) as Rack[]
+);
+
 
 export const selectRackState = createSelector(
     selectRackFeature,

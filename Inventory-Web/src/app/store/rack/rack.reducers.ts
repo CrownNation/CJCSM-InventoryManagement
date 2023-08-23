@@ -33,8 +33,13 @@ const reducer: ActionReducer<RackState> = createReducer(
     })),
 
     on(actionGetRacksSuccess, (state: RackState, { racks }) => 
-        rackAdapater.addMany(racks, state),
+        rackAdapater.addMany(racks, state),        
     ),
+    on(actionGetRacksSuccess, (state: RackState, { racks }) => ({
+        ...state,
+        loadingRacks: false,
+        errorLoadingRacks: null
+    })),
         
     on(actionGetRacksError, (state: RackState, { errorLoadingRacks }) => ({
         ...state,

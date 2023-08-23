@@ -15,5 +15,9 @@ namespace Inventory_Dto.Dto
       [Required(ErrorMessage = "A Name is required")]
       [StringLength(50)]
       public string Name { get; set; }
+
+      public Guid ShopLocationId { get; set; }
+
+      public string ShopName { get; set; }
    }
 }
