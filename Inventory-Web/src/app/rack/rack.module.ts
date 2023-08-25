@@ -13,10 +13,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AddRackComponent } from './add-rack/add-rack.component';
 import { ViewRackComponent } from './view-rack/view-rack.component';
 import { ViewDetailsRackComponent } from './view-details-rack/view-details-rack.component';
+import { TierListComponent } from './tier-list/tier-list.component';
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import { ViewDetailsRackComponent } from './view-details-rack/view-details-rack.
     RackListComponent,
     AddRackComponent,
     ViewRackComponent,
-    ViewDetailsRackComponent
+    ViewDetailsRackComponent,
+    TierListComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +41,7 @@ import { ViewDetailsRackComponent } from './view-details-rack/view-details-rack.
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
+    MatTooltipModule,
     ReactiveFormsModule
   ],
   exports: [

@@ -1,1 +1,49 @@
-<p>view-details-rack works!</p>
+<mat-card class="section">
+    <mat-card-header>
+        <mat-card-title>Rack Details</mat-card-title>
+
+        <button mat-icon-button aria-label="Edit rack" matTooltip="{{editToolTip}}" (click)="toggleEditMode()">
+            <mat-icon aria-hidden="false" fontIcon="edit" color="accent" *ngIf="!editMode"></mat-icon>
+            <mat-icon aria-hidden="false" fontIcon="block" color="accent" *ngIf="editMode"></mat-icon>
+        </button>
+        
+    </mat-card-header>
+
+    <mat-card-content *ngIf="!editMode">
+         
+        <div class="container">
+            <h4>Name: </h4> {{rack.name}}
+        </div>
+
+        <div class="container">
+            <h4>Shop: </h4> {{rack.shopName}}
+        </div>
+          
+    </mat-card-content>
+
+    <mat-card-content *ngIf="editMode">
+        <form [formGroup]="editRackForm">
+                
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Rack name</mat-label>
+                <input matInput placeholder="Rack name" formControlName="name" required>
+                <mat-error>
+                    Please provide a valid email address
+                </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Choose a shop</mat-label>
+                <mat-select required>
+                    <mat-option *ngFor="let shop of shops" [value]="shop.shopLocationId">
+                        {{shop.shopLocationName}}
+                        </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" class="item" (click)="updateRack()">Update Rack</button>
+          
+        </form>
+    </mat-card-content>
+
+</mat-card>

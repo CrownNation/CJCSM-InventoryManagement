@@ -2,7 +2,7 @@ import { MemoizedSelector, createFeatureSelector, createSelector } from "@ngrx/s
 import { rackAdapater } from "./rack.reducers";
 import { AppState, selectRackFeature } from "../core.state";
 import { RackState } from "./rack.state";
-import { Rack } from "../../models/rack.model";
+import { RackBasic } from "../../models/rack.model";
 
 
 const { selectEntities, selectAll } = rackAdapater.getSelectors();
@@ -10,11 +10,11 @@ const { selectEntities, selectAll } = rackAdapater.getSelectors();
 export const selectRackFeature2: MemoizedSelector<AppState, RackState> =
   createFeatureSelector<RackState>('rack');
 
-export const selectRacks2: MemoizedSelector<AppState, Rack[]> = 
+export const selectRacks2: MemoizedSelector<AppState, RackBasic[]> = 
 createSelector(
     selectRackFeature2,
-  ({ entities }: RackState): Rack[] => 
-    Object.values(entities) as Rack[]
+  ({ entities }: RackState): RackBasic[] => 
+    Object.values(entities) as RackBasic[]
 );
 
 

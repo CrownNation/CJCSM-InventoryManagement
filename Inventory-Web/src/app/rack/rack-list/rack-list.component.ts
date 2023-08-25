@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Rack } from '../../models/rack.model';
+import { RackBasic } from '../../models/rack.model';
 import { selectAllRackEntities, selectErrorLoadingRacks, selectLoadingRacks, selectRacks, selectRacks2 } from '../../store/rack/rack.selectors';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AppState } from '../../store/core.state';
@@ -22,10 +22,10 @@ export class RackListComponent implements OnInit, AfterViewInit{
   // private readonly store: Store<AppState> = inject(Store<AppState>)
 
   // readonly messages$: Observable<Rack[]> = this.store.select(selectRacks2);
-  @Input() racks!: Rack[] | null;
+  @Input() racks!: RackBasic[] | null;
   
   displayedColumns: string[] = ['name', 'shopName', 'actions'];
-  dataSource: MatTableDataSource<Rack> = new MatTableDataSource<Rack>;
+  dataSource: MatTableDataSource<RackBasic> = new MatTableDataSource<RackBasic>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -44,7 +44,7 @@ export class RackListComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     console.log('rack-list onInit');
     console.log(this.racks);
-    this.dataSource = new MatTableDataSource(this.racks as Rack[]);
+    this.dataSource = new MatTableDataSource(this.racks as RackBasic[]);
   }
 
   ngAfterViewInit() {
@@ -67,8 +67,8 @@ export class RackListComponent implements OnInit, AfterViewInit{
   }
 
 
-  editRack(rack: Rack) {
-    console.log(event);
+  viewRack(rack: RackBasic) {
+    console.log(rack);
     this.router.navigate([`/rack/${rack.rackId}`]);
   }
 
