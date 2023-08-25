@@ -9,6 +9,7 @@ import { Dictionary } from '@ngrx/entity';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-rack-list',
@@ -18,11 +19,12 @@ import { MatSort } from '@angular/material/sort';
 
 export class RackListComponent implements OnInit, AfterViewInit{
 
-  private readonly store: Store<AppState> = inject(Store<AppState>);
+  // private readonly store: Store<AppState> = inject(Store<AppState>)
+
   // readonly messages$: Observable<Rack[]> = this.store.select(selectRacks2);
   @Input() racks!: Rack[] | null;
   
-  displayedColumns: string[] = ['name', 'shopName'];
+  displayedColumns: string[] = ['name', 'shopName', 'actions'];
   dataSource: MatTableDataSource<Rack> = new MatTableDataSource<Rack>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -33,7 +35,9 @@ export class RackListComponent implements OnInit, AfterViewInit{
   // loadingRack$: Observable<Boolean> = this.store.pipe(select(selectLoadingRacks));
   // errorRacks$: Observable<HttpErrorResponse | null> = this.store.pipe(select(selectErrorLoadingRacks));
 
-  constructor() {
+  constructor(
+    private router: Router,
+    private store: Store<AppState>) {
     // this.dataSource = new MatTableDataSource(this.racks as Rack[]);
   }
 
@@ -55,6 +59,17 @@ export class RackListComponent implements OnInit, AfterViewInit{
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  addRack() {
+    console.log('add rack');
+    this.router.navigate(['/rack/add']);
+  }
+
+
+  editRack(rack: Rack) {
+    console.log(event);
+    this.router.navigate([`/rack/${rack.rackId}`]);
   }
 
 }

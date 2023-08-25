@@ -12,14 +12,15 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
-  // {
-  //   path: 'forbidden',
-  //   component: ForbiddenComponent
-  // },
   {
     path: 'dashboard',
     loadChildren: () =>
       import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+  },
+  {
+    path: 'rack',
+    loadChildren: () =>
+      import('./rack/rack.module').then(m => m.RackModule)
   },
   // {
   //   path: 'admin',

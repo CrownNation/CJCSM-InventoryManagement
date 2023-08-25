@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { actionGetRacks } from '../../store/rack/rack.actions';
 import { AppState } from '../../store/core.state';
@@ -13,18 +13,14 @@ import { selectLoadingRacks, selectRacks2 } from '../../store/rack/rack.selector
 })
 export class DashboardComponent implements OnInit {
 
-  // private readonly store: Store = inject(Store);
-
-  private readonly store: Store<AppState> = inject(Store<AppState>);
-  
   racks$: Observable<Rack[]> = this.store.select(selectRacks2);
   loadingRacks$: Observable<Boolean> = this.store.pipe(select(selectLoadingRacks));
 
+  constructor(private store: Store<AppState>) { }
+
   ngOnInit(): void {
     console.log('dashboard onInit');
-    this.store.dispatch(actionGetRacks());
-
-    
+    this.store.dispatch(actionGetRacks());    
   }
 
 }
