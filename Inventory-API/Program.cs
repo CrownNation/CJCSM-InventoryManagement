@@ -27,6 +27,7 @@ static IEdmModel GetEdmModel()
 {
    ODataConventionModelBuilder builder = new();
    builder.EntitySet<DtoCustomer>("Customer");
+   //builder.EntitySet<DtoRack>("Rack");
    return builder.GetEdmModel();
 }
 
@@ -73,10 +74,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Todo: Probably need to update this with actual origins and not allow everything
-//builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
-//{
-//   builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-//}));
+builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+{
+   builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
@@ -88,7 +89,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("corsapp");
 app.UseAuthorization();
 
 app.MapControllers();

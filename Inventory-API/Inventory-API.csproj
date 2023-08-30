@@ -23,8 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
-    <Folder Include="DBContext\" />
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>
