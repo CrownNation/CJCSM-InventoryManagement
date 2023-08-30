@@ -37,7 +37,7 @@ namespace Inventory_Tests.BL
          var optionsBuilder = new DbContextOptionsBuilder<InventoryContext>();
          optionsBuilder.UseInMemoryDatabase(databaseName: "CustomerBL");
 
-         _context = new InventoryContext(optionsBuilder.Options);
+         //_context = new InventoryContext(optionsBuilder.Options);
          _mapper = (new MapperConfiguration(cfg => cfg.AddMaps(Assembly.Load("Inventory-BLL")))).CreateMapper();
          _customerBl = new CustomerBL(_context, _mapper);
 
@@ -48,8 +48,8 @@ namespace Inventory_Tests.BL
          _sampleGuids.Add(new Guid("147130ff-a98d-4340-a222-fdcb3af53dff"));
          _sampleGuids.Add(new Guid("bf85cd69-a46b-4b7c-9100-27a8cb172746"));
 
-         _context.Database.EnsureDeleted();
-         _context.Database.EnsureCreated();
+         //_context.Database.EnsureDeleted();
+         //_context.Database.EnsureCreated();
       }
 
       #region Helpers

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,6 @@ namespace Inventory_DAL.Entities
         //add-migration [vxxxx_to_vxxxx_CamelCaseDescription_Project] -Context CjcsmSqliteContext -Output Migrations/ProjectMigrations
 
         //This command is used with the Package Manager Console(PMC) in Visual Studio
-        //add-migration 20230820_InitialCreate --context InventoryContext --output-dir Migrations/CJCSM_Inventory_Migrations
         //Add-Migration 20230820_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
 
 
@@ -32,8 +33,14 @@ namespace Inventory_DAL.Entities
         // Dpendency Injection
         //https://marcominerva.wordpress.com/2019/03/06/using-net-core-3-0-dependency-injection-and-service-provider-with-wpf/
 
-        public InventoryContext(DbContextOptions options) : base(options) { }
 
+        private readonly IConfiguration _configuration;
+
+        public InventoryContext(DbContextOptions<InventoryContext> options, IConfiguration configuration)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
         public virtual DbSet<Customer> Customer { get; set; }
 
 
@@ -41,20 +48,17 @@ namespace Inventory_DAL.Entities
         {
             //IsConfigured it false if called from the Package Manager Console, but will be true if called from code.
             //If called from Package Manager Console, we need to provied a path for the db to create a migration.
-            //This database is just temp and can be deleted since it isn't used in the actual project, it's only used for migration creation.
-            if (options.IsConfigured == false)
-            {
-                String directory = System.IO.Directory.GetCurrentDirectory() + "\\Data";
-                if (System.IO.Directory.Exists(directory) == false)
-                {
-                    System.IO.Directory.CreateDirectory(directory);
-                }
 
-                string connectionString = @"Data Source=" + directory + "\\cjcsm_inventory.db";
-                Console.Write(connectionString);
+            Console.WriteLine("options.IsConfigurd: " + options.IsConfigured);
+
+            //if (options.IsConfigured == false)
+            //{
+                string connectionString = _configuration.GetConnectionString("developmentConnection")!;
+
+                Console.WriteLine("CONNECTION STRING ONCONFIGURING: " + connectionString);
 
                 options.UseSqlServer(connectionString);
-            }
+            //}
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
