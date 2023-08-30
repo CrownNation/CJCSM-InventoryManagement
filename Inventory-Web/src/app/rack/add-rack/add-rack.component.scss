@@ -4,10 +4,10 @@
     margin-top: 3rem;
 }
 
-
 mat-card-header{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1rem;
 }
 
 mat-card-title {
@@ -15,6 +15,12 @@ mat-card-title {
     font-size: 1.5rem;
 }
 
-.column-actions {
-    width: 0;
-}
+mat-card {
+    max-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+  }
+    
+  mat-form-field {
+    display: block;
+  }

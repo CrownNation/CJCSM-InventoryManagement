@@ -39,16 +39,22 @@ namespace Inventory_API.Controllers
       public IActionResult GetDummies(ODataQueryOptions<List<RackDto>> options)
       {
          RackDto rack1 = new RackDto();
-         rack1.RackId = Guid.NewGuid();
+         rack1.RackId = new Guid("2fcad579-f74b-4904-b50e-42735a02b2a1");
          rack1.Name = "RackTest01";
+         rack1.ShopLocationId = Guid.NewGuid();
+         rack1.ShopName = "Shop 1";
 
          RackDto rack2 = new RackDto();
-         rack2.RackId = Guid.NewGuid();
+         rack2.RackId = new Guid("69000f48-ce88-4bd0-af30-fde2cacf41eb");
          rack2.Name = "RackTest02";
+         rack2.ShopLocationId = Guid.NewGuid();
+         rack2.ShopName = "Shop 2";
 
          RackDto rack3 = new RackDto();
-         rack3.RackId = Guid.NewGuid();
+         rack3.RackId = new Guid("eb9160a6-3c03-426f-867f-82888051a564");
          rack3.Name = "RackTest03";
+         rack3.ShopLocationId = Guid.NewGuid();
+         rack3.ShopName = "Shop 3";
 
          List<RackDto> racks = new List<RackDto>();
          racks.Add(rack1);

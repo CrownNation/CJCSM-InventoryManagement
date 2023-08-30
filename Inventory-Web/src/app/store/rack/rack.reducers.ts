@@ -1,18 +1,18 @@
 import { Action, ActionReducer, createReducer, on} from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
-import { Rack } from '../../models/rack.model';
+import { RackBasic } from '../../models/rack.model';
 import { RackState } from './rack.state';
 import { actionGetRacks, actionGetRacksError, actionGetRacksSuccess } from './rack.actions';
 
 
-export function sortByName(a: Rack, b: Rack): number {
+export function sortByName(a: RackBasic, b: RackBasic): number {
     return a.name.localeCompare(b.name);
   }
 
-export const selectId = ({ rackId }: Rack) => rackId;
+export const selectId = ({ rackId }: RackBasic) => rackId;
 
-export const rackAdapater: EntityAdapter<Rack> = createEntityAdapter<Rack>({
+export const rackAdapater: EntityAdapter<RackBasic> = createEntityAdapter<RackBasic>({
     sortComparer: sortByName,
     selectId: selectId
 });
@@ -33,8 +33,13 @@ const reducer: ActionReducer<RackState> = createReducer(
     })),
 
     on(actionGetRacksSuccess, (state: RackState, { racks }) => 
-        rackAdapater.addMany(racks, state),
+        rackAdapater.addMany(racks, state),        
     ),
+    on(actionGetRacksSuccess, (state: RackState, { racks }) => ({
+        ...state,
+        loadingRacks: false,
+        errorLoadingRacks: null
+    })),
         
     on(actionGetRacksError, (state: RackState, { errorLoadingRacks }) => ({
         ...state,

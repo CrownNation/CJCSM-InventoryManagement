@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Rack } from '../../models/rack.model';
+import { RackBasic } from '../../models/rack.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export const rackKey = '[Rack]';
@@ -11,7 +11,7 @@ export const actionGetRacks = createAction(
 
 export const actionGetRacksSuccess = createAction(
     `${rackKey} Get Racks Success`,
-    props<{ racks: Rack[] }>()
+    props<{ racks: RackBasic[] }>()
 );
 
 export const actionGetRacksError = createAction(
@@ -29,7 +29,7 @@ export const actionGetRackById = createAction(
 // Create Rack
 export const actionCreateRack = createAction(
     `${rackKey} Create Rack`, 
-    props<{ rack: Rack }>()
+    props<{ rack: RackBasic }>()
 );
 
 export const actionCreateRackSuccess = createAction(

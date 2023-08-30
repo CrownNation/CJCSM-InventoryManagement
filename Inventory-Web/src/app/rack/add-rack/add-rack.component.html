@@ -1,0 +1,33 @@
+
+<mat-card class="section">
+    <mat-card-header>
+        <mat-card-title>Add New Rack</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <form [formGroup]="addRackForm">
+                
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Rack name</mat-label>
+                <input matInput placeholder="Rack name" formControlName="name" required>
+                <mat-error>
+                    Please provide a valid email address
+                </mat-error>
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Choose a shop</mat-label>
+                <mat-select required>
+                    <mat-option *ngFor="let shop of shops" [value]="shop.shopLocationId">
+                        {{shop.shopLocationName}}
+                        </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" class="item">Add Rack</button>
+          
+        </form>
+    </mat-card-content>
+
+</mat-card>
+
