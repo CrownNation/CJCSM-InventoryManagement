@@ -7,6 +7,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Tier } from '../../models/tier.model';
 import { MeasurementUnit } from '../../models/pipe.model';
+import { MatDialog } from '@angular/material/dialog';
+import { AddTierComponent } from '../add-tier/add-tier.component';
 
 @Component({
   selector: 'app-tier-list',
@@ -64,6 +66,7 @@ export class TierListComponent implements OnInit {
 
   constructor(
     private router: Router,
+    public dialog: MatDialog,
     private store: Store<AppState>) {
   }
 
@@ -78,6 +81,15 @@ export class TierListComponent implements OnInit {
   }
 
   addTier() {
+
+    console.log('add tier');
+    this.dialog.open(AddTierComponent, {
+      width: '500px',
+      data: { 
+        rackId: this.tiers[0].rackId
+      }
+    });      
+
   }
 
 
