@@ -22,6 +22,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./rack/rack.module').then(m => m.RackModule)
   },
+  {
+    path: 'pipe',
+    loadChildren: () =>
+      import('./pipe/pipe.module').then(m => m.PipeModule)
+  },
   // {
   //   path: 'admin',
   //   loadChildren: () =>

@@ -58,7 +58,13 @@ export class TierListComponent implements OnInit {
             wallSize: 0.5
           },
           length: 100,
-          quantity: 14
+          quantity: 14,
+          rack: {
+            rackId: 'rack1',
+            name: 'Rack 1',
+            shopLocationId: 'shop1',
+            shopName: 'Shop 1'
+          }
         }]
     }
   ];

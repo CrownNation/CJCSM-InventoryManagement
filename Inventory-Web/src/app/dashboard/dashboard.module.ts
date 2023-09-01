@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RackModule } from '../rack/rack.module';
+import { PipeModule } from '../pipe/pipe.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { RackModule } from '../rack/rack.module';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    RackModule
+    RackModule,
+    PipeModule,
   ]
 })
 export class DashboardModule { }

@@ -1,3 +1,5 @@
+import { Rack } from "./rack.model";
+
 export interface PipeDefinition {
     pipeDefinitionId: string;
     pipeSize: PipeSize;
@@ -14,6 +16,7 @@ export interface Pipe {
     pipeDefintion: PipeDefinition;
     length: number;
     quantity: number;
+    rack: Rack;
 }
 
 export interface PipeSize {

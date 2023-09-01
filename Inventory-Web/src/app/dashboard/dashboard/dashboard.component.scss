@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.item-rack-list {
+    flex: 1 1 auto;
+}
+
+.item-pipe-search {
+    flex: 1 1 auto;
+}
