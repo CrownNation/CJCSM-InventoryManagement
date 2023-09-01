@@ -3,13 +3,123 @@
     <mat-card-header>
         <mat-card-title>Find Pipe</mat-card-title>
          
-        <button mat-icon-button aria-label="Add rack" class="btn-add" (click)="addTier()">
+        <!-- <button mat-icon-button aria-label="Add rack" class="btn-add" (click)="addTier()">
             <mat-icon aria-hidden="false" fontIcon="add"  color="accent"></mat-icon>
-        </button>
+        </button> -->
     
     </mat-card-header>
 
-    <mat-card-content >
+    <mat-card-content>
+
+        <mat-accordion>
+            <mat-expansion-panel expanded="true" class="filter-options">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Filter options</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <form [formGroup]="filterPipeForm" >
+                    <div class="container-filter">
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Pipe Size</mat-label>
+                            <mat-select formControlName="pipeSize">
+                                <mat-option *ngFor="let pipeSize of pipeSizes" [value]="pipeSize.pipeSizeId">
+                                    {{pipeSize.measurementUnit}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Pipe Condition</mat-label>
+                            <mat-select formControlName="pipeCondition">
+                                <mat-option *ngFor="let pipeCondition of pipeConditions" [value]="pipeCondition.pipeConditionId">
+                                    {{pipeCondition.pipeCondition}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Pipe Thread</mat-label>
+                            <mat-select formControlName="pipeThread">
+                                <mat-option *ngFor="let pipeThread of pipeThreads" [value]="pipeThread.pipeThreadId">
+                                    {{pipeThread.pipeThread}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Pipe Grade</mat-label>
+                            <mat-select formControlName="pipeGrade">
+                                <mat-option *ngFor="let pipeGrade of pipeGrades" [value]="pipeGrade.pipeGradeId">
+                                    {{pipeGrade.pipeGrade}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Pipe Coating</mat-label>
+                            <mat-select formControlName="pipeCoating">
+                                <mat-option *ngFor="let pipeCoating of pipeCoatings" [value]="pipeCoating.pipeCoatingId">
+                                    {{pipeCoating.pipeCoating}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Weight</mat-label>
+                            <input matInput type="number" placeholder="Weight" formControlName="weight">                            
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Wall Size</mat-label>
+                            <input matInput type="number" placeholder="Wall size" formControlName="wallSize">                            
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Length</mat-label>
+                            <input matInput type="number" placeholder="Length" formControlName="length">                            
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Rack</mat-label>
+                            <mat-select formControlName="rack">
+                                <mat-option *ngFor="let rack of racks" [value]="rack.rackId">
+                                    {{rack.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Customer</mat-label>
+                            <mat-select formControlName="customer">
+                                <mat-option *ngFor="let customer of customers" [value]="customer.customerId">
+                                    {{customer.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>                        
+                        
+                        <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Shop location</mat-label>
+                            <mat-select formControlName="shopLocation">
+                                <mat-option *ngFor="let shop of shops" [value]="shop.shopLocationId">
+                                    {{shop.shopLocationName}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+            
+                        <div class="item-buttons">
+                            <button mat-raised-button (click)="clearForm()">Clear filters</button>
+                            <button mat-raised-button color="accent" (click)="filter()">Filter</button>
+                        </div>
+                        
+                    </div>
+                </form>
+            
+            
+            </mat-expansion-panel>
+          </mat-accordion>
+        
+
+
 
         <table mat-table [dataSource]="dataSource" matSort>
 

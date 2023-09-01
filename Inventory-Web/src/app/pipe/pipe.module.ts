@@ -18,12 +18,18 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { PipeCoatingListComponent } from './pipe-coating-list/pipe-coating-list.component';
+import { PipeCoatingAddComponent } from './pipe-coating-add/pipe-coating-add.component';
+
 
 @NgModule({
   declarations: [
     PipeConfigComponent,
     PipeSearchComponent,
-    PipeAddDefinitionComponent
+    PipeAddDefinitionComponent,
+    PipeCoatingListComponent,
+    PipeCoatingAddComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +45,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSelectModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatExpansionModule
   ],
   exports: [
     PipeSearchComponent

@@ -4,7 +4,7 @@ import { PipeConfigComponent } from './pipe-config/pipe-config.component';
 
 const routes: Routes = [
   {
-    path: 'config',
+    path: 'pipeConfig',
     component: PipeConfigComponent 
   }
 ];

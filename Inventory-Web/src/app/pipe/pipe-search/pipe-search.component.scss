@@ -26,3 +26,52 @@ h4 {
 .column-actions {
     width: 0;
 }
+
+mat-expansion-panel {
+    margin: 1rem 0 1rem 0;
+
+    .container-filter {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;    
+    }
+
+    .item-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    mat-form-field {
+        margin-right: 1rem;
+        width: 12rem;
+    }
+
+    button {
+        margin-right: 1.5rem;
+    }
+}
+
+table {
+    margin-top: 1rem;
+}
+
+
+
+
+/*
+search criteria
+
+pipe size
+pipe condition
+pipe thread
+pipe grade
+weight
+pipe coating
+wall size
+length
+rack
+customer
+shop location
+
+*/
