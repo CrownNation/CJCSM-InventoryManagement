@@ -10,20 +10,15 @@ namespace Inventory_Dto.Dto
     public class DtoPipeDefinition
     {
         public Guid PipeDefinitionId { get; set; }
-        [StringLength(30)]
-        public string SectionId { get; set; }
-        [StringLength(30)]
-        public string PidpeSizeId { get; set; }
-        [StringLength(30)]
-        public string PipeConditionId { get; set; }
-        [StringLength(30)]
-        public string PipeThreadId { get; set; }
-        [StringLength(30)]
-        public string PipeGradeId { get; set; }
-        [StringLength(30)]
-        public string PipeCoatingId { get; set; }
-        [StringLength(30)]
+        public Guid PipeSizeId { get; set; }
+        public Guid PipeConditionId { get; set; }
+        public Guid PipeThreadId { get; set; }
+        public Guid PipeGradeId { get; set; }
+        public Guid PipeCoatingId { get; set; }
         public float Weight { get; set; }
-        public float WallSize { get; set; }
+        public float WallSizeMetric { get; set; }
+
+        public bool IsActive { get; set; }
+
     }
 }

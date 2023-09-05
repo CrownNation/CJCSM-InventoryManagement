@@ -17,7 +17,7 @@ namespace Inventory_DAL.Entities
 
         //This command is used with the Package Manager Console(PMC) in Visual Studio
         //Add-Migration 20230820_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
-
+        //Update-Database
 
         //This command is used in the command-line interface (CLI) outside of Visual Studio.
         //dotnet ef migrations add 20230820_InitialCreate --context InventoryContext --output-dir Migrations/CJCSM_Inventory_Migrations
@@ -42,23 +42,22 @@ namespace Inventory_DAL.Entities
             _configuration = configuration;
         }
         public virtual DbSet<Customer> Customer { get; set; }
+        public virtual DbSet<Rack> Rack { get; set; }
+        public virtual DbSet<Tier> Tier{ get; set; }
+        public virtual DbSet<Section> Section { get; set; }
+        public virtual DbSet<PipeDefinition> PipeDefinition { get; set; }
 
 
+        // Since we are using DI, this will only be called during migrations. DI provides the configuration, so it doesn't need to call it during runtime.
+        // This is called when a DbContext object is required by EF Core. We also only need to provide the development connection string since migrations are only run during development.
+        // We specificy the connection string differently when we deploy in production using the EF Core bundle.
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            //IsConfigured it false if called from the Package Manager Console, but will be true if called from code.
-            //If called from Package Manager Console, we need to provied a path for the db to create a migration.
+            string connectionString = _configuration.GetConnectionString("developmentConnection")!;
 
-            Console.WriteLine("options.IsConfigurd: " + options.IsConfigured);
+            Console.WriteLine("Connetion String OnConfiguring: " + connectionString);
+            options.UseSqlServer(connectionString);
 
-            //if (options.IsConfigured == false)
-            //{
-                string connectionString = _configuration.GetConnectionString("developmentConnection")!;
-
-                Console.WriteLine("CONNECTION STRING ONCONFIGURING: " + connectionString);
-
-                options.UseSqlServer(connectionString);
-            //}
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

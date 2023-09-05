@@ -9,21 +9,24 @@ namespace Inventory_DAL.Entities
 {
     public class PipeDefinition
     {
+        [Key]
         public Guid PipeDefinitionId { get; set; }
-        [StringLength(30)]
-        public string SectionId { get; set; }
-        [StringLength(30)]
-        public string PidpeSizeId { get; set; }
-        [StringLength(30)]
-        public string PipeConditionId { get; set; }
-        [StringLength(30)]
-        public string PipeThreadId { get; set; }
-        [StringLength(30)]
-        public string PipeGradeId { get; set; }
-        [StringLength(30)]
-        public string PipeCoatingId { get; set; }
-        [StringLength(30)]
+        [Required]
+        public Guid PipeSizeId { get; set; }
+        [Required]
+        public Guid PipeConditionId { get; set; }
+        [Required]
+        public Guid PipeThreadId { get; set; }
+        [Required]
+        public Guid PipeGradeId { get; set; }
+        [Required]
+        public Guid PipeCoatingId { get; set; }
+        [Required]
         public float Weight { get; set; }
-        public float WallSize { get; set; }
+        [Required]
+        public float WallSizeMetric { get; set; }
+        [Required]
+        public bool IsActive { get; set; } = true;
+
     }
 }

@@ -24,53 +24,13 @@ namespace Inventory_API.Controllers
          _rackBl = rackBl;
       }
 
-      [HttpGet("dummy/{key}")]
-      public IActionResult GetDummy(ODataQueryOptions<RackDto> options)
-      {
-         RackDto rack = new RackDto();
-         rack.RackId = Guid.NewGuid();
-         rack.Name = "RackTest01";
-
-         return Ok(rack);
-      }
-
-
-      [HttpGet("dummy")]
-      public IActionResult GetDummies(ODataQueryOptions<List<RackDto>> options)
-      {
-         RackDto rack1 = new RackDto();
-         rack1.RackId = new Guid("2fcad579-f74b-4904-b50e-42735a02b2a1");
-         rack1.Name = "RackTest01";
-         rack1.ShopLocationId = Guid.NewGuid();
-         rack1.ShopName = "Shop 1";
-
-         RackDto rack2 = new RackDto();
-         rack2.RackId = new Guid("69000f48-ce88-4bd0-af30-fde2cacf41eb");
-         rack2.Name = "RackTest02";
-         rack2.ShopLocationId = Guid.NewGuid();
-         rack2.ShopName = "Shop 2";
-
-         RackDto rack3 = new RackDto();
-         rack3.RackId = new Guid("eb9160a6-3c03-426f-867f-82888051a564");
-         rack3.Name = "RackTest03";
-         rack3.ShopLocationId = Guid.NewGuid();
-         rack3.ShopName = "Shop 3";
-
-         List<RackDto> racks = new List<RackDto>();
-         racks.Add(rack1);
-         racks.Add(rack2);
-         racks.Add(rack3);
-
-         return Ok(racks);
-      }
-
       [HttpGet]
-      public IActionResult Get(ODataQueryOptions<RackDto> options)
+      public IActionResult Get(ODataQueryOptions<DtoRack> options)
       {
 
          try
          {
-            IQueryable<RackDto>? racks = _rackBl.GetRacks();
+            IQueryable<DtoRack>? racks = _rackBl.GetRacks();
             return Ok(options.ApplyTo(racks));
          }
          catch(Exception e)
@@ -81,11 +41,11 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet("{key}")]
-      public IActionResult Get(Guid key, ODataQueryOptions<RackDto> options)
+      public IActionResult Get(Guid key, ODataQueryOptions<DtoRack> options)
       {
          try
          {
-            IQueryable<RackDto>? rack = _rackBl.GetRackById(key);
+            IQueryable<DtoRack>? rack = _rackBl.GetRackById(key);
             return Ok(options.ApplyTo(rack));
          }
          catch (KeyNotFoundException e)
@@ -107,10 +67,10 @@ namespace Inventory_API.Controllers
             return BadRequest(ModelState);
          }
 
-         RackDto rackDto;
+         DtoRack DtoRack;
          try
          {
-            rackDto = await _rackBl.CreateRack(rack);
+            DtoRack = await _rackBl.CreateRack(rack);
          }
          catch (Exception e)
          {
@@ -118,13 +78,11 @@ namespace Inventory_API.Controllers
             throw new Exception($"There was a problem creating rack.");
          }
 
-         // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
-         //return CreatedAtAction(nameof(GetRackById), new { key = rackDto.RackId, odataPath = $"Rack/{rackDto.RackId}" }, rackDto);
-         return CreatedAtAction("Get", new { key = rackDto.RackId }, rackDto);
+         return CreatedAtAction("Get", new { key = DtoRack.RackId }, DtoRack);
       }
 
       [HttpPut("{key}")]
-      public IActionResult Put(Guid key, [FromBody] DtoRackUpdate rack)
+      public IActionResult Put(Guid key, [FromBody] DtoRackUpdate dtoRack)
       {
          if (!ModelState.IsValid)
          {
@@ -133,7 +91,7 @@ namespace Inventory_API.Controllers
 
          try
          {
-            _rackBl.UpdateRack(rack, key);
+            _rackBl.UpdateRack(dtoRack, key);
          }
          catch (KeyNotFoundException e)
          {
@@ -169,6 +127,44 @@ namespace Inventory_API.Controllers
          return NoContent();
       }
 
+        [HttpGet("dummy/{key}")]
+        public IActionResult GetDummy(ODataQueryOptions<DtoRack> options)
+        {
+            DtoRack rack = new DtoRack();
+            rack.RackId = Guid.NewGuid();
+            rack.Name = "RackTest01";
 
-   }
+            return Ok(rack);
+        }
+
+
+        [HttpGet("dummy")]
+        public IActionResult GetDummies(ODataQueryOptions<List<DtoRack>> options)
+        {
+            DtoRack rack1 = new DtoRack();
+            rack1.RackId = new Guid("2fcad579-f74b-4904-b50e-42735a02b2a1");
+            rack1.Name = "RackTest01";
+            rack1.ShopLocationId = Guid.NewGuid();
+
+            DtoRack rack2 = new DtoRack();
+            rack2.RackId = new Guid("69000f48-ce88-4bd0-af30-fde2cacf41eb");
+            rack2.Name = "RackTest02";
+            rack2.ShopLocationId = Guid.NewGuid();
+
+            DtoRack rack3 = new DtoRack();
+            rack3.RackId = new Guid("eb9160a6-3c03-426f-867f-82888051a564");
+            rack3.Name = "RackTest03";
+            rack3.ShopLocationId = Guid.NewGuid();
+
+            List<DtoRack> racks = new List<DtoRack>();
+            racks.Add(rack1);
+            racks.Add(rack2);
+            racks.Add(rack3);
+
+            return Ok(racks);
+        }
+
+
+
+    }
 }

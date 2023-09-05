@@ -65,7 +65,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY",
+            ProvinceState = "NY",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
          });
@@ -78,7 +78,7 @@ namespace Inventory_Tests.BL
             City = "Calgary ",
             Email = "test@test.com",
             PostalCode = "2B2B2B",
-            Province = "AB",
+            ProvinceState = "AB",
             IsActive = false,
             DateOfCreation = DateTimeOffset.MaxValue
          });
@@ -91,7 +91,7 @@ namespace Inventory_Tests.BL
             City = "Red Deer",
             Email = "cjcsm@test.com",
             PostalCode = "3C3C3C",
-            Province = "AB",
+            ProvinceState = "AB",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
          });
@@ -136,7 +136,7 @@ namespace Inventory_Tests.BL
          Assert.True(dbCustomer.Address1 == customer.Address1);
          Assert.True(dbCustomer.Address2 == customer.Address2);
          Assert.True(dbCustomer.City == customer.City);
-         Assert.True(dbCustomer.Province == customer.Province);
+         Assert.True(dbCustomer.ProvinceState == customer.ProvinceState);
          Assert.True(dbCustomer.PostalCode == customer.PostalCode);
          Assert.True(dbCustomer.Email == customer.Email);
          Assert.True(dbCustomer.IsActive == customer.IsActive);
@@ -166,7 +166,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY"
+            ProvinceState = "NY"
          };
          DtoCustomer createdCustomer = _customerBl.CreateCustomer(newCustomer).Result;
 
@@ -180,7 +180,7 @@ namespace Inventory_Tests.BL
          Assert.True(customer.City == createdCustomer.City);
          Assert.True(customer.Email == createdCustomer.Email);
          Assert.True(customer.PostalCode == createdCustomer.PostalCode);
-         Assert.True(customer.Province == createdCustomer.Province);
+         Assert.True(customer.ProvinceState == createdCustomer.ProvinceState);
 
          // Verify logic
          Assert.NotEqual(customer.CustomerId, Guid.Empty);
@@ -201,7 +201,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY"
+            ProvinceState = "NY"
          };
          await Assert.ThrowsAsync<ArgumentNullException>(() => _customerBl.CreateCustomer(newCustomer));
       }
@@ -228,7 +228,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY",
+            ProvinceState = "NY",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
          };
@@ -253,7 +253,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY",
+            ProvinceState = "NY",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
          };

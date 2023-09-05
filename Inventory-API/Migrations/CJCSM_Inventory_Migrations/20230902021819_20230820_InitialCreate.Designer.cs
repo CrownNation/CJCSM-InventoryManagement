@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20230830172938_20230830_InitialCreate")]
-    partial class _20230830InitialCreate
+    [Migration("20230902021819_20230820_InitialCreate")]
+    partial class _20230820InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,13 +65,69 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasMaxLength(6)
                         .HasColumnType("nvarchar(6)");
 
-                    b.Property<string>("Province")
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
+                    b.Property<string>("ProvinceState")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.Rack", b =>
+                {
+                    b.Property<Guid>("RackId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("ShopLocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RackId");
+
+                    b.ToTable("Rack");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.Section", b =>
+                {
+                    b.Property<Guid>("SectionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("SectionId");
+
+                    b.ToTable("Section");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.Tier", b =>
+                {
+                    b.Property<Guid>("TierId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("RackId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("TierId");
+
+                    b.ToTable("Tier");
                 });
 #pragma warning restore 612, 618
         }

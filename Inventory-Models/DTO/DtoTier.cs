@@ -10,8 +10,7 @@ namespace Inventory_Dto.Dto
     public class DtoTier
     {
         public Guid TierId { get; set; }
-        [StringLength(30)]
-        public string RackId { get; set; }
-        public int? Number { get; set; }
+        public Guid RackId { get; set; }
+        public int Number { get; set; }
     }
 }

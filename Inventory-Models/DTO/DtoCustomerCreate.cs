@@ -17,8 +17,8 @@ namespace Inventory_Dto.Dto
       [StringLength(30)] 
       public string? City { get; set; }
 
-      [StringLength(3)]
-      public string? Province { get; set; }
+      [StringLength(2)]
+      public string? ProvinceState { get; set; }
 
       [StringLength(6)] 
       public string? PostalCode { get; set; }
