@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20230820InitialCreate : Migration
+    public partial class _20230906InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,40 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customer", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pipe",
+                columns: table => new
+                {
+                    PipeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PipeDefinitionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Length = table.Column<float>(type: "real", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pipe", x => x.PipeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PipeDefinition",
+                columns: table => new
+                {
+                    PipeDefinitionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PipeSizeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PipeConditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PipeThreadId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PipeGradeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PipeCoatingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Weight = table.Column<float>(type: "real", nullable: false),
+                    WallSizeMetric = table.Column<float>(type: "real", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PipeDefinition", x => x.PipeDefinitionId);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,6 +94,34 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tally",
+                columns: table => new
+                {
+                    TallyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShopLocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TallyType = table.Column<int>(type: "int", nullable: false),
+                    DateOfCreation = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tally", x => x.TallyId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TallyPipe",
+                columns: table => new
+                {
+                    TallyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PipeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TallyPipe", x => new { x.TallyId, x.PipeId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tier",
                 columns: table => new
                 {
@@ -80,10 +142,22 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 name: "Customer");
 
             migrationBuilder.DropTable(
+                name: "Pipe");
+
+            migrationBuilder.DropTable(
+                name: "PipeDefinition");
+
+            migrationBuilder.DropTable(
                 name: "Rack");
 
             migrationBuilder.DropTable(
                 name: "Section");
+
+            migrationBuilder.DropTable(
+                name: "Tally");
+
+            migrationBuilder.DropTable(
+                name: "TallyPipe");
 
             migrationBuilder.DropTable(
                 name: "Tier");

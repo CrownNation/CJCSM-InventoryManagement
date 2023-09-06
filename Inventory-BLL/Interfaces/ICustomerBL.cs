@@ -1,7 +1,4 @@
-﻿using Inventory_DAL.Entities;
-using Inventory_Dto.Dto;
-using Inventory_Models.ViewModels;
-using Microsoft.AspNetCore.OData.Query;
+﻿using Inventory_Dto.Dto;
 
 namespace Inventory_BLL.Interfaces
 {

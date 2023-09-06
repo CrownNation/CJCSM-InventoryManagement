@@ -32,9 +32,12 @@ static IEdmModel GetEdmModel()
     ODataConventionModelBuilder builder = new();
     builder.EntitySet<Customer>("Customer");
     builder.EntitySet<Rack>("Rack");
-    builder.EntitySet<Rack>("Tier");
-    builder.EntitySet<Rack>("Section");
+    builder.EntitySet<Tier>("Tier");
+    builder.EntitySet<Section>("Section");
     builder.EntitySet<PipeDefinition>("PipeDefinition");
+    builder.EntitySet<Pipe>("Pipe");
+    builder.EntitySet<Tally>("Tally");
+    builder.EntitySet<TallyPipe>("TallyPipe");
 
     return builder.GetEdmModel();
 }
@@ -96,9 +99,9 @@ builder.Services.AddScoped<IRackBL, RackBL>();
 builder.Services.AddScoped<ITierBL, TierBL>();
 builder.Services.AddScoped<ISectionBL, SectionBL>();
 builder.Services.AddScoped<IPipeDefinitionBL, PipeDefinitionBL>();
-
-
-//builder.Services.AddScoped<IRackBL, RackBL>();
+builder.Services.AddScoped<IPipeBL, PipeBL>();
+builder.Services.AddScoped<ITallyBL, TallyBL>();
+builder.Services.AddScoped<ITallyPipeBL, TallyPipeBL>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

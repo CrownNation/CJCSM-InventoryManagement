@@ -71,6 +71,29 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.ToTable("Customer");
                 });
 
+            modelBuilder.Entity("Inventory_DAL.Entities.Pipe", b =>
+                {
+                    b.Property<Guid>("PipeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("Length")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("PipeDefinitionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SectionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PipeId");
+
+                    b.ToTable("Pipe");
+                });
+
             modelBuilder.Entity("Inventory_DAL.Entities.PipeDefinition", b =>
                 {
                     b.Property<Guid>("PipeDefinitionId")
@@ -143,6 +166,45 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.HasKey("SectionId");
 
                     b.ToTable("Section");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.Tally", b =>
+                {
+                    b.Property<Guid>("TallyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateOfCreation")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ShopLocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TallyType")
+                        .HasColumnType("int");
+
+                    b.HasKey("TallyId");
+
+                    b.ToTable("Tally");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.TallyPipe", b =>
+                {
+                    b.Property<Guid>("TallyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PipeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("TallyId", "PipeId");
+
+                    b.ToTable("TallyPipe");
                 });
 
             modelBuilder.Entity("Inventory_DAL.Entities.Tier", b =>

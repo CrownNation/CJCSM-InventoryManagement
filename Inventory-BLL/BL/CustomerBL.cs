@@ -39,7 +39,6 @@ namespace Inventory_BLL.BL
 
       public async Task<DtoCustomer> CreateCustomer(DtoCustomerCreate DtoCustomer)
       {
-
          if (DtoCustomer == null)
             throw new ArgumentNullException("Create Customer failed. The customer data is null");
          if(String.IsNullOrEmpty(DtoCustomer.Name))

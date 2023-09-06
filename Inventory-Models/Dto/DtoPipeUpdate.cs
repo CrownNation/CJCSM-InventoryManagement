@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Models.Dto
+namespace Inventory_Dto.Dto
 {
     public class DtoPipeUpdate
     {

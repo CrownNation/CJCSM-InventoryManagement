@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Dto.Dto
+namespace Inventory_DAL.Entities
 {
-    public class DtoTallyPipe
+    public class TallyPipe
     {
         public Guid TallyId { get; set; }
         public Guid PipeId { get; set; }
