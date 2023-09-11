@@ -1,15 +1,7 @@
 ﻿using AutoMapper;
-using AutoMapper.AspNet.OData;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
 using Inventory_Dto.Dto;
-using Inventory_Models.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Query;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Inventory_BLL.BL
 {
@@ -47,7 +39,6 @@ namespace Inventory_BLL.BL
 
       public async Task<DtoCustomer> CreateCustomer(DtoCustomerCreate DtoCustomer)
       {
-
          if (DtoCustomer == null)
             throw new ArgumentNullException("Create Customer failed. The customer data is null");
          if(String.IsNullOrEmpty(DtoCustomer.Name))
@@ -65,14 +56,14 @@ namespace Inventory_BLL.BL
          return _mapper.Map<DtoCustomer>(customer);
       }
 
-      public void UpdateCustomer(DtoCustomerUpdate DtoCustomer, Guid guid)
+      public void UpdateCustomer(DtoCustomerUpdate dtoCustomerUpdate, Guid guid)
       {
          Customer? customer = _context.Customer.Find(guid);
 
          if (customer == null)
             throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
 
-         _mapper.Map<DtoCustomerUpdate, Customer>(DtoCustomer, customer);
+         _mapper.Map<DtoCustomerUpdate, Customer>(dtoCustomerUpdate, customer);
          customer.DateOfLastUpdate = DateTimeOffset.Now;
          _context.SaveChanges();
       }
@@ -87,9 +78,5 @@ namespace Inventory_BLL.BL
          _context.Customer.Remove(customer);
          _context.SaveChanges();
       }
-
-
-
-
    }
 }

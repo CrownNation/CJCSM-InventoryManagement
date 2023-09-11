@@ -8,8 +8,7 @@ namespace Inventory_Dto.Dto
 {
     public class DtoTallyPipe
     {
-        public Guid TallyPipeId { get; set; }
-        public string TallyId { get; set; }
-        public string PipeId { get; set; }
+        public Guid TallyId { get; set; }
+        public Guid PipeId { get; set; }
     }
 }
