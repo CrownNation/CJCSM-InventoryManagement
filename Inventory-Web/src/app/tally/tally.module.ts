@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
@@ -15,28 +14,24 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
-import { PipeRoutingModule } from './pipe-routing.module';
-import { PipeConfigComponent } from './pipe-config/pipe-config.component';
-import { PipeSearchComponent } from './pipe-search/pipe-search.component';
-import { PipeAddDefinitionComponent } from './pipe-add-definition/pipe-add-definition.component';
-import { PipeCoatingListComponent } from './pipe-coating-list/pipe-coating-list.component';
-import { PipeCoatingAddComponent } from './pipe-coating-add/pipe-coating-add.component';
-
-
+import { TallyRoutingModule } from './tally-routing.module';
+import { TallyDashboardComponent } from './tally-dashboard/tally-dashboard.component';
+import { TallyListComponent } from './tally-list/tally-list.component';
+import { TallyAddComponent } from './tally-add/tally-add.component';
 
 
 @NgModule({
   declarations: [
-    PipeConfigComponent,
-    PipeSearchComponent,
-    PipeAddDefinitionComponent,
-    PipeCoatingListComponent,
-    PipeCoatingAddComponent
+    TallyDashboardComponent,
+    TallyListComponent,
+    TallyAddComponent
   ],
   imports: [
     CommonModule,
-    PipeRoutingModule,
+    TallyRoutingModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatTableModule,
@@ -49,10 +44,9 @@ import { PipeCoatingAddComponent } from './pipe-coating-add/pipe-coating-add.com
     MatTooltipModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatExpansionModule
-  ],
-  exports: [
-    PipeSearchComponent
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
-export class PipeModule { }
+export class TallyModule { }

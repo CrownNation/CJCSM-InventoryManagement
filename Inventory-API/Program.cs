@@ -37,7 +37,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<PipeDefinition>("PipeDefinition");
     builder.EntitySet<Pipe>("Pipe");
     builder.EntitySet<Tally>("Tally");
-    builder.EntitySet<TallyPipe>("TallyPipe");
+    //builder.EntitySet<TallyPipe>("TallyPipe");
 
     return builder.GetEdmModel();
 }

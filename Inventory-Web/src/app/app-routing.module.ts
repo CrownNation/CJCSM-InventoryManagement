@@ -18,6 +18,11 @@ const routes: Routes = [
       import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
+    path: 'tally',
+    loadChildren: () =>
+      import('./tally/tally.module').then(m => m.TallyModule)
+  },
+  {
     path: 'rack',
     loadChildren: () =>
       import('./rack/rack.module').then(m => m.RackModule)
