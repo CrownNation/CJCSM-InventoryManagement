@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Pipe } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { RackRoutingModule } from './rack-routing.module';
@@ -21,6 +21,7 @@ import { ViewRackComponent } from './view-rack/view-rack.component';
 import { ViewDetailsRackComponent } from './view-details-rack/view-details-rack.component';
 import { TierListComponent } from './tier-list/tier-list.component';
 import { AddTierComponent } from './add-tier/add-tier.component';
+import { PipeModule } from '../pipe/pipe.module';
 
 
 @NgModule({
@@ -46,7 +47,10 @@ import { AddTierComponent } from './add-tier/add-tier.component';
     MatSelectModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    MatDialogModule
+    MatDialogModule,
+    
+    PipeModule,
+    
   ],
   exports: [
     RackListComponent

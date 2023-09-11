@@ -19,8 +19,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 import { PipeCoatingListComponent } from './pipe-coating-list/pipe-coating-list.component';
 import { PipeCoatingAddComponent } from './pipe-coating-add/pipe-coating-add.component';
+import { PipeTransferComponent } from './pipe-transfer/pipe-transfer.component';
+import { DialogPipeTransferComponent } from './dialog-pipe-transfer/dialog-pipe-transfer.component';
 
 
 @NgModule({
@@ -29,7 +33,9 @@ import { PipeCoatingAddComponent } from './pipe-coating-add/pipe-coating-add.com
     PipeSearchComponent,
     PipeAddDefinitionComponent,
     PipeCoatingListComponent,
-    PipeCoatingAddComponent
+    PipeCoatingAddComponent,
+    PipeTransferComponent,
+    DialogPipeTransferComponent
   ],
   imports: [
     CommonModule,
@@ -46,10 +52,13 @@ import { PipeCoatingAddComponent } from './pipe-coating-add/pipe-coating-add.com
     MatTooltipModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatButtonToggleModule
   ],
   exports: [
-    PipeSearchComponent
+    PipeSearchComponent,
+    PipeTransferComponent,
+    DialogPipeTransferComponent
   ]
 })
 export class PipeModule { }

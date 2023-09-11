@@ -86,6 +86,10 @@ export class TierListComponent implements OnInit {
     console.log(tier);
   }
 
+  transferPipe(tier: Tier) {
+    console.log(tier);
+  }
+
   addTier() {
 
     console.log('add tier');

@@ -23,6 +23,8 @@ h4 {
 }
 
 .column-actions {
-    width: 0;
+    flex: 1 1 0;
+    display: flex;
+    justify-content: flex-end;
 }
 
