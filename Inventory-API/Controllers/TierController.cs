@@ -78,8 +78,6 @@ namespace Inventory_API.Controllers
             throw new Exception($"There was a problem creating tier.");
          }
 
-         // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
-         //return CreatedAtAction(nameof(GetTierById), new { key = DtoTier.TierId, odataPath = $"Tier/{DtoTier.TierId}" }, DtoTier);
          return CreatedAtAction("Get", new { key = DtoTier.TierId }, DtoTier);
       }
 

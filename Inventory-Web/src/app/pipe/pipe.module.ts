@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PipeRoutingModule } from './pipe-routing.module';
-import { PipeConfigComponent } from './pipe-config/pipe-config.component';
-import { PipeSearchComponent } from './pipe-search/pipe-search.component';
-import { PipeAddDefinitionComponent } from './pipe-add-definition/pipe-add-definition.component';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,10 +17,17 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
+
+import { PipeRoutingModule } from './pipe-routing.module';
+import { PipeConfigComponent } from './pipe-config/pipe-config.component';
+import { PipeSearchComponent } from './pipe-search/pipe-search.component';
+import { PipeAddDefinitionComponent } from './pipe-add-definition/pipe-add-definition.component';
 import { PipeCoatingListComponent } from './pipe-coating-list/pipe-coating-list.component';
 import { PipeCoatingAddComponent } from './pipe-coating-add/pipe-coating-add.component';
 import { PipeTransferComponent } from './pipe-transfer/pipe-transfer.component';
 import { DialogPipeTransferComponent } from './dialog-pipe-transfer/dialog-pipe-transfer.component';
+
+
 
 
 @NgModule({

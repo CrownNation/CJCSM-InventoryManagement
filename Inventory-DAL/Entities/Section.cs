@@ -9,11 +9,11 @@ namespace Inventory_DAL.Entities
 {
     public class Section
     {
+        [Key]
         public Guid SectionId { get; set; }
-        [StringLength(30)]
-        public string TierId { get; set; }
-        [StringLength(30)]
-        public string CustomerId { get; set; }
-        public string? Quantity { get; set; }
+        [Required]
+        public Guid TierId { get; set; }
+        [Required]
+        public Guid CustomerId { get; set; }
     }
 }

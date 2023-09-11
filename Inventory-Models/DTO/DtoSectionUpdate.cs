@@ -9,10 +9,7 @@ namespace Inventory_Dto.Dto
 {
     public class DtoSectionUpdate
     {
-        public Guid SectionId { get; set; }
-        [StringLength(30)]
-        public string TierId { get; set; }
-        [StringLength(30)]
-        public string CustomerId { get; set; }
+        public Guid TierId { get; set; }
+        public Guid CustomerId { get; set; }
     }
 }

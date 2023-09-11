@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CJCSM-Common\CJCSM-Common.csproj" />
     <ProjectReference Include="..\Inventory-DAL\Inventory-DAL.csproj" />
     <ProjectReference Include="..\Inventory-Models\Inventory-Models.csproj" />
   </ItemGroup>

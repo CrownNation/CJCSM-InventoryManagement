@@ -9,10 +9,13 @@ namespace Inventory_Dto.Dto
 {
    public class DtoRackCreate
    {
-      public Guid RackId { get; set; }
         [Required(ErrorMessage = "A Name is required")]
         [StringLength(50)]
-        public string Name { get; set; }
-        public string ShopLocationId { get; set; }
+        public string Name { get; set; } = String.Empty;
+        [Required(ErrorMessage = "A shop location is required")]
+        public Guid ShopLocationId { get; set; }
+
+        public bool IsActive { get; set; }
+
     }
 }

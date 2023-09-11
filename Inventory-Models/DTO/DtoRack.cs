@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Inventory_Dto.Dto
 {
-   public class DtoRack
-   {
-      public Guid RackId { get; set; }
-        [Required(ErrorMessage = "A Name is required")]
-        [StringLength(50)]
+    public class DtoRack
+    {
+        public Guid RackId { get; set; }
         public string Name { get; set; }
-   }
+        public Guid ShopLocationId { get; set; }
+        public bool IsActive { get; set; }
+
+    }
 }
