@@ -14,7 +14,6 @@ export class AddRackComponent implements OnInit {
 
   addRackForm!: FormGroup;
   
-  // Todo: get this from the store
   shops: ShopLocation[] = [
     {
       shopLocationId: '1',

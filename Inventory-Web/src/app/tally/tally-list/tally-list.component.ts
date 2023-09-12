@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Tally, TallyTypes } from '../../models/tally.model';
+import { Tally, TallyType } from '../../models/tally.model';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -26,36 +26,16 @@ export class TallyListComponent {
     {
       tallyId: 'tally1',
       tallyName: 'Tally 1',
-      customerId: 'customer1',
-      customerName: 'Customer 1',
+      shipToId: 'customer1',
+      shipToName: 'Customer 1',
+      shipFromId: 'customer1',
+      shipFromName: 'Customer 1',
       shopLocationId: 'shop1',
       shopName: 'Shop 1',
       tallyType: 'In',
       dateOfCreation: new Date(),
       notes: 'Some notes'
-    },
-    {
-      tallyId: 'tally2',
-      tallyName: 'Tally 2',
-      customerId: 'customer2',
-      customerName: 'Customer 2',
-      shopLocationId: 'shop2',
-      shopName: 'Shop 2',
-      tallyType: 'Out',
-      dateOfCreation: new Date(),
-      notes: 'Some notes'
-    },
-    {
-      tallyId: 'tally3',
-      tallyName: 'Tally 3',
-      customerId: 'customer3',
-      customerName: 'Customer 3',
-      shopLocationId: 'shop3',
-      shopName: 'Shop 3',
-      tallyType: 'In',
-      dateOfCreation: new Date(),
-      notes: 'Some notes'
-    }
+    }    
   ];
 
   tallyNames: Tally[] = [];
@@ -73,7 +53,8 @@ export class TallyListComponent {
   buildForm() {
     this.filterTallyForm = new FormGroup({
       tally: new FormControl<Tally | null>(null, []),   
-      customer: new FormControl('', []),
+      shipTo: new FormControl('', []),
+      shipFrom: new FormControl('', []),
       shopLocation: new FormControl('', []),
       rack: new FormControl('', []),
       dateStart: new FormControl<Date | null>(null, []),

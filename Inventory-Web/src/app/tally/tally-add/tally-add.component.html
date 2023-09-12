@@ -1,1 +1,99 @@
-<p>tally-add works!</p>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Tally In</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="container">
+        <div class="section">
+            <form [formGroup]="addTallyForm">
+                
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Tally Type</mat-label>
+                    <mat-select formControlname='tallyType' required >
+                        <mat-option *ngFor="let tallyType of tallyTypes" [value]="tallyType">
+                            {{tallyType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Tally Number</mat-label>
+                    <input matInput placeholder="Tally name" formControlName="tallyNumber" required>
+                    <mat-error>
+                        Please provide a tally name
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Yard</mat-label>
+                    <mat-select formControlname='shopLocation' required >
+                        <mat-option *ngFor="let shop of shops" [value]="shop.shopLocationId">
+                            {{shop.shopLocationName}}
+                            </mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Ship to</mat-label>
+                    <mat-select formControlname='shipTo' required >
+                        <mat-option *ngFor="let customer of customers" [value]="customer.customerId">
+                            {{customer.name}}
+                            </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Ship from</mat-label>
+                    <mat-select formControlname='shipFrom' required >
+                        <mat-option *ngFor="let customer of customers" [value]="customer.customerId">
+                            {{customer.name}}
+                            </mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Rack</mat-label>
+                    <mat-select formControlname='shopLocation' required >
+                        <mat-option *ngFor="let shop of shops" [value]="shop.shopLocationId">
+                            {{shop.shopLocationName}}
+                            </mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Consultant Name</mat-label>
+                    <input matInput placeholder="Tally name" formControlName="tallyNumber" required>
+                    <mat-error>
+                        Please provide a consultant name
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Land Location</mat-label>
+                    <input matInput placeholder="Tally name" formControlName="tallyNumber" required>
+                    <mat-error>
+                        Please provide a land location
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Via</mat-label>
+                    <input matInput placeholder="Tally name" formControlName="tallyNumber" required>
+                    <mat-error>
+                        Please provide a value for via
+                    </mat-error>
+                </mat-form-field>
+    
+                <button mat-raised-button color="primary" class="item">Add Rack</button>              
+            </form>
+        </div>
+        
+        <div class="section">
+            Info side
+            
+        </div>
+
+
+    </mat-card-content>
+
+</mat-card>

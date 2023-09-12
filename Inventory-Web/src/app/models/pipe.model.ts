@@ -1,5 +1,20 @@
 import { Rack } from "./rack.model";
 
+export interface Pipe {
+    pipeId: string
+    pipeDefintion: PipeDefinition;
+    length: number;
+    quantity: number;
+    rack: Rack;
+}
+
+export interface PipeCreate {
+    pipeDefinitionId: string;
+    length: number;
+    quantity: number;
+    rackId: string;
+}
+
 export interface PipeDefinition {
     pipeDefinitionId: string;
     pipeSize: PipeSize;
@@ -9,14 +24,6 @@ export interface PipeDefinition {
     pipeCoating: PipeCoating;
     weight: number;
     wallSize: number;
-}
-
-export interface Pipe {
-    pipeId: string
-    pipeDefintion: PipeDefinition;
-    length: number;
-    quantity: number;
-    rack: Rack;
 }
 
 export interface PipeSize {
@@ -48,10 +55,3 @@ export enum MeasurementUnit {
     metric = 'metric',
     imperial = 'imperial'
 }
-
-
-
-// Questions?
-// WHhat is PipeDefinition?
-// Is it specifi to the the pipe or is it a generic definition?
-// Why does pipe have length but not weight? Especially if weight is on the definition.

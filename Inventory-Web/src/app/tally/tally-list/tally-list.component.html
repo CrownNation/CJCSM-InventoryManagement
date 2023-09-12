@@ -24,14 +24,23 @@
                             <mat-label>Tally</mat-label>
                             <mat-select formControlName="tally">
                                 <mat-option *ngFor="let tally of tallyNames" [value]="tally.tallyId">
-                                    {{tally.tallyName}}
+                                    {{tally.tallyNumber}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" color="accent" >
-                            <mat-label>Customer</mat-label>
-                            <mat-select formControlName="customer">
+                            <mat-label>Ship To</mat-label>
+                            <mat-select formControlName="shipTo">
+                                <mat-option *ngFor="let customer of customers" [value]="customer.customerId">
+                                    {{customer.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Ship From</mat-label>
+                            <mat-select formControlName="shipFrom">
                                 <mat-option *ngFor="let customer of customers" [value]="customer.customerId">
                                     {{customer.name}}
                                 </mat-option>
