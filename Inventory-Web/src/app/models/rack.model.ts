@@ -9,6 +9,7 @@ export interface Rack {
 export interface RackCreate {
     name: string;
     shopLocationId: string;
+    isActive: boolean;
 }
 
 export interface RackUpdate {

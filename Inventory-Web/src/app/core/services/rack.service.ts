@@ -24,8 +24,8 @@ export class RackService {
     // return this.http.get<RackBasic>(`${this.baseUrl}/dummy/${id}`);
   }
 
-  addRack(rack: RackCreate): Observable<void> {
-    return this.http.post<void>(this.baseUrl, rack);
+  addRack(rack: RackCreate): Observable<Rack> {
+    return this.http.post<Rack>(this.baseUrl, rack);
   }
 
   updateRack(rack: RackCreate): Observable<void> {

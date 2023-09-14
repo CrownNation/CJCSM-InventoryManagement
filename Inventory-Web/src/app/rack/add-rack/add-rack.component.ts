@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ShopLocation } from '../../models/shop.model';
 import { Router } from '@angular/router';
 import { actionCreateRack } from '../../store/rack/rack.actions';
+import { RackCreate } from '../../models/rack.model';
 
 @Component({
   selector: 'app-add-rack',
@@ -57,7 +58,8 @@ export class AddRackComponent implements OnInit {
       this.store.dispatch(actionCreateRack({
         rackCreate: {
           name: this.addRackForm.value.name,
-          shopLocationId: this.addRackForm.value.shop
+          shopLocationId: this.addRackForm.value.shop,
+          isActive: true
         }
       }));
     } else {
