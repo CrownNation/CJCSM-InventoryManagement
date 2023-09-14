@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { RackBasic } from '../../models/rack.model';
+import { Rack, RackCreate } from '../../models/rack.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export const rackKey = '[Rack]';
@@ -8,12 +8,10 @@ export const rackKey = '[Rack]';
 export const actionGetRacks = createAction(
     `${rackKey} Get Racks`
 );
-
 export const actionGetRacksSuccess = createAction(
     `${rackKey} Get Racks Success`,
-    props<{ racks: RackBasic[] }>()
+    props<{ racks: Rack[] }>()
 );
-
 export const actionGetRacksError = createAction(
     `${rackKey} Get Racks Error`,
     props<{ errorLoadingRacks: HttpErrorResponse }>()
@@ -29,16 +27,18 @@ export const actionGetRackById = createAction(
 // Create Rack
 export const actionCreateRack = createAction(
     `${rackKey} Create Rack`, 
-    props<{ rack: RackBasic }>()
+    props<{ rackCreate: RackCreate }>()
 );
-
 export const actionCreateRackSuccess = createAction(
-    `${rackKey} Create Rack Success`
+    `${rackKey} Create Rack Success`,
+    props<{ rack: Rack }>()
+);
+export const actionCreateRackError = createAction(
+    `${rackKey} Create Rack Error`,
+    props<{ errorCreatingRack: HttpErrorResponse }>()
 );
 
-export const actionCreateRackError = createAction(
-    `${rackKey} Create Rack Error`
-);
+
 
 // Delete Rack
 export const actionDeleteRack = createAction(

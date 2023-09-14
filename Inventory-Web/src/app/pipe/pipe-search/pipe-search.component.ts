@@ -73,6 +73,7 @@ export class PipeSearchComponent {
         rackId: 'rack1',
         name: 'Rack 1',
         shopLocationId: 'shop1',
+        isActive: true,
         shopName: 'Shop 1'
       }
     }

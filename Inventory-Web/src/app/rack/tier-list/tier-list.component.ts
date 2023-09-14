@@ -63,6 +63,7 @@ export class TierListComponent implements OnInit {
             rackId: 'rack1',
             name: 'Rack 1',
             shopLocationId: 'shop1',
+            isActive: true,
             shopName: 'Shop 1'
           }
         }]

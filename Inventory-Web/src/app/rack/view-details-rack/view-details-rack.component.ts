@@ -35,6 +35,7 @@ export class ViewDetailsRackComponent implements OnInit {
     rackId: '1',
     name: 'Rack 1',
     shopLocationId: '1',
+    isActive: true,
     shopName: 'Shop 1'
   }
 

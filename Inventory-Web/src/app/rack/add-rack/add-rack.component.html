@@ -11,7 +11,7 @@
                 <mat-label>Rack name</mat-label>
                 <input matInput placeholder="Rack name" formControlName="name" required>
                 <mat-error>
-                    Please provide a valid email address
+                    Please provide a valid rack formControlName
                 </mat-error>
             </mat-form-field>
         
@@ -24,7 +24,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <button mat-raised-button color="primary" class="item">Add Rack</button>
+            <button mat-raised-button color="primary" class="item" (click)="addRack()">Add Rack</button>
           
         </form>
     </mat-card-content>
