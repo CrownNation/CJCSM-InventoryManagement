@@ -17,7 +17,7 @@ namespace Inventory_DAL.Entities
         [Required]
         public Guid ShopLocationId { get; set; }
         [Required]
-        public ApplicationEnums.TallyTypes TallyType { get; set; }
+        public int TallyType { get; set; }
         [Required]
         public DateTimeOffset DateOfCreation { get; set; }
         public string? Notes { get; set; }

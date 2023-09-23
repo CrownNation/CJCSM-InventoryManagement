@@ -38,16 +38,17 @@ namespace Inventory_BLL.BL
             throw new KeyNotFoundException($"No tally with guid {guid} can be found.");
         }
 
-        public async Task<DtoTally> CreateTally(DtoTallyCreate DtoTally)
+        public async Task<DtoTally> CreateTally(DtoTallyCreate dtoTallyCreate)
         {
-            if (DtoTally == null)
+            if (dtoTallyCreate == null)
                 throw new ArgumentNullException("Create Tally failed. The tally data is null");
 
             // Other validations can be added as per your requirements
 
-            Tally tally = _mapper.Map<Tally>(DtoTally);
+            Tally tally = _mapper.Map<Tally>(dtoTallyCreate);
 
             tally.TallyId = Guid.NewGuid();
+            tally.DateOfCreation = DateTimeOffset.Now;
             _context.Tally.Add(tally);
             await _context.SaveChangesAsync();
 

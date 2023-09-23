@@ -12,12 +12,12 @@ namespace Inventory_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PipeTallyController : ODataController
+    public class TallyPipeController : ODataController
     {
-        private readonly ILogger<PipeTallyController> _logger;
+        private readonly ILogger<TallyPipeController> _logger;
         private readonly ITallyPipeBL _tallyPipeBl;
 
-        public PipeTallyController(ILogger<PipeTallyController> logger, ITallyPipeBL tallyPipeBl)
+        public TallyPipeController(ILogger<TallyPipeController> logger, ITallyPipeBL tallyPipeBl)
         {
             _logger = logger;
             _tallyPipeBl = tallyPipeBl;
