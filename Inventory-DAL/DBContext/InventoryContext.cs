@@ -16,7 +16,7 @@ namespace Inventory_DAL.Entities
         //add-migration [vxxxx_to_vxxxx_CamelCaseDescription_Project] -Context CjcsmSqliteContext -Output Migrations/ProjectMigrations
 
         //This command is used with the Package Manager Console(PMC) in Visual Studio
-        //Add-Migration 20230906_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
+        //Add-Migration 20230926_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
         //Update-Database
 
         //This command is used in the command-line interface (CLI) outside of Visual Studio.
@@ -42,9 +42,9 @@ namespace Inventory_DAL.Entities
             _configuration = configuration;
         }
         public virtual DbSet<Customer> Customer { get; set; }
+        public virtual DbSet<ShopLocation> ShopLocation{ get; set; }
         public virtual DbSet<Rack> Rack { get; set; }
         public virtual DbSet<Tier> Tier { get; set; }
-        public virtual DbSet<Section> Section { get; set; }
         public virtual DbSet<PipeDefinition> PipeDefinition { get; set; }
         public virtual DbSet<Pipe> Pipe { get; set; }
         public virtual DbSet<Tally> Tally { get; set; }
@@ -67,12 +67,6 @@ namespace Inventory_DAL.Entities
             //Composite key for TallyPipe
             modelBuilder.Entity<TallyPipe>()
                 .HasKey(tp => new { tp.TallyId, tp.PipeId });
-
         }
-
     }
-
-
-
-
 }

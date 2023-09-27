@@ -1,4 +1,5 @@
 ﻿using CJCSM_Common;
+using Inventory_DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,10 +12,31 @@ namespace Inventory_Dto.Dto
     public class DtoTally
    {
         public Guid TallyId { get; set; }
+        
+        public string TallyNumber { get; set; } = string.Empty;
+
         public Guid CustomerId { get; set; }
+
+        public string CustomerName { get; set; }
         public Guid ShopLocationId { get; set; }
         public ApplicationEnums.TallyTypes TallyType { get; set; }
         public DateTimeOffset DateOfCreation { get; set; }
         public string? Notes { get; set; }
+
+        public List<Pipe> PipeList { get; set; }
+
+        public string? InvoiceNumber { get; set; }
+
+        public Guid TalliedByUserId { get; set; }
+
+        public String TalliedByUserName { get; set; } = String.Empty;
+
+        public string? CarrierName {  get; set; }
+
+        //Calculated Fields
+        public float WeightInKg { get; set; }
+        public float WeightInLbs { get; set; }
+
+
     }
 }

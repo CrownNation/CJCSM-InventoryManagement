@@ -11,7 +11,7 @@ namespace Inventory_DAL.Entities
         public Guid CustomerId { get; set; }
 
         [StringLength(50)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [StringLength(30)]
         public string? Address1 { get; set; }

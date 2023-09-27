@@ -29,9 +29,6 @@ namespace Inventory_BLL.Mappings
             CreateMap<DtoTallyUpdate, Tally>()
                .ForMember(dest => dest.TallyId, opt => opt.Ignore())
                .ForMember(dest => dest.TallyType, opt => opt.MapFrom(src => (int)src.TallyType));
-
-
-
         }
     }
 }

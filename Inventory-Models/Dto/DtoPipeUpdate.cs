@@ -9,7 +9,7 @@ namespace Inventory_Dto.Dto
     public class DtoPipeUpdate
     {
         public Guid PipeDefinitionId { get; set; }
-        public Guid SectionId { get; set; }
+        public Guid TierId { get; set; }
         public float Length { get; set; }
         public int Quantity { get; set; }
     }

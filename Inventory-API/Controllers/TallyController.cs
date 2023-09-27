@@ -55,7 +55,7 @@ namespace Inventory_API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)
+        public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)  
         {
             if (!ModelState.IsValid)
             {
@@ -81,6 +81,7 @@ namespace Inventory_API.Controllers
             return CreatedAtAction("Get", new { key = DtoTally.TallyId }, DtoTally);
         }
 
+  
         [HttpPut("{key}")]
         public IActionResult Put(Guid key, [FromBody] DtoTallyUpdate tally)
         {

@@ -24,7 +24,7 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(ODataQueryOptions<DtoTallyPipe> options)
+        public IActionResult GetAll(ODataQueryOptions<DtoTallyPipe> options)
         {
             try
             {

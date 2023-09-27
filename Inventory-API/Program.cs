@@ -33,7 +33,6 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<Customer>("Customer");
     builder.EntitySet<Rack>("Rack");
     builder.EntitySet<Tier>("Tier");
-    builder.EntitySet<Section>("Section");
     builder.EntitySet<PipeDefinition>("PipeDefinition");
     builder.EntitySet<Pipe>("Pipe");
     builder.EntitySet<Tally>("Tally");
@@ -97,7 +96,6 @@ System.Diagnostics.Debug.WriteLine("IN PROGRAM.CS");
 builder.Services.AddScoped<ICustomerBL, CustomerBL>();
 builder.Services.AddScoped<IRackBL, RackBL>();
 builder.Services.AddScoped<ITierBL, TierBL>();
-builder.Services.AddScoped<ISectionBL, SectionBL>();
 builder.Services.AddScoped<IPipeDefinitionBL, PipeDefinitionBL>();
 builder.Services.AddScoped<IPipeBL, PipeBL>();
 builder.Services.AddScoped<ITallyBL, TallyBL>();

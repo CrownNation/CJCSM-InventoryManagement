@@ -12,11 +12,15 @@ namespace Inventory_BLL.BL
     {
         private readonly InventoryContext _context;
         private readonly IMapper _mapper;
+        private readonly IPipeBL _pipeBL;
+        private readonly ITallyPipeBL _tallyPipeBL;
 
-        public TallyBL(InventoryContext context, IMapper mapper)
+        public TallyBL(InventoryContext context, IMapper mapper, IPipeBL pipeBL, ITallyPipeBL tallyPipeBL)
         {
             _context = context;
             _mapper = mapper;
+            _pipeBL = pipeBL;
+            _tallyPipeBL = tallyPipeBL;
         }
 
         public IQueryable<DtoTally> GetTallies()
@@ -38,22 +42,43 @@ namespace Inventory_BLL.BL
             throw new KeyNotFoundException($"No tally with guid {guid} can be found.");
         }
 
+
         public async Task<DtoTally> CreateTally(DtoTallyCreate dtoTallyCreate)
         {
             if (dtoTallyCreate == null)
                 throw new ArgumentNullException("Create Tally failed. The tally data is null");
 
-            // Other validations can be added as per your requirements
-
+            // Create Tally
             Tally tally = _mapper.Map<Tally>(dtoTallyCreate);
-
             tally.TallyId = Guid.NewGuid();
             tally.DateOfCreation = DateTimeOffset.Now;
             _context.Tally.Add(tally);
             await _context.SaveChangesAsync();
 
+
+            if (dtoTallyCreate.PipeList != null && dtoTallyCreate.PipeList.Count > 0)
+            {
+                foreach (var pipeItem in dtoTallyCreate.PipeList)
+                {
+                    // Map to DtoPipeCreate for inserting Pipe
+                    DtoPipeCreate dtoPipeCreate = _mapper.Map<DtoPipeCreate>(pipeItem);
+                    DtoPipe dtoPipe = await _pipeBL.CreatePipe(dtoPipeCreate);
+
+                    // Create the TallyPipe
+                    DtoTallyPipe dtoTallyPipe = new DtoTallyPipe
+                    {
+                        TallyId = tally.TallyId,
+                        PipeId = dtoPipe.PipeId
+                    };
+
+                    await _tallyPipeBL.CreateTallyPipe(dtoTallyPipe);
+                }
+            }
+
+
             return _mapper.Map<DtoTally>(tally);
         }
+
 
         public void UpdateTally(DtoTallyUpdate dtoTallyUpdate, Guid guid)
         {

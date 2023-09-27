@@ -18,8 +18,8 @@ namespace Inventory_DAL.Entities
         public Guid PipeDefinitionId { get; set; }
  
         [Required]
-        [ForeignKey("Section")]
-        public Guid SectionId { get; set; }
+        [ForeignKey("Tier")]
+        public Guid TierId { get; set; }
 
         public float Length { get; set; }
 

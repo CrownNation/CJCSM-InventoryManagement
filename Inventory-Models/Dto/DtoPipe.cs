@@ -10,7 +10,7 @@ namespace Inventory_Dto.Dto
     {
         public Guid PipeId { get; set; }
         public Guid PipeDefinitionId { get; set; }
-        public Guid SectionId { get; set; }
+        public Guid TierId { get; set; }
         public float Length { get; set; }
         public int Quantity { get; set; }
     }
