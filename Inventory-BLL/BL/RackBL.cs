@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Inventory_Dto.Dto;
 using Inventory_BLL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory_BLL.BL
 {
@@ -21,19 +22,28 @@ namespace Inventory_BLL.BL
 
         public IQueryable<DtoRack> GetRacks()
         {
-            IQueryable<Rack> entity = _context.Rack.AsQueryable();
-            IQueryable<DtoRack> racks = _mapper.ProjectTo<DtoRack>(entity);
+            var entity = _context.Rack
+                                 .Include(r => r.ShopLocation)
+                                 .AsQueryable();
+
+            var racks = _mapper.ProjectTo<DtoRack>(entity);
             return racks;
         }
 
-        public IQueryable<DtoRack>? GetRackById(Guid guid)
+        public async Task<DtoRack?> GetRackById(Guid guid)
         {
-            IQueryable<Rack>? rack = _context.Rack.Where(x => x.RackId == guid);
-            if (rack.Any())
+            // Eager load the associated ShopLocation
+            var rack = await _context.Rack
+                .Include(r => r.ShopLocation)
+                .FirstOrDefaultAsync(x => x.RackId == guid);
+
+            if (rack != null)
             {
-                IQueryable<DtoRack> dtoRack = _mapper.ProjectTo<DtoRack>(rack);
+                // Map the Rack entity to DtoRack
+                var dtoRack = _mapper.Map<DtoRack>(rack);
                 return dtoRack;
             }
+
             throw new KeyNotFoundException($"No rack with guid {guid} can be found.");
         }
 

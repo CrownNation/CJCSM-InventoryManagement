@@ -19,6 +19,8 @@ namespace Inventory_BLL.Mappings
             // Ignore PipeId since it is passed as a parameter and we don't want to ever update the PipeId
             CreateMap<DtoPipeUpdate, Pipe>()
                .ForMember(dest => dest.PipeId, opt => opt.Ignore());
+
+            CreateMap<PipeDefinition, DtoPipeDefinition>();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Inventory_Dto.Dto
         public DateTimeOffset DateOfCreation { get; set; }
         public string? Notes { get; set; }
 
-        public List<Pipe> PipeList { get; set; }
+        public List<DtoPipe> PipeList { get; set; }
 
         public string? InvoiceNumber { get; set; }
 
@@ -37,6 +37,8 @@ namespace Inventory_Dto.Dto
         public float WeightInKg { get; set; }
         public float WeightInLbs { get; set; }
 
+        //Navigation Properties
+        public List<DtoTallyPipe> TallyPipes { get; set; }
 
     }
 }

@@ -13,5 +13,9 @@ namespace Inventory_DAL.Entities
         public Guid TallyId { get; set; }
         [Key]
         public Guid PipeId { get; set; }
+
+        //Navigation Properties
+        public Tally Tally { get; set; }  
+        public Pipe Pipe { get; set; } 
     }
 }

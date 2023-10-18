@@ -26,12 +26,12 @@ INSERT INTO ShopLocation (
 ) 
 VALUES (
     @ShopLocationId,                   -- ShopLocationId
-    'ShopLocationName',                -- Name
+    'Red Deer Shop',                   -- Name
     '123 Main St',                     -- Address1
     'Suite 456',                       -- Address2
-    'Anytown',                         -- City
+    'Red Deer',                        -- City
     'AB',                              -- ProvinceState
-    '123456',                          -- PostalCode
+    'T2R4F6',                          -- PostalCode
     '(123) 456-7890',                  -- PhoneNumber
     '(123) 456-7891',                  -- FaxNumber
     1                                  -- IsActive
@@ -56,17 +56,63 @@ INSERT INTO Tier (TierId, RackId, Number) VALUES
 (@Tier4Id, @Rack2Id, 2),
 (@Tier5Id, @Rack3Id, 1);
 
--- PipeDefinition
-DECLARE @PipeDef1Id UNIQUEIDENTIFIER = NEWID(), @PipeDef2Id UNIQUEIDENTIFIER = NEWID(), @PipeDef3Id UNIQUEIDENTIFIER = NEWID(), @PipeDef4Id UNIQUEIDENTIFIER = NEWID();
+-- PipeDefinition -- Run PipeDefinitionPropertiesInsertScript.sql first.
+DECLARE @PipeDef1Id UNIQUEIDENTIFIER = NEWID(), @PipeDef2Id UNIQUEIDENTIFIER = NEWID(), @PipeDef3Id UNIQUEIDENTIFIER = NEWID(),
+        @PipeDef4Id UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO PipeDefinition (PipeDefinitionId, PipeSizeId, PipeConditionId, PipeThreadId, PipeGradeId, PipeCoatingId, Weight, WallSizeMetric, IsActive) 
+INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
 VALUES 
-(@PipeDef1Id, NEWID(), NEWID(), NEWID(), NEWID(), NEWID(), 15.5, 6.8, 1),
-(@PipeDef2Id, NEWID(), NEWID(), NEWID(), NEWID(), NEWID(), 16.2, 7.1, 1),
-(@PipeDef3Id, NEWID(), NEWID(), NEWID(), NEWID(), NEWID(), 15.9, 7.0, 1),
-(@PipeDef4Id, NEWID(), NEWID(), NEWID(), NEWID(), NEWID(), 15.7, 6.9, 1);
+  (@PipeDef1Id,
+   1,  -- Assuming IsActive is set to true by default
+   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Condition ORDER BY NEWID()),  
+   (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_ThreadID FROM PipeProperty_Thread ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_WallId FROM PipeProperty_Wall ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_WeightId FROM PipeProperty_Weight ORDER BY NEWID()));
 
--- Pipes (using TierId)
+   INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
+VALUES
+  (@PipeDef2Id,
+   1,  -- Assuming IsActive is set to true by default
+   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Condition ORDER BY NEWID()),  
+   (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_ThreadID FROM PipeProperty_Thread ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_WallId FROM PipeProperty_Wall ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_WeightId FROM PipeProperty_Weight ORDER BY NEWID()));
+
+   INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
+VALUES 
+  (@PipeDef3Id,
+   1,  -- Assuming IsActive is set to true by default
+   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Condition ORDER BY NEWID()),  
+   (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_ThreadID FROM PipeProperty_Thread ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_WallId FROM PipeProperty_Wall ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_WeightId FROM PipeProperty_Weight ORDER BY NEWID()));
+
+      INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
+VALUES 
+  (@PipeDef4Id,
+   1,  -- Assuming IsActive is set to true by default
+   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Condition ORDER BY NEWID()),  
+   (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_ThreadID FROM PipeProperty_Thread ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_WallId FROM PipeProperty_Wall ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_WeightId FROM PipeProperty_Weight ORDER BY NEWID()));
+   
+   -- Pipes (using TierId)
 DECLARE @Pipe1Id UNIQUEIDENTIFIER = NEWID(), @Pipe2Id UNIQUEIDENTIFIER = NEWID(), @Pipe3Id UNIQUEIDENTIFIER = NEWID(),
         @Pipe4Id UNIQUEIDENTIFIER = NEWID(), @Pipe5Id UNIQUEIDENTIFIER = NEWID(), @Pipe6Id UNIQUEIDENTIFIER = NEWID();
 
@@ -79,7 +125,7 @@ INSERT INTO Pipe (PipeId, PipeDefinitionId, TierId, Length, Quantity) VALUES
 (@Pipe6Id, @PipeDef3Id, @Tier5Id, 6.3, 6);
 
 -- Tally
-DECLARE @Tally1Id UNIQUEIDENTIFIER = NEWID(), @Tally2Id UNIQUEIDENTIFIER = NEWID(), @Tally3Id UNIQUEIDENTIFIER = NEWID(), 
+DECLARE @Tally1Id UNIQUEIDENTIFIER = NEWID(), @Tally2Id UNIQUEIDENTIFIER = NEWID(), @Tally3Id UNIQUEIDENTIFIER = NEWID(),
         @TalliedByUserId1 UNIQUEIDENTIFIER = NEWID(), @TalliedByUserId2 UNIQUEIDENTIFIER = NEWID(), @TalliedByUserId3 UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO Tally (TallyId, CustomerId, ShopLocationId, TallyType, DateOfCreation, Notes, TallyNumber, InvoiceNumber, TalliedByUserId, CarrierName) VALUES
@@ -95,3 +141,5 @@ INSERT INTO TallyPipe (TallyId, PipeId) VALUES
 (@Tally2Id, @Pipe4Id),
 (@Tally3Id, @Pipe5Id),
 (@Tally3Id, @Pipe6Id);
+
+

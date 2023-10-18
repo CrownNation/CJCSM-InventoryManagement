@@ -39,8 +39,10 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                IQueryable<DtoTally>? tally = _tallyBl.GetTallyById(key);
-                return Ok(options.ApplyTo(tally));
+                //Get the query
+                IQueryable<DtoTally>? tallyQuery = _tallyBl.GetTallyById(key);
+                //Apply the OData query options (like filter, orderby, top, etc) to the query. This also executes the query.
+                return Ok(options.ApplyTo(tallyQuery));
             }
             catch (KeyNotFoundException e)
             {

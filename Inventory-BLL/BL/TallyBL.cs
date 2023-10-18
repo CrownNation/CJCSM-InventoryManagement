@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using CJCSM_Common;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
 using Inventory_Dto.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory_BLL.BL
 {
@@ -30,17 +32,57 @@ namespace Inventory_BLL.BL
             return tallies;
         }
 
-        public IQueryable<DtoTally>? GetTallyById(Guid guid)
+        public IQueryable<DtoTally> GetTallyById(Guid guid)
         {
-            IQueryable<Tally>? tally = _context.Tally.Where(x => x.TallyId == guid);
-            if (tally.Any())
-            {
-                IQueryable<DtoTally> DtoTally = _mapper.ProjectTo<DtoTally>(tally);
-                return DtoTally;
-            }
+            // 1. Create a query that gets the desired Tally without actually executing it.
+            var tallyQuery = _context.Tally
+                                     .Where(t => t.TallyId == guid)
+                                     .Include(t => t.TallyPipes)
+                                     .ThenInclude(tp => tp.Pipe)
+                                     .ThenInclude(p => p.PipeDefinition); ;
 
-            throw new KeyNotFoundException($"No tally with guid {guid} can be found.");
+            // 2. Use the Select method to transform the data into the desired shape (DtoTally).
+            var dtoTallyQuery = tallyQuery.Select(tally => new DtoTally
+            {
+                TallyId = tally.TallyId,
+                TallyNumber = tally.TallyNumber,
+                CustomerId = tally.CustomerId,
+//                CustomerName = tally.CustomerName,
+                ShopLocationId = tally.ShopLocationId,
+                TallyType = (ApplicationEnums.TallyTypes)tally.TallyType,
+                DateOfCreation = tally.DateOfCreation,
+                Notes = tally.Notes,
+                InvoiceNumber = tally.InvoiceNumber,
+                TalliedByUserId = tally.TalliedByUserId,
+//                TalliedByUserName = tally.TalliedByUserName,
+                CarrierName = tally.CarrierName,
+
+                PipeList = tally.TallyPipes.Select(tallyPipe => new DtoPipe
+                {
+                    PipeId = tallyPipe.Pipe.PipeId,
+                    PipeDefinitionId = tallyPipe.Pipe.PipeDefinitionId,
+                    PipeDefinition = new DtoPipeDefinition
+                    {
+                        PipeDefinitionId = tallyPipe.Pipe.PipeDefinition.PipeDefinitionId,
+                        IsActive = tallyPipe.Pipe.PipeDefinition.IsActive,
+                        CategoryId = tallyPipe.Pipe.PipeDefinition.CategoryId,
+                        ConditionId = tallyPipe.Pipe.PipeDefinition.ConditionId,
+                        GradeId = tallyPipe.Pipe.PipeDefinition.GradeId,
+                        RangeId = tallyPipe.Pipe.PipeDefinition.RangeId,
+                        SizeId = tallyPipe.Pipe.PipeDefinition.SizeId,
+                        ThreadId = tallyPipe.Pipe.PipeDefinition.ThreadId,
+                        WallId = tallyPipe.Pipe.PipeDefinition.WallId,
+                        WeightId = tallyPipe.Pipe.PipeDefinition.WeightId
+                    },
+                    TierId = tallyPipe.Pipe.TierId,
+                    Length = tallyPipe.Pipe.Length,
+                    Quantity = tallyPipe.Pipe.Quantity
+                }).ToList()
+            });
+
+            return dtoTallyQuery;
         }
+
 
 
         public async Task<DtoTally> CreateTally(DtoTallyCreate dtoTallyCreate)

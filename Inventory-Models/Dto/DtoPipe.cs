@@ -13,5 +13,7 @@ namespace Inventory_Dto.Dto
         public Guid TierId { get; set; }
         public float Length { get; set; }
         public int Quantity { get; set; }
+
+        public DtoPipeDefinition PipeDefinition { get; set; }
     }
 }

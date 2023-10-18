@@ -100,33 +100,184 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ConditionId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("GradeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("PipeCoatingId")
+                    b.Property<Guid?>("RangeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PipeConditionId")
+                    b.Property<Guid?>("SizeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PipeGradeId")
+                    b.Property<Guid?>("ThreadId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PipeSizeId")
+                    b.Property<Guid?>("WallId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PipeThreadId")
+                    b.Property<Guid?>("WeightId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<float>("WallSizeMetric")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Weight")
-                        .HasColumnType("real");
 
                     b.HasKey("PipeDefinitionId");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ConditionId");
+
+                    b.HasIndex("GradeId");
+
+                    b.HasIndex("RangeId");
+
+                    b.HasIndex("SizeId");
+
+                    b.HasIndex("ThreadId");
+
+                    b.HasIndex("WallId");
+
+                    b.HasIndex("WeightId");
+
                     b.ToTable("PipeDefinition");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Category", b =>
+                {
+                    b.Property<Guid>("PipeProperty_CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("PipeProperty_CategoryId");
+
+                    b.ToTable("PipeProperty_Category");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Condition", b =>
+                {
+                    b.Property<Guid>("PipeProperty_CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.HasKey("PipeProperty_CategoryId");
+
+                    b.ToTable("PipeProperty_Condition");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Grade", b =>
+                {
+                    b.Property<Guid>("PipeProperty_GradeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("PipeProperty_GradeId");
+
+                    b.ToTable("PipeProperty_Grade");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Range", b =>
+                {
+                    b.Property<Guid>("PipeProperty_RangeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("PipeProperty_RangeId");
+
+                    b.ToTable("PipeProperty_Range");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Size", b =>
+                {
+                    b.Property<Guid>("PipeProperty_SizeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("SizeImperial")
+                        .HasColumnType("decimal(6, 3)");
+
+                    b.Property<decimal>("SizeMetric")
+                        .HasColumnType("decimal(6, 2)");
+
+                    b.HasKey("PipeProperty_SizeId");
+
+                    b.ToTable("PipeProperty_Size");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Thread", b =>
+                {
+                    b.Property<Guid>("PipeProperty_ThreadID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.HasKey("PipeProperty_ThreadID");
+
+                    b.ToTable("PipeProperty_Thread");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Wall", b =>
+                {
+                    b.Property<Guid>("PipeProperty_WallId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("WallImperial")
+                        .HasColumnType("decimal(4, 3)");
+
+                    b.Property<decimal>("WallMetric")
+                        .HasColumnType("decimal(5, 2)");
+
+                    b.HasKey("PipeProperty_WallId");
+
+                    b.ToTable("PipeProperty_Wall");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Weight", b =>
+                {
+                    b.Property<Guid>("PipeProperty_WeightId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("WeightImperial")
+                        .HasColumnType("decimal(6, 3)");
+
+                    b.Property<decimal>("WeightMetric")
+                        .HasColumnType("decimal(6, 2)");
+
+                    b.HasKey("PipeProperty_WeightId");
+
+                    b.ToTable("PipeProperty_Weight");
                 });
 
             modelBuilder.Entity("Inventory_DAL.Entities.Rack", b =>
@@ -147,6 +298,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("RackId");
+
+                    b.HasIndex("ShopLocationId");
 
                     b.ToTable("Rack");
                 });
@@ -247,6 +400,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
                     b.HasKey("TallyId", "PipeId");
 
+                    b.HasIndex("PipeId");
+
                     b.ToTable("TallyPipe");
                 });
 
@@ -265,6 +420,85 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.HasKey("TierId");
 
                     b.ToTable("Tier");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeDefinition", b =>
+                {
+                    b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Condition", "Condition")
+                        .WithMany()
+                        .HasForeignKey("ConditionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Grade", "Grade")
+                        .WithMany()
+                        .HasForeignKey("GradeId");
+
+                    b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Range", "Range")
+                        .WithMany()
+                        .HasForeignKey("RangeId");
+
+                    b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Size", "Size")
+                        .WithMany()
+                        .HasForeignKey("SizeId");
+
+                    b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Thread", "Thread")
+                        .WithMany()
+                        .HasForeignKey("ThreadId");
+
+                    b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Wall", "Wall")
+                        .WithMany()
+                        .HasForeignKey("WallId");
+
+                    b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Weight", "Weight")
+                        .WithMany()
+                        .HasForeignKey("WeightId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Condition");
+
+                    b.Navigation("Grade");
+
+                    b.Navigation("Range");
+
+                    b.Navigation("Size");
+
+                    b.Navigation("Thread");
+
+                    b.Navigation("Wall");
+
+                    b.Navigation("Weight");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.Rack", b =>
+                {
+                    b.HasOne("Inventory_DAL.Entities.ShopLocation", "ShopLocation")
+                        .WithMany()
+                        .HasForeignKey("ShopLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShopLocation");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.TallyPipe", b =>
+                {
+                    b.HasOne("Inventory_DAL.Entities.Pipe", null)
+                        .WithMany()
+                        .HasForeignKey("PipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Inventory_DAL.Entities.Tally", null)
+                        .WithMany()
+                        .HasForeignKey("TallyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

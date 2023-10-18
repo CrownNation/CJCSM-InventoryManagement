@@ -15,7 +15,10 @@ namespace Inventory_DAL.Entities
         public Guid RackId { get; set; }
         [StringLength(50)]
         public string Name { get; set; } = String.Empty;
+        [ForeignKey("ShopLocation")]
         public Guid ShopLocationId { get; set; }
         public bool IsActive { get; set; }
+
+        public ShopLocation ShopLocation { get; set; }  // Navigation property to get ShopLocationName
     }
 }
