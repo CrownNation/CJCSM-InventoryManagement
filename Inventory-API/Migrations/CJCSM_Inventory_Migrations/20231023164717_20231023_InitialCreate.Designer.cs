@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20231012174446_20231012_InitialCreate")]
-    partial class _20231012InitialCreate
+    [Migration("20231023164717_20231023_InitialCreate")]
+    partial class _20231023InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,8 +80,11 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<float>("Length")
-                        .HasColumnType("real");
+                    b.Property<decimal>("LengthInFeet")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("LengthInMeters")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("PipeDefinitionId")
                         .HasColumnType("uniqueidentifier");
@@ -89,10 +92,17 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("TallyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("TierId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("PipeId");
+
+                    b.HasIndex("PipeDefinitionId");
+
+                    b.HasIndex("TallyId");
 
                     b.ToTable("Pipe");
                 });
@@ -107,7 +117,6 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ConditionId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("GradeId")
@@ -170,7 +179,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
             modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Condition", b =>
                 {
-                    b.Property<Guid>("PipeProperty_CategoryId")
+                    b.Property<Guid>("PipeProperty_ConditionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -179,7 +188,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.HasKey("PipeProperty_CategoryId");
+                    b.HasKey("PipeProperty_ConditionId");
 
                     b.ToTable("PipeProperty_Condition");
                 });
@@ -235,7 +244,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
             modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Thread", b =>
                 {
-                    b.Property<Guid>("PipeProperty_ThreadID")
+                    b.Property<Guid>("PipeProperty_ThreadId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -244,7 +253,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.HasKey("PipeProperty_ThreadID");
+                    b.HasKey("PipeProperty_ThreadId");
 
                     b.ToTable("PipeProperty_Thread");
                 });
@@ -272,11 +281,11 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("WeightImperial")
-                        .HasColumnType("decimal(6, 3)");
-
-                    b.Property<decimal>("WeightMetric")
+                    b.Property<decimal>("WeightInKgPerMeter")
                         .HasColumnType("decimal(6, 2)");
+
+                    b.Property<decimal>("WeightInLbsPerFoot")
+                        .HasColumnType("decimal(6, 3)");
 
                     b.HasKey("PipeProperty_WeightId");
 
@@ -390,6 +399,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
                     b.HasKey("TallyId");
 
+                    b.HasIndex("CustomerId");
+
                     b.ToTable("Tally");
                 });
 
@@ -425,6 +436,21 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.ToTable("Tier");
                 });
 
+            modelBuilder.Entity("Inventory_DAL.Entities.Pipe", b =>
+                {
+                    b.HasOne("Inventory_DAL.Entities.PipeDefinition", "PipeDefinition")
+                        .WithMany()
+                        .HasForeignKey("PipeDefinitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Inventory_DAL.Entities.Tally", null)
+                        .WithMany("PipeList")
+                        .HasForeignKey("TallyId");
+
+                    b.Navigation("PipeDefinition");
+                });
+
             modelBuilder.Entity("Inventory_DAL.Entities.PipeDefinition", b =>
                 {
                     b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Category", "Category")
@@ -433,9 +459,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
                     b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Condition", "Condition")
                         .WithMany()
-                        .HasForeignKey("ConditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ConditionId");
 
                     b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Grade", "Grade")
                         .WithMany()
@@ -489,19 +513,46 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Navigation("ShopLocation");
                 });
 
+            modelBuilder.Entity("Inventory_DAL.Entities.Tally", b =>
+                {
+                    b.HasOne("Inventory_DAL.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("Inventory_DAL.Entities.TallyPipe", b =>
                 {
-                    b.HasOne("Inventory_DAL.Entities.Pipe", null)
-                        .WithMany()
+                    b.HasOne("Inventory_DAL.Entities.Pipe", "Pipe")
+                        .WithMany("TallyPipes")
                         .HasForeignKey("PipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Inventory_DAL.Entities.Tally", null)
-                        .WithMany()
+                    b.HasOne("Inventory_DAL.Entities.Tally", "Tally")
+                        .WithMany("TallyPipes")
                         .HasForeignKey("TallyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Pipe");
+
+                    b.Navigation("Tally");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.Pipe", b =>
+                {
+                    b.Navigation("TallyPipes");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.Tally", b =>
+                {
+                    b.Navigation("PipeList");
+
+                    b.Navigation("TallyPipes");
                 });
 #pragma warning restore 612, 618
         }

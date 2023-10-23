@@ -40,5 +40,7 @@ namespace Inventory_Dto.Dto
         //Navigation Properties
         public List<DtoTallyPipe> TallyPipes { get; set; }
 
+        public DtoCustomer Customer { get; set; }
+
     }
 }

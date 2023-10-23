@@ -1,3 +1,5 @@
+USE [CJCSM-Inventory];
+
 -- PipeProperty_Category
 INSERT INTO PipeProperty_Category (PipeProperty_CategoryId, Name) VALUES
   (NEWID(), 'Casing'),
@@ -6,7 +8,7 @@ INSERT INTO PipeProperty_Category (PipeProperty_CategoryId, Name) VALUES
   (NEWID(), 'Tubing');
 
 -- PipeProperty_Condition
-INSERT INTO PipeProperty_Condition (PipeProperty_CategoryId, Name) VALUES
+INSERT INTO PipeProperty_Condition (PipeProperty_ConditionId, Name) VALUES
   (NEWID(), '10 Ft Pup'),
   (NEWID(), '2 Ft Pup'),
   (NEWID(), '4 Ft Pup'),
@@ -216,7 +218,7 @@ INSERT INTO PipeProperty_Wall (PipeProperty_WallId, WallMetric, WallImperial) VA
   (NEWID(), 17.78,.7);
 
 -- PipeProperty_Weight
-  INSERT INTO PipeProperty_Weight (PipeProperty_WeightId, WeightMetric, WeightImperial)
+  INSERT INTO PipeProperty_Weight (PipeProperty_WeightId, WeightInKgPerMeter, WeightInLbsPerFoot)
 VALUES
     (NEWID(), 2.41, 1.619),
     (NEWID(), 2.53, 1.7),
@@ -350,5 +352,68 @@ VALUES
     (NEWID(), 139.89, 94.002);
 
 
+-- PipeProperty_Grade
+INSERT INTO [dbo].[PipeProperty_Grade] ([PipeProperty_GradeId], [Name])
+VALUES
+    (NEWID(), '2500RB'),
+    (NEWID(), '290'),
+    (NEWID(), '317'),
+    (NEWID(), '359'),
+    (NEWID(), '359 C1'),
+    (NEWID(), '78'),
+    (NEWID(), 'A-1'),
+    (NEWID(), 'A106B'),
+    (NEWID(), 'A333'),
+    (NEWID(), 'A3336-S'),
+    (NEWID(), 'A53A106'),
+    (NEWID(), 'AC80'),
+    (NEWID(), 'C75'),
+    (NEWID(), 'CW55'),
+    (NEWID(), 'D'),
+    (NEWID(), 'D/78'),
+    (NEWID(), 'DST80SS'),
+    (NEWID(), 'H40'),
+    (NEWID(), 'HE'),
+    (NEWID(), '180E'),
+    (NEWID(), 'IK70'),
+    (NEWID(), 'IK70E'),
+    (NEWID(), 'INVGRADE'),
+    (NEWID(), 'J'),
+    (NEWID(), 'J55'),
+    (NEWID(), 'JE'),
+    (NEWID(), 'JE/X56'),
+    (NEWID(), 'JERW'),
+    (NEWID(), 'K'),
+    (NEWID(), 'K55'),
+    (NEWID(), 'KE'),
+    (NEWID(), 'L80'),
+    (NEWID(), 'L80 ERW'),
+    (NEWID(), 'L80/ERW'),
+    (NEWID(), 'L80E'),
+    (NEWID(), 'MJ55'),
+    (NEWID(), 'ML80'),
+    (NEWID(), 'MN80'),
+    (NEWID(), 'N/A'),
+    (NEWID(), 'N80'),
+    (NEWID(), 'NSS80HC'),
+    (NEWID(), 'NT80SS'),
+    (NEWID(), 'NT95S'),
+    (NEWID(), 'NT95SS'),
+    (NEWID(), 'P110'),
+    (NEWID(), 'PS80'),
+    (NEWID(), 'R-J'),
+    (NEWID(), 'SA106B'),
+    (NEWID(), 'SA333 6'),
+    (NEWID(), 'SCH 80'),
+    (NEWID(), 'SCH160'),
+    (NEWID(), 'SOO55'),
+    (NEWID(), 'SOO90'),
+    (NEWID(), 'SOO95'),
+    (NEWID(), 'T95'),
+    (NEWID(), 'TN 110S'),
+    (NEWID(), 'TN80SS'),
+    (NEWID(), 'TN95HS'),
+    (NEWID(), 'TN95SS'),
+    (NEWID(), 'TRC80');
 
-
+GO

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20231012InitialCreate : Migration
+    public partial class _20231023InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,21 +33,6 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pipe",
-                columns: table => new
-                {
-                    PipeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PipeDefinitionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Length = table.Column<float>(type: "real", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pipe", x => x.PipeId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PipeProperty_Category",
                 columns: table => new
                 {
@@ -63,12 +48,12 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 name: "PipeProperty_Condition",
                 columns: table => new
                 {
-                    PipePropertyCategoryId = table.Column<Guid>(name: "PipeProperty_CategoryId", type: "uniqueidentifier", nullable: false),
+                    PipePropertyConditionId = table.Column<Guid>(name: "PipeProperty_ConditionId", type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PipeProperty_Condition", x => x.PipePropertyCategoryId);
+                    table.PrimaryKey("PK_PipeProperty_Condition", x => x.PipePropertyConditionId);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,12 +97,12 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 name: "PipeProperty_Thread",
                 columns: table => new
                 {
-                    PipePropertyThreadID = table.Column<Guid>(name: "PipeProperty_ThreadID", type: "uniqueidentifier", nullable: false),
+                    PipePropertyThreadId = table.Column<Guid>(name: "PipeProperty_ThreadId", type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PipeProperty_Thread", x => x.PipePropertyThreadID);
+                    table.PrimaryKey("PK_PipeProperty_Thread", x => x.PipePropertyThreadId);
                 });
 
             migrationBuilder.CreateTable(
@@ -138,8 +123,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 columns: table => new
                 {
                     PipePropertyWeightId = table.Column<Guid>(name: "PipeProperty_WeightId", type: "uniqueidentifier", nullable: false),
-                    WeightMetric = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    WeightImperial = table.Column<decimal>(type: "decimal(6,3)", nullable: false)
+                    WeightInKgPerMeter = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    WeightInLbsPerFoot = table.Column<decimal>(type: "decimal(6,3)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -167,6 +152,19 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tier",
+                columns: table => new
+                {
+                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RackId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Number = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tier", x => x.TierId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tally",
                 columns: table => new
                 {
@@ -184,19 +182,12 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tally", x => x.TallyId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tier",
-                columns: table => new
-                {
-                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RackId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tier", x => x.TierId);
+                    table.ForeignKey(
+                        name: "FK_Tally_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -206,7 +197,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     PipeDefinitionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ConditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     GradeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RangeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     SizeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -226,8 +217,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         name: "FK_PipeDefinition_PipeProperty_Condition_ConditionId",
                         column: x => x.ConditionId,
                         principalTable: "PipeProperty_Condition",
-                        principalColumn: "PipeProperty_CategoryId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "PipeProperty_ConditionId");
                     table.ForeignKey(
                         name: "FK_PipeDefinition_PipeProperty_Grade_GradeId",
                         column: x => x.GradeId,
@@ -247,7 +237,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         name: "FK_PipeDefinition_PipeProperty_Thread_ThreadId",
                         column: x => x.ThreadId,
                         principalTable: "PipeProperty_Thread",
-                        principalColumn: "PipeProperty_ThreadID");
+                        principalColumn: "PipeProperty_ThreadId");
                     table.ForeignKey(
                         name: "FK_PipeDefinition_PipeProperty_Wall_WallId",
                         column: x => x.WallId,
@@ -281,6 +271,34 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Pipe",
+                columns: table => new
+                {
+                    PipeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PipeDefinitionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LengthInMeters = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    LengthInFeet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    TallyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pipe", x => x.PipeId);
+                    table.ForeignKey(
+                        name: "FK_Pipe_PipeDefinition_PipeDefinitionId",
+                        column: x => x.PipeDefinitionId,
+                        principalTable: "PipeDefinition",
+                        principalColumn: "PipeDefinitionId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pipe_Tally_TallyId",
+                        column: x => x.TallyId,
+                        principalTable: "Tally",
+                        principalColumn: "TallyId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TallyPipe",
                 columns: table => new
                 {
@@ -303,6 +321,16 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         principalColumn: "TallyId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pipe_PipeDefinitionId",
+                table: "Pipe",
+                column: "PipeDefinitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pipe_TallyId",
+                table: "Pipe",
+                column: "TallyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PipeDefinition_CategoryId",
@@ -350,6 +378,11 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 column: "ShopLocationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tally_CustomerId",
+                table: "Tally",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TallyPipe_PipeId",
                 table: "TallyPipe",
                 column: "PipeId");
@@ -359,12 +392,6 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Customer");
-
-            migrationBuilder.DropTable(
-                name: "PipeDefinition");
-
-            migrationBuilder.DropTable(
                 name: "Rack");
 
             migrationBuilder.DropTable(
@@ -372,6 +399,18 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
             migrationBuilder.DropTable(
                 name: "Tier");
+
+            migrationBuilder.DropTable(
+                name: "ShopLocation");
+
+            migrationBuilder.DropTable(
+                name: "Pipe");
+
+            migrationBuilder.DropTable(
+                name: "PipeDefinition");
+
+            migrationBuilder.DropTable(
+                name: "Tally");
 
             migrationBuilder.DropTable(
                 name: "PipeProperty_Category");
@@ -398,13 +437,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 name: "PipeProperty_Weight");
 
             migrationBuilder.DropTable(
-                name: "ShopLocation");
-
-            migrationBuilder.DropTable(
-                name: "Pipe");
-
-            migrationBuilder.DropTable(
-                name: "Tally");
+                name: "Customer");
         }
     }
 }

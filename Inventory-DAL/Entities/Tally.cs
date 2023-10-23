@@ -38,5 +38,7 @@ namespace Inventory_DAL.Entities
         //Navigation Properties
         public ICollection<TallyPipe> TallyPipes { get; set; } = new List<TallyPipe>();
         public ICollection<Pipe> PipeList { get; set; }
+
+        public Customer Customer { get; set; }
     }
 }

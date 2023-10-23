@@ -9,9 +9,9 @@ namespace Inventory_DAL.Entities.PipeProperties
         [Key]
         public Guid PipeProperty_WeightId { get; set; }
         [Column(TypeName = "decimal(6, 2)")]
-        public decimal WeightMetric { get; set; }
+        public decimal WeightInKgPerMeter { get; set; }
         [Column(TypeName = "decimal(6, 3)")]
-        public decimal WeightImperial { get; set; }
+        public decimal WeightInLbsPerFoot { get; set; }
 
     }
 }

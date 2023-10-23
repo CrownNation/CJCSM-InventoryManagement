@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Inventory_DAL.Entities.PipeProperties;
 
 namespace Inventory_DAL.Entities
 {
@@ -21,7 +22,8 @@ namespace Inventory_DAL.Entities
         [ForeignKey("Tier")]
         public Guid TierId { get; set; }
 
-        public float Length { get; set; }
+        public Decimal LengthInMeters { get; set; }
+        public Decimal LengthInFeet { get; set; }
 
         public int Quantity { get; set; }
 
@@ -29,5 +31,7 @@ namespace Inventory_DAL.Entities
         public ICollection<TallyPipe> TallyPipes { get; set; } = new List<TallyPipe>();
 
         public PipeDefinition PipeDefinition { get; set; }
+
+
     }
 }

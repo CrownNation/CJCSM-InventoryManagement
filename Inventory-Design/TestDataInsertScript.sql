@@ -65,7 +65,7 @@ VALUES
   (@PipeDef1Id,
    1,  -- Assuming IsActive is set to true by default
    (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
-   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Condition ORDER BY NEWID()),  
+   (SELECT TOP 1 PipeProperty_ConditionId FROM PipeProperty_Condition ORDER BY NEWID()),  
    (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
@@ -78,7 +78,7 @@ VALUES
   (@PipeDef2Id,
    1,  -- Assuming IsActive is set to true by default
    (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
-   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Condition ORDER BY NEWID()),  
+   (SELECT TOP 1 PipeProperty_ConditionId FROM PipeProperty_Condition ORDER BY NEWID()),  
    (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
@@ -91,7 +91,7 @@ VALUES
   (@PipeDef3Id,
    1,  -- Assuming IsActive is set to true by default
    (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
-   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Condition ORDER BY NEWID()),  
+   (SELECT TOP 1 PipeProperty_ConditionId FROM PipeProperty_Condition ORDER BY NEWID()),  
    (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
@@ -104,7 +104,7 @@ VALUES
   (@PipeDef4Id,
    1,  -- Assuming IsActive is set to true by default
    (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
-   (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Condition ORDER BY NEWID()),  
+   (SELECT TOP 1 PipeProperty_ConditionId FROM PipeProperty_Condition ORDER BY NEWID()),  
    (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
@@ -116,13 +116,13 @@ VALUES
 DECLARE @Pipe1Id UNIQUEIDENTIFIER = NEWID(), @Pipe2Id UNIQUEIDENTIFIER = NEWID(), @Pipe3Id UNIQUEIDENTIFIER = NEWID(),
         @Pipe4Id UNIQUEIDENTIFIER = NEWID(), @Pipe5Id UNIQUEIDENTIFIER = NEWID(), @Pipe6Id UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Pipe (PipeId, PipeDefinitionId, TierId, Length, Quantity) VALUES
-(@Pipe1Id, @PipeDef1Id, @Tier1Id, 5.5, 10),
-(@Pipe2Id, @PipeDef2Id, @Tier2Id, 6.0, 8),
-(@Pipe3Id, @PipeDef3Id, @Tier3Id, 5.8, 9),
-(@Pipe4Id, @PipeDef4Id, @Tier4Id, 6.1, 11),
-(@Pipe5Id, @PipeDef1Id, @Tier5Id, 5.9, 7),
-(@Pipe6Id, @PipeDef3Id, @Tier5Id, 6.3, 6);
+INSERT INTO Pipe (PipeId, PipeDefinitionId, TierId, LengthInMeters, LengthInFeet, Quantity) VALUES
+(@Pipe1Id, @PipeDef1Id, @Tier1Id, 5.5, 16.4042, 10),
+(@Pipe2Id, @PipeDef2Id, @Tier2Id, 6.0, 19.6852, 8),
+(@Pipe3Id, @PipeDef3Id, @Tier3Id, 5.8, 19.0289, 9),
+(@Pipe4Id, @PipeDef4Id, @Tier4Id, 6.1, 20.0131, 11),
+(@Pipe5Id, @PipeDef1Id, @Tier5Id, 5.9, 19.3579, 7),
+(@Pipe6Id, @PipeDef3Id, @Tier5Id, 6.3, 20.669, 6);
 
 -- Tally
 DECLARE @Tally1Id UNIQUEIDENTIFIER = NEWID(), @Tally2Id UNIQUEIDENTIFIER = NEWID(), @Tally3Id UNIQUEIDENTIFIER = NEWID(),
