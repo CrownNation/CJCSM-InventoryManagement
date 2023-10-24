@@ -9,10 +9,10 @@ namespace Inventory_BLL.Mappings
     {
         public TallyProfile()
         {
-            CreateMap<Tally, DtoTally>()
+            CreateMap<Tally, DtoTally_WithPipeAndCustomer>()
                 .ForMember(dest => dest.TallyType, opt => opt.MapFrom(src => (TallyTypes)src.TallyType));
 
-            CreateMap<DtoTally, Tally>()
+            CreateMap<DtoTally_WithPipeAndCustomer, Tally>()
                 .ForMember(dest => dest.TallyType, opt => opt.MapFrom(src => (int)src.TallyType));
 
 
@@ -21,7 +21,7 @@ namespace Inventory_BLL.Mappings
 
             CreateMap<DtoTallyCreate, Tally>();
 
-            CreateMap<Tally, DtoTally>()
+            CreateMap<Tally, DtoTally_WithPipeAndCustomer>()
                 .ForMember(dest => dest.TallyType, opt => opt.MapFrom(src => (TallyTypes)src.TallyType))
                 .ForMember(dest => dest.TallyPipes, opt => opt.MapFrom(src => src.TallyPipes));
 

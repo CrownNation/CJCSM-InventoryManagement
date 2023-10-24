@@ -1,18 +1,17 @@
 ﻿using CJCSM_Common;
-using Inventory_DAL.Entities;
+using Inventory_Dto.Dto;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Dto.Dto
+namespace Inventory_Models.Dto
 {
     public class DtoTally
-   {
+    {
         public Guid TallyId { get; set; }
-        
+
         public string TallyNumber { get; set; } = string.Empty;
 
         public Guid CustomerId { get; set; }
@@ -23,24 +22,17 @@ namespace Inventory_Dto.Dto
         public DateTimeOffset DateOfCreation { get; set; }
         public string? Notes { get; set; }
 
-        public List<DtoPipe> PipeList { get; set; }
-
         public string? InvoiceNumber { get; set; }
 
         public Guid TalliedByUserId { get; set; }
 
         public String TalliedByUserName { get; set; } = String.Empty;
 
-        public string? CarrierName {  get; set; }
+        public string? CarrierName { get; set; }
 
         //Calculated Fields
         public float WeightInKg { get; set; }
         public float WeightInLbs { get; set; }
-
-        //Navigation Properties
-        public List<DtoTallyPipe> TallyPipes { get; set; }
-
-        public DtoCustomer Customer { get; set; }
 
     }
 }

@@ -40,5 +40,7 @@ namespace Inventory_DAL.Entities
         public ICollection<Pipe> PipeList { get; set; }
 
         public Customer Customer { get; set; }
+
+        public ShopLocation ShopLocation { get; set; }
     }
 }

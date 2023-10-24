@@ -26,25 +26,26 @@ namespace Inventory_BLL.BL
             _tallyPipeBL = tallyPipeBL;
         }
 
-        public IQueryable<DtoTally> GetTallies()
+        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallies()
         {
             IQueryable<Tally> entity = _context.Tally.AsQueryable();
-            IQueryable<DtoTally> tallies = _mapper.ProjectTo<DtoTally>(entity);
+            IQueryable<DtoTally_WithPipeAndCustomer> tallies = _mapper.ProjectTo<DtoTally_WithPipeAndCustomer>(entity);
             return tallies;
         }
 
-        public IQueryable<DtoTally> GetTallyById(Guid guid)
+        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
         {
             // 1. Create a query that gets the desired Tally without actually executing it.
             var tallyQuery = _context.Tally
                                      .Where(t => t.TallyId == guid)
                                      .Include(t => t.Customer)
+                                     .Include(t=>t.ShopLocation)
                                      .Include(t => t.TallyPipes)
                                      .ThenInclude(tp => tp.Pipe)
                                      .ThenInclude(p => p.PipeDefinition); 
 
             // 2. Use the Select method to transform the data into the desired shape (DtoTally).
-            var dtoTallyQuery = tallyQuery.Select(tally => new DtoTally
+            var dtoTallyQuery = tallyQuery.Select(tally => new DtoTally_WithPipeAndCustomer
             {
                 TallyId = tally.TallyId,
                 TallyNumber = tally.TallyNumber,
@@ -58,6 +59,7 @@ namespace Inventory_BLL.BL
                 },*/
 
                 ShopLocationId = tally.ShopLocationId,
+                ShopLocationName = tally.ShopLocation.Name,
                 TallyType = (ApplicationEnums.TallyTypes)tally.TallyType,
                 DateOfCreation = tally.DateOfCreation,
                 Notes = tally.Notes,
@@ -140,7 +142,7 @@ namespace Inventory_BLL.BL
 
 
 
-        public async Task<DtoTally> CreateTally(DtoTallyCreate dtoTallyCreate)
+        public async Task<DtoTally_WithPipeAndCustomer> CreateTally(DtoTallyCreate dtoTallyCreate)
         {
             if (dtoTallyCreate == null)
                 throw new ArgumentNullException("Create Tally failed. The tally data is null");
@@ -173,7 +175,7 @@ namespace Inventory_BLL.BL
             }
 
 
-            return _mapper.Map<DtoTally>(tally);
+            return _mapper.Map<DtoTally_WithPipeAndCustomer>(tally);
         }
 
 

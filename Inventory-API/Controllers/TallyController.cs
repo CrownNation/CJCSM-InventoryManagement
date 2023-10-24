@@ -20,11 +20,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(ODataQueryOptions<DtoTally> options)
+        public IActionResult Get(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
-                IQueryable<DtoTally>? tallies = _tallyBl.GetTallies();
+                IQueryable<DtoTally_WithPipeAndCustomer>? tallies = _tallyBl.GetTallies();
                 return Ok(options.ApplyTo(tallies));
             }
             catch (Exception e)
@@ -35,12 +35,12 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key, ODataQueryOptions<DtoTally> options)
+        public IActionResult Get(Guid key, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
                 //Get the query
-                IQueryable<DtoTally>? tallyQuery = _tallyBl.GetTallyById(key);
+                IQueryable<DtoTally_WithPipeAndCustomer>? tallyQuery = _tallyBl.GetTallyById(key);
                 //Apply the OData query options (like filter, orderby, top, etc) to the query. This also executes the query.
                 return Ok(options.ApplyTo(tallyQuery));
             }
@@ -64,7 +64,7 @@ namespace Inventory_API.Controllers
                 return BadRequest(ModelState);
             }
 
-            DtoTally DtoTally;
+            DtoTally_WithPipeAndCustomer DtoTally;
             try
             {
                 DtoTally = await _tallyBl.CreateTally(tally);
