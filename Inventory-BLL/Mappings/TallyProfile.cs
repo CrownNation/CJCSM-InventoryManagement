@@ -21,10 +21,6 @@ namespace Inventory_BLL.Mappings
 
             CreateMap<DtoTallyCreate, Tally>();
 
-            CreateMap<Tally, DtoTally_WithPipeAndCustomer>()
-                .ForMember(dest => dest.TallyType, opt => opt.MapFrom(src => (TallyTypes)src.TallyType))
-                .ForMember(dest => dest.TallyPipes, opt => opt.MapFrom(src => src.TallyPipes));
-
 
             // Ignore TallyId since it is passed as a parameter and we don't want to ever update the TallyId
             CreateMap<DtoTallyUpdate, Tally>()

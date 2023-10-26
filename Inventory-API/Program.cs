@@ -1,17 +1,11 @@
-using Inventory_API;
 using Inventory_BLL.BL;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
-using Inventory_Dto.Dto;
-using Inventory_Models.ViewModels;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using System.Reflection;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 // Program.cs in .Net Core 6.0+ is the entry point for the application that 
 // It implies using System;

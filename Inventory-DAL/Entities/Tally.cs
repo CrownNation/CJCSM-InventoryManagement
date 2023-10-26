@@ -36,11 +36,11 @@ namespace Inventory_DAL.Entities
         public string? CarrierName { get; set; }
 
         //Navigation Properties
-        public ICollection<TallyPipe> TallyPipes { get; set; } = new List<TallyPipe>();
-        public ICollection<Pipe> PipeList { get; set; }
+//        public ICollection<TallyPipe> TallyPipes { get; set; } = new List<TallyPipe>();
+//        public ICollection<Pipe> PipeList { get; set; }
 
-        public Customer Customer { get; set; }
+  //      public Customer Customer { get; set; }
 
-        public ShopLocation ShopLocation { get; set; }
+    //    public ShopLocation ShopLocation { get; set; }
     }
 }

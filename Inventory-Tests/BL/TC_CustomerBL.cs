@@ -1,17 +1,10 @@
 ﻿using Inventory_DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using AutoMapper;
 using Xunit;
 using Inventory_BLL.BL;
 using System.Reflection;
-using Inventory_Models.ViewModels;
-using System.ComponentModel.DataAnnotations;
 using Inventory_Dto.Dto;
 
 namespace Inventory_Tests.BL

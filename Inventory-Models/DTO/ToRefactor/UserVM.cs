@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Models.ViewModels
+namespace Inventory_Models.DTO.ToRefactor
 {
     public class UserVM
     {

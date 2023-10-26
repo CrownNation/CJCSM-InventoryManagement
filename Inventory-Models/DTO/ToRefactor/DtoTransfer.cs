@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Dto.Dto
+namespace Inventory_Models.DTO.ToRefactor
 {
-   public class DtoTransfer
-   {
-      public Guid TransferId { get; set; }
+    public class DtoTransfer
+    {
+        public Guid TransferId { get; set; }
         public string ShopLocationId { get; set; }
         public string? Notes { get; set; }
-   }
+    }
 }

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Models.ViewModels
+namespace Inventory_Models.DTO.ToRefactor
 {
-    public class PipeSizeVM
+    public class PipeConditionVM
     {
         [Key]
-        public Guid PipeSizeId { get; set; }
+        public Guid PipeConditionId { get; set; }
         public string Name { get; set; }
     }
 }

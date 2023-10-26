@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inventory_Models.ViewModels
+namespace Inventory_Models.DTO.ToRefactor
 {
-    public class EquipmentDefinitionVM
+    public class FeatureVM
     {
         [Key]
-        public Guid EquipmentDefinitionId { get; set; }
+        public Guid FeatureId { get; set; }
         public string Name { get; set; }
-        public string? Notes { get; set; }
+        public string? Description { get; set; }
     }
 }

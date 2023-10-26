@@ -77,6 +77,7 @@ namespace Inventory_DAL.Entities
             modelBuilder.Entity<TallyPipe>()
                 .HasKey(tp => new { tp.TallyId, tp.PipeId });
 
+            /*
             modelBuilder.Entity<TallyPipe>()
                 .HasOne(tp => tp.Tally)  // Use navigation property here
                 .WithMany(t => t.TallyPipes)
@@ -86,7 +87,7 @@ namespace Inventory_DAL.Entities
                 .HasOne(tp => tp.Pipe)  // Use navigation property here
                 .WithMany(p => p.TallyPipes)
                 .HasForeignKey(tp => tp.PipeId);
-
+            */
         }
     }
 }
