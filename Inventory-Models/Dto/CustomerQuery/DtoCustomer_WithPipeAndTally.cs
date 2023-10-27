@@ -1,16 +1,18 @@
 ﻿using Inventory_Dto.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Inventory_Models.DTO.CustomerQuery;
 
 namespace Inventory_Models.Dto
 {
     public class DtoCustomer_WithPipeAndTally
     {
 
-        List<DtoTally> TallyList { get; set; } = new List<DtoTally>();
+        public Guid CustomerId { get; set; }
+
+        public DtoCustomer Customer { get; set; }
+
+        public List<DtoTally> TallyList { get; set; }
+
+        public List<DtoRack_WithTiers> RackList { get; set; }
 
     }
 }

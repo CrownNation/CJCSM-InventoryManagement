@@ -39,10 +39,5 @@ namespace Inventory_Dto.Dto
         public float WeightInKg { get; set; }
         public float WeightInLbs { get; set; }
 
-        //Navigation Properties
-        public List<DtoTallyPipe> TallyPipes { get; set; }
-
-        public DtoCustomer Customer { get; set; }
-
     }
 }

@@ -37,7 +37,13 @@ namespace Inventory_BLL.BL
          throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
       }
 
-      public async Task<DtoCustomer> CreateCustomer(DtoCustomerCreate DtoCustomer)
+        public IQueryable<DtoCustomer>? GetCustomerWithTallyAndPipeById(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public async Task<DtoCustomer> CreateCustomer(DtoCustomerCreate DtoCustomer)
       {
          if (DtoCustomer == null)
             throw new ArgumentNullException("Create Customer failed. The customer data is null");
@@ -78,5 +84,6 @@ namespace Inventory_BLL.BL
          _context.Customer.Remove(customer);
          _context.SaveChanges();
       }
-   }
+
+    }
 }
