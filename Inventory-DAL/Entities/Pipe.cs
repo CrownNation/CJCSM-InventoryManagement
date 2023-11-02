@@ -19,6 +19,11 @@ namespace Inventory_DAL.Entities
         public Guid PipeDefinitionId { get; set; }
 
         [Required]
+        [ForeignKey("Customer")]
+        public Guid CustomerId { get; set; }
+
+
+        [Required]
         [ForeignKey("Tier")]
         public Guid TierId { get; set; }
 
@@ -27,9 +32,6 @@ namespace Inventory_DAL.Entities
 
         public int Quantity { get; set; }
 
-        //Navigation Properties
-        public ICollection<TallyPipe> TallyPipes { get; set; } = new List<TallyPipe>();
-        public PipeDefinition PipeDefinition { get; set; }
 
 
     }

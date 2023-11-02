@@ -15,5 +15,6 @@ namespace Inventory_Models.DTO.CustomerQuery
         public int TierNumber { get; set; }
 
         public List<DtoPipe> PipeList { get; set; }
+
     }
 }

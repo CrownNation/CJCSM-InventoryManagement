@@ -12,5 +12,6 @@ namespace Inventory_Dto.Dto
         public Guid TierId { get; set; }
         public Guid RackId { get; set; }
         public int Number { get; set; }
+
     }
 }

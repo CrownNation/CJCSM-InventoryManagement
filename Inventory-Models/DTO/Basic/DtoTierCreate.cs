@@ -11,5 +11,7 @@ namespace Inventory_Dto.Dto
     {
         public Guid RackId { get; set; }
         public int? Number { get; set; }
+        public Guid CustomerId { get; set; }
+
     }
 }

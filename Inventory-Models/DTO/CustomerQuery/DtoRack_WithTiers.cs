@@ -17,6 +17,6 @@ namespace Inventory_Models.DTO.CustomerQuery
         public Guid ShopLocationId { get; set; }
         public string ShopLocationName { get; set; }  // Navigation property to get ShopLocationName
 
-        public List<Tier> TierList { get; set; }
+        public List<DtoTier_WithPipe> TierList { get; set; }
     }
 }

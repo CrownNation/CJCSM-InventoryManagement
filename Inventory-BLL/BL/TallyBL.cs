@@ -51,6 +51,10 @@ namespace Inventory_BLL.BL
                                         ShopLocation = shopLocation,
                                     };
 
+                // The .Select method in LINQ allows you to transform or project data from one type to another.
+                // Here the .Select transforms the anonymous type returned by dtoTallyQuery into instances of the DtoTally_WithPipeAndCustomer class.
+                // That happens because DtoTally_WithPipeAndCustomer is returned by the lambda expression. If that wasn't done, then the 
+                // dtoList would have the structure of the anonymous type in dtoTallyQuery.
                 var dtoList = dtoTallyQuery.AsEnumerable().Select(data =>
                 {
                     if (data == null)
@@ -135,10 +139,16 @@ namespace Inventory_BLL.BL
 
             var dtoPipeList = pipeQuery.Select(q => new DtoPipe
             {
+                CustomerId = q.Pipe.CustomerId,
                 PipeId = q.Pipe.PipeId,
                 RackId = q.Rack.RackId,
                 RackName = q.Rack.Name,
                 TierNumber = q.Tier.Number,
+                TierId = q.Tier.TierId,
+                PipeDefinitionId = q.PipeDefinition.PipeDefinitionId,
+                LengthInFeet = q.Pipe.LengthInFeet,
+                LengthInMeters = q.Pipe.LengthInMeters,
+                Quantity = q.Pipe.Quantity,
                 PipeDefinition = new DtoPipeDefinition
                 {
                     PipeDefinitionId = q.PipeDefinition.PipeDefinitionId,

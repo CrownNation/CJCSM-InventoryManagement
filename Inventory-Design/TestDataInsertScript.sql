@@ -4,10 +4,10 @@ GO
 -- Customers
 DECLARE @Customer1Id UNIQUEIDENTIFIER = NEWID(), @Customer2Id UNIQUEIDENTIFIER = NEWID(), @Customer3Id UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Customer (CustomerId, Name, Address1, City, ProvinceState, PostalCode, Email, IsActive, DateOfCreation, DateOfLastUpdate) VALUES
-(@Customer1Id, 'OilCo Energy', '123 Petro St', 'Anytown', 'AB', '123456', 'contact@oilcoenergy.com', 1, GETDATE(), GETDATE()),
-(@Customer2Id, 'LubeLabs Ltd.', '456 Hydro St', 'Newcity', 'BC', '654321', 'info@lubelabs.com', 1, GETDATE(), GETDATE()),
-(@Customer3Id, 'FossilFuel Fusion', '789 Fuel Ave', 'Oldtown', 'CA', '112233', 'support@fossilfuel.com', 1, GETDATE(), GETDATE());
+INSERT INTO Customer (CustomerId, Name, Address1, City, ProvinceState, Country, PostalCode, Email, IsActive, DateOfCreation, DateOfLastUpdate) VALUES
+(@Customer1Id, 'OilCo Energy', '123 Petro St', 'Anytown', 'AB', 'CA', '123456', 'contact@oilcoenergy.com', 1, GETDATE(), GETDATE()),
+(@Customer2Id, 'LubeLabs Ltd.', '456 Hydro St', 'Newcity', 'BC', 'CA', '654321', 'info@lubelabs.com', 1, GETDATE(), GETDATE()),
+(@Customer3Id, 'FossilFuel Fusion', '789 Fuel Ave', 'Oldtown', 'SK', 'CA', '112233', 'support@fossilfuel.com', 1, GETDATE(), GETDATE());
 
 -- ShopLocation
 DECLARE @ShopLocationId UNIQUEIDENTIFIER = NEWID();
@@ -47,14 +47,15 @@ INSERT INTO Rack (RackId, Name, ShopLocationId, IsActive) VALUES
 
 -- Tiers
 DECLARE @Tier1Id UNIQUEIDENTIFIER = NEWID(), @Tier2Id UNIQUEIDENTIFIER = NEWID(), @Tier3Id UNIQUEIDENTIFIER = NEWID(), 
-        @Tier4Id UNIQUEIDENTIFIER = NEWID(), @Tier5Id UNIQUEIDENTIFIER = NEWID();
+        @Tier4Id UNIQUEIDENTIFIER = NEWID(), @Tier5Id UNIQUEIDENTIFIER = NEWID(), @Tier6Id UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO Tier (TierId, RackId, Number) VALUES
 (@Tier1Id, @Rack1Id, 1),
 (@Tier2Id, @Rack1Id, 2),
 (@Tier3Id, @Rack2Id, 1),
 (@Tier4Id, @Rack2Id, 2),
-(@Tier5Id, @Rack3Id, 1);
+(@Tier5Id, @Rack3Id, 1),
+(@Tier6Id, @Rack3Id, 3);
 
 -- PipeDefinition -- Run PipeDefinitionPropertiesInsertScript.sql first.
 DECLARE @PipeDef1Id UNIQUEIDENTIFIER = NEWID(), @PipeDef2Id UNIQUEIDENTIFIER = NEWID(), @PipeDef3Id UNIQUEIDENTIFIER = NEWID(),
@@ -116,13 +117,13 @@ VALUES
 DECLARE @Pipe1Id UNIQUEIDENTIFIER = NEWID(), @Pipe2Id UNIQUEIDENTIFIER = NEWID(), @Pipe3Id UNIQUEIDENTIFIER = NEWID(),
         @Pipe4Id UNIQUEIDENTIFIER = NEWID(), @Pipe5Id UNIQUEIDENTIFIER = NEWID(), @Pipe6Id UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Pipe (PipeId, PipeDefinitionId, TierId, LengthInMeters, LengthInFeet, Quantity) VALUES
-(@Pipe1Id, @PipeDef1Id, @Tier1Id, 5.5, 16.4042, 10),
-(@Pipe2Id, @PipeDef2Id, @Tier2Id, 6.0, 19.6852, 8),
-(@Pipe3Id, @PipeDef3Id, @Tier3Id, 5.8, 19.0289, 9),
-(@Pipe4Id, @PipeDef4Id, @Tier4Id, 6.1, 20.0131, 11),
-(@Pipe5Id, @PipeDef1Id, @Tier5Id, 5.9, 19.3579, 7),
-(@Pipe6Id, @PipeDef3Id, @Tier5Id, 6.3, 20.669, 6);
+INSERT INTO Pipe (PipeId, PipeDefinitionId, CustomerId, TierId, LengthInMeters, LengthInFeet, Quantity) VALUES
+(@Pipe1Id, @PipeDef1Id, @Customer1Id, @Tier1Id, 5.5, 16.4042, 10),
+(@Pipe2Id, @PipeDef2Id, @Customer2Id, @Tier2Id, 6.0, 19.6852, 8),
+(@Pipe3Id, @PipeDef3Id, @Customer1Id, @Tier3Id, 5.8, 19.0289, 9),
+(@Pipe4Id, @PipeDef4Id, @Customer2Id, @Tier4Id, 6.1, 20.0131, 11),
+(@Pipe5Id, @PipeDef1Id, @Customer2Id, @Tier5Id, 5.9, 19.3579, 7),
+(@Pipe6Id, @PipeDef3Id, @Customer3Id, @Tier6Id, 6.3, 20.669, 6);
 
 -- Tally
 DECLARE @Tally1Id UNIQUEIDENTIFIER = NEWID(), @Tally2Id UNIQUEIDENTIFIER = NEWID(), @Tally3Id UNIQUEIDENTIFIER = NEWID(),

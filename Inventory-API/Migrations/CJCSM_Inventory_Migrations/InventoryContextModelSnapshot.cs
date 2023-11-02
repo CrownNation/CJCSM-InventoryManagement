@@ -40,6 +40,10 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("Country")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<DateTimeOffset>("DateOfCreation")
                         .HasColumnType("datetimeoffset");
 
@@ -77,6 +81,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("LengthInFeet")
                         .HasColumnType("decimal(18,2)");
 
@@ -89,17 +96,10 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("TallyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("TierId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("PipeId");
-
-                    b.HasIndex("PipeDefinitionId");
-
-                    b.HasIndex("TallyId");
 
                     b.ToTable("Pipe");
                 });
@@ -396,8 +396,6 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
                     b.HasKey("TallyId");
 
-                    b.HasIndex("CustomerId");
-
                     b.ToTable("Tally");
                 });
 
@@ -431,21 +429,6 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.HasKey("TierId");
 
                     b.ToTable("Tier");
-                });
-
-            modelBuilder.Entity("Inventory_DAL.Entities.Pipe", b =>
-                {
-                    b.HasOne("Inventory_DAL.Entities.PipeDefinition", "PipeDefinition")
-                        .WithMany()
-                        .HasForeignKey("PipeDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Inventory_DAL.Entities.Tally", null)
-                        .WithMany("PipeList")
-                        .HasForeignKey("TallyId");
-
-                    b.Navigation("PipeDefinition");
                 });
 
             modelBuilder.Entity("Inventory_DAL.Entities.PipeDefinition", b =>
@@ -510,27 +493,16 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Navigation("ShopLocation");
                 });
 
-            modelBuilder.Entity("Inventory_DAL.Entities.Tally", b =>
-                {
-                    b.HasOne("Inventory_DAL.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("Inventory_DAL.Entities.TallyPipe", b =>
                 {
                     b.HasOne("Inventory_DAL.Entities.Pipe", "Pipe")
-                        .WithMany("TallyPipes")
+                        .WithMany()
                         .HasForeignKey("PipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Inventory_DAL.Entities.Tally", "Tally")
-                        .WithMany("TallyPipes")
+                        .WithMany()
                         .HasForeignKey("TallyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -538,18 +510,6 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Navigation("Pipe");
 
                     b.Navigation("Tally");
-                });
-
-            modelBuilder.Entity("Inventory_DAL.Entities.Pipe", b =>
-                {
-                    b.Navigation("TallyPipes");
-                });
-
-            modelBuilder.Entity("Inventory_DAL.Entities.Tally", b =>
-                {
-                    b.Navigation("PipeList");
-
-                    b.Navigation("TallyPipes");
                 });
 #pragma warning restore 612, 618
         }

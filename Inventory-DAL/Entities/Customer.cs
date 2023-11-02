@@ -25,6 +25,9 @@ namespace Inventory_DAL.Entities
         [StringLength(2)]
         public string? ProvinceState { get; set; }
 
+        [StringLength(2)]
+        public string? Country { get; set; }
+
         [StringLength(6)]
         public string? PostalCode { get; set; }
 

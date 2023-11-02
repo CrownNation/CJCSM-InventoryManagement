@@ -1,4 +1,5 @@
 ﻿using Inventory_Dto.Dto;
+using Inventory_Models.Dto;
 
 namespace Inventory_BLL.Interfaces
 {
@@ -7,7 +8,7 @@ namespace Inventory_BLL.Interfaces
         public IQueryable<DtoCustomer> GetCustomers();
         public IQueryable<DtoCustomer>? GetCustomerById(Guid guid);
 
-        public IQueryable<DtoCustomer>? GetCustomerWithTallyAndPipeById(Guid guid);
+        public IQueryable<DtoCustomer_WithPipe>? GetCustomerWithPipeById(Guid guid);
 
         //A Task represents an asynchronous operation.
         public Task<DtoCustomer> CreateCustomer(DtoCustomerCreate customer);

@@ -60,6 +60,31 @@ namespace Inventory_API.Controllers
             }
         }
 
+        [HttpGet("WithPipe/{key}")]
+        public IActionResult GetCustomerWithPipeById(Guid key)
+        {
+            try
+            {
+                var customer = _customerBl.GetCustomerWithPipeById(key);
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+                return Ok(customer);
+            }
+            catch (KeyNotFoundException e)
+            {
+                _logger.LogInformation($"GetCustomerWithPipeById: " + e.Message);
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetCustomerWithPipeById: " + e.Message);
+                throw new Exception($"There was a problem querying for the customer with id {key} using the pipe.");
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoCustomerCreate customer)
         {
