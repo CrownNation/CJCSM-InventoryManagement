@@ -11,7 +11,7 @@ namespace Inventory_Models.DTO.ToRefactor
     {
         [Key]
         public Guid FeatureId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
     }
 }

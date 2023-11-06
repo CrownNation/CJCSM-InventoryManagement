@@ -17,7 +17,7 @@ namespace Inventory_API.Controllers
         public RackController(ILogger<RackController> logger, IRackBL rackBl)
         {
             _logger = logger;
-            _rackBl = rackBl;
+        _rackBl = rackBl;
         }
 
         [HttpGet]
@@ -60,7 +60,7 @@ namespace Inventory_API.Controllers
                 // options (like filtering, sorting, etc.) to the provided IQueryable source.
                 return Ok(options.ApplyTo(queryableRack));
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
@@ -70,6 +70,46 @@ namespace Inventory_API.Controllers
                 throw new Exception($"There was a problem querying for the rack with id {key}.");
             }
         }
+
+        [HttpGet("WithPipe/{locationId}")]
+        public async Task<IActionResult> GetRackListWithPipeAndCustomerByLocation(Guid locationId, ODataQueryOptions<DtoRack_WithPipe> options)
+        {
+            try
+            {
+                if (_rackBl == null)
+                {
+                    return NotFound();
+                }
+
+                IQueryable<DtoRack_WithPipe>? rackList = await _rackBl.GetRackListWithPipeAndCustomerByLocation(locationId);
+
+                if (rackList == null)
+                {
+                    return NotFound();
+                }
+
+                // Step 2: Convert that list into an IQueryable
+                var queryableRack = rackList.AsQueryable();
+
+                // Step 3: Apply the OData options and return
+                // Returning a 200 OK response, where the content of the response is the result of options.ApplyTo(queryableRack).
+                // The options.ApplyTo() method is from the OData library and it applies the specified OData query
+                // options (like filtering, sorting, etc.) to the provided IQueryable source.
+                return Ok(options.ApplyTo(queryableRack));
+
+
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetRackById: " + e.Message);
+                throw new Exception($"There was a problem querying for the rack with LocationID: {locationId}.");
+            }
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoRackCreate rack)
@@ -105,7 +145,7 @@ namespace Inventory_API.Controllers
             {
                 _rackBl.UpdateRack(dtoRack, key);
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
@@ -126,7 +166,7 @@ namespace Inventory_API.Controllers
             {
                 _rackBl.DeleteRack(key);
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }

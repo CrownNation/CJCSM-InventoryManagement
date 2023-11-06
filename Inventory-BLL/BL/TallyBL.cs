@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -36,6 +38,7 @@ namespace Inventory_BLL.BL
         }
 
 
+        /*
         public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
         {
             try
@@ -49,8 +52,38 @@ namespace Inventory_BLL.BL
                                         Tally = tally,
                                         Customer = customer,
                                         ShopLocation = shopLocation,
+                                        Pipes = (from tp in _context.TallyPipe
+                                                 where tp.TallyId == tally.TallyId
+                                                 join p in _context.Pipe on tp.PipeId equals p.PipeId
+                                                 join pd in _context.PipeDefinition on p.PipeDefinitionId equals pd.PipeDefinitionId
+                                                 join t in _context.Tier on p.TierId equals t.TierId
+                                                 join r in _context.Rack on t.RackId equals r.RackId
+                                                 join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                                 join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
+                                                 join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
+                                                 join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
+                                                 join pps in _context.PipeProperty_Size on pd.SizeId equals pps.PipeProperty_SizeId
+                                                 join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
+                                                 join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
+                                                 join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
+                                                 select new
+                                                 {
+                                                     Pipe = p,
+                                                     PipeDefinition = pd,
+                                                     Tier = t,
+                                                     Rack = r,
+                                                     Category = ppc,
+                                                     Condition = ppcon,
+                                                     Grade = ppgr,
+                                                     Range = ppr,
+                                                     Size = pps,
+                                                     Thread = ppt,
+                                                     Wall = ppw,
+                                                     Weight = ppwe
+                                                 })
                                     };
-
+                    
+   
                 // The .Select method in LINQ allows you to transform or project data from one type to another.
                 // Here the .Select transforms the anonymous type returned by dtoTallyQuery into instances of the DtoTally_WithPipeAndCustomer class.
                 // That happens because DtoTally_WithPipeAndCustomer is returned by the lambda expression. If that wasn't done, then the 
@@ -77,7 +110,39 @@ namespace Inventory_BLL.BL
                         InvoiceNumber = data.Tally.InvoiceNumber,
                         TalliedByUserId = data.Tally.TalliedByUserId,
                         CarrierName = data.Tally.CarrierName,
-                        PipeList = GetPipeList(data.Tally.TallyId)
+                        PipeList = data.Pipes.Select(pipeData => new DtoPipe
+                        {
+                            PipeId = pipeData.Pipe.PipeId,
+                            CustomerId = pipeData.Pipe.CustomerId,
+                            PipeDefinitionId = pipeData.Pipe.PipeDefinitionId,
+                            TierId = pipeData.Pipe.TierId,
+                            TierNumber = pipeData.Tier.Number,
+                            LengthInFeet = pipeData.Pipe.LengthInFeet,
+                            LengthInMeters = pipeData.Pipe.LengthInMeters,
+                            Quantity = pipeData.Pipe.Quantity,
+                            RackId = pipeData.Tier.RackId,
+                            RackName = pipeData.Rack.Name,
+                            PipeDefinition = new DtoPipeDefinition
+                            {
+                                PipeDefinitionId = pipeData.PipeDefinition.PipeDefinitionId,
+                                CategoryId = pipeData.PipeDefinition.CategoryId,
+                                ConditionId = pipeData.PipeDefinition.ConditionId,
+                                GradeId = pipeData.PipeDefinition.GradeId,
+                                RangeId = pipeData.PipeDefinition.RangeId,
+                                SizeId = pipeData.PipeDefinition.SizeId,
+                                ThreadId = pipeData.PipeDefinition.ThreadId,
+                                WallId = pipeData.PipeDefinition.WallId,
+                                WeightId = pipeData.PipeDefinition.WeightId,
+                                Category = pipeData.PipeDefinition.Category,
+                                Condition = pipeData.PipeDefinition.Condition,
+                                Grade = pipeData.PipeDefinition.Grade,
+                                Range = pipeData.PipeDefinition.Range,
+                                Size = pipeData.PipeDefinition.Size,
+                                Thread = pipeData.PipeDefinition.Thread,
+                                Wall = pipeData.PipeDefinition.Wall,
+                                Weight = pipeData.PipeDefinition.Weight
+                            }
+                        }).ToList()
                     };
 
                     decimal totalWeightInKg = 0m;
@@ -102,6 +167,49 @@ namespace Inventory_BLL.BL
                 System.Diagnostics.Debug.WriteLine($"An error occurred in GetTallyById: {ex.Message}");
                 throw; // Rethrow the exception to let it propagate up the call stack
             }
+        }
+        */
+
+
+        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
+        {
+            var dtoTallyQuery = from tally in _context.Tally
+                                where tally.TallyId == guid
+                                join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
+                                join shopLocation in _context.ShopLocation on tally.ShopLocationId equals shopLocation.ShopLocationId
+                                select new DtoTally_WithPipeAndCustomer
+                                {
+                                    CustomerId = customer.CustomerId,
+                                    CustomerName = customer.Name,
+                                    CarrierName = tally.CarrierName,
+                                    DateOfCreation = tally.DateOfCreation,
+                                    InvoiceNumber = tally.InvoiceNumber,
+                                    Notes = tally.Notes,
+                                    ShopLocationId = shopLocation.ShopLocationId,
+                                    ShopLocationName = shopLocation.Name,
+                                    TalliedByUserId = tally.TalliedByUserId,
+                                    TallyId = tally.TallyId,
+                                    TallyNumber = tally.TallyNumber,
+                                    TallyType = (ApplicationEnums.TallyTypes)tally.TallyType,
+                                    PipeList = (from tp in _context.TallyPipe
+                                                where tp.TallyId == tally.TallyId
+                                                join p in _context.Pipe on tp.PipeId equals p.PipeId
+                                                join t in _context.Tier on p.TierId equals t.TierId
+                                                join r in _context.Rack on t.RackId equals r.RackId
+                                                select new DtoPipe
+                                                {
+                                                    PipeId = p.PipeId,
+                                                    PipeDefinitionId = p.PipeDefinitionId,
+                                                    TierId = t.TierId,
+                                                    CustomerId = p.CustomerId, // Assuming CustomerId comes from the Pipe entity
+                                                    RackId = r.RackId,
+                                                    RackName = r.Name, // Assuming there's a 'Name' property on Rack entity
+                                                    Quantity = p.Quantity // Assuming Quantity comes from the Pipe entity
+                                                }) // Do not call ToList(), just assign the query itself.  
+
+
+                                };
+            return dtoTallyQuery;
         }
 
 

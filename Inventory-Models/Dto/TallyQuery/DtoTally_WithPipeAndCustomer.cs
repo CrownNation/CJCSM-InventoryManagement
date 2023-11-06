@@ -1,5 +1,7 @@
 ﻿using CJCSM_Common;
 using Inventory_DAL.Entities;
+using Inventory_DAL.Entities.PipeProperties;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,7 +27,7 @@ namespace Inventory_Dto.Dto
         public DateTimeOffset DateOfCreation { get; set; }
         public string? Notes { get; set; }
 
-        public List<DtoPipe> PipeList { get; set; }
+        public IEnumerable<DtoPipe> PipeList { get; set; }
 
         public string? InvoiceNumber { get; set; }
 

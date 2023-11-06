@@ -89,7 +89,7 @@ namespace Inventory_API.Controllers
          {
             _tierBl.UpdateTier(tier, key);
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }

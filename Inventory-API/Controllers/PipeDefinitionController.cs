@@ -44,7 +44,7 @@ namespace Inventory_API.Controllers
             IQueryable<DtoPipeDefinition>? pipeDefinition = _pipeDefinitionBl.GetPipeDefinitionById(key);
             return Ok(options.ApplyTo(pipeDefinition));
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }
@@ -91,7 +91,7 @@ namespace Inventory_API.Controllers
          {
                 _pipeDefinitionBl.UpdatePipeDefinition(pipeDefinition, key);
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }
@@ -112,7 +112,7 @@ namespace Inventory_API.Controllers
          {
                 _pipeDefinitionBl.DisablePipeDefinition(key);
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }

@@ -3,6 +3,7 @@ using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory_API.Controllers
 {
@@ -33,16 +34,22 @@ namespace Inventory_API.Controllers
                 throw new Exception("There was a problem querying for tallies.");
             }
         }
-
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
+        public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
-                //Get the query
+                // Get the query
                 IQueryable<DtoTally_WithPipeAndCustomer>? tallyQuery = _tallyBl.GetTallyById(key);
-                //Apply the OData query options (like filter, orderby, top, etc) to the query. This also executes the query.
-                return Ok(options.ApplyTo(tallyQuery));
+
+                // Apply the OData query options (like filter, orderby, top, etc) to the query
+                // Note that this returns an IQueryable, it does not execute anything yet
+                var appliedQuery = options.ApplyTo(tallyQuery) as IQueryable<DtoTally_WithPipeAndCustomer>;
+
+                // Execute the query asynchronously
+                var results = await appliedQuery.ToListAsync();
+
+                return Ok(results);
             }
             catch (KeyNotFoundException e)
             {
@@ -55,6 +62,7 @@ namespace Inventory_API.Controllers
                 throw new Exception($"There was a problem querying for the tally with id {key}.");
             }
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)  

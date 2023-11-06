@@ -71,7 +71,8 @@ string connectionString = builder.Configuration.GetConnectionString("development
 builder.Services.AddDbContext<InventoryContext>(options =>
    options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Inventory-API"))
    .EnableSensitiveDataLogging(true)
-   .LogTo(Console.WriteLine, LogLevel.Information));
+   .LogTo(Console.WriteLine, LogLevel.Information)
+   );
 
 
 // This adds the AutoMapper to the DI container. AutoMapper is a library that maps one object to another.
