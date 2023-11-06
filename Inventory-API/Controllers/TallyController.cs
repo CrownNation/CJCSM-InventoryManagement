@@ -39,17 +39,9 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                // Get the query
-                IQueryable<DtoTally_WithPipeAndCustomer>? tallyQuery = _tallyBl.GetTallyById(key);
+                DtoTally_WithPipeAndCustomer tally = await _tallyBl.GetTallyById(key);
 
-                // Apply the OData query options (like filter, orderby, top, etc) to the query
-                // Note that this returns an IQueryable, it does not execute anything yet
-                var appliedQuery = options.ApplyTo(tallyQuery) as IQueryable<DtoTally_WithPipeAndCustomer>;
-
-                // Execute the query asynchronously
-                var results = await appliedQuery.ToListAsync();
-
-                return Ok(results);
+                return Ok(tally);
             }
             catch (KeyNotFoundException e)
             {

@@ -38,8 +38,8 @@ namespace Inventory_BLL.BL
         }
 
 
-        /*
-        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
+        
+        public async Task<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
         {
             try
             {
@@ -80,15 +80,17 @@ namespace Inventory_BLL.BL
                                                      Thread = ppt,
                                                      Wall = ppw,
                                                      Weight = ppwe
-                                                 })
+                                                 }).ToList()
                                     };
                     
    
+                var dataList = await dtoTallyQuery.ToListAsync();
+
                 // The .Select method in LINQ allows you to transform or project data from one type to another.
                 // Here the .Select transforms the anonymous type returned by dtoTallyQuery into instances of the DtoTally_WithPipeAndCustomer class.
                 // That happens because DtoTally_WithPipeAndCustomer is returned by the lambda expression. If that wasn't done, then the 
                 // dtoList would have the structure of the anonymous type in dtoTallyQuery.
-                var dtoList = dtoTallyQuery.AsEnumerable().Select(data =>
+                var returnTally = dataList.Select(data =>
                 {
                     if (data == null)
                     {
@@ -157,10 +159,9 @@ namespace Inventory_BLL.BL
                     dtoTally.WeightInLbs = (float)totalWeightInLbs;
 
                     return dtoTally;
-                }).Where(x => x != null).AsQueryable();
+                }).FirstOrDefault();
 
-
-                return dtoList;
+                return returnTally;
             }
             catch (Exception ex)
             {
@@ -168,9 +169,10 @@ namespace Inventory_BLL.BL
                 throw; // Rethrow the exception to let it propagate up the call stack
             }
         }
-        */
+        
 
 
+        /*
         public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
         {
             var dtoTallyQuery = from tally in _context.Tally
@@ -205,13 +207,11 @@ namespace Inventory_BLL.BL
                                                     RackId = r.RackId,
                                                     RackName = r.Name, // Assuming there's a 'Name' property on Rack entity
                                                     Quantity = p.Quantity // Assuming Quantity comes from the Pipe entity
-                                                }) // Do not call ToList(), just assign the query itself.  
-
-
+                                                }) // Do not call ToList(), just assign the query itself.                       };
                                 };
             return dtoTallyQuery;
         }
-
+        */
 
         private List<DtoPipe> GetPipeList(Guid tallyId)
         {

@@ -27,7 +27,7 @@ namespace Inventory_Dto.Dto
         public DateTimeOffset DateOfCreation { get; set; }
         public string? Notes { get; set; }
 
-        public IEnumerable<DtoPipe> PipeList { get; set; }
+        public List<DtoPipe> PipeList { get; set; }
 
         public string? InvoiceNumber { get; set; }
 
