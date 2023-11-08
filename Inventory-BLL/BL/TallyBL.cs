@@ -38,185 +38,29 @@ namespace Inventory_BLL.BL
         }
 
 
-        
+
         public async Task<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
         {
-            try
+            var tallyQuery = from tally in _context.Tally
+                             where tally.TallyId == guid
+                             join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
+                             join shopLocation in _context.ShopLocation on tally.ShopLocationId equals shopLocation.ShopLocationId
+                             select new
+                             {
+                                 Tally = tally,
+                                 Customer = customer,
+                                 ShopLocation = shopLocation
+                             };
+
+            var tallyResult = await tallyQuery.AsNoTracking().FirstOrDefaultAsync();
+
+            if (tallyResult == null)
             {
-                var dtoTallyQuery = from tally in _context.Tally
-                                    where tally.TallyId == guid
-                                    join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
-                                    join shopLocation in _context.ShopLocation on tally.ShopLocationId equals shopLocation.ShopLocationId
-                                    select new
-                                    {
-                                        Tally = tally,
-                                        Customer = customer,
-                                        ShopLocation = shopLocation,
-                                        Pipes = (from tp in _context.TallyPipe
-                                                 where tp.TallyId == tally.TallyId
-                                                 join p in _context.Pipe on tp.PipeId equals p.PipeId
-                                                 join pd in _context.PipeDefinition on p.PipeDefinitionId equals pd.PipeDefinitionId
-                                                 join t in _context.Tier on p.TierId equals t.TierId
-                                                 join r in _context.Rack on t.RackId equals r.RackId
-                                                 join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
-                                                 join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
-                                                 join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
-                                                 join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
-                                                 join pps in _context.PipeProperty_Size on pd.SizeId equals pps.PipeProperty_SizeId
-                                                 join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
-                                                 join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
-                                                 join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
-                                                 select new
-                                                 {
-                                                     Pipe = p,
-                                                     PipeDefinition = pd,
-                                                     Tier = t,
-                                                     Rack = r,
-                                                     Category = ppc,
-                                                     Condition = ppcon,
-                                                     Grade = ppgr,
-                                                     Range = ppr,
-                                                     Size = pps,
-                                                     Thread = ppt,
-                                                     Wall = ppw,
-                                                     Weight = ppwe
-                                                 }).ToList()
-                                    };
-                    
-   
-                var dataList = await dtoTallyQuery.ToListAsync();
-
-                // The .Select method in LINQ allows you to transform or project data from one type to another.
-                // Here the .Select transforms the anonymous type returned by dtoTallyQuery into instances of the DtoTally_WithPipeAndCustomer class.
-                // That happens because DtoTally_WithPipeAndCustomer is returned by the lambda expression. If that wasn't done, then the 
-                // dtoList would have the structure of the anonymous type in dtoTallyQuery.
-                var returnTally = dataList.Select(data =>
-                {
-                    if (data == null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Data is null");
-                        return null;
-                    }
-
-                    var dtoTally = new DtoTally_WithPipeAndCustomer
-                    {
-                        TallyId = data.Tally.TallyId,
-                        TallyNumber = data.Tally.TallyNumber,
-                        CustomerId = data.Customer.CustomerId,
-                        CustomerName = data.Customer.Name,
-                        ShopLocationId = data.ShopLocation.ShopLocationId,
-                        ShopLocationName = data.ShopLocation.Name,
-                        TallyType = (ApplicationEnums.TallyTypes)data.Tally.TallyType,
-                        DateOfCreation = data.Tally.DateOfCreation,
-                        Notes = data.Tally.Notes,
-                        InvoiceNumber = data.Tally.InvoiceNumber,
-                        TalliedByUserId = data.Tally.TalliedByUserId,
-                        CarrierName = data.Tally.CarrierName,
-                        PipeList = data.Pipes.Select(pipeData => new DtoPipe
-                        {
-                            PipeId = pipeData.Pipe.PipeId,
-                            CustomerId = pipeData.Pipe.CustomerId,
-                            PipeDefinitionId = pipeData.Pipe.PipeDefinitionId,
-                            TierId = pipeData.Pipe.TierId,
-                            TierNumber = pipeData.Tier.Number,
-                            LengthInFeet = pipeData.Pipe.LengthInFeet,
-                            LengthInMeters = pipeData.Pipe.LengthInMeters,
-                            Quantity = pipeData.Pipe.Quantity,
-                            RackId = pipeData.Tier.RackId,
-                            RackName = pipeData.Rack.Name,
-                            PipeDefinition = new DtoPipeDefinition
-                            {
-                                PipeDefinitionId = pipeData.PipeDefinition.PipeDefinitionId,
-                                CategoryId = pipeData.PipeDefinition.CategoryId,
-                                ConditionId = pipeData.PipeDefinition.ConditionId,
-                                GradeId = pipeData.PipeDefinition.GradeId,
-                                RangeId = pipeData.PipeDefinition.RangeId,
-                                SizeId = pipeData.PipeDefinition.SizeId,
-                                ThreadId = pipeData.PipeDefinition.ThreadId,
-                                WallId = pipeData.PipeDefinition.WallId,
-                                WeightId = pipeData.PipeDefinition.WeightId,
-                                Category = pipeData.PipeDefinition.Category,
-                                Condition = pipeData.PipeDefinition.Condition,
-                                Grade = pipeData.PipeDefinition.Grade,
-                                Range = pipeData.PipeDefinition.Range,
-                                Size = pipeData.PipeDefinition.Size,
-                                Thread = pipeData.PipeDefinition.Thread,
-                                Wall = pipeData.PipeDefinition.Wall,
-                                Weight = pipeData.PipeDefinition.Weight
-                            }
-                        }).ToList()
-                    };
-
-                    decimal totalWeightInKg = 0m;
-                    decimal totalWeightInLbs = 0m;
-
-                    foreach (DtoPipe pipe in dtoTally.PipeList)
-                    {
-                        totalWeightInKg += pipe.Quantity * pipe.PipeDefinition.Weight.WeightInKgPerMeter * pipe.LengthInMeters;
-                        totalWeightInLbs += pipe.Quantity * pipe.PipeDefinition.Weight.WeightInLbsPerFoot * pipe.LengthInFeet;
-                    }
-                    dtoTally.WeightInKg = (float)totalWeightInKg;
-                    dtoTally.WeightInLbs = (float)totalWeightInLbs;
-
-                    return dtoTally;
-                }).FirstOrDefault();
-
-                return returnTally;
+                return null; // Handle the case where the Tally is not found.
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"An error occurred in GetTallyById: {ex.Message}");
-                throw; // Rethrow the exception to let it propagate up the call stack
-            }
-        }
-        
 
-
-        /*
-        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
-        {
-            var dtoTallyQuery = from tally in _context.Tally
-                                where tally.TallyId == guid
-                                join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
-                                join shopLocation in _context.ShopLocation on tally.ShopLocationId equals shopLocation.ShopLocationId
-                                select new DtoTally_WithPipeAndCustomer
-                                {
-                                    CustomerId = customer.CustomerId,
-                                    CustomerName = customer.Name,
-                                    CarrierName = tally.CarrierName,
-                                    DateOfCreation = tally.DateOfCreation,
-                                    InvoiceNumber = tally.InvoiceNumber,
-                                    Notes = tally.Notes,
-                                    ShopLocationId = shopLocation.ShopLocationId,
-                                    ShopLocationName = shopLocation.Name,
-                                    TalliedByUserId = tally.TalliedByUserId,
-                                    TallyId = tally.TallyId,
-                                    TallyNumber = tally.TallyNumber,
-                                    TallyType = (ApplicationEnums.TallyTypes)tally.TallyType,
-                                    PipeList = (from tp in _context.TallyPipe
-                                                where tp.TallyId == tally.TallyId
-                                                join p in _context.Pipe on tp.PipeId equals p.PipeId
-                                                join t in _context.Tier on p.TierId equals t.TierId
-                                                join r in _context.Rack on t.RackId equals r.RackId
-                                                select new DtoPipe
-                                                {
-                                                    PipeId = p.PipeId,
-                                                    PipeDefinitionId = p.PipeDefinitionId,
-                                                    TierId = t.TierId,
-                                                    CustomerId = p.CustomerId, // Assuming CustomerId comes from the Pipe entity
-                                                    RackId = r.RackId,
-                                                    RackName = r.Name, // Assuming there's a 'Name' property on Rack entity
-                                                    Quantity = p.Quantity // Assuming Quantity comes from the Pipe entity
-                                                }) // Do not call ToList(), just assign the query itself.                       };
-                                };
-            return dtoTallyQuery;
-        }
-        */
-
-        private List<DtoPipe> GetPipeList(Guid tallyId)
-        {
             var pipeQuery = from tp in _context.TallyPipe
-                            where tp.TallyId == tallyId
+                            where tp.TallyId == tallyResult.Tally.TallyId
                             join p in _context.Pipe on tp.PipeId equals p.PipeId
                             join pd in _context.PipeDefinition on p.PipeDefinitionId equals pd.PipeDefinitionId
                             join t in _context.Tier on p.TierId equals t.TierId
@@ -229,95 +73,61 @@ namespace Inventory_BLL.BL
                             join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
                             join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
                             join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
-                            select new
+                            select new DtoPipe
                             {
-                                Pipe = p,
-                                PipeDefinition = pd,
-                                Tier = t,
-                                Rack = r,
-                                Category = ppc,
-                                Condition = ppcon,
-                                Grade = ppgr,
-                                Range = ppr,
-                                Size = pps,
-                                Thread = ppt,
-                                Wall = ppw,
-                                Weight = ppwe
+                                PipeId = p.PipeId,
+                                CustomerId = p.CustomerId,
+                                PipeDefinitionId = pd.PipeDefinitionId,
+                                TierId = t.TierId,
+                                TierNumber = t.Number,
+                                LengthInFeet = p.LengthInFeet,
+                                LengthInMeters = p.LengthInMeters,
+                                Quantity = p.Quantity,
+                                RackId = t.RackId,
+                                RackName = r.Name,
+                                PipeDefinition = new DtoPipeDefinition
+                                {
+                                    PipeDefinitionId = pd.PipeDefinitionId,
+                                    CategoryId = pd.CategoryId,
+                                    ConditionId = pd.ConditionId,
+                                    GradeId = pd.GradeId,
+                                    RangeId = pd.RangeId,
+                                    SizeId = pd.SizeId,
+                                    ThreadId = pd.ThreadId,
+                                    WallId = pd.WallId,
+                                    WeightId = pd.WeightId,
+                                    Category = ppc,
+                                    Condition = ppcon,
+                                    Grade = ppgr,
+                                    Range = ppr,
+                                    Size = pps,
+                                    Thread = ppt,
+                                    Wall = ppw,
+                                    Weight = ppwe
+                                }
                             };
 
-            var dtoPipeList = pipeQuery.Select(q => new DtoPipe
+            var pipeList = await pipeQuery.AsNoTracking().ToListAsync();
+
+            var returnTally = new DtoTally_WithPipeAndCustomer
             {
-                CustomerId = q.Pipe.CustomerId,
-                PipeId = q.Pipe.PipeId,
-                RackId = q.Rack.RackId,
-                RackName = q.Rack.Name,
-                TierNumber = q.Tier.Number,
-                TierId = q.Tier.TierId,
-                PipeDefinitionId = q.PipeDefinition.PipeDefinitionId,
-                LengthInFeet = q.Pipe.LengthInFeet,
-                LengthInMeters = q.Pipe.LengthInMeters,
-                Quantity = q.Pipe.Quantity,
-                PipeDefinition = new DtoPipeDefinition
-                {
-                    PipeDefinitionId = q.PipeDefinition.PipeDefinitionId,
-                    CategoryId = q.PipeDefinition.CategoryId,
-                    ConditionId = q.PipeDefinition.ConditionId,
-                    GradeId = q.PipeDefinition.GradeId,
-                    RangeId = q.PipeDefinition.RangeId,
-                    SizeId = q.PipeDefinition.SizeId,
-                    ThreadId = q.PipeDefinition.ThreadId,
-                    WallId = q.PipeDefinition.WallId,
-                    WeightId = q.PipeDefinition.WeightId,
-                    Category = new PipeProperty_Category
-                    {
-                        PipeProperty_CategoryId = q.Category.PipeProperty_CategoryId,
-                        Name = q.Category.Name
-                    },
-                    Condition = new PipeProperty_Condition
-                    {
-                        PipeProperty_ConditionId = q.Condition.PipeProperty_ConditionId,
-                        Name = q.Condition.Name
-                    },
-                    Grade = new PipeProperty_Grade
-                    {
-                        PipeProperty_GradeId = q.Grade.PipeProperty_GradeId,
-                        Name = q.Grade.Name
-                    },
-                    Range = new PipeProperty_Range
-                    {
-                        PipeProperty_RangeId = q.Range.PipeProperty_RangeId,
-                        Name = q.Range.Name
-                    },
-                    Size = new PipeProperty_Size
-                    {
-                        PipeProperty_SizeId = q.Size.PipeProperty_SizeId,
-                        SizeImperial = q.Size.SizeImperial,
-                        SizeMetric = q.Size.SizeMetric
-                    },
-                    Thread = new PipeProperty_Thread
-                    {
-                        PipeProperty_ThreadId = q.Thread.PipeProperty_ThreadId,
-                        Name = q.Thread.Name
-                    },
-                    Wall = new PipeProperty_Wall
-                    {
-                        PipeProperty_WallId = q.Wall.PipeProperty_WallId,
-                        WallImperial = q.Wall.WallImperial,
-                        WallMetric = q.Wall.WallMetric
-                    },
-                    Weight = new PipeProperty_Weight
-                    {
-                        PipeProperty_WeightId = q.Weight.PipeProperty_WeightId,
-                        WeightInLbsPerFoot = q.Weight.WeightInLbsPerFoot,
-                        WeightInKgPerMeter = q.Weight.WeightInKgPerMeter
-                    }
-                }
-            }).ToList();
+                TallyId = tallyResult.Tally.TallyId,
+                TallyNumber = tallyResult.Tally.TallyNumber,
+                CustomerId = tallyResult.Customer.CustomerId,
+                CustomerName = tallyResult.Customer.Name,
+                ShopLocationId = tallyResult.ShopLocation.ShopLocationId,
+                ShopLocationName = tallyResult.ShopLocation.Name,
+                TallyType = (ApplicationEnums.TallyTypes)tallyResult.Tally.TallyType,
+                DateOfCreation = tallyResult.Tally.DateOfCreation,
+                Notes = tallyResult.Tally.Notes,
+                InvoiceNumber = tallyResult.Tally.InvoiceNumber,
+                TalliedByUserId = tallyResult.Tally.TalliedByUserId,
+                CarrierName = tallyResult.Tally.CarrierName,
+                PipeList = pipeList
+            };
 
-            return dtoPipeList;
+            return returnTally;
         }
-
-
 
 
         public async Task<DtoTally_WithPipeAndCustomer> CreateTally(DtoTallyCreate dtoTallyCreate)

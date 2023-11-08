@@ -61,15 +61,17 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("WithPipe/{key}")]
-        public IActionResult GetCustomerWithPipeById(Guid key)
+        public async Task<IActionResult> GetCustomerWithPipeById(Guid key)
         {
             try
             {
-                var customer = _customerBl.GetCustomerWithPipeById(key);
+                var customer = await _customerBl.GetCustomerWithPipeByCustomerId(key);
+
                 if (customer == null)
                 {
                     return NotFound();
                 }
+
                 return Ok(customer);
             }
             catch (KeyNotFoundException e)
@@ -83,6 +85,7 @@ namespace Inventory_API.Controllers
                 throw new Exception($"There was a problem querying for the customer with id {key} using the pipe.");
             }
         }
+
 
 
         [HttpPost]
