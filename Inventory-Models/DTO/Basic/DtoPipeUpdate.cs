@@ -10,7 +10,12 @@ namespace Inventory_Dto.Dto
     {
         public Guid PipeDefinitionId { get; set; }
         public Guid TierId { get; set; }
-        public float Length { get; set; }
+        public Guid CustomerId { get; set; }
+
+        public Decimal LengthInMeters { get; set; }
+        public Decimal LengthInFeet { get; set; }
+
         public int Quantity { get; set; }
+        public int IndexOfPipe { get; set; }
     }
 }

@@ -22,26 +22,32 @@ namespace Inventory_BLL.BL
             _mapper = mapper;
         }
 
-        public IQueryable<DtoCustomer> GetCustomers()
+        public Task<IQueryable<DtoCustomer>> GetCustomers()
         {
             IQueryable<Customer> entity = _context.Customer.AsQueryable();
             IQueryable<DtoCustomer> customers = _mapper.ProjectTo<DtoCustomer>(entity);
 
-            return customers;
+            return Task.FromResult(customers);
         }
 
-        public IQueryable<DtoCustomer>? GetCustomerById(Guid guid)
+        public async Task<IQueryable<DtoCustomer>?> GetCustomerById(Guid guid)
         {
-            IQueryable<Customer>? customer = _context.Customer.Where(x => x.CustomerId == guid);
-            if (customer.Any())
+            try
             {
-                IQueryable<DtoCustomer> DtoCustomer = _mapper.ProjectTo<DtoCustomer>(customer);
-                return DtoCustomer;
+                IQueryable<Customer>? customer = _context.Customer.Where(x => x.CustomerId == guid);
+                if (customer.Any())
+                {
+                    IQueryable<DtoCustomer> DtoCustomer = _mapper.ProjectTo<DtoCustomer>(customer);
+                    return await Task.FromResult(DtoCustomer);
+                }
+
+                throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
             }
-
-            throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
+            catch (KeyNotFoundException)
+            {
+                throw; // Re-throw the exception to let it propagate up the call stack
+            }
         }
-
 
 
         public async Task<DtoCustomer> CreateCustomer(DtoCustomerCreate DtoCustomer)
@@ -63,16 +69,16 @@ namespace Inventory_BLL.BL
             return _mapper.Map<DtoCustomer>(customer);
         }
 
-        public void UpdateCustomer(DtoCustomerUpdate dtoCustomerUpdate, Guid guid)
+        public async Task UpdateCustomer(DtoCustomerUpdate dtoCustomerUpdate, Guid guid)
         {
-            Customer? customer = _context.Customer.Find(guid);
+            Customer? customer = await _context.Customer.FindAsync(guid);
 
             if (customer == null)
                 throw new KeyNotFoundException($"No customer with guid {guid} can be found.");
 
             _mapper.Map<DtoCustomerUpdate, Customer>(dtoCustomerUpdate, customer);
             customer.DateOfLastUpdate = DateTimeOffset.Now;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void DeleteCustomer(Guid guid)
@@ -108,6 +114,7 @@ namespace Inventory_BLL.BL
                                                             join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
                                                             join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
                                                             join r in _context.Rack on t.RackId equals r.RackId
+                                                            orderby pipe.IndexOfPipe ascending
                                                             select new
                                                             {
                                                                 Pipe = pipe,
@@ -162,6 +169,7 @@ namespace Inventory_BLL.BL
                         Quantity = pipeData.Pipe.Quantity,
                         RackId = pipeData.Tier.RackId,
                         RackName = pipeData.Rack.Name,
+                        IndexOfPipe = pipeData.Pipe.IndexOfPipe,
                         PipeDefinition = new DtoPipeDefinition
                         {
                             PipeDefinitionId = pipeData.PipeDefinition.PipeDefinitionId,

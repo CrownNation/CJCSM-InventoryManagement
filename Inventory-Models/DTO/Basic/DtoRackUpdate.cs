@@ -13,5 +13,9 @@ namespace Inventory_Dto.Dto
         [StringLength(50)]
         public string Name { get; set; }
         public Guid ShopLocationId { get; set; }
+        public string Description { get; set; } = String.Empty;
+
+        public int JointsPerRack { get; set; } = 0;
+
     }
 }

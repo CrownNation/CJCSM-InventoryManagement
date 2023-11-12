@@ -15,6 +15,9 @@ namespace Inventory_Dto.Dto
 
         public string ShopLocationName { get; set; } = string.Empty;
         public bool IsActive { get; set; }
+        public string Description { get; set; } = String.Empty;
+
+        public int JointsPerRack { get; set; } = 0;
 
         public List<DtoPipe> PipeList { get; set; } = new List<DtoPipe>();
     }

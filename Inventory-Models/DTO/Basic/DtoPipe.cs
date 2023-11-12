@@ -22,6 +22,8 @@ namespace Inventory_Dto.Dto
         public Decimal LengthInFeet { get; set; }
         public int Quantity { get; set; }
 
+        public int IndexOfPipe { get; set; }
+
         public DtoPipeDefinition PipeDefinition { get; set; }
 
     }

@@ -17,14 +17,14 @@ namespace Inventory_BLL.BL
             _mapper = mapper;
         }
 
-        public IQueryable<DtoRack> GetRacks()
+        public async Task<IQueryable<DtoRack>> GetRackList()
         {
             var entity = _context.Rack
                                  .Include(r => r.ShopLocation)
                                  .AsQueryable();
 
             var racks = _mapper.ProjectTo<DtoRack>(entity);
-            return racks;
+            return await Task.FromResult(racks);
         }
 
         public async Task<DtoRack?> GetRackById(Guid guid)
@@ -60,17 +60,15 @@ namespace Inventory_BLL.BL
             return _mapper.Map<DtoRack>(rack);
         }
 
-
-
-        public void UpdateRack(DtoRackUpdate dtoRack, Guid guid)
+        public async Task UpdateRack(DtoRackUpdate dtoRack, Guid guid)
         {
-            Rack? rack = _context.Rack.Find(guid); // Assuming Rack is the entity name
+            Rack? rack = await _context.Rack.FindAsync(guid);
 
             if (rack == null)
                 throw new KeyNotFoundException($"No rack with guid {guid} can be found.");
 
             _mapper.Map<DtoRackUpdate, Rack>(dtoRack, rack);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void DeleteRack(Guid guid)
@@ -108,6 +106,7 @@ namespace Inventory_BLL.BL
                                                             join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
                                                             join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
                                                             where tier.RackId == rack.RackId
+                                                            orderby rack.Name ascending, pipe.IndexOfPipe ascending
                                                             select new
                                                             {
                                                                 Pipe = pipe,
@@ -139,6 +138,8 @@ namespace Inventory_BLL.BL
                         Name = data.Rack.Name,
                         ShopLocationId = data.Rack.ShopLocationId,
                         ShopLocationName = data.ShopName,
+                        Description = data.Rack.Description,
+                        JointsPerRack = data.Rack.JointsPerRack,
                         PipeList = data.Pipes.Select(pipeData => new DtoPipe
                         {
                             PipeId = pipeData.Pipe.PipeId,
@@ -151,6 +152,7 @@ namespace Inventory_BLL.BL
                             Quantity = pipeData.Pipe.Quantity,
                             RackId = pipeData.Tier.RackId,
                             RackName = data.Rack.Name,
+                            IndexOfPipe = pipeData.Pipe.IndexOfPipe,
                             PipeDefinition = new DtoPipeDefinition
                             {
                                 PipeDefinitionId = pipeData.PipeDefinition.PipeDefinitionId,

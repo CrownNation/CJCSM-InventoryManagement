@@ -24,12 +24,12 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(ODataQueryOptions<DtoCustomer> options)
+        public async Task<IActionResult> Get(ODataQueryOptions<DtoCustomer> options)
         {
 
             try
             {
-                IQueryable<DtoCustomer>? customers = _customerBl.GetCustomers();
+                IQueryable<DtoCustomer>? customers = await _customerBl.GetCustomers();
                 return Ok(options.ApplyTo(customers));
             }
             catch (Exception e)
@@ -40,11 +40,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key, ODataQueryOptions<DtoCustomer> options)
+        public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoCustomer> options)
         {
             try
             {
-                IQueryable<DtoCustomer>? customer = _customerBl.GetCustomerById(key);
+                IQueryable<DtoCustomer>? customer = await _customerBl.GetCustomerById(key);
                 // Todo: this should return a SingleResult
                 return Ok(options.ApplyTo(customer));
             }
@@ -119,7 +119,7 @@ namespace Inventory_API.Controllers
         }
 
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoCustomerUpdate customer)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoCustomerUpdate customer)
         {
             if (!ModelState.IsValid)
             {
@@ -128,7 +128,7 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _customerBl.UpdateCustomer(customer, key);
+                await _customerBl.UpdateCustomer(customer, key);
             }
             catch (KeyNotFoundException e)
             {

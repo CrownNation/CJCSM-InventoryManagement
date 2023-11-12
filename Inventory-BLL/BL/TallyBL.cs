@@ -12,6 +12,7 @@ using Inventory_Dto.Dto;
 using Inventory_Models.Dto;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Inventory_BLL.BL
 {
@@ -30,14 +31,12 @@ namespace Inventory_BLL.BL
             _tallyPipeBL = tallyPipeBL;
         }
 
-        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallies()
+        public async Task<IQueryable<DtoTally_WithPipeAndCustomer>> GetTallies()
         {
             IQueryable<Tally> entity = _context.Tally.AsQueryable();
             IQueryable<DtoTally_WithPipeAndCustomer> tallies = _mapper.ProjectTo<DtoTally_WithPipeAndCustomer>(entity);
             return tallies;
         }
-
-
 
         public async Task<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)
         {
@@ -73,6 +72,7 @@ namespace Inventory_BLL.BL
                             join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
                             join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
                             join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
+                            orderby p.IndexOfPipe ascending
                             select new DtoPipe
                             {
                                 PipeId = p.PipeId,
@@ -85,6 +85,7 @@ namespace Inventory_BLL.BL
                                 Quantity = p.Quantity,
                                 RackId = t.RackId,
                                 RackName = r.Name,
+                                IndexOfPipe = p.IndexOfPipe,
                                 PipeDefinition = new DtoPipeDefinition
                                 {
                                     PipeDefinitionId = pd.PipeDefinitionId,
@@ -123,12 +124,19 @@ namespace Inventory_BLL.BL
                 InvoiceNumber = tallyResult.Tally.InvoiceNumber,
                 TalliedByUserId = tallyResult.Tally.TalliedByUserId,
                 CarrierName = tallyResult.Tally.CarrierName,
-                PipeList = pipeList
+                PipeList = pipeList,
+                WeightInKg = pipeList.Sum(tp => tp.Quantity * tp.LengthInMeters * tp.PipeDefinition.Weight.WeightInKgPerMeter),
+                WeightInLbs = pipeList.Sum(tp => tp.Quantity * tp.LengthInFeet * tp.PipeDefinition.Weight.WeightInLbsPerFoot),
             };
+
+
+            foreach (DtoPipe pipe in returnTally.PipeList)
+            {
+                
+            }
 
             return returnTally;
         }
-
 
         public async Task<DtoTally_WithPipeAndCustomer> CreateTally(DtoTallyCreate dtoTallyCreate)
         {
@@ -166,16 +174,15 @@ namespace Inventory_BLL.BL
             return _mapper.Map<DtoTally_WithPipeAndCustomer>(tally);
         }
 
-
-        public void UpdateTally(DtoTallyUpdate dtoTallyUpdate, Guid guid)
+        public async Task UpdateTally(DtoTallyUpdate dtoTallyUpdate, Guid guid)
         {
-            Tally? tally = _context.Tally.Find(guid);
+            Tally? tally = await _context.Tally.FindAsync(guid);
 
             if (tally == null)
                 throw new KeyNotFoundException($"No tally with guid {guid} can be found.");
 
             _mapper.Map<DtoTallyUpdate, Tally>(dtoTallyUpdate, tally);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void DeleteTally(Guid guid)

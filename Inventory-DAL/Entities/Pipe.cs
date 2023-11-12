@@ -32,6 +32,7 @@ namespace Inventory_DAL.Entities
 
         public int Quantity { get; set; }
 
+        public int IndexOfPipe { get; set; }
 
 
     }

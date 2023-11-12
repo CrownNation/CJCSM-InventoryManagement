@@ -21,11 +21,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
+        public async Task<IActionResult> Get(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
-                IQueryable<DtoTally_WithPipeAndCustomer>? tallies = _tallyBl.GetTallies();
+                IQueryable<DtoTally_WithPipeAndCustomer>? tallies = await _tallyBl.GetTallies();
                 return Ok(options.ApplyTo(tallies));
             }
             catch (Exception e)
@@ -34,6 +34,7 @@ namespace Inventory_API.Controllers
                 throw new Exception("There was a problem querying for tallies.");
             }
         }
+
         [HttpGet("{key}")]
         public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
@@ -85,7 +86,7 @@ namespace Inventory_API.Controllers
 
   
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoTallyUpdate tally)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoTallyUpdate tally)
         {
             if (!ModelState.IsValid)
             {
@@ -94,7 +95,7 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _tallyBl.UpdateTally(tally, key);
+                await _tallyBl.UpdateTally(tally, key);
             }
             catch (KeyNotFoundException e)
             {

@@ -16,6 +16,10 @@ namespace Inventory_Dto.Dto
         public Guid ShopLocationId { get; set; }
 
         public bool IsActive { get; set; }
+        public string Description { get; set; } = String.Empty;
+
+        public int JointsPerRack { get; set; } = 0;
+
 
     }
 }

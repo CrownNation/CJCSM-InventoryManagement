@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20231102InitialCreate : Migration
+    public partial class _20231109InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,7 +43,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LengthInMeters = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     LengthInFeet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    IndexOfPipe = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -269,7 +270,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     RackId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ShopLocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", maxLength: 5000, nullable: false),
+                    JointsPerRack = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

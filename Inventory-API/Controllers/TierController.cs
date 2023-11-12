@@ -44,7 +44,7 @@ namespace Inventory_API.Controllers
             IQueryable<DtoTier>? tier = _tierBl.GetTierById(key);
             return Ok(options.ApplyTo(tier));
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }

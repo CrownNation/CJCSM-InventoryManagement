@@ -17,7 +17,7 @@ namespace Inventory_DAL.Entities
         //add-migration [vxxxx_to_vxxxx_CamelCaseDescription_Project] -Context CjcsmSqliteContext -Output Migrations/ProjectMigrations
 
         //This command is used with the Package Manager Console(PMC) in Visual Studio
-        //Add-Migration 20231102_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
+        //Add-Migration 20231109_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
         //Update-Database
 
         //This command is used in the command-line interface (CLI) outside of Visual Studio.
@@ -43,7 +43,7 @@ namespace Inventory_DAL.Entities
             _configuration = configuration;
         }
         public virtual DbSet<Customer> Customer { get; set; }
-        public virtual DbSet<ShopLocation> ShopLocation { get; set; } 
+        public virtual DbSet<ShopLocation> ShopLocation { get; set; }
         public virtual DbSet<Rack> Rack { get; set; }
         public virtual DbSet<Tier> Tier { get; set; }
         public virtual DbSet<PipeDefinition> PipeDefinition { get; set; }
@@ -77,17 +77,14 @@ namespace Inventory_DAL.Entities
             modelBuilder.Entity<TallyPipe>()
                 .HasKey(tp => new { tp.TallyId, tp.PipeId });
 
-            /*
-            modelBuilder.Entity<TallyPipe>()
-                .HasOne(tp => tp.Tally)  // Use navigation property here
-                .WithMany(t => t.TallyPipes)
-                .HasForeignKey(tp => tp.TallyId);
+            modelBuilder.Entity<Pipe>()
+                .Property(p => p.LengthInFeet)
+                .HasPrecision(18, 2);
 
-            modelBuilder.Entity<TallyPipe>()
-                .HasOne(tp => tp.Pipe)  // Use navigation property here
-                .WithMany(p => p.TallyPipes)
-                .HasForeignKey(tp => tp.PipeId);
-            */
+            modelBuilder.Entity<Pipe>()
+                .Property(p => p.LengthInMeters)
+                .HasPrecision(18, 2); 
+
         }
     }
 }

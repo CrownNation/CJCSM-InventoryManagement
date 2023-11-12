@@ -40,10 +40,10 @@ VALUES (
 -- Racks
 DECLARE @Rack1Id UNIQUEIDENTIFIER = NEWID(), @Rack2Id UNIQUEIDENTIFIER = NEWID(), @Rack3Id UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Rack (RackId, Name, ShopLocationId, IsActive) VALUES
-(@Rack1Id, 'Rack 1', @ShopLocationId, 1),
-(@Rack2Id, 'Rack 2', @ShopLocationId, 1),
-(@Rack3Id, 'Rack 3', @ShopLocationId, 1);
+INSERT INTO Rack (RackId, Name, ShopLocationId, JointsPerRack, Description, IsActive) VALUES
+(@Rack1Id, 'Rack 1', @ShopLocationId, 70, 'Rack1 Description', 1),
+(@Rack2Id, 'Rack 2', @ShopLocationId, 80, 'Rack2 Description', 1),
+(@Rack3Id, 'Rack 3', @ShopLocationId, 90, 'Rack3 Description', 1);
 
 -- Tiers
 DECLARE @Tier1Id UNIQUEIDENTIFIER = NEWID(), @Tier2Id UNIQUEIDENTIFIER = NEWID(), @Tier3Id UNIQUEIDENTIFIER = NEWID(), 
@@ -115,15 +115,19 @@ VALUES
    
    -- Pipes (using TierId)
 DECLARE @Pipe1Id UNIQUEIDENTIFIER = NEWID(), @Pipe2Id UNIQUEIDENTIFIER = NEWID(), @Pipe3Id UNIQUEIDENTIFIER = NEWID(),
-        @Pipe4Id UNIQUEIDENTIFIER = NEWID(), @Pipe5Id UNIQUEIDENTIFIER = NEWID(), @Pipe6Id UNIQUEIDENTIFIER = NEWID();
+        @Pipe4Id UNIQUEIDENTIFIER = NEWID(), @Pipe5Id UNIQUEIDENTIFIER = NEWID(), @Pipe6Id UNIQUEIDENTIFIER = NEWID(),
+        @Pipe7Id UNIQUEIDENTIFIER = NEWID(), @Pipe8Id UNIQUEIDENTIFIER = NEWID(), @Pipe9Id UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Pipe (PipeId, PipeDefinitionId, CustomerId, TierId, LengthInMeters, LengthInFeet, Quantity) VALUES
-(@Pipe1Id, @PipeDef1Id, @Customer1Id, @Tier1Id, 5.5, 16.4042, 10),
-(@Pipe2Id, @PipeDef2Id, @Customer2Id, @Tier2Id, 6.0, 19.6852, 8),
-(@Pipe3Id, @PipeDef3Id, @Customer1Id, @Tier3Id, 5.8, 19.0289, 9),
-(@Pipe4Id, @PipeDef4Id, @Customer2Id, @Tier4Id, 6.1, 20.0131, 11),
-(@Pipe5Id, @PipeDef1Id, @Customer2Id, @Tier5Id, 5.9, 19.3579, 7),
-(@Pipe6Id, @PipeDef3Id, @Customer3Id, @Tier6Id, 6.3, 20.669, 6);
+INSERT INTO Pipe (PipeId, PipeDefinitionId, CustomerId, TierId, LengthInMeters, LengthInFeet, Quantity, IndexOfPipe) VALUES
+(@Pipe1Id, @PipeDef1Id, @Customer1Id, @Tier1Id, 5.5, 16.4042, 10, 1),
+(@Pipe2Id, @PipeDef2Id, @Customer2Id, @Tier2Id, 6.0, 19.6852, 8, 1),
+(@Pipe3Id, @PipeDef3Id, @Customer1Id, @Tier3Id, 5.8, 19.0289, 9, 1),
+(@Pipe4Id, @PipeDef4Id, @Customer2Id, @Tier4Id, 6.1, 20.0131, 11,1),
+(@Pipe5Id, @PipeDef1Id, @Customer2Id, @Tier5Id, 5.9, 19.3579, 7,1),
+(@Pipe6Id, @PipeDef3Id, @Customer3Id, @Tier6Id, 6.3, 20.669, 6,1),
+(@Pipe7Id, @PipeDef1Id, @Customer1Id, @Tier6Id, 5.9, 19.3579, 7,1),
+(@Pipe8Id, @PipeDef1Id, @Customer1Id, @Tier6Id, 5.95, 19.521, 7,2),
+(@Pipe9Id, @PipeDef1Id, @Customer1Id, @Tier6Id, 5.85, 19.192, 7,3);
 
 -- Tally
 DECLARE @Tally1Id UNIQUEIDENTIFIER = NEWID(), @Tally2Id UNIQUEIDENTIFIER = NEWID(), @Tally3Id UNIQUEIDENTIFIER = NEWID(),
@@ -140,7 +144,10 @@ INSERT INTO TallyPipe (TallyId, PipeId) VALUES
 (@Tally1Id, @Pipe2Id),
 (@Tally2Id, @Pipe3Id),
 (@Tally2Id, @Pipe4Id),
-(@Tally3Id, @Pipe5Id),
-(@Tally3Id, @Pipe6Id);
+(@Tally2Id, @Pipe5Id),
+(@Tally2Id, @Pipe6Id),
+(@Tally3Id, @Pipe7Id),
+(@Tally3Id, @Pipe8Id),
+(@Tally3Id, @Pipe9Id);
 
 

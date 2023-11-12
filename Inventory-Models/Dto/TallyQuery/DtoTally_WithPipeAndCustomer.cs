@@ -38,8 +38,8 @@ namespace Inventory_Dto.Dto
         public string? CarrierName {  get; set; }
 
         //Calculated Fields
-        public float WeightInKg { get; set; }
-        public float WeightInLbs { get; set; }
+        public Decimal WeightInKg { get; set; }
+        public Decimal WeightInLbs { get; set; }
 
     }
 }

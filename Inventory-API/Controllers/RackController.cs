@@ -21,18 +21,17 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(ODataQueryOptions<DtoRack> options)
+        public async Task<IActionResult> Get(ODataQueryOptions<DtoRack> options)
         {
-
             try
             {
-                IQueryable<DtoRack>? racks = _rackBl.GetRacks();
+                IQueryable<DtoRack>? racks = await _rackBl.GetRackList();
                 return Ok(options.ApplyTo(racks));
             }
             catch (Exception e)
             {
                 _logger.LogError($"GetRacks: " + e.Message);
-                throw new Exception("There was a problem querying for Rrcks.");
+                throw new Exception("There was a problem querying for Racks.");
             }
         }
 
@@ -132,9 +131,10 @@ namespace Inventory_API.Controllers
 
             return CreatedAtAction("Get", new { key = DtoRack.RackId }, DtoRack);
         }
+        
 
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoRackUpdate dtoRack)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoRackUpdate dtoRack)
         {
             if (!ModelState.IsValid)
             {
@@ -143,7 +143,7 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _rackBl.UpdateRack(dtoRack, key);
+                await _rackBl.UpdateRack(dtoRack, key); // Call the asynchronous business logic method
             }
             catch (KeyNotFoundException)
             {

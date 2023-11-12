@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20231102173733_20231102_InitialCreate")]
-    partial class _20231102InitialCreate
+    [Migration("20231109170829_20231109_InitialCreate")]
+    partial class _20231109InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,6 +86,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("IndexOfPipe")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("LengthInFeet")
                         .HasColumnType("decimal(18,2)");
@@ -298,8 +301,16 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<int>("JointsPerRack")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

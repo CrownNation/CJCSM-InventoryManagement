@@ -84,6 +84,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("IndexOfPipe")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("LengthInFeet")
                         .HasColumnType("decimal(18,2)");
 
@@ -295,8 +298,16 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<int>("JointsPerRack")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
