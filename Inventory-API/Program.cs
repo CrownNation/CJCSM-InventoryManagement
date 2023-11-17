@@ -1,17 +1,11 @@
-using Inventory_API;
 using Inventory_BLL.BL;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
-using Inventory_Dto.Dto;
-using Inventory_Models.ViewModels;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using System.Reflection;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 // Program.cs in .Net Core 6.0+ is the entry point for the application that 
 // It implies using System;
@@ -33,7 +27,6 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<Customer>("Customer");
     builder.EntitySet<Rack>("Rack");
     builder.EntitySet<Tier>("Tier");
-    builder.EntitySet<Section>("Section");
     builder.EntitySet<PipeDefinition>("PipeDefinition");
     builder.EntitySet<Pipe>("Pipe");
     builder.EntitySet<Tally>("Tally");
@@ -76,7 +69,10 @@ builder.Services.AddControllers()
 string connectionString = builder.Configuration.GetConnectionString("developmentConnection")!;
 
 builder.Services.AddDbContext<InventoryContext>(options =>
-   options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Inventory-API")));
+   options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Inventory-API"))
+   .EnableSensitiveDataLogging(true)
+   .LogTo(Console.WriteLine, LogLevel.Information)
+   );
 
 
 // This adds the AutoMapper to the DI container. AutoMapper is a library that maps one object to another.
@@ -97,7 +93,6 @@ System.Diagnostics.Debug.WriteLine("IN PROGRAM.CS");
 builder.Services.AddScoped<ICustomerBL, CustomerBL>();
 builder.Services.AddScoped<IRackBL, RackBL>();
 builder.Services.AddScoped<ITierBL, TierBL>();
-builder.Services.AddScoped<ISectionBL, SectionBL>();
 builder.Services.AddScoped<IPipeDefinitionBL, PipeDefinitionBL>();
 builder.Services.AddScoped<IPipeBL, PipeBL>();
 builder.Services.AddScoped<ITallyBL, TallyBL>();

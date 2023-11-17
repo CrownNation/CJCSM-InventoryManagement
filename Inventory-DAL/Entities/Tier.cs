@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Inventory_DAL.Entities
 {
@@ -13,5 +14,6 @@ namespace Inventory_DAL.Entities
 
         [Required]
         public int Number { get; set; }
+
     }
 }

@@ -1,12 +1,8 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_Dto.Dto;
-using Inventory_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Inventory_API.Controllers
 {
@@ -28,12 +24,12 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(ODataQueryOptions<DtoCustomer> options)
+        public async Task<IActionResult> Get(ODataQueryOptions<DtoCustomer> options)
         {
 
             try
             {
-                IQueryable<DtoCustomer>? customers = _customerBl.GetCustomers();
+                IQueryable<DtoCustomer>? customers = await _customerBl.GetCustomers();
                 return Ok(options.ApplyTo(customers));
             }
             catch (Exception e)
@@ -44,11 +40,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key, ODataQueryOptions<DtoCustomer> options)
+        public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoCustomer> options)
         {
             try
             {
-                IQueryable<DtoCustomer>? customer = _customerBl.GetCustomerById(key);
+                IQueryable<DtoCustomer>? customer = await _customerBl.GetCustomerById(key);
                 // Todo: this should return a SingleResult
                 return Ok(options.ApplyTo(customer));
             }
@@ -63,6 +59,34 @@ namespace Inventory_API.Controllers
                 throw new Exception($"There was a problem querying for the customer with id {key}.");
             }
         }
+
+        [HttpGet("WithPipe/{key}")]
+        public async Task<IActionResult> GetCustomerWithPipeById(Guid key)
+        {
+            try
+            {
+                var customer = await _customerBl.GetCustomerWithPipeByCustomerId(key);
+
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(customer);
+            }
+            catch (KeyNotFoundException e)
+            {
+                _logger.LogInformation($"GetCustomerWithPipeById: " + e.Message);
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetCustomerWithPipeById: " + e.Message);
+                throw new Exception($"There was a problem querying for the customer with id {key} using the pipe.");
+            }
+        }
+
+
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoCustomerCreate customer)
@@ -95,7 +119,7 @@ namespace Inventory_API.Controllers
         }
 
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoCustomerUpdate customer)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoCustomerUpdate customer)
         {
             if (!ModelState.IsValid)
             {
@@ -104,7 +128,7 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _customerBl.UpdateCustomer(customer, key);
+                await _customerBl.UpdateCustomer(customer, key);
             }
             catch (KeyNotFoundException e)
             {

@@ -3,6 +3,7 @@ using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory_API.Controllers
 {
@@ -20,11 +21,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(ODataQueryOptions<DtoTally> options)
+        public async Task<IActionResult> Get(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
-                IQueryable<DtoTally>? tallies = _tallyBl.GetTallies();
+                IQueryable<DtoTally_WithPipeAndCustomer>? tallies = await _tallyBl.GetTallies();
                 return Ok(options.ApplyTo(tallies));
             }
             catch (Exception e)
@@ -35,12 +36,13 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key, ODataQueryOptions<DtoTally> options)
+        public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
-                IQueryable<DtoTally>? tally = _tallyBl.GetTallyById(key);
-                return Ok(options.ApplyTo(tally));
+                DtoTally_WithPipeAndCustomer tally = await _tallyBl.GetTallyById(key);
+
+                return Ok(tally);
             }
             catch (KeyNotFoundException e)
             {
@@ -54,15 +56,16 @@ namespace Inventory_API.Controllers
             }
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)
+        public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)  
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            DtoTally DtoTally;
+            DtoTally_WithPipeAndCustomer DtoTally;
             try
             {
                 DtoTally = await _tallyBl.CreateTally(tally);
@@ -81,8 +84,9 @@ namespace Inventory_API.Controllers
             return CreatedAtAction("Get", new { key = DtoTally.TallyId }, DtoTally);
         }
 
+  
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoTallyUpdate tally)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoTallyUpdate tally)
         {
             if (!ModelState.IsValid)
             {
@@ -91,7 +95,7 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _tallyBl.UpdateTally(tally, key);
+                await _tallyBl.UpdateTally(tally, key);
             }
             catch (KeyNotFoundException e)
             {

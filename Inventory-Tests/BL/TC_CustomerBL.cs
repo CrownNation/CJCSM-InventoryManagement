@@ -1,17 +1,10 @@
 ﻿using Inventory_DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using AutoMapper;
 using Xunit;
 using Inventory_BLL.BL;
 using System.Reflection;
-using Inventory_Models.ViewModels;
-using System.ComponentModel.DataAnnotations;
 using Inventory_Dto.Dto;
 
 namespace Inventory_Tests.BL
@@ -103,10 +96,10 @@ namespace Inventory_Tests.BL
       #region GetCustomers
 
       [Fact]
-      public void GetCustomers_Valid()
+      public async Task GetCustomers_Valid()
       {
          SetupDatabase_Get();
-         IQueryable<DtoCustomer>? customerQuery = _customerBl.GetCustomers();
+         IQueryable<DtoCustomer>? customerQuery = await _customerBl.GetCustomers();
 
          Assert.NotNull(customerQuery);
          Assert.Equal(3, customerQuery.ToList().Count);
@@ -119,11 +112,11 @@ namespace Inventory_Tests.BL
       #region GetCustomerById
 
       [Fact]
-      public void GetCustomerById_Valid()
+      public async Task GetCustomerById_Valid()
       {
          SetupDatabase_Get();
          Customer? dbCustomer = _context.Customer.FirstOrDefault(x => x.CustomerId == _sampleGuids[2]);
-         IQueryable<DtoCustomer>? customerQuery = _customerBl.GetCustomerById(_sampleGuids[2]);
+         IQueryable<DtoCustomer>? customerQuery = await _customerBl.GetCustomerById(_sampleGuids[2]);
 
          Assert.NotNull(dbCustomer);
          Assert.NotNull(customerQuery);
@@ -145,10 +138,10 @@ namespace Inventory_Tests.BL
       }
 
       [Fact]
-      public void GetCustomerById_Exc_NotFound()
+      public async Task GetCustomerById_Exc_NotFound()
       {
          SetupDatabase_Get();
-         Assert.Throws<KeyNotFoundException>(() => _customerBl.GetCustomerById(_sampleGuids[3]));
+         await Assert.ThrowsAsync<KeyNotFoundException>(() => _customerBl.GetCustomerById(_sampleGuids[3]));
       }
 
 
