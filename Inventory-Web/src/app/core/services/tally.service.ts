@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { Tally, TallyCreate } from '../../models/tally.model';
+import { Tally, TallyCreate, TallySearchParams } from '../../models/tally.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +13,15 @@ export class TallyService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getTallies(): Observable<Tally[]> {
-    return this.http.get<Tally[]>(`${this.baseUrl}`);
-    // return this.http.get<RackBasic[]>(`${this.baseUrl}/dummy`);
+  getTallies(searchParams: TallySearchParams | null): Observable<Tally[]> {
+
+    console.log('getTallies');
+
+    return this.http.get<Tally[]>(`${this.baseUrl}?filter=TallyNumber eq 'TN0002'`);
   }
 
   getTallyById(id: string): Observable<Tally> {
     return this.http.get<Tally>(`${this.baseUrl}/${id}`);
-    // return this.http.get<RackBasic>(`${this.baseUrl}/dummy/${id}`);
   }
 
   addTally(tally: TallyCreate): Observable<Tally> {

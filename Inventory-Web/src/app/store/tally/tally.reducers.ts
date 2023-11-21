@@ -2,7 +2,8 @@ import { Action, ActionReducer, createReducer, on} from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { TallyState } from './tally.state';
 import { Tally } from '../../models/tally.model';
-import { actionCreateTally, actionCreateTallyError, actionCreateTallySuccess, actionGetTallies, actionGetTalliesError, actionGetTalliesSuccess } from './tally.actions';
+import { actionCreateTally, actionCreateTallyError, actionCreateTallySuccess, 
+    actionGetTallies, actionGetTalliesError, actionGetTalliesSuccess } from './tally.actions';
 
 
 export function sortByName(a: Tally, b: Tally): number {
@@ -29,7 +30,7 @@ errorCreatingTally: null,
 const reducer: ActionReducer<TallyState> = createReducer(
     initialState,
     // Retrieve Tallies
-    on(actionGetTallies, (state: TallyState, { }) => ({
+    on(actionGetTallies, (state: TallyState, { searchParams }) => ({
         ...state,
         loadingTallies: true,
         errorLoadingTallies: null

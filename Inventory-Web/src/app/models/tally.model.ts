@@ -55,3 +55,11 @@ export interface DtoTally_WithPipeAndCustomer {
     weightInKg: number;
     weightInLbs: number;
   }
+
+export interface TallySearchParams {
+    tallyType: TallyTypes | null;
+    tallyNumber: string | null;
+    customerId: string | null;
+    dateStart: string | null;
+    dateEnd: string | null;
+}

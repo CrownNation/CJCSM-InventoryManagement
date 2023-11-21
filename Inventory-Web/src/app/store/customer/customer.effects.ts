@@ -3,10 +3,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, switchMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { CustomerService } from "../../core/services/customer.service";
-import { actionCreateCustomer, actionCreateCustomerError, actionCreateCustomerSuccess, actionGetCustomers, actionGetCustomersError, actionGetCustomersSuccess } from "./customer.actions";
+import { actionCreateCustomer, actionCreateCustomerError, actionCreateCustomerSuccess, 
+  actionGetCustomers, actionGetCustomersError, actionGetCustomersSuccess } from "./customer.actions";
 
 @Injectable()
-export class RackEffects {
+export class CustomerEffects {
 
   constructor(
       private actions$: Actions,

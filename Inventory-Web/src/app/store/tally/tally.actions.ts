@@ -1,12 +1,13 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Tally, TallyCreate } from '../../models/tally.model';
+import { Tally, TallyCreate, TallySearchParams } from '../../models/tally.model';
 
 export const tallyKey = '[Tally]';
 
 // Get Tallies
 export const actionGetTallies = createAction(
-    `${tallyKey} Get Tallies`
+    `${tallyKey} Get Tallies`,
+    props<{ searchParams: TallySearchParams | null}>()
 );
 export const actionGetTalliesSuccess = createAction(
     `${tallyKey} Get Tallies Success`,

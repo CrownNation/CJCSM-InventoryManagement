@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Tally, TallyTypes } from '../../models/tally.model';
+import { Tally, TallySearchParams, TallyTypes } from '../../models/tally.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { Rack } from '../../models/rack.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Customer } from '../../models/customer.model';
+import { actionGetTallies } from '../../store/tally/tally.actions';
 
 @Component({
   selector: 'app-search-tally',
@@ -29,6 +30,13 @@ export class SearchTallyComponent implements OnInit, AfterViewInit {
   tallyTypes = Object.values(TallyTypes);
 
   customers: Customer[] = [];
+  searchParams: TallySearchParams | null = {
+    tallyType: null,
+    tallyNumber: null,
+    customerId: null,
+    dateStart: null,
+    dateEnd: null
+  };
 
 
   constructor(
@@ -39,6 +47,19 @@ export class SearchTallyComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     console.log('rack-list onInit');
     console.log(this.racks);
+
+    // if (this.searchParams) {
+    //   const date = new Date();
+    //   this.searchParams.dateStart = date.toISOString();
+
+    //   date.setDate(date.getDate() - 7);
+    //   this.searchParams.dateEnd = new Date(date).toISOString();
+    // }
+
+    console.log(this.searchParams);
+
+    this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
+    
 
     this.buildForm();
     this.dataSource = new MatTableDataSource(this.racks as Rack[]);
