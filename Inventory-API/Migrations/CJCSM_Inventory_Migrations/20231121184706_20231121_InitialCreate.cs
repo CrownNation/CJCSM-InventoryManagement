@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20231109InitialCreate : Migration
+    public partial class _20231121InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,8 +41,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     PipeDefinitionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LengthInMeters = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    LengthInFeet = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    LengthInMeters = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    LengthInFeet = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     IndexOfPipe = table.Column<int>(type: "int", nullable: false)
                 },

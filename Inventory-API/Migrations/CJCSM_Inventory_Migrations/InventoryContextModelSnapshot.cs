@@ -88,9 +88,11 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("LengthInFeet")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("LengthInMeters")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("PipeDefinitionId")

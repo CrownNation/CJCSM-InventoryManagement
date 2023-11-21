@@ -45,7 +45,6 @@ namespace Inventory_API.Controllers
             try
             {
                 IQueryable<DtoCustomer>? customer = await _customerBl.GetCustomerById(key);
-                // Todo: this should return a SingleResult
                 return Ok(options.ApplyTo(customer));
             }
             catch (KeyNotFoundException e)

@@ -8,6 +8,8 @@ namespace Inventory_BLL.Interfaces
     public interface IPipeBL
     {
         IQueryable<DtoPipe> GetPipes();
+        
+        Task<IQueryable<DtoPipe>> GetPipeWithDefinitionList();
 
         IQueryable<DtoPipe>? GetPipeById(Guid guid);
 

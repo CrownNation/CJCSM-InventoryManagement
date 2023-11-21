@@ -82,117 +82,72 @@ namespace Inventory_BLL.BL
             _context.SaveChanges();
         }
 
-        public async Task<IQueryable<DtoRack_WithPipe>> GetRackListWithPipeAndCustomerByLocation(Guid shopLocationId)
+        public async Task<IQueryable<DtoRack_WithPipe>> GetRackListWithPipeAndCustomer()
         {
-            try
-            {
-                var dtoCustomerWithPipeQuery = await( from rack in _context.Rack
-                                               join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
-                                               where rack.ShopLocationId == shopLocationId
-                                               select new
-                                               {
-                                                   Rack = rack,
-                                                   ShopName = shopLocation.Name, 
-                                                   Pipes = (from pipe in _context.Pipe
-                                                            join tier in _context.Tier on pipe.TierId equals tier.TierId
-                                                            join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
-                                                            join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
-                                                            join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
-                                                            join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
-                                                            join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
-                                                            join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
-                                                            join pps in _context.PipeProperty_Size on pd.SizeId equals pps.PipeProperty_SizeId
-                                                            join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
-                                                            join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
-                                                            join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
-                                                            where tier.RackId == rack.RackId
-                                                            orderby rack.Name ascending, pipe.IndexOfPipe ascending
-                                                            select new
-                                                            {
-                                                                Pipe = pipe,
-                                                                PipeDefinition = pd,
-                                                                Tier = tier,
-                                                                Category = ppc,
-                                                                Condition = ppcon,
-                                                                Grade = ppgr,
-                                                                Range = ppr,
-                                                                Size = pps,
-                                                                Thread = ppt,
-                                                                Wall = ppw,
-                                                                Weight = ppwe,
-                                                                Customer = customer
-                                                            }).ToList()
-                                               }).ToListAsync();
+            var rackWithPipeQuery = from rack in _context.Rack
+                                           join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                                           select new DtoRack_WithPipe
+                                           {
+                                               Description = rack.Description,
+                                               Name = rack.Name,
+                                               RackId = rack.RackId,
+                                               ShopLocationId = rack.ShopLocationId,
+                                               IsActive = rack.IsActive,
+                                               JointsPerRack = rack.JointsPerRack,
+                                               ShopLocationName = shopLocation.Name,
+                                               PipeList = (from pipe in _context.Pipe
+                                                           join tier in _context.Tier on pipe.TierId equals tier.TierId
+                                                           join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
+                                                           join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
+                                                           join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                                           join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
+                                                           join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
+                                                           join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
+                                                           join pps in _context.PipeProperty_Size on pd.SizeId equals pps.PipeProperty_SizeId
+                                                           join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
+                                                           join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
+                                                           join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
+                                                           where tier.RackId == rack.RackId
+                                                           orderby rack.Name ascending, pipe.IndexOfPipe ascending
+                                                           select new DtoPipe
+                                                           {
+                                                               CustomerId = pipe.CustomerId,
+                                                               PipeId = pipe.PipeId,
+                                                               IndexOfPipe = pipe.IndexOfPipe,
+                                                               LengthInFeet = pipe.LengthInFeet,
+                                                               LengthInMeters = pipe.LengthInMeters,
+                                                               TierId = pipe.TierId,
+                                                               PipeDefinitionId = pipe.PipeDefinitionId,
+                                                               Quantity = pipe.Quantity,
+                                                               RackId = rack.RackId,
+                                                               RackName = rack.Name,
+                                                               TierNumber = tier.Number,
+                                                               PipeDefinition = new DtoPipeDefinition
+                                                               {
+                                                                   PipeDefinitionId = pd.PipeDefinitionId,
+                                                                   CategoryId = pd.CategoryId,
+                                                                   ConditionId = pd.ConditionId,
+                                                                   GradeId = pd.GradeId,
+                                                                   RangeId = pd.RangeId,
+                                                                   SizeId = pd.SizeId,
+                                                                   ThreadId = pd.ThreadId,
+                                                                   WallId = pd.WallId,
+                                                                   WeightId = pd.WeightId,
+                                                                   Category = ppc,
+                                                                   Condition = ppcon,
+                                                                   Grade = ppgr,
+                                                                   IsActive = pd.IsActive,
+                                                                   Range = ppr,
+                                                                   Size = pps,
+                                                                   Thread = ppt,
+                                                                   Wall = ppw,
+                                                                   Weight = ppwe,
+                                                               }
+                                                           }).ToList()
+                                           };
 
-                var dtoList = dtoCustomerWithPipeQuery.AsEnumerable().Select(data =>
-                {
-                    if (data == null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Data is null");
-                        return null;
-                    }
 
-                    var dtoCustomerWithPipe = new DtoRack_WithPipe
-                    {
-                        RackId = data.Rack.RackId,
-                        Name = data.Rack.Name,
-                        ShopLocationId = data.Rack.ShopLocationId,
-                        ShopLocationName = data.ShopName,
-                        Description = data.Rack.Description,
-                        JointsPerRack = data.Rack.JointsPerRack,
-                        PipeList = data.Pipes.Select(pipeData => new DtoPipe
-                        {
-                            PipeId = pipeData.Pipe.PipeId,
-                            CustomerId = pipeData.Pipe.CustomerId,
-                            PipeDefinitionId = pipeData.Pipe.PipeDefinitionId,
-                            TierId = pipeData.Pipe.TierId,
-                            TierNumber = pipeData.Tier.Number,
-                            LengthInFeet = pipeData.Pipe.LengthInFeet,
-                            LengthInMeters = pipeData.Pipe.LengthInMeters,
-                            Quantity = pipeData.Pipe.Quantity,
-                            RackId = pipeData.Tier.RackId,
-                            RackName = data.Rack.Name,
-                            IndexOfPipe = pipeData.Pipe.IndexOfPipe,
-                            PipeDefinition = new DtoPipeDefinition
-                            {
-                                PipeDefinitionId = pipeData.PipeDefinition.PipeDefinitionId,
-                                CategoryId = pipeData.PipeDefinition.CategoryId,
-                                ConditionId = pipeData.PipeDefinition.ConditionId,
-                                GradeId = pipeData.PipeDefinition.GradeId,
-                                RangeId = pipeData.PipeDefinition.RangeId,
-                                SizeId = pipeData.PipeDefinition.SizeId,
-                                ThreadId = pipeData.PipeDefinition.ThreadId,
-                                WallId = pipeData.PipeDefinition.WallId,
-                                WeightId = pipeData.PipeDefinition.WeightId,
-                                Category = pipeData.PipeDefinition.Category,
-                                Condition = pipeData.PipeDefinition.Condition,
-                                Grade = pipeData.PipeDefinition.Grade,
-                                Range = pipeData.PipeDefinition.Range,
-                                Size = pipeData.PipeDefinition.Size,
-                                Thread = pipeData.PipeDefinition.Thread,
-                                Wall = pipeData.PipeDefinition.Wall,
-                                Weight = pipeData.PipeDefinition.Weight
-                            }
-                        }).ToList()
-
-                    };
-
-                    return dtoCustomerWithPipe;
-                }).Where(x => x != null).AsQueryable();
-
-                // Check if the resulting list is empty
-                if (!dtoList.Any())
-                {
-                    return Enumerable.Empty<DtoRack_WithPipe>().AsQueryable();
-                }
-
-                return dtoList.Where(item => item != null).Cast<DtoRack_WithPipe>().AsQueryable();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"An error occurred in GetCustomerWithPipeById: {ex.Message}");
-                throw; // Rethrow the exception to let it propagate up the call stack
-            }
+            return await Task.FromResult(rackWithPipeQuery);
 
         }
     }

@@ -13,6 +13,7 @@ using Inventory_Models.Dto;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static CJCSM_Common.ApplicationEnums;
 
 namespace Inventory_BLL.BL
 {
@@ -33,9 +34,27 @@ namespace Inventory_BLL.BL
 
         public async Task<IQueryable<DtoTally_WithPipeAndCustomer>> GetTallies()
         {
-            IQueryable<Tally> entity = _context.Tally.AsQueryable();
-            IQueryable<DtoTally_WithPipeAndCustomer> tallies = _mapper.ProjectTo<DtoTally_WithPipeAndCustomer>(entity);
-            return tallies;
+            var tallyQuery = from tally in _context.Tally
+                             join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
+                             join shopLocation in _context.ShopLocation on tally.ShopLocationId equals shopLocation.ShopLocationId
+                             select new DtoTally_WithPipeAndCustomer
+                             {
+                                 CustomerId = tally.CustomerId,
+                                 CarrierName = tally.CarrierName,
+                                 CustomerName = customer.Name,
+                                 DateOfCreation = tally.DateOfCreation,
+                                 InvoiceNumber = tally.InvoiceNumber,
+                                 Notes = tally.Notes,
+                                 ShopLocationId = tally.ShopLocationId,
+                                 ShopLocationName = shopLocation.Name,
+                                 TallyId = tally.TallyId,
+                                 TalliedByUserId = tally.TalliedByUserId,
+                                 TallyNumber = tally.TallyNumber,
+                                 TallyType = (TallyTypes)tally.TallyType,
+                             };
+
+
+            return await Task.FromResult(tallyQuery);
         }
 
         public async Task<DtoTally_WithPipeAndCustomer> GetTallyById(Guid guid)

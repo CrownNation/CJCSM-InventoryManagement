@@ -70,8 +70,8 @@ namespace Inventory_API.Controllers
             }
         }
 
-        [HttpGet("WithPipe/{locationId}")]
-        public async Task<IActionResult> GetRackListWithPipeAndCustomerByLocation(Guid locationId, ODataQueryOptions<DtoRack_WithPipe> options)
+        [HttpGet("WithPipe")]
+        public async Task<IActionResult> GetRackListWithPipeAndCustomer(ODataQueryOptions<DtoRack_WithPipe> options)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Inventory_API.Controllers
                     return NotFound();
                 }
 
-                IQueryable<DtoRack_WithPipe>? rackList = await _rackBl.GetRackListWithPipeAndCustomerByLocation(locationId);
+                IQueryable<DtoRack_WithPipe>? rackList = await _rackBl.GetRackListWithPipeAndCustomer();
 
                 if (rackList == null)
                 {
@@ -105,7 +105,7 @@ namespace Inventory_API.Controllers
             catch (Exception e)
             {
                 _logger.LogError($"GetRackById: " + e.Message);
-                throw new Exception($"There was a problem querying for the rack with LocationID: {locationId}.");
+                throw new Exception($"There was a problem querying for the rack.");
             }
         }
 
