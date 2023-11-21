@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
 import { ShopLocation } from '../../models/shop.model';
 import { Customer } from '../../models/customer.model';
-import { TallyType } from '../../models/tally.model';
+import { TallyTypes } from '../../models/tally.model';
 
 @Component({
   selector: 'app-tally-add',
@@ -32,7 +32,7 @@ export class TallyAddComponent {
   ];
 
   customers: Customer[] = [];
-  tallyTypes = Object.values(TallyType);
+  tallyTypes = Object.values(TallyTypes);
 
   constructor(
     private router: Router,
@@ -45,7 +45,7 @@ export class TallyAddComponent {
 
   buildForm() {
     this.addTallyForm = new FormGroup({
-      tallyType: new FormControl(TallyType.TallyIn, [Validators.required]),
+      tallyType: new FormControl(TallyTypes.TallyIn, [Validators.required]),
       tallyNumber: new FormControl(null, [Validators.required]), 
       shopLocation: new FormControl(null, [Validators.required]),
       shipTo: new FormControl(null, [Validators.required]),

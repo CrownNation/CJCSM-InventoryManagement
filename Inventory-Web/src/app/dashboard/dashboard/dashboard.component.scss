@@ -1,6 +1,7 @@
 .section {
     margin: 1rem;
-    width: 45%;    
+    padding: 1rem;
+    width: 100%;    
 }
 
 .container {
@@ -8,6 +9,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     padding: 1rem;
+    
 }
 
 .item-rack-list {

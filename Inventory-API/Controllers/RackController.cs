@@ -35,6 +35,23 @@ namespace Inventory_API.Controllers
             }
         }
 
+      /* Tally
+       * TallyType
+       * StartDate
+       * EndDate
+       * TallyNumber
+       * Customer (this is provided in the actual URL)
+       */
+
+      /* Customer
+       * List of customer
+       * This shows a list of their pipe
+       */
+
+      /* Rack
+       * A list of racks
+       */
+
         [HttpGet("{key}")]
         public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoRack> options)
         {

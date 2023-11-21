@@ -27,16 +27,16 @@ export class RackEffects {
   );
 
   createRack = createEffect( () =>
-  this.actions$.pipe(
-    ofType(actionCreateRack),
-    switchMap(data =>
-      this.rackService.addRack(data.rackCreate).pipe(
-        map(rack => actionCreateRackSuccess({rack})),
-        catchError(errorCreatingRack => of(actionCreateRackError({ errorCreatingRack })))
+    this.actions$.pipe(
+      ofType(actionCreateRack),
+      switchMap(data =>
+        this.rackService.addRack(data.rackCreate).pipe(
+          map(rack => actionCreateRackSuccess({rack})),
+          catchError(errorCreatingRack => of(actionCreateRackError({ errorCreatingRack })))
+        )
       )
     )
-  )
-);
+  );
 
 
 }

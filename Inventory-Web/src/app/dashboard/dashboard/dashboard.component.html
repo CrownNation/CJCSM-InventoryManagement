@@ -1,5 +1,34 @@
 
 <div class="container">
+    <mat-card class="section">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
+            <mat-tab label="Search by Tally">
+                <app-search-tally 
+                    *ngIf="!(loadingRacks$ | async)" 
+                    [racks]="racks$ | async">
+            </app-search-tally>    
+            </mat-tab>
+
+            <mat-tab label="Search by Rack">
+                <app-search-rack></app-search-rack>
+            </mat-tab>
+            
+            <mat-tab label="Search by Customer">
+                <app-search-customer></app-search-customer>    
+            </mat-tab>
+            
+        </mat-tab-group>
+    </mat-card>
+    
+    
+</div>
+
+
+
+
+<!-- 
+<div class="container">
     <app-rack-list 
         *ngIf="!(loadingRacks$ | async)" 
         [racks]="racks$ | async"
@@ -15,4 +44,4 @@
    
 
 
-</div>
+</div> -->
