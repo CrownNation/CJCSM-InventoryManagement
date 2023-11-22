@@ -6,21 +6,40 @@ export enum TallyTypes {
     TallyOut = 1
 }
   
+// export interface Tally {
+//     tallyId: string;
+//     tallyNumber: string;
+//     shipToId: string;
+//     shipToName: string;
+//     shipFromId: string;
+//     shipFromName: string;
+//     shopLocationId: string;
+//     shopName: string;
+//     tallyType: TallyTypes;
+//     consultantName: string; // type in field, just the name of the consultant
+//     landLocation: string; // the well the pipe came from
+//     via: string; // the trucking company
+//     dateOfCreation: Date;
+//     notes?: string;
+// }
+
 export interface Tally {
     tallyId: string;
     tallyNumber: string;
-    shipToId: string;
-    shipToName: string;
-    shipFromId: string;
-    shipFromName: string;
+    customerId: string;
+    customerName: string;
     shopLocationId: string;
-    shopName: string;
+    shopLocationName: string;
     tallyType: TallyTypes;
-    consultantName: string; // type in field, just the name of the consultant
-    landLocation: string; // the well the pipe came from
-    via: string; // the trucking company
     dateOfCreation: Date;
     notes?: string;
+    pipeList: Pipe[];
+    invoiceNumber?: string;
+    talliedByUserId: string;
+    talliedByUserName: string;
+    carrierName?: string;
+    weightInKg: number;
+    weightInLbs: number;
 }
 
 export interface TallyCreate {

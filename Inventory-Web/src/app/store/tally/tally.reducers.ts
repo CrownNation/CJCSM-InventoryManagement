@@ -3,7 +3,7 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { TallyState } from './tally.state';
 import { Tally } from '../../models/tally.model';
 import { actionCreateTally, actionCreateTallyError, actionCreateTallySuccess, 
-    actionGetTallies, actionGetTalliesError, actionGetTalliesSuccess } from './tally.actions';
+    actionGetTallies, actionGetTalliesError, actionGetTalliesSuccess, actionGetTallyById, actionGetTallyByIdError, actionGetTallyByIdSuccess } from './tally.actions';
 
 
 export function sortByName(a: Tally, b: Tally): number {
@@ -18,31 +18,36 @@ export const tallyAdapter: EntityAdapter<Tally> = createEntityAdapter<Tally>({
 });
 
 export const initialState: TallyState = tallyAdapter.getInitialState({
-ids: [],
-entities: { },
-loadingTallies: false,
-errorLoadingTallies: null,
+    ids: [],
+    entities: { },
+    loadingTallies: false,
+    errorLoadingTallies: null,
 
-creatingTally: false,
-errorCreatingTally: null,
+    creatingTally: false,
+    errorCreatingTally: null,
+
+    selectedTally: null,
+    errorLoadingSelectedTally: null
 });
 
 const reducer: ActionReducer<TallyState> = createReducer(
     initialState,
     // Retrieve Tallies
-    on(actionGetTallies, (state: TallyState, { searchParams }) => ({
-        ...state,
-        loadingTallies: true,
-        errorLoadingTallies: null
-    })),
-    on(actionGetTalliesSuccess, (state: TallyState, { tallies }) => 
-    tallyAdapter.addMany(tallies, state),        
-    ),
-    on(actionGetTalliesSuccess, (state: TallyState, { tallies }) => ({
-        ...state,
-        loadingTallies: false,
-        errorLoadingTallies: null
-    })),        
+    on(actionGetTallies, (state: TallyState, { searchParams }) => {
+        const newState = tallyAdapter.removeAll(state); // Needed so it refreshes the subscription fires with new data
+        return {
+          ...newState,
+          loadingTallies: true,
+          errorLoadingTallies: null
+        };
+    }),    
+    on(actionGetTalliesSuccess, (state: TallyState, { tallies }) => {
+        return tallyAdapter.addMany(tallies, {
+          ...state,
+          loadingTallies: false,
+          errorLoadingTallies: null
+        });
+    }), 
     on(actionGetTalliesError, (state: TallyState, { errorLoadingTallies }) => ({
         ...state,
         loadingTallies: false,
@@ -67,6 +72,24 @@ const reducer: ActionReducer<TallyState> = createReducer(
         ...state,
         creatingTally: false,
         errorCreatingTally
+    })),
+
+    // Load selected tally
+    on(actionGetTallyById, (state: TallyState, { tallyId }) => ({
+        ...state,
+        selectedTally: null,
+        errorLoadingSelectedTally: null
+    })),    
+    on(actionGetTallyByIdSuccess, (state: TallyState, { selectedTally }) => ({
+        ...state,
+        selectedTally,
+        errorLoadingSelectedTally: null
+        
+    })),        
+    on(actionGetTallyByIdError, (state: TallyState, { errorLoadingSelectedTally }) => ({
+        ...state,
+        creatingTally: false,
+        errorLoadingSelectedTally
     })),
 
 );

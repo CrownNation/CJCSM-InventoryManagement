@@ -13,6 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -21,6 +22,7 @@ import { PipeModule } from '../pipe/pipe.module';
 import { SearchRackComponent } from './search-rack/search-rack.component';
 import { SearchTallyComponent } from './search-tally/search-tally.component';
 import { SearchCustomerComponent } from './search-customer/search-customer.component';
+import { TallyViewComponent } from './tally-view/tally-view.component';
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import { SearchCustomerComponent } from './search-customer/search-customer.compo
     DashboardComponent,
     SearchRackComponent,
     SearchTallyComponent,
-    SearchCustomerComponent
+    SearchCustomerComponent,
+    TallyViewComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +51,8 @@ import { SearchCustomerComponent } from './search-customer/search-customer.compo
     MatNativeDateModule,
     MatTooltipModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ]
 })
 export class DashboardModule { }

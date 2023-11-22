@@ -3,6 +3,7 @@ import { AppState, selectTallyFeature } from "../core.state";
 import { TallyState } from "./tally.state";
 import { Tally } from "../../models/tally.model";
 import { tallyAdapter } from "./tally.reducers";
+import { Dictionary } from "@ngrx/entity";
 
 
 const { selectEntities, selectAll } = tallyAdapter.getSelectors();
@@ -10,7 +11,7 @@ const { selectEntities, selectAll } = tallyAdapter.getSelectors();
 export const selectTallyFeature2: MemoizedSelector<AppState, TallyState> =
   createFeatureSelector<TallyState>('tally');
 
-export const selectTallys2: MemoizedSelector<AppState, Tally[]> = 
+export const selectTallies2: MemoizedSelector<AppState, Tally[]> = 
 createSelector(
     selectTallyFeature2,
   ({ entities }: TallyState): Tally[] => 
@@ -27,15 +28,29 @@ export const selectAllTallys = createSelector(selectTallyFeature, selectAll);
 export const selectAllTallyEntities = createSelector(selectTallyFeature, selectEntities);
 
 
-export const selectTallys = createSelector(
+export const selectTalliesEntities = createSelector(
     selectTallyFeature,
     (state: TallyState) => state.entities
 );
-export const selectLoadingTallys = createSelector(
+export const selectTallies = createSelector(
+    selectAllTallyEntities,
+    (talliesDictionary: Dictionary<Tally>) => Object.values(talliesDictionary) as Tally[]
+  );
+export const selectLoadingTallies = createSelector(
     selectTallyFeature,
     (state: TallyState) => state.loadingTallies
 );
-export const selectErrorLoadingTallys = createSelector(
+export const selectErrorLoadingTallies = createSelector(
     selectTallyFeature,
     (state: TallyState) => state.errorLoadingTallies
+);
+
+// Selected Tally
+export const selectSelectedTally = createSelector(
+    selectTallyFeature,
+    (state: TallyState) => state.selectedTally
+  );
+export const selectSelectedTallyError = createSelector(
+    selectTallyFeature,
+    (state: TallyState) => state.errorLoadingSelectedTally
 );

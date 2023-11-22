@@ -1,14 +1,25 @@
 
-
-mat-card-header{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+mat-card {
+    min-width: 500px;
+    padding: 1rem;
+    width: 100%;
 }
+
+
 
 mat-card-title {
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.5rem;    
+    width:100%;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-weight: 700;
+    font-size: 1.5rem; 
 }
     
 mat-form-field {
@@ -17,17 +28,15 @@ mat-form-field {
 
 .container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
 }
-
-
 
 .section {
     // margin: 1rem;
-    padding-left: 1rem;
-    // width: 100%;  
-    
-    align-self: flex-start;  
+    // padding: 1rem;
+    // width: 100%;    
 }
 
 

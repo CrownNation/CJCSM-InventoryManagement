@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Tally, TallySearchParams, TallyTypes } from '../../models/tally.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -6,22 +6,29 @@ import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { AppState } from '../../store/core.state';
 import { Store } from '@ngrx/store';
-import { Rack } from '../../models/rack.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Customer } from '../../models/customer.model';
-import { actionGetTallies } from '../../store/tally/tally.actions';
+import { actionGetTallies, actionGetTallyById } from '../../store/tally/tally.actions';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { selectLoadingTallies, selectTallies, selectTalliesEntities } from '../../store/tally/tally.selectors';
+import { Dictionary } from '@ngrx/entity';
 
 @Component({
   selector: 'app-search-tally',
   templateUrl: './search-tally.component.html',
   styleUrls: ['./search-tally.component.scss']
 })
-export class SearchTallyComponent implements OnInit, AfterViewInit {
+export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   
-  @Input() racks!: Rack[] | null;
-
-  displayedColumns: string[] = ['name', 'shopName', 'actions'];
-  dataSource: MatTableDataSource<Rack> = new MatTableDataSource<Rack>;
+  displayedColumns: string[] = [ 
+    'tallyNumber', 
+    'customerName', 
+    'shopName', 
+    'tallyType', 
+    'date',
+    'actions'
+  ];
+  dataSource: MatTableDataSource<Tally> = new MatTableDataSource<Tally>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -38,6 +45,19 @@ export class SearchTallyComponent implements OnInit, AfterViewInit {
     dateEnd: null
   };
 
+  private destroy$ = new Subject<void>();
+
+  tallies$: Observable<Tally[]> = this.store.select(selectTallies);
+  loadingTallies: Boolean = false;
+  loading$: Observable<Boolean> = this.store.select((selectLoadingTallies));
+  // tallies: Tally[] = [];
+
+  // Todo:
+  // [ ] Populate customer list
+  // [ ] Add display information panel on the right
+  // [*] Connect tally data list 
+  // [ ] Show loading spinner
+
 
   constructor(
     private router: Router,
@@ -45,24 +65,43 @@ export class SearchTallyComponent implements OnInit, AfterViewInit {
   {  }
 
   ngOnInit(): void {
-    console.log('rack-list onInit');
-    console.log(this.racks);
 
+    // Todo: Enable this once the date queries are working
     // if (this.searchParams) {
     //   const date = new Date();
-    //   this.searchParams.dateStart = date.toISOString();
+    //   const year = date.getFullYear();
+    //   const month = date.getMonth() + 1; // getMonth() returns a 0-based month
+    //   const day = date.getDate();
 
-    //   date.setDate(date.getDate() - 7);
-    //   this.searchParams.dateEnd = new Date(date).toISOString();
-    // }
+    //   const formattedDateStart = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    //   this.searchParams.dateStart = formattedDateStart;
 
-    console.log(this.searchParams);
+    //   const dateEnd = new Date();
+    //   dateEnd.setMonth(date.getMonth() - 1);
+      
+    //   const yearEnd = dateEnd.getFullYear();
+    //   const monthEnd = dateEnd.getMonth() + 1; // getMonth() returns a 0-based month
+    //   const dayEnd = dateEnd.getDate();
 
+    //   const formattedDateEnd = `${yearEnd}-${monthEnd.toString().padStart(2, '0')}-${dayEnd.toString().padStart(2, '0')}`;
+    //   this.searchParams.dateEnd = formattedDateEnd;
+    // } 
+    this.loadingTallies = true;   
     this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
-    
+   
+
+    this.tallies$.pipe(takeUntil(this.destroy$)).subscribe((tallies) => {
+      if (tallies) {       
+        this.dataSource = new MatTableDataSource(tallies as Tally[]);
+        this.loadingTallies = false;
+      } 
+    });
+
+    this.loading$.subscribe((loading) => {
+      this.loadingTallies = loading;
+    });
 
     this.buildForm();
-    this.dataSource = new MatTableDataSource(this.racks as Rack[]);
   }
 
   buildForm() {
@@ -96,18 +135,45 @@ export class SearchTallyComponent implements OnInit, AfterViewInit {
   }
 
   filter()  {
-    console.log('filter');
+    
+    console.log(this.tallyForm.value);
+
+    this.searchParams = {
+      tallyType: this.tallyForm.value.tallyType,
+      tallyNumber: this.tallyForm.value.tallyNumber,
+      customerId: this.tallyForm.value.customer,
+      dateStart: this.tallyForm.value.dateStart,
+      dateEnd: this.tallyForm.value.dateEnd
+    };
+    this.loadingTallies = true;
+    this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
   }
 
   clearForm() {
     this.tallyForm.reset();
   }
 
+  displayTallyType(tallyType: number) {
+    if(tallyType === TallyTypes.TallyIn) {
+      return 'In'
+    }
+    else if(tallyType === TallyTypes.TallyOut) {
+      return 'Out'
+    }
+    
+    return ''    
+  }
 
-  // viewRack(rack: Rack) {
-  //   console.log(rack);
-  //   this.router.navigate([`/rack/${rack.rackId}`]);    
-  // }
+  viewTally(tally: Tally) {
+    // this.router.navigate([`/rack/${rack.rackId}`]);    
+    this.store.dispatch(actionGetTallyById({tallyId: tally.tallyId}));
+  }
+
+  ngOnDestroy() {
+    console.log('');
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
 
 }

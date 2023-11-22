@@ -1,0 +1,39 @@
+<mat-card>
+    <mat-card-header>
+        <div *ngIf="!tally" class="title-container">
+            Tally Information
+        </div>
+
+        <div *ngIf="tally" class="title-container">
+            <span>{{tally.tallyNumber}}</span>
+            <span>{{displayTallyType(tally.tallyType)}}</span>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="container" *ngIf="tally">
+            <h4>{{tally?.customerName}} </h4>
+            <span>{{tally?.dateOfCreation | date:'mediumDate'}}</span>
+            <span>{{tally?.shopLocationName}}</span>
+
+            <h4>Pipe</h4>           
+
+
+            <form [formGroup]="tallyForm">    
+            </form>
+    
+        </div>
+    
+    </mat-card-content>
+
+    
+
+    <div *ngIf="loading" class="spinner">
+        <mat-progress-spinner 
+        color="primary" 
+        mode="indeterminate">
+        </mat-progress-spinner>
+    </div>
+
+
+</mat-card>

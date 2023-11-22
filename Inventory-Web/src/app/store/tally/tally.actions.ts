@@ -18,12 +18,6 @@ export const actionGetTalliesError = createAction(
     props<{ errorLoadingTallies: HttpErrorResponse }>()
 );
 
-// Get Tally By Id
-export const actionGetTallyById = createAction(
-    `${tallyKey} Get Tally By Id`,
-    props<{ tallyId: string }>()
-);
-
 
 // Create Tally
 export const actionCreateTally = createAction(
@@ -37,6 +31,20 @@ export const actionCreateTallySuccess = createAction(
 export const actionCreateTallyError = createAction(
     `${tallyKey} Create Tally Error`,
     props<{ errorCreatingTally: HttpErrorResponse }>()
+);
+
+// Get Tally by Id
+export const actionGetTallyById = createAction(
+    `${tallyKey} Get Tally By Id`, 
+    props<{ tallyId: string }>()
+);
+export const actionGetTallyByIdSuccess = createAction(
+    `${tallyKey} Get Tally By Id Success`,
+    props<{ selectedTally: Tally }>()
+);
+export const actionGetTallyByIdError = createAction(
+    `${tallyKey} Get Tally By Id Error`,
+    props<{ errorLoadingSelectedTally: HttpErrorResponse }>()
 );
 
 
