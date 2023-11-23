@@ -5,16 +5,35 @@ import { AppState } from '../../store/core.state';
 import { Tally, TallyTypes } from '../../models/tally.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectSelectedTally } from '../../store/tally/tally.selectors';
+import { MatTableDataSource } from '@angular/material/table';
+import { Pipe } from '../../models/pipe.model';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-tally-view',
   templateUrl: './tally-view.component.html',
-  styleUrls: ['./tally-view.component.scss']
+  styleUrls: ['./tally-view.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class TallyViewComponent  implements OnInit, OnDestroy{
 
   tallyForm!: FormGroup
   tally: Tally | null = null;
+  columnsToDisplay : string[] = [ 
+    'quantity', 
+    'lengthFeet', 
+    'lengthMeters', 
+    'rack'
+  ];
+  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  expandedElement!: Pipe | null;
+  dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>;
 
   tally$: Observable<Tally | null> = this.store.select(selectSelectedTally);
   loading: Boolean = false;
@@ -32,11 +51,13 @@ export class TallyViewComponent  implements OnInit, OnDestroy{
 
         this.loading = false;
         this.tally = tally;
+        this.dataSource = new MatTableDataSource(tally.pipeList as Pipe[]);
       } 
     });    
 
     this.buildForm();
   }
+
 
   buildForm() {
 

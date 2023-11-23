@@ -25,49 +25,49 @@ export class TierListComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   tiers: Tier[] = [
-    { 
-      tierId: '1', 
-      rackId: 'rack1', 
-      number: 1,
-      pipe: [
-        {
-          pipeId: 'pipe1',
-          pipeDefintion: {
-            pipeDefinitionId: '123',
-            pipeSize: {
-              pipeSizeId: 'M',
-              measurementUnit: MeasurementUnit.metric
-            },
-            pipeCondition: {
-              pipeConditionId: 'U',
-              pipeCondition: 'Used'
-            },
-            pipeThread: {
-              pipeThreadId: 'NPT',
-              pipeThread: 'National Pipe Thread'
-            },
-            pipeGrade: {
-              pipeGradeId: 'API5LX52',
-              pipeGrade: 'API 5L X52'
-            },
-            pipeCoating: {
-              pipeCoatingId: 'ExternalFBE',
-              pipeCoating: 'External Fusion Bonded Epoxy'
-            },
-            weight: 100,
-            wallSize: 0.5
-          },
-          length: 100,
-          quantity: 14,
-          rack: {
-            rackId: 'rack1',
-            name: 'Rack 1',
-            shopLocationId: 'shop1',
-            isActive: true,
-            shopName: 'Shop 1'
-          }
-        }]
-    }
+    // { 
+    //   tierId: '1', 
+    //   rackId: 'rack1', 
+    //   number: 1,
+    //   pipe: [
+    //     {
+    //       pipeId: 'pipe1',
+    //       pipeDefintion: {
+    //         pipeDefinitionId: '123',
+    //         pipeSize: {
+    //           pipeSizeId: 'M',
+    //           measurementUnit: MeasurementUnit.metric
+    //         },
+    //         pipeCondition: {
+    //           pipeConditionId: 'U',
+    //           pipeCondition: 'Used'
+    //         },
+    //         pipeThread: {
+    //           pipeThreadId: 'NPT',
+    //           pipeThread: 'National Pipe Thread'
+    //         },
+    //         pipeGrade: {
+    //           pipeGradeId: 'API5LX52',
+    //           pipeGrade: 'API 5L X52'
+    //         },
+    //         pipeCoating: {
+    //           pipeCoatingId: 'ExternalFBE',
+    //           pipeCoating: 'External Fusion Bonded Epoxy'
+    //         },
+    //         weight: 100,
+    //         wallSize: 0.5
+    //       },
+    //       length: 100,
+    //       quantity: 14,
+    //       rack: {
+    //         rackId: 'rack1',
+    //         name: 'Rack 1',
+    //         shopLocationId: 'shop1',
+    //         isActive: true,
+    //         shopName: 'Shop 1'
+    //       }
+    //     }]
+    // }
   ];
 
 

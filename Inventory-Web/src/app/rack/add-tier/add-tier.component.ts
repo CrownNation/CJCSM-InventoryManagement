@@ -13,56 +13,56 @@ export class AddTierComponent implements OnInit{
   addTierForm!: FormGroup;
 
   pipes: PipeDefinition[] = [
-    {
-      pipeDefinitionId: '123',
-      pipeSize: {
-        pipeSizeId: 'M',
-        measurementUnit: MeasurementUnit.metric
-      },
-      pipeCondition: {
-        pipeConditionId: 'U',
-        pipeCondition: 'Used'
-      },
-      pipeThread: {
-        pipeThreadId: 'NPT',
-        pipeThread: 'National Pipe Thread'
-      },
-      pipeGrade: {
-        pipeGradeId: 'API5LX52',
-        pipeGrade: 'API 5L X52'
-      },
-      pipeCoating: {
-        pipeCoatingId: 'ExternalFBE',
-        pipeCoating: 'External Fusion Bonded Epoxy'
-      },
-      weight: 100,
-      wallSize: 0.5
-    },
-    {
-      pipeDefinitionId: '456',
-      pipeSize: {
-        pipeSizeId: 'L',
-        measurementUnit: MeasurementUnit.metric
-      },
-      pipeCondition: {
-        pipeConditionId: 'N',
-        pipeCondition: 'New'
-      },
-      pipeThread: {
-        pipeThreadId: 'thread2',
-        pipeThread: 'International Pipe Thread'
-      },
-      pipeGrade: {
-        pipeGradeId: 'gradeId2',
-        pipeGrade: 'Pretty good'
-      },
-      pipeCoating: {
-        pipeCoatingId: 'YBandId',
-        pipeCoating: 'Y Band'
-      },
-      weight: 30,
-      wallSize: 0.15
-    }
+    // {
+    //   pipeDefinitionId: '123',
+    //   pipeSize: {
+    //     pipeSizeId: 'M',
+    //     measurementUnit: MeasurementUnit.metric
+    //   },
+    //   pipeCondition: {
+    //     pipeConditionId: 'U',
+    //     pipeCondition: 'Used'
+    //   },
+    //   pipeThread: {
+    //     pipeThreadId: 'NPT',
+    //     pipeThread: 'National Pipe Thread'
+    //   },
+    //   pipeGrade: {
+    //     pipeGradeId: 'API5LX52',
+    //     pipeGrade: 'API 5L X52'
+    //   },
+    //   pipeCoating: {
+    //     pipeCoatingId: 'ExternalFBE',
+    //     pipeCoating: 'External Fusion Bonded Epoxy'
+    //   },
+    //   weight: 100,
+    //   wallSize: 0.5
+    // },
+    // {
+    //   pipeDefinitionId: '456',
+    //   pipeSize: {
+    //     pipeSizeId: 'L',
+    //     measurementUnit: MeasurementUnit.metric
+    //   },
+    //   pipeCondition: {
+    //     pipeConditionId: 'N',
+    //     pipeCondition: 'New'
+    //   },
+    //   pipeThread: {
+    //     pipeThreadId: 'thread2',
+    //     pipeThread: 'International Pipe Thread'
+    //   },
+    //   pipeGrade: {
+    //     pipeGradeId: 'gradeId2',
+    //     pipeGrade: 'Pretty good'
+    //   },
+    //   pipeCoating: {
+    //     pipeCoatingId: 'YBandId',
+    //     pipeCoating: 'Y Band'
+    //   },
+    //   weight: 30,
+    //   wallSize: 0.15
+    // }
   ];
 
   constructor(public dialogRef: MatDialogRef<AddTierComponent>) { }
