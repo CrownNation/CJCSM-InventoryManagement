@@ -54,6 +54,22 @@ namespace Inventory_API.Controllers
             }
         }
 
+        [HttpGet("withDefinition")]
+        public async Task<IActionResult> GetPipeWidthDefinitionList(ODataQueryOptions<DtoPipe> options)
+        {
+            try
+            {
+                IQueryable<DtoPipe>? pipes = await _pipeBl.GetPipeWithDefinitionList();
+                return Ok(options.ApplyTo(pipes));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetPipes: " + e.Message);
+                throw new Exception("There was a problem querying for pipes.");
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoPipeCreate pipe)
         {

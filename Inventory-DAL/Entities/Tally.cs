@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static CJCSM_Common.ApplicationEnums;
 
 namespace Inventory_DAL.Entities
 {
@@ -20,7 +21,7 @@ namespace Inventory_DAL.Entities
         [Required]
         public Guid ShopLocationId { get; set; }
         [Required]
-        public int TallyType { get; set; }
+        public TallyTypes TallyType { get; set; }
         [Required]
         public DateTimeOffset DateOfCreation { get; set; }
         public string? Notes { get; set; }

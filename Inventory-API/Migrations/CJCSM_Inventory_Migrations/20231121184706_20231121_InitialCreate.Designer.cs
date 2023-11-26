@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20231109170829_20231109_InitialCreate")]
-    partial class _20231109InitialCreate
+    [Migration("20231121184706_20231121_InitialCreate")]
+    partial class _20231121InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,9 +91,11 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("LengthInFeet")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("LengthInMeters")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("PipeDefinitionId")

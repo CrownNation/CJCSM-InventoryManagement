@@ -5,7 +5,7 @@
         public enum TallyTypes
         {
             TallyIn,
-            Tallyout
+            TallyOut
         }
 
     }

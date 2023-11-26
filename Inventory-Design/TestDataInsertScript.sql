@@ -13,7 +13,7 @@ INSERT INTO Customer (CustomerId, Name, Address1, City, ProvinceState, Country, 
 DECLARE @ShopLocationId UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO ShopLocation (
-    ShopLocationId, 
+    ShopLocationId,
     Name, 
     Address1, 
     Address2, 
@@ -134,9 +134,9 @@ DECLARE @Tally1Id UNIQUEIDENTIFIER = NEWID(), @Tally2Id UNIQUEIDENTIFIER = NEWID
         @TalliedByUserId1 UNIQUEIDENTIFIER = NEWID(), @TalliedByUserId2 UNIQUEIDENTIFIER = NEWID(), @TalliedByUserId3 UNIQUEIDENTIFIER = NEWID();
 
 INSERT INTO Tally (TallyId, CustomerId, ShopLocationId, TallyType, DateOfCreation, Notes, TallyNumber, InvoiceNumber, TalliedByUserId, CarrierName) VALUES
-(@Tally1Id, @Customer1Id, @ShopLocationId, 1, GETDATE(), 'Note for Tally 1', 'TN0001', 'INV0001', @TalliedByUserId1, 'Carrier A'),
-(@Tally2Id, @Customer2Id, @ShopLocationId, 2, GETDATE(), 'Note for Tally 2', 'TN0002', 'INV0002', @TalliedByUserId2, 'Carrier B'),
-(@Tally3Id, @Customer3Id, @ShopLocationId, 3, GETDATE(), 'Note for Tally 3', 'TN0003', 'INV0003', @TalliedByUserId3, 'Carrier C');
+(@Tally1Id, @Customer1Id, @ShopLocationId, 0, GETDATE(), 'Note for Tally 1', 'TN0001', 'INV0001', @TalliedByUserId1, 'Carrier A'),
+(@Tally2Id, @Customer2Id, @ShopLocationId, 0, GETDATE(), 'Note for Tally 2', 'TN0002', 'INV0002', @TalliedByUserId2, 'Carrier B'),
+(@Tally3Id, @Customer3Id, @ShopLocationId, 1, GETDATE(), 'Note for Tally 3', 'TN0003', 'INV0003', @TalliedByUserId3, 'Carrier C');
 
 -- TallyPipe
 INSERT INTO TallyPipe (TallyId, PipeId) VALUES
