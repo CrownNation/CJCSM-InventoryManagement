@@ -17,12 +17,11 @@ export class AppComponent implements OnInit{
   year = new Date().getFullYear();
   logo = '../../assets/cjcsm_logo_small.png';
   navigation = [
-    { link: 'admin', label: 'Admin' },
+    // { link: 'admin', label: 'Admin' },
     { link: 'dashboard', label: 'Dashboard' },
-    { link: 'tally', label: 'Tally' },
     { link: 'pipe', label: 'Pipe Config' },
-    { link: 'Equipment', label: 'Equipment' },
-    { link: 'customer', label: 'Customers' },     
+    // { link: 'Equipment', label: 'Equipment' },
+    // { link: 'customer', label: 'Customers' },     
   ];
   navigationSideMenu = [
     ...this.navigation

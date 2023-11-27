@@ -34,7 +34,7 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
 
   tallyForm!: FormGroup
-  tallyTypes = Object.values(TallyTypes);
+  tallyTypes = Object.values(TallyTypes).filter(value => typeof value === 'number') as number[];
 
   customers: Customer[] = [];
   searchParams: TallySearchParams | null = {
@@ -50,43 +50,18 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   tallies$: Observable<Tally[]> = this.store.select(selectTallies);
   loadingTallies: Boolean = false;
   loading$: Observable<Boolean> = this.store.select((selectLoadingTallies));
-  // tallies: Tally[] = [];
-
-  // Todo:
-  // [ ] Populate customer list
-  // [ ] Add display information panel on the right
-  // [*] Connect tally data list 
-  // [ ] Show loading spinner
-
-
+ 
   constructor(
     private router: Router,
     private store: Store<AppState>)
   {  }
 
+
   ngOnInit(): void {
 
-    // Todo: Enable this once the date queries are working
-    // if (this.searchParams) {
-    //   const date = new Date();
-    //   const year = date.getFullYear();
-    //   const month = date.getMonth() + 1; // getMonth() returns a 0-based month
-    //   const day = date.getDate();
-
-    //   const formattedDateStart = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-    //   this.searchParams.dateStart = formattedDateStart;
-
-    //   const dateEnd = new Date();
-    //   dateEnd.setMonth(date.getMonth() - 1);
-      
-    //   const yearEnd = dateEnd.getFullYear();
-    //   const monthEnd = dateEnd.getMonth() + 1; // getMonth() returns a 0-based month
-    //   const dayEnd = dateEnd.getDate();
-
-    //   const formattedDateEnd = `${yearEnd}-${monthEnd.toString().padStart(2, '0')}-${dayEnd.toString().padStart(2, '0')}`;
-    //   this.searchParams.dateEnd = formattedDateEnd;
-    // } 
+    this.buildForm();
     this.loadingTallies = true;   
+    this.setDefaultDateCriteria();
     this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
    
 
@@ -94,14 +69,17 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
       if (tallies) {       
         this.dataSource = new MatTableDataSource(tallies as Tally[]);
         this.loadingTallies = false;
+        
+        if(tallies.length > 0)
+          this.store.dispatch(actionGetTallyById({tallyId: tallies[0].tallyId}));
+
       } 
     });
 
     this.loading$.subscribe((loading) => {
-      this.loadingTallies = loading;
+      this.loadingTallies = loading; 
     });
 
-    this.buildForm();
   }
 
   buildForm() {
@@ -129,15 +107,36 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  setDefaultDateCriteria() {
+    if (this.searchParams) {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; // getMonth() returns a 0-based month
+      const day = date.getDate();
+
+      const formattedDateEnd = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      this.searchParams.dateEnd = formattedDateEnd;
+      this.tallyForm.controls['dateEnd'].setValue(formattedDateEnd);
+
+      const dateStart = new Date();
+      dateStart.setMonth(date.getMonth() - 1);
+      
+      const yearStart = dateStart.getFullYear();
+      const monthStart = dateStart.getMonth() + 1; // getMonth() returns a 0-based month
+      const dayStart = dateStart.getDate();
+
+      const formattedDateStart = `${yearStart}-${monthStart.toString().padStart(2, '0')}-${dayStart.toString().padStart(2, '0')}`;
+      this.searchParams.dateStart = formattedDateStart;
+      this.tallyForm.controls['dateStart'].setValue(formattedDateStart);
+    } 
+  }
+
   addRack() {
     console.log('add rack');
     this.router.navigate(['/rack/add']);    
   }
 
   filter()  {
-    
-    console.log(this.tallyForm.value);
-
     this.searchParams = {
       tallyType: this.tallyForm.value.tallyType,
       tallyNumber: this.tallyForm.value.tallyNumber,
@@ -151,8 +150,18 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
 
   clearForm() {
     this.tallyForm.reset();
+    this.searchParams = {
+      tallyType: null,
+      tallyNumber: null,
+      customerId: null,
+      dateStart: null,
+      dateEnd: null
+    };
+    this.setDefaultDateCriteria();
+    this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
   }
 
+  // Todo: move to a helper function
   displayTallyType(tallyType: number) {
     if(tallyType === TallyTypes.TallyIn) {
       return 'In'

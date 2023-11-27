@@ -1,23 +1,43 @@
+<div>
+    <app-actions-bar></app-actions-bar>
+</div>
 
 <div class="container">
-    <!-- <mat-card class="section"> -->
-        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" >
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" >          
 
-            <mat-tab label="Search by Tally">
-                <app-search-tally></app-search-tally>    
-            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>assignment</mat-icon>
+                  Search by Tally
+                </ng-template>
+                <app-search-tally></app-search-tally>
+              </mat-tab>
 
-            <mat-tab label="Search by Rack">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                  <mat-icon>view_list</mat-icon>
+                  Search by Rack
+                </ng-template>
                 <app-search-rack></app-search-rack>
             </mat-tab>
             
-            <mat-tab label="Search by Customer">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon>group</mat-icon>
+                    Search by Customer
+                </ng-template>
                 <app-search-customer></app-search-customer>    
             </mat-tab>
 
-        </mat-tab-group>
-    <!-- </mat-card>       -->
-    
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon>plumbing</mat-icon>
+                    Search by Pipe
+                </ng-template>
+                <app-search-customer></app-search-customer>    
+            </mat-tab>
+
+        </mat-tab-group>    
 </div>
 
 

@@ -14,7 +14,8 @@
                         <mat-form-field appearance="outline" color="accent">
                             <mat-label>Tally Type</mat-label>
                             <mat-select formControlName="tallyType">
-                                <mat-option *ngFor="let tallyType of tallyTypes" [value]="tallyType">{{tallyType}}</mat-option>
+                                <mat-option *ngFor="let tallyType of tallyTypes" 
+                                    [value]="tallyType">{{displayTallyType(tallyType)}}</mat-option>
                             </mat-select>
                         </mat-form-field>
         

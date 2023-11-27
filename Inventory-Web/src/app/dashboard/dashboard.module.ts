@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -23,6 +24,7 @@ import { SearchRackComponent } from './search-rack/search-rack.component';
 import { SearchTallyComponent } from './search-tally/search-tally.component';
 import { SearchCustomerComponent } from './search-customer/search-customer.component';
 import { TallyViewComponent } from './tally-view/tally-view.component';
+import { ActionsBarComponent } from './actions-bar/actions-bar.component';
 
 
 @NgModule({
@@ -31,7 +33,8 @@ import { TallyViewComponent } from './tally-view/tally-view.component';
     SearchRackComponent,
     SearchTallyComponent,
     SearchCustomerComponent,
-    TallyViewComponent
+    TallyViewComponent,
+    ActionsBarComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +55,8 @@ import { TallyViewComponent } from './tally-view/tally-view.component';
     MatTooltipModule,
     MatInputModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ]
 })
 export class DashboardModule { }

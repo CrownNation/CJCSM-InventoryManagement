@@ -47,6 +47,7 @@ import { TallyAddComponent } from './tally-add/tally-add.component';
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule
-  ]
+  ],
+  exports: [TallyAddComponent]
 })
 export class TallyModule { }

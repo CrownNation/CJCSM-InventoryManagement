@@ -4,24 +4,8 @@ import { Pipe, PipeCreate } from "./pipe.model";
 export enum TallyTypes {
     TallyIn = 0,
     TallyOut = 1
-}
-  
-// export interface Tally {
-//     tallyId: string;
-//     tallyNumber: string;
-//     shipToId: string;
-//     shipToName: string;
-//     shipFromId: string;
-//     shipFromName: string;
-//     shopLocationId: string;
-//     shopName: string;
-//     tallyType: TallyTypes;
-//     consultantName: string; // type in field, just the name of the consultant
-//     landLocation: string; // the well the pipe came from
-//     via: string; // the trucking company
-//     dateOfCreation: Date;
-//     notes?: string;
-// }
+} 
+
 
 export interface Tally {
     tallyId: string;
@@ -42,18 +26,17 @@ export interface Tally {
     weightInLbs: number;
 }
 
-export interface TallyCreate {
-    tallyType: TallyTypes;
-    tallyNumber: string;
-    shopLocationId: string;
-    shipToId: string; // customerId
-    shipFromId: string; // customerId
-    consultantName: string; // type in field, just the name of the consultant
-    landLocation: string; // the well the pipe came from
-    via: string; // the trucking company
-    rackId: string;
-    pipe: PipeCreate[];
-    notes?: string;
+export interface DtoTallyCreate {
+  tallyNumber: string;
+  customerId: string;
+  shopLocationId: string;
+  tallyType: TallyTypes; 
+  dateOfCreation: string; 
+  notes?: string;
+  invoiceNumber?: string;
+  talliedByUserId: string;
+  carrierName: string;
+  pipeList: Pipe[];
 }
 
 export interface DtoTally_WithPipeAndCustomer {

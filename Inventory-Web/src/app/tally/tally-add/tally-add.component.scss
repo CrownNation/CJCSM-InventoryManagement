@@ -6,7 +6,12 @@
 
 .section {
     // max-width: 45%;
-    flex: 1 1 auto;
+    // flex: 1 1 auto;
+}
+
+mat-card {
+    width: 500px;
+    margin: auto;
 }
 
 mat-card-header{
@@ -20,10 +25,6 @@ mat-card-title {
     font-size: 1.5rem;
 }
 
-mat-card {
-    text-align: center;
-}
-    
 mat-form-field {
     display: block;
 }
@@ -31,4 +32,13 @@ mat-form-field {
 h1 {
     font-weight: 700;
     font-size: 1.5rem;
+}
+
+.close-icon {
+    margin-left: auto;
+    cursor: pointer;
+}
+
+button {
+    margin-right: 1rem;
 }

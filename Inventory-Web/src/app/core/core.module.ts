@@ -1,6 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RackService } from './services/rack.service';
+import { RackService } from './services/rack-service/rack.service';
 
 import { environment } from '../../environments/environment';
 
@@ -19,8 +19,8 @@ import { RackEffects } from '../store/rack/rack.effects';
 import { TallyEffects } from '../store/tally/tally.effects';
 import { CustomerEffects } from '../store/customer/customer.effects';
 import { HttpClientModule } from '@angular/common/http';
-import { TallyService } from './services/tally.service';
-import { CustomerService } from './services/customer.service';
+import { TallyService } from './services/tally-service/tally.service';
+import { CustomerService } from './services/customer-service/customer.service';
 
 @NgModule({
   declarations: [ ],

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, switchMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { TallyService } from "../../core/services/tally.service";
+import { TallyService } from "../../core/services/tally-service/tally.service";
 import { actionCreateTally, actionCreateTallyError, actionCreateTallySuccess, 
   actionGetTallies, actionGetTalliesError, actionGetTalliesSuccess, actionGetTallyById, actionGetTallyByIdError, actionGetTallyByIdSuccess } from "./tally.actions";
 

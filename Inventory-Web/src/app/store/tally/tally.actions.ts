@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Tally, TallyCreate, TallySearchParams } from '../../models/tally.model';
+import { Tally, DtoTallyCreate, TallySearchParams } from '../../models/tally.model';
 
 export const tallyKey = '[Tally]';
 
@@ -22,7 +22,7 @@ export const actionGetTalliesError = createAction(
 // Create Tally
 export const actionCreateTally = createAction(
     `${tallyKey} Create Tally`, 
-    props<{ tallyCreate: TallyCreate }>()
+    props<{ tallyCreate: DtoTallyCreate }>()
 );
 export const actionCreateTallySuccess = createAction(
     `${tallyKey} Create Tally Success`,

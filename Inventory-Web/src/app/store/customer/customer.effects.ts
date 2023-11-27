@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, switchMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { CustomerService } from "../../core/services/customer.service";
+import { CustomerService } from "../../core/services/customer-service/customer.service";
 import { actionCreateCustomer, actionCreateCustomerError, actionCreateCustomerSuccess, 
   actionGetCustomers, actionGetCustomersError, actionGetCustomersSuccess } from "./customer.actions";
 

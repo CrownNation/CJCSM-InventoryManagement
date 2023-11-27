@@ -47,7 +47,7 @@ export class TallyViewComponent  implements OnInit, OnDestroy{
     this.tally$.pipe(takeUntil(this.destroy$)).subscribe((tally) => {
       if (tally) {       
         
-        console.log('tally', tally);
+        // console.log('tally', tally);
 
         this.loading = false;
         this.tally = tally;

@@ -31,37 +31,6 @@
             <p>{{tally.notes}}</p>
 
             <h4>Pipe</h4>           
-            <!-- <table mat-table [dataSource]="dataSource" matSort>   
-        
-                
-
-                <ng-container matColumnDef="quantity">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
-                    <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
-                </ng-container>
-            
-                <ng-container matColumnDef="lengthFeet">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Feet</th>
-                    <td mat-cell *matCellDef="let row"> {{row.lengthInFeet}} </td>
-                </ng-container>
-            
-                <ng-container matColumnDef="lengthMeters">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Meters</th>
-                    <td mat-cell *matCellDef="let row"> {{row.lengthInMeters}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="rack">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Rack</th>
-                    <td mat-cell *matCellDef="let row"> {{row.rackName}} </td>
-                </ng-container>          
-
-                
-            
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-            </table> -->
-
             <table mat-table
                 [dataSource]="dataSource" multiTemplateDataRows
                 class="mat-elevation-z8">
