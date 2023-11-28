@@ -3,6 +3,7 @@ import { AppState, selectCustomerFeature } from "../core.state";
 import { CustomerState } from "./customer.state";
 import { Customer } from "../../models/customer.model";
 import { customerAdapater } from "./customer.reducers";
+import { Dictionary } from "@ngrx/entity";
 
 
 const { selectEntities, selectAll } = customerAdapater.getSelectors();
@@ -28,8 +29,8 @@ export const selectAllCustomerEntities = createSelector(selectCustomerFeature, s
 
 
 export const selectCustomers = createSelector(
-    selectCustomerFeature,
-    (state: CustomerState) => state.entities
+    selectAllCustomerEntities,
+    (customersDictionary: Dictionary<Customer>) => Object.values(customersDictionary) as Customer[]
 );
 export const selectLoadingCustomers = createSelector(
     selectCustomerFeature,
@@ -38,4 +39,25 @@ export const selectLoadingCustomers = createSelector(
 export const selectErrorLoadingCustomers = createSelector(
     selectCustomerFeature,
     (state: CustomerState) => state.errorLoadingCustomers
+);
+
+// Selected Tally
+export const selectSelectedCustomer = createSelector(
+    selectCustomerFeature,
+    (state: CustomerState) => state.selectedCustomer
+  );
+export const selectSelectedTallyError = createSelector(
+    selectCustomerFeature,
+    (state: CustomerState) => state.errorLoadingSelectedCustomer
+);
+
+
+// Full customer list
+export const selectCustomersFullList = createSelector(
+    selectCustomerFeature,
+    (state: CustomerState) => state.customersFullList
+  );
+export const selectCustomersFullListError = createSelector(
+    selectCustomerFeature,
+    (state: CustomerState) => state.errorLoadingCustomersList
 );

@@ -79,7 +79,7 @@ export interface PipeProperty_Weight {
 }
 
 
-// ----------
+// ---------- Todo: remove these once they are not used on the pipe forms
 
 export interface PipeCreate {
     pipeDefinitionId: string;

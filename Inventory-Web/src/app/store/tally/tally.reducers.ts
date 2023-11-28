@@ -88,7 +88,6 @@ const reducer: ActionReducer<TallyState> = createReducer(
     })),        
     on(actionGetTallyByIdError, (state: TallyState, { errorLoadingSelectedTally }) => ({
         ...state,
-        creatingTally: false,
         errorLoadingSelectedTally
     })),
 

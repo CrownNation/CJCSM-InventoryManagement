@@ -5,6 +5,7 @@ import { AppState } from '../../store/core.state';
 import { Rack } from '../../models/rack.model';
 import { Observable } from 'rxjs';
 import { selectLoadingRacks, selectRacks2 } from '../../store/rack/rack.selectors';
+import { actionGetCustomersFullList } from '../../store/customer/customer.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +21,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('dashboard onInit');
-    this.store.dispatch(actionGetRacks());    
+    // this.store.dispatch(actionGetRacks());
+    this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));    
   }
 
 }

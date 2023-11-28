@@ -1,0 +1,160 @@
+
+mat-card {
+    min-width: 500px;
+    padding: 1rem;
+    width: 100%;
+}
+
+
+
+mat-card-title {
+    font-weight: 700;
+    font-size: 1.5rem;    
+    width:100%;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-weight: 700;
+    font-size: 1.5rem; 
+}
+    
+mat-form-field {
+    display: block;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.container-row {
+    display: flex;
+    flex-direction: row;    
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 20px;
+
+    > :first-child {
+        padding-right: 20px; // adjust as needed
+    }
+
+    h4 {
+        margin-right: 0;
+    }
+}
+
+.data-column-left,
+.data-column-right {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.data-column-right {
+  text-align: right;
+
+}
+
+h4 {
+    margin: 0.5rem 1rem 0.5rem 0; 
+}
+
+.column-actions {
+    width: 0;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    padding: 1rem;
+  }
+
+mat-expansion-panel {
+    margin: 1rem 0 1rem 0;
+
+    .container-filter {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;    
+    }
+
+    .item-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    mat-form-field {
+        margin-right: 1rem;
+        width: 12rem;
+    }
+
+    .date-field {
+        width: auto;
+    }
+
+    button {
+        margin-right: 1.5rem;
+    }
+}
+
+table {
+    margin-top: 1rem;
+}
+
+
+tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+
+    span {
+        padding: 10px;
+    }
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;    
+  }

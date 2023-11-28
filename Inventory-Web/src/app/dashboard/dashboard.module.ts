@@ -25,6 +25,7 @@ import { SearchTallyComponent } from './search-tally/search-tally.component';
 import { SearchCustomerComponent } from './search-customer/search-customer.component';
 import { TallyViewComponent } from './tally-view/tally-view.component';
 import { ActionsBarComponent } from './actions-bar/actions-bar.component';
+import { CustomerViewComponent } from './customer-view/customer-view.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ActionsBarComponent } from './actions-bar/actions-bar.component';
     SearchTallyComponent,
     SearchCustomerComponent,
     TallyViewComponent,
-    ActionsBarComponent
+    ActionsBarComponent,
+    CustomerViewComponent
   ],
   imports: [
     CommonModule,

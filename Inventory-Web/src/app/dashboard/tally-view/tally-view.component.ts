@@ -21,7 +21,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ]),
   ],
 })
-export class TallyViewComponent  implements OnInit, OnDestroy{
+export class TallyViewComponent implements OnInit, OnDestroy {
 
   tallyForm!: FormGroup
   tally: Tally | null = null;

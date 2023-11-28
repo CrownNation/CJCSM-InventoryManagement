@@ -3,7 +3,10 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Customer } from '../../models/customer.model';
 import { CustomerState } from './customer.state';
 import { actionCreateCustomer, actionCreateCustomerError, actionCreateCustomerSuccess, 
-    actionGetCustomers, actionGetCustomersError, actionGetCustomersSuccess } from './customer.actions';
+    actionGetCustomerById, 
+    actionGetCustomerByIdError, 
+    actionGetCustomerByIdSuccess, 
+    actionGetCustomers, actionGetCustomersError, actionGetCustomersFullList, actionGetCustomersFullListError, actionGetCustomersFullListSuccess, actionGetCustomersSuccess } from './customer.actions';
 
 
 
@@ -26,24 +29,32 @@ errorLoadingCustomers: null,
 
 creatingCustomer: false,
 errorCreatingCustomer: null,
+
+selectedCustomer: null,
+errorLoadingSelectedCustomer: null,
+
+customersFullList: null,
+errorLoadingCustomersList: null,    
 });
 
 const reducer: ActionReducer<CustomerState> = createReducer(
     initialState,
     // Retrieve Customers
-    on(actionGetCustomers, (state: CustomerState, { }) => ({
-        ...state,
-        loadingRacks: true,
-        errorLoadingRacks: null
-    })),
-    on(actionGetCustomersSuccess, (state: CustomerState, { customers }) => 
-        customerAdapater.addMany(customers, state),        
-    ),
-    on(actionGetCustomersSuccess, (state: CustomerState, { customers }) => ({
-        ...state,
-        loadingCustomers: false,
-        errorLoadingCustomers: null
-    })),        
+    on(actionGetCustomers, (state: CustomerState, { searchParams }) => {
+        const newState = customerAdapater.removeAll(state); // Needed so it refreshes the subscription fires with new data
+        return {
+          ...newState,
+          loadingCustomers: true,
+          errorLoadingCustomers: null
+        };
+    }), 
+    on(actionGetCustomersSuccess, (state: CustomerState, { customers }) => {
+        return customerAdapater.addMany(customers, {
+          ...state,
+          loadingTallies: false,
+          errorLoadingTallies: null
+        });
+    }),      
     on(actionGetCustomersError, (state: CustomerState, { errorLoadingCustomers }) => ({
         ...state,
         loadingRacks: false,
@@ -66,9 +77,43 @@ const reducer: ActionReducer<CustomerState> = createReducer(
     })),        
     on(actionCreateCustomerError, (state: CustomerState, { errorCreatingCustomer }) => ({
         ...state,
-        loadincreatingRackCustomers: false,
+        creatingCustomer: false,
         errorCreatingCustomer
     })),
+
+    // Load selected customer
+    on(actionGetCustomerById, (state: CustomerState, { customerId }) => ({
+        ...state,
+        selectedCustomer: null,
+        errorLoadingSelectedCustomer: null
+    })),    
+    on(actionGetCustomerByIdSuccess, (state: CustomerState, { selectedCustomer }) => ({
+        ...state,
+        selectedCustomer,
+        errorLoadingSelectedCustomer: null
+        
+    })),        
+    on(actionGetCustomerByIdError, (state: CustomerState, { errorLoadingSelectedCustomer }) => ({
+        ...state,
+        errorLoadingSelectedCustomer
+    })),
+
+    // Retrieve Customers FUll List
+    on(actionGetCustomersFullList, (state: CustomerState, { searchParams }) => ({
+        ...state,
+        customersFullList: null,
+        errorLoadingCustomersList: null
+    })),   
+    on(actionGetCustomersFullListSuccess, (state: CustomerState, { customersFullList }) => ({
+        ...state,
+        customersFullList,
+        errorLoadingCustomersList: null
+    })),        
+    on(actionGetCustomersFullListError, (state: CustomerState, { errorLoadingCustomersList }) => ({
+        ...state,
+        errorLoadingCustomersList
+    })),
+
 
 );
 
