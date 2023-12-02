@@ -57,6 +57,7 @@ namespace Inventory_API.Controllers
         }
 
 
+        /* ------Create Tally ------ */
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)  
         {
@@ -68,7 +69,7 @@ namespace Inventory_API.Controllers
             DtoTally_WithPipeAndCustomer DtoTally;
             try
             {
-                DtoTally = await _tallyBl.CreateTally(tally);
+                DtoTally = await _tallyBl.CreateTallyWithPipe(tally);
             }
             catch (ArgumentNullException e)
             {

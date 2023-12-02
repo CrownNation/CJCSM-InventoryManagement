@@ -14,7 +14,8 @@ namespace Inventory_Dto.Dto
     public class DtoTally_WithPipeAndCustomer
    {
         public Guid TallyId { get; set; }
-        
+
+        public Guid RackId { get; set; }
         public string TallyNumber { get; set; } = string.Empty;
 
         public Guid CustomerId { get; set; }

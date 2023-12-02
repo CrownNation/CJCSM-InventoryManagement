@@ -44,7 +44,7 @@ namespace Inventory_BLL.Interfaces
 
             Pipe pipe = _mapper.Map<Pipe>(dtoPipeCreate);
 
-            pipe.PipeId = Guid.NewGuid(); // This can be removed if the DB sets it.
+            pipe.PipeId = Guid.NewGuid();
             _context.Pipe.Add(pipe);
             await _context.SaveChangesAsync();
 

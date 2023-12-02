@@ -19,6 +19,8 @@ namespace Inventory_BLL.BL
 {
     public class TallyBL : ITallyBL
     {
+        public int test;
+
         private readonly InventoryContext _context;
         private readonly IMapper _mapper;
         private readonly IPipeBL _pipeBL;
@@ -151,7 +153,7 @@ namespace Inventory_BLL.BL
 
             foreach (DtoPipe pipe in returnTally.PipeList)
             {
-                
+
             }
 
             return returnTally;
@@ -193,27 +195,126 @@ namespace Inventory_BLL.BL
             return _mapper.Map<DtoTally_WithPipeAndCustomer>(tally);
         }
 
-        public async Task UpdateTally(DtoTallyUpdate dtoTallyUpdate, Guid guid)
+        public async Task<DtoTally_WithPipeAndCustomer> CreateTallyWithPipe(DtoTallyCreate tallyWithPipe)
         {
-            Tally? tally = await _context.Tally.FindAsync(guid);
+            //TODO: If the incoming TierId != null, then we get the existing tier and we get the startingPipeindex instead of totalTiersInRack
 
-            if (tally == null)
-                throw new KeyNotFoundException($"No tally with guid {guid} can be found.");
+            //Get number of tiers in rack
+            int totalTiersInRack = _context.Tier.Count(t => t.RackId == tallyWithPipe.RackId);
 
-            _mapper.Map<DtoTallyUpdate, Tally>(dtoTallyUpdate, tally);
-            await _context.SaveChangesAsync();
+            // Get next tier without any pipe on it.
+            Tier? firstTierWithoutPipe = (from t1 in _context.Tier
+                                    join r1 in _context.Rack on t1.RackId equals r1.RackId
+                                    where r1.RackId == tallyWithPipe.RackId
+                                    && !_context.Pipe.Any(p2 => p2.TierId == t1.TierId)
+                                    orderby t1.Number
+                                    select t1).FirstOrDefault();
+
+            Tier tier;
+            int startingPipeIndex = 1;
+
+            if (firstTierWithoutPipe == null)
+            {
+                System.Diagnostics.Debug.WriteLine("No Tiers without pipes found. Creating new Tier");
+                tier = new Tier();
+                tier.TierId = Guid.NewGuid();
+                tier.Number = totalTiersInRack + 1;
+                tier.RackId = tallyWithPipe.RackId;
+                _context.Tier.Add(tier);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                tier = firstTierWithoutPipe;
+                tier.Number = firstTierWithoutPipe.Number;
+                tier.TierId = firstTierWithoutPipe.TierId;
+                tier.RackId = firstTierWithoutPipe.RackId;
+            }
+
+            System.Diagnostics.Debug.WriteLine("NEXT TIER: " + tier.TierId + " TierNumber: " + tier.Number);
+
+            // Create the Tally Object to get the TallyId that is required for the TallyPipe Object
+            Tally tally = _mapper.Map<Tally>(tallyWithPipe);
+            tally.TallyId = Guid.NewGuid();
+
+            int currentPipeIndex = startingPipeIndex;
+            List<TallyPipe> tallyPipeList = new List<TallyPipe>();
+
+            List<Pipe> pipeList = new List<Pipe>();
+
+            foreach (DtoPipeCreate pipeCreate in tallyWithPipe.PipeList)
+            {
+                Pipe pipe = _mapper.Map<Pipe>(pipeCreate);
+                pipe.PipeId = Guid.NewGuid();
+                pipe.TierId = tier.TierId;
+                pipe.IndexOfPipe = currentPipeIndex;
+
+                pipeList.Add(pipe);
+
+                currentPipeIndex++;
+
+                TallyPipe tallyPipe = new TallyPipe
+                {
+                    TallyId = tally.TallyId,
+                    PipeId = pipe.PipeId
+                };
+                tallyPipeList.Add(tallyPipe);
+
+                System.Diagnostics.Debug.WriteLine("PipeIndex: " + pipe.IndexOfPipe);
+            }
+
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    // Your existing code for getting Tier information and creating Tally here...
+
+                    // Add the entities to the context
+                    _context.Tally.Add(tally);
+                    _context.Pipe.AddRange(pipeList);
+                    _context.TallyPipe.AddRange(tallyPipeList);
+
+                    // Save changes within the transaction
+                    await _context.SaveChangesAsync();
+
+                    // Commit the transaction if everything succeeds
+                    transaction.Commit();
+
+                    return _mapper.Map<DtoTally_WithPipeAndCustomer>(tally);
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions here, and if any exception occurs, the transaction will be rolled back
+                    transaction.Rollback();
+                    throw new Exception("Error creating Tally with Pipe: " + ex.Message);
+                }
+            }
+
         }
+  
 
-        public void DeleteTally(Guid guid)
-        {
-            Tally? tally = _context.Tally.Find(guid);
 
-            if (tally == null)
-                throw new KeyNotFoundException($"No tally with guid {guid} can be found.");
+    public async Task UpdateTally(DtoTallyUpdate dtoTallyUpdate, Guid guid)
+    {
+        Tally? tally = await _context.Tally.FindAsync(guid);
 
-            _context.Tally.Remove(tally);
-            _context.SaveChanges();
-        }
+        if (tally == null)
+            throw new KeyNotFoundException($"No tally with guid {guid} can be found.");
 
+        _mapper.Map<DtoTallyUpdate, Tally>(dtoTallyUpdate, tally);
+        await _context.SaveChangesAsync();
     }
+
+    public void DeleteTally(Guid guid)
+    {
+        Tally? tally = _context.Tally.Find(guid);
+
+        if (tally == null)
+            throw new KeyNotFoundException($"No tally with guid {guid} can be found.");
+
+        _context.Tally.Remove(tally);
+        _context.SaveChanges();
+    }
+
+}
 }

@@ -110,7 +110,7 @@ namespace Inventory_API.Controllers
          {
             _tierBl.DeleteTier(key);
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }
