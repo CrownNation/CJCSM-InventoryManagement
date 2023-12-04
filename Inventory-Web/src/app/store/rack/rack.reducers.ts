@@ -3,7 +3,7 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
 import { Rack } from '../../models/rack.model';
 import { RackState } from './rack.state';
-import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRacks, actionGetRacksError, actionGetRacksSuccess } from './rack.actions';
+import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksFullList, actionGetRacksFullListError, actionGetRacksFullListSuccess, actionGetRacksSuccess } from './rack.actions';
 
 
 export function sortByName(a: Rack, b: Rack): number {
@@ -25,24 +25,33 @@ errorLoadingRacks: null,
 
 creatingRack: false,
 errorCreatingRack: null,
+
+selectedRack: null,
+errorLoadingSelectedRack: null,
+
+racksFullList: null,
+errorLoadingRacksList: null,
 });
 
 const reducer: ActionReducer<RackState> = createReducer(
     initialState,
     // Retrieve Racks
-    on(actionGetRacks, (state: RackState, { }) => ({
-        ...state,
-        loadingRacks: true,
-        errorLoadingRacks: null
-    })),
-    on(actionGetRacksSuccess, (state: RackState, { racks }) => 
-        rackAdapater.addMany(racks, state),        
+    on(actionGetRacks, (state: RackState, { searchParams }) => {
+        const newState = rackAdapater.removeAll(state); // Needed so it refreshes the subscription fires with new data
+        return {
+          ...newState,
+          loadingCustomers: true,
+          errorLoadingCustomers: null
+        };
+    }),
+    on(actionGetRacksSuccess, (state: RackState, { racks }) =>
+        rackAdapater.addMany(racks, state),
     ),
     on(actionGetRacksSuccess, (state: RackState, { racks }) => ({
         ...state,
         loadingRacks: false,
         errorLoadingRacks: null
-    })),        
+    })),
     on(actionGetRacksError, (state: RackState, { errorLoadingRacks }) => ({
         ...state,
         loadingRacks: false,
@@ -55,18 +64,50 @@ const reducer: ActionReducer<RackState> = createReducer(
         creatingRack: true,
         errorCreatingRack: null
     })),
-    on(actionCreateRackSuccess, (state: RackState, { rack }) => 
-        rackAdapater.addOne(rack, state),        
-    ),
-    on(actionCreateRackSuccess, (state: RackState, { rack }) => ({
-        ...state,
-        creatingRack: false,
-        errorCreatingRack: null
-    })),        
+    on(actionCreateRackSuccess, (state: RackState, { rack }) => {
+        return rackAdapater.addOne(rack, {
+          ...state,
+          creatingRack: false,
+          errorCreatingRack: null
+        });
+    }),
     on(actionCreateRackError, (state: RackState, { errorCreatingRack }) => ({
         ...state,
         loadincreatingRackgRacks: false,
         errorCreatingRack
+    })),
+
+    // Load selected rack
+    on(actionGetRackById, (state: RackState, { rackId }) => ({
+        ...state,
+        selectedRack: null,
+        errorLoadingSelectedRack: null
+    })),
+    on(actionGetRackByIdSuccess, (state: RackState, { selectedRack }) => ({
+        ...state,
+        selectedRack,
+        errorLoadingSelectedRack: null
+
+    })),
+    on(actionGetRackByIdError, (state: RackState, { errorLoadingSelectedRack }) => ({
+        ...state,
+        errorLoadingSelectedRack
+    })),
+
+    // Retrieve Racks Full List
+    on(actionGetRacksFullList, (state: RackState, { searchParams }) => ({
+        ...state,
+        racksFullList: null,
+        errorLoadingRacksList: null
+    })),
+    on(actionGetRacksFullListSuccess, (state: RackState, { racksFullList }) => ({
+        ...state,
+        racksFullList,
+        errorLoadingCustomersList: null
+    })),
+    on(actionGetRacksFullListError, (state: RackState, { errorLoadingRacksList }) => ({
+        ...state,
+        errorLoadingRacksList
     })),
 
 );

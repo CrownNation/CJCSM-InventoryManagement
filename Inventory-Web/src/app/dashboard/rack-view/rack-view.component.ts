@@ -1,18 +1,18 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Customer, CustomerWithPipe } from '../../models/customer.model';
-import { Pipe } from '../../models/pipe.model';
-import { Observable, Subject, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { selectSelectedCustomer } from '../../store/customer/customer.selectors';
-import { AppState } from '../../store/core.state';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { RackWithPipe } from '../../models/rack.model';
+import { selectSelectedRack } from '../../store/rack/rack.selectors';
 import { Store } from '@ngrx/store';
+import { AppState } from '../../store/core.state';
+import { Pipe } from '../../models/pipe.model';
 
 @Component({
-  selector: 'app-customer-view',
-  templateUrl: './customer-view.component.html',
-  styleUrls: ['./customer-view.component.scss'],
+  selector: 'app-rack-view',
+  templateUrl: './rack-view.component.html',
+  styleUrls: ['./rack-view.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -21,10 +21,10 @@ import { Store } from '@ngrx/store';
     ]),
   ],
 })
-export class CustomerViewComponent implements OnInit, OnDestroy {
+export class RackViewComponent implements OnInit, OnDestroy {
 
   customerForm!: FormGroup
-  customer: Customer | null = null;
+  rack: RackWithPipe | null = null;
   columnsToDisplay : string[] = [
     'quantity',
     'lengthFeet',
@@ -35,7 +35,7 @@ export class CustomerViewComponent implements OnInit, OnDestroy {
   expandedElement!: Pipe | null;
   dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>;
 
-  customer$: Observable<CustomerWithPipe | null> = this.store.select(selectSelectedCustomer);
+  rack$: Observable<RackWithPipe | null> = this.store.select(selectSelectedRack);
   loading: Boolean = false;
 
   private destroy$ = new Subject<void>();
@@ -44,12 +44,18 @@ export class CustomerViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.customer$.pipe(takeUntil(this.destroy$)).subscribe((customer) => {
-      if (customer) {
+    this.rack$.pipe(takeUntil(this.destroy$)).subscribe((rack) => {
+
+      console.log('rack-view');
+      console.log(rack);
+
+      if (rack) {
+
+        console.log(rack);
 
         this.loading = false;
-        this.customer = customer.customer;
-        this.dataSource = new MatTableDataSource(customer.pipeList as Pipe[]);
+        this.rack = rack;
+        this.dataSource = new MatTableDataSource(rack.pipeList as Pipe[]);
       }
     });
 

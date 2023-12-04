@@ -15,7 +15,7 @@ import { RackCreate } from '../../models/rack.model';
 export class AddRackComponent implements OnInit {
 
   addRackForm!: FormGroup;
-  
+
   shops: ShopLocation[] = [
     {
       shopLocationId: 'DAB952D4-FDB5-4711-AEEC-668526075124',
@@ -36,7 +36,7 @@ export class AddRackComponent implements OnInit {
     private store: Store<AppState>)  {
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.buildForm();
   }
 
@@ -55,13 +55,13 @@ export class AddRackComponent implements OnInit {
       console.log('form valid');
       console.log(this.addRackForm.value);
 
-      this.store.dispatch(actionCreateRack({
-        rackCreate: {
-          name: this.addRackForm.value.name,
-          shopLocationId: this.addRackForm.value.shop,
-          isActive: true
-        }
-      }));
+      // this.store.dispatch(actionCreateRack({
+      //   rackCreate: {
+      //     name: this.addRackForm.value.name,
+      //     shopLocationId: this.addRackForm.value.shop,
+      //     isActive: true
+      //   }
+      // }));
     } else {
       console.log('form invalid');
       console.log(this.addRackForm.value);

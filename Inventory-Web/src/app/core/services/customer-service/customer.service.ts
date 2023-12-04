@@ -30,7 +30,6 @@ export class CustomerService {
     return this.http.post<void>(this.baseUrl, rack);
   }
 
-
   private generateOdataParams(searchParams: CustomerSearchParams | null): string {
     if (!searchParams) {
       return '';
@@ -40,7 +39,7 @@ export class CustomerService {
 
     if (searchParams.customerId) {
       odataParams += (odataParams ? ' and ' : '') + `customerId eq ${searchParams.customerId}`;
-    }    
+    }
 
     return odataParams ? '?$filter=' + odataParams : '';
   }

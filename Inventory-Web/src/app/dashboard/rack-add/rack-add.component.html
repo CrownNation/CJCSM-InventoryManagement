@@ -1,0 +1,50 @@
+<mat-card class="tally-card">
+    <mat-card-header>
+        <mat-card-title>Add Rack</mat-card-title>
+        <mat-icon class="close-icon" (click)="closeDialog()">close</mat-icon>
+    </mat-card-header>
+
+    <mat-card-content >
+        <div >
+            <form [formGroup]="rackAddForm">
+
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Rack Name</mat-label>
+                    <input matInput placeholder="Rack name" formControlName="name" required>
+                    <mat-error>
+                        Please provide a rack name
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" color="accent" >
+                    <mat-label>Shop</mat-label>
+                    <mat-select formControlName="shopLocation">
+                        <mat-option *ngFor="let shop of shopsFullList" [value]="shop.shopLocationId">
+                        {{shop.shopLocationName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Joints per rack</mat-label>
+                    <input matInput placeholder="Joints per rack" formControlName="jointsPerRack" rqeuired>
+                    <mat-error>
+                        Please provide a city
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="Description" formControlName="description">
+                </mat-form-field>
+
+
+
+                <button mat-raised-button color="primary" class="item" (click)="addRack()">Add Rack</button>
+                <button mat-raised-button class="item">Cancel</button>
+            </form>
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

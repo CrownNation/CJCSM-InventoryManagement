@@ -3,6 +3,7 @@ import { rackAdapater } from "./rack.reducers";
 import { AppState, selectRackFeature } from "../core.state";
 import { RackState } from "./rack.state";
 import { Rack } from "../../models/rack.model";
+import { Dictionary } from "@ngrx/entity";
 
 
 const { selectEntities, selectAll } = rackAdapater.getSelectors();
@@ -10,10 +11,10 @@ const { selectEntities, selectAll } = rackAdapater.getSelectors();
 export const selectRackFeature2: MemoizedSelector<AppState, RackState> =
   createFeatureSelector<RackState>('rack');
 
-export const selectRacks2: MemoizedSelector<AppState, Rack[]> = 
+export const selectRacks2: MemoizedSelector<AppState, Rack[]> =
 createSelector(
     selectRackFeature2,
-  ({ entities }: RackState): Rack[] => 
+  ({ entities }: RackState): Rack[] =>
     Object.values(entities) as Rack[]
 );
 
@@ -28,8 +29,8 @@ export const selectAllRackEntities = createSelector(selectRackFeature, selectEnt
 
 
 export const selectRacks = createSelector(
-    selectRackFeature,
-    (state: RackState) => state.entities
+    selectAllRackEntities,
+    (racksDictionary: Dictionary<Rack>) => Object.values(racksDictionary) as Rack[]
 );
 export const selectLoadingRacks = createSelector(
     selectRackFeature,
@@ -38,4 +39,24 @@ export const selectLoadingRacks = createSelector(
 export const selectErrorLoadingRacks = createSelector(
     selectRackFeature,
     (state: RackState) => state.errorLoadingRacks
+);
+
+// Selected Rack
+export const selectSelectedRack = createSelector(
+    selectRackFeature,
+    (state: RackState) => state.selectedRack
+  );
+export const selectSelectedRackError = createSelector(
+    selectRackFeature,
+    (state: RackState) => state.errorLoadingSelectedRack
+);
+
+// Full customer list
+export const selectRacksFullList = createSelector(
+    selectRackFeature,
+    (state: RackState) => state.racksFullList
+  );
+export const selectRacksFullListError = createSelector(
+    selectRackFeature,
+    (state: RackState) => state.errorLoadingRacksList
 );

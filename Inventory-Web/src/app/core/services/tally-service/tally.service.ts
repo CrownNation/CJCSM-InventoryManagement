@@ -38,22 +38,22 @@ export class TallyService {
 
     let odataParams = '';
 
-    if (searchParams.tallyType !== undefined && searchParams.tallyType !== null) {
+    if (searchParams.tallyType !== undefined && searchParams.tallyType !== null && TallyTypes[searchParams.tallyType]) {
       odataParams += (odataParams ? ' and ' : '') + `TallyType eq '${TallyTypes[searchParams.tallyType]}'`;
     }
-    
+
     if (searchParams.tallyNumber) {
       odataParams += (odataParams ? ' and ' : '') + `TallyNumber eq '${searchParams.tallyNumber}'`;
     }
-    
+
     if (searchParams.customerId) {
-      odataParams += (odataParams ? ' and ' : '') + `CustomerId eq '${searchParams.customerId}'`;
+      odataParams += (odataParams ? ' and ' : '') + `CustomerId eq ${searchParams.customerId}`;
     }
-    
+
     if (searchParams.dateStart) {
       odataParams += (odataParams ? ' and ' : '') + `DateOfCreation ge ${searchParams.dateStart}`;
     }
-    
+
     if (searchParams.dateEnd) {
       odataParams += (odataParams ? ' and ' : '') + `DateOfCreation le ${searchParams.dateEnd}`;
     }

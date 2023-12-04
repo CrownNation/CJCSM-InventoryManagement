@@ -28,7 +28,7 @@ import { CustomerService } from './services/customer-service/customer.service';
     CommonModule,
     HttpClientModule,
     AuthModule,
-    
+
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),

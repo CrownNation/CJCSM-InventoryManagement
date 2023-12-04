@@ -4,8 +4,7 @@ import { Pipe, PipeCreate } from "./pipe.model";
 export enum TallyTypes {
     TallyIn = 0,
     TallyOut = 1
-} 
-
+}
 
 export interface Tally {
     tallyId: string;
@@ -30,8 +29,8 @@ export interface DtoTallyCreate {
   tallyNumber: string;
   customerId: string;
   shopLocationId: string;
-  tallyType: TallyTypes; 
-  dateOfCreation: string; 
+  tallyType: TallyTypes;
+  dateOfCreation: string;
   notes?: string;
   invoiceNumber?: string;
   talliedByUserId: string;

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { actionGetRacks } from '../../store/rack/rack.actions';
+import { actionGetRacks, actionGetRacksFullList } from '../../store/rack/rack.actions';
 import { AppState } from '../../store/core.state';
 import { Rack } from '../../models/rack.model';
 import { Observable } from 'rxjs';
@@ -20,9 +20,10 @@ export class DashboardComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    console.log('dashboard onInit');
-    // this.store.dispatch(actionGetRacks());
-    this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));    
+
+    this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));
+    this.store.dispatch(actionGetRacksFullList({ searchParams: null }));
+
   }
 
 }

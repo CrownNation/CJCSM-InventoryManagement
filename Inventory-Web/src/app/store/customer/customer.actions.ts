@@ -18,10 +18,9 @@ export const actionGetCustomersError = createAction(
     props<{ errorLoadingCustomers: HttpErrorResponse }>()
 );
 
-
 // Create Customer
 export const actionCreateCustomer = createAction(
-    `${customerKey} Create Customer`, 
+    `${customerKey} Create Customer`,
     props<{ customerCreate: CustomerCreate }>()
 );
 export const actionCreateCustomerSuccess = createAction(
@@ -33,10 +32,9 @@ export const actionCreateCustomerError = createAction(
     props<{ errorCreatingCustomer: HttpErrorResponse }>()
 );
 
-
-// Get Tally by Id
+// Get Customer by Id
 export const actionGetCustomerById = createAction(
-    `${customerKey} Get Customer By Id`, 
+    `${customerKey} Get Customer By Id`,
     props<{ customerId: string }>()
 );
 export const actionGetCustomerByIdSuccess = createAction(

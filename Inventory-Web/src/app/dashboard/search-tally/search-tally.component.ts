@@ -12,6 +12,7 @@ import { actionGetTallies, actionGetTallyById } from '../../store/tally/tally.ac
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectLoadingTallies, selectTallies, selectTalliesEntities } from '../../store/tally/tally.selectors';
 import { Dictionary } from '@ngrx/entity';
+import { selectCustomersFullList } from '../../store/customer/customer.selectors';
 
 @Component({
   selector: 'app-search-tally',
@@ -19,12 +20,12 @@ import { Dictionary } from '@ngrx/entity';
   styleUrls: ['./search-tally.component.scss']
 })
 export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
-  
-  displayedColumns: string[] = [ 
-    'tallyNumber', 
-    'customerName', 
-    'shopName', 
-    'tallyType', 
+
+  displayedColumns: string[] = [
+    'tallyNumber',
+    'customerName',
+    'shopName',
+    'tallyType',
     'date',
     'actions'
   ];
@@ -37,6 +38,7 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   tallyTypes = Object.values(TallyTypes).filter(value => typeof value === 'number') as number[];
 
   customers: Customer[] = [];
+  customersFullList: Customer[] = [];
   searchParams: TallySearchParams | null = {
     tallyType: null,
     tallyNumber: null,
@@ -50,7 +52,9 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   tallies$: Observable<Tally[]> = this.store.select(selectTallies);
   loadingTallies: Boolean = false;
   loading$: Observable<Boolean> = this.store.select((selectLoadingTallies));
- 
+
+  customersFullList$: Observable<Customer[] | null> = this.store.select(selectCustomersFullList);
+
   constructor(
     private router: Router,
     private store: Store<AppState>)
@@ -60,24 +64,30 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
 
     this.buildForm();
-    this.loadingTallies = true;   
+    this.loadingTallies = true;
     this.setDefaultDateCriteria();
     this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
-   
+
 
     this.tallies$.pipe(takeUntil(this.destroy$)).subscribe((tallies) => {
-      if (tallies) {       
+      if (tallies) {
         this.dataSource = new MatTableDataSource(tallies as Tally[]);
         this.loadingTallies = false;
-        
+
         if(tallies.length > 0)
           this.store.dispatch(actionGetTallyById({tallyId: tallies[0].tallyId}));
 
-      } 
+      }
+    });
+
+    this.customersFullList$.pipe(takeUntil(this.destroy$)).subscribe((customers) => {
+      if (customers) {
+        this.customersFullList = customers;
+      }
     });
 
     this.loading$.subscribe((loading) => {
-      this.loadingTallies = loading; 
+      this.loadingTallies = loading;
     });
 
   }
@@ -85,11 +95,11 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   buildForm() {
 
     this.tallyForm = new FormGroup({
-      tallyType: new FormControl('', []),      
+      tallyType: new FormControl('', []),
       tallyNumber: new FormControl('', []),
       customer: new FormControl('', []),
       dateStart: new FormControl('', []),
-      dateEnd: new FormControl('', [])           
+      dateEnd: new FormControl('', [])
     });
   }
 
@@ -120,7 +130,7 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
 
       const dateStart = new Date();
       dateStart.setMonth(date.getMonth() - 1);
-      
+
       const yearStart = dateStart.getFullYear();
       const monthStart = dateStart.getMonth() + 1; // getMonth() returns a 0-based month
       const dayStart = dateStart.getDate();
@@ -128,12 +138,12 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
       const formattedDateStart = `${yearStart}-${monthStart.toString().padStart(2, '0')}-${dayStart.toString().padStart(2, '0')}`;
       this.searchParams.dateStart = formattedDateStart;
       this.tallyForm.controls['dateStart'].setValue(formattedDateStart);
-    } 
+    }
   }
 
   addRack() {
     console.log('add rack');
-    this.router.navigate(['/rack/add']);    
+    this.router.navigate(['/rack/add']);
   }
 
   filter()  {
@@ -169,12 +179,12 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
     else if(tallyType === TallyTypes.TallyOut) {
       return 'Out'
     }
-    
-    return ''    
+
+    return ''
   }
 
   viewTally(tally: Tally) {
-    // this.router.navigate([`/rack/${rack.rackId}`]);    
+    // this.router.navigate([`/rack/${rack.rackId}`]);
     this.store.dispatch(actionGetTallyById({tallyId: tally.tallyId}));
   }
 

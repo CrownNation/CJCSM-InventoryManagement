@@ -31,13 +31,7 @@ export class ViewDetailsRackComponent implements OnInit {
   ];
 
   // Todo: get this from the store
-  rack: Rack = {
-    rackId: '1',
-    name: 'Rack 1',
-    shopLocationId: '1',
-    isActive: true,
-    shopName: 'Shop 1'
-  }
+  rack: Rack = {} as Rack;
 
   constructor() { }
 

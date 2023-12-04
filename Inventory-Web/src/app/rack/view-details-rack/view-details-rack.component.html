@@ -1,4 +1,4 @@
-<mat-card class="section">
+<!-- <mat-card class="section">
     <mat-card-header>
         <mat-card-title>Rack Details</mat-card-title>
 
@@ -6,11 +6,11 @@
             <mat-icon aria-hidden="false" fontIcon="edit" color="accent" *ngIf="!editMode"></mat-icon>
             <mat-icon aria-hidden="false" fontIcon="block" color="accent" *ngIf="editMode"></mat-icon>
         </button>
-        
+
     </mat-card-header>
 
     <mat-card-content *ngIf="!editMode">
-         
+
         <div class="container">
             <h4>Name: </h4> {{rack.name}}
         </div>
@@ -18,12 +18,12 @@
         <div class="container">
             <h4>Shop: </h4> {{rack.shopName}}
         </div>
-          
+
     </mat-card-content>
 
     <mat-card-content *ngIf="editMode">
         <form [formGroup]="editRackForm">
-                
+
             <mat-form-field appearance="outline" color="accent">
                 <mat-label>Rack name</mat-label>
                 <input matInput placeholder="Rack name" formControlName="name" required>
@@ -31,7 +31,7 @@
                     Please provide a valid email address
                 </mat-error>
             </mat-form-field>
-        
+
             <mat-form-field appearance="outline" color="accent">
                 <mat-label>Choose a shop</mat-label>
                 <mat-select required>
@@ -42,8 +42,8 @@
             </mat-form-field>
 
             <button mat-raised-button color="primary" class="item" (click)="updateRack()">Update Rack</button>
-          
+
         </form>
     </mat-card-content>
 
-</mat-card>
+</mat-card> -->

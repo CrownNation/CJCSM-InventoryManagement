@@ -11,10 +11,10 @@ const { selectEntities, selectAll } = customerAdapater.getSelectors();
 export const selectCustomerFeature2: MemoizedSelector<AppState, CustomerState> =
   createFeatureSelector<CustomerState>('customer');
 
-export const selectCustomers2: MemoizedSelector<AppState, Customer[]> = 
+export const selectCustomers2: MemoizedSelector<AppState, Customer[]> =
 createSelector(
     selectCustomerFeature2,
-  ({ entities }: CustomerState): Customer[] => 
+  ({ entities }: CustomerState): Customer[] =>
     Object.values(entities) as Customer[]
 );
 
@@ -41,7 +41,7 @@ export const selectErrorLoadingCustomers = createSelector(
     (state: CustomerState) => state.errorLoadingCustomers
 );
 
-// Selected Tally
+// Selected Customer
 export const selectSelectedCustomer = createSelector(
     selectCustomerFeature,
     (state: CustomerState) => state.selectedCustomer

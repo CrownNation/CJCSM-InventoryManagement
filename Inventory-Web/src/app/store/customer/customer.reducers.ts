@@ -2,10 +2,10 @@ import { Action, ActionReducer, createReducer, on} from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Customer } from '../../models/customer.model';
 import { CustomerState } from './customer.state';
-import { actionCreateCustomer, actionCreateCustomerError, actionCreateCustomerSuccess, 
-    actionGetCustomerById, 
-    actionGetCustomerByIdError, 
-    actionGetCustomerByIdSuccess, 
+import { actionCreateCustomer, actionCreateCustomerError, actionCreateCustomerSuccess,
+    actionGetCustomerById,
+    actionGetCustomerByIdError,
+    actionGetCustomerByIdSuccess,
     actionGetCustomers, actionGetCustomersError, actionGetCustomersFullList, actionGetCustomersFullListError, actionGetCustomersFullListSuccess, actionGetCustomersSuccess } from './customer.actions';
 
 
@@ -34,7 +34,7 @@ selectedCustomer: null,
 errorLoadingSelectedCustomer: null,
 
 customersFullList: null,
-errorLoadingCustomersList: null,    
+errorLoadingCustomersList: null,
 });
 
 const reducer: ActionReducer<CustomerState> = createReducer(
@@ -47,14 +47,14 @@ const reducer: ActionReducer<CustomerState> = createReducer(
           loadingCustomers: true,
           errorLoadingCustomers: null
         };
-    }), 
+    }),
     on(actionGetCustomersSuccess, (state: CustomerState, { customers }) => {
         return customerAdapater.addMany(customers, {
           ...state,
           loadingTallies: false,
           errorLoadingTallies: null
         });
-    }),      
+    }),
     on(actionGetCustomersError, (state: CustomerState, { errorLoadingCustomers }) => ({
         ...state,
         loadingRacks: false,
@@ -67,14 +67,13 @@ const reducer: ActionReducer<CustomerState> = createReducer(
         creatingCustomer: true,
         errorCreatingCustomer: null
     })),
-    on(actionCreateCustomerSuccess, (state: CustomerState, { customer }) => 
-        customerAdapater.addOne(customer, state),        
-    ),
-    on(actionCreateCustomerSuccess, (state: CustomerState, { customer }) => ({
-        ...state,
-        creatingCustomer: false,
-        errorCreatingCustomer: null
-    })),        
+    on(actionCreateCustomerSuccess, (state: CustomerState, { customer }) => {
+        return customerAdapater.addOne(customer, {
+          ...state,
+          creatingCustomer: false,
+          errorCreatingCustomer: null
+        });
+      }),
     on(actionCreateCustomerError, (state: CustomerState, { errorCreatingCustomer }) => ({
         ...state,
         creatingCustomer: false,
@@ -86,29 +85,29 @@ const reducer: ActionReducer<CustomerState> = createReducer(
         ...state,
         selectedCustomer: null,
         errorLoadingSelectedCustomer: null
-    })),    
+    })),
     on(actionGetCustomerByIdSuccess, (state: CustomerState, { selectedCustomer }) => ({
         ...state,
         selectedCustomer,
         errorLoadingSelectedCustomer: null
-        
-    })),        
+
+    })),
     on(actionGetCustomerByIdError, (state: CustomerState, { errorLoadingSelectedCustomer }) => ({
         ...state,
         errorLoadingSelectedCustomer
     })),
 
-    // Retrieve Customers FUll List
+    // Retrieve Customers Full List
     on(actionGetCustomersFullList, (state: CustomerState, { searchParams }) => ({
         ...state,
         customersFullList: null,
         errorLoadingCustomersList: null
-    })),   
+    })),
     on(actionGetCustomersFullListSuccess, (state: CustomerState, { customersFullList }) => ({
         ...state,
         customersFullList,
         errorLoadingCustomersList: null
-    })),        
+    })),
     on(actionGetCustomersFullListError, (state: CustomerState, { errorLoadingCustomersList }) => ({
         ...state,
         errorLoadingCustomersList
