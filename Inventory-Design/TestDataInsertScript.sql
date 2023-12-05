@@ -17,9 +17,10 @@ INSERT INTO ShopLocation (
     ShopLocationId,
     Name, 
     Address1, 
-    Address2, 
-    City, 
-    ProvinceState, 
+    Address2,
+    City,
+    Country,
+    ProvinceState,
     PostalCode, 
     PhoneNumber, 
     FaxNumber, 
@@ -31,6 +32,7 @@ VALUES (
     '123 Main St',                     -- Address1
     'Suite 456',                       -- Address2
     'Red Deer',                        -- City
+    'CA',                              -- Country
     'AB',                              -- ProvinceState
     'T2R4F6',                          -- PostalCode
     '(123) 456-7890',                  -- PhoneNumber

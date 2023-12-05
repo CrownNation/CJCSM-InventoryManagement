@@ -31,6 +31,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<Pipe>("Pipe");
     builder.EntitySet<Tally>("Tally");
     builder.EntitySet<TallyPipe>("TallyPipe");
+    builder.EntitySet<ShopLocation>("ShopLocation");
 
     return builder.GetEdmModel();
 }
@@ -97,7 +98,7 @@ builder.Services.AddScoped<IPipeDefinitionBL, PipeDefinitionBL>();
 builder.Services.AddScoped<IPipeBL, PipeBL>();
 builder.Services.AddScoped<ITallyBL, TallyBL>();
 builder.Services.AddScoped<ITallyPipeBL, TallyPipeBL>();
-
+builder.Services.AddScoped<IShopLocationBL, ShopLocationBL>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // This method adds metadata about your API's endpoints to the ASP.NET Core application. It doesn't directly generate human-readable

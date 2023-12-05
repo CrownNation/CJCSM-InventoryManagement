@@ -15,7 +15,6 @@ namespace Inventory_API.Controllers
 
         public ShopLocationController(ILogger<ShopLocationController> logger, IShopLocationBL shopLocationBl)
         {
-            System.Diagnostics.Debug.WriteLine("INJECTING INTO SHOP LOCATION CONTROLLER");
             _logger = logger;
             _shopLocationBl = shopLocationBl;
         }

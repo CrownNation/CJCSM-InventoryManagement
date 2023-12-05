@@ -21,6 +21,7 @@ namespace Inventory_Models.DTO
         public string? City { get; set; }
 
         public string? ProvinceState { get; set; }
+        public string? Country { get; set; }
 
         public string? PostalCode { get; set; }
 
