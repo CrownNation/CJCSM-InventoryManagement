@@ -12,6 +12,8 @@ namespace Inventory_Dto.Dto
     {
         public Guid PipeDefinitionId { get; set; }
         public Guid TierId { get; set; }
+
+        public Guid RackId { get; set; }
         public Guid CustomerId { get; set; }
 
         public Decimal LengthInMeters { get; set; }

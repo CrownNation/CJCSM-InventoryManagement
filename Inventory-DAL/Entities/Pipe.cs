@@ -32,6 +32,7 @@ namespace Inventory_DAL.Entities
 
         public int Quantity { get; set; }
 
+        //This is the order in which the pipe is placed on the rack
         public int IndexOfPipe { get; set; }
 
 

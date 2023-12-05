@@ -148,7 +148,46 @@ namespace Inventory_BLL.BL
 
 
             return await Task.FromResult(rackWithPipeQuery);
-
         }
+
+        public async Task<IQueryable<DtoRack_WithTier>> GetRackListWithTiers()
+        {
+            try
+            {
+                var rackWithTiersQuery = from rack in _context.Rack
+                                         join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                                         select new DtoRack_WithTier
+                                         {
+                                             RackId = rack.RackId,
+                                             Name = rack.Name,
+                                             ShopLocationId = rack.ShopLocationId,
+                                             ShopLocationName = shopLocation.Name,
+                                             IsActive = rack.IsActive,
+                                             Description = rack.Description,
+                                             JointsPerRack = rack.JointsPerRack,
+                                             TierList = (from tier in _context.Tier
+                                                         where tier.RackId == rack.RackId
+                                                         orderby tier.Number ascending
+                                                         select new DtoTier_WithPipeInfo
+                                                         {
+                                                             TierId = tier.TierId,
+                                                             RackId = tier.RackId,
+                                                             Number = tier.Number,
+                                                             PipeCount = _context.Pipe
+                                                                         .Where(pipe => pipe.TierId == tier.TierId)
+                                                                         .Sum(pipe => pipe.Quantity)
+                                                         }).ToList()
+                                         };
+
+                return await Task.FromResult(rackWithTiersQuery);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                throw; // Rethrow the exception to let it propagate up the call stack
+            }
+        }
+
+
     }
 }

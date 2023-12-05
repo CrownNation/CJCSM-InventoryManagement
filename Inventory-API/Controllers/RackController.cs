@@ -104,8 +104,47 @@ namespace Inventory_API.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"GetRackById: " + e.Message);
-                throw new Exception($"There was a problem querying for the rack.");
+                _logger.LogError($"GetRackListWithPipeAndCustomer: " + e.Message);
+                throw new Exception($"There was a problem querying for the rack with pipe.");
+            }
+        }
+
+        [HttpGet("WithTier")]
+        public async Task<IActionResult> GetRackListWithTiers(ODataQueryOptions<DtoRack_WithTier> options)
+        {
+            try
+            {
+                if (_rackBl == null)
+                {
+                    return NotFound();
+                }
+
+                IQueryable<DtoRack_WithTier>? rackList = await _rackBl.GetRackListWithTiers();
+
+                if (rackList == null)
+                {
+                    return NotFound();
+                }
+
+                // Step 2: Convert that list into an IQueryable
+                var queryableRack = rackList.AsQueryable();
+
+                // Step 3: Apply the OData options and return
+                // Returning a 200 OK response, where the content of the response is the result of options.ApplyTo(queryableRack).
+                // The options.ApplyTo() method is from the OData library and it applies the specified OData query
+                // options (like filtering, sorting, etc.) to the provided IQueryable source.
+                return Ok(options.ApplyTo(queryableRack));
+
+
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetRackListWithTiers: " + e.Message);
+                throw new Exception($"There was a problem querying for the rack wtih Tier.");
             }
         }
 

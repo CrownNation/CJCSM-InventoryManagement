@@ -11,8 +11,6 @@ namespace Inventory_Dto.Dto
     public class DtoTallyCreate
     {
         public string TallyNumber { get; set; } = string.Empty;
-
-        public Guid RackId { get; set; }
         public Guid CustomerId { get; set; }
         public Guid ShopLocationId { get; set; }
         public ApplicationEnums.TallyTypes TallyType { get; set; }
@@ -25,6 +23,7 @@ namespace Inventory_Dto.Dto
 
         public string CarrierName { get; set; } = string.Empty;
 
-        public List<DtoPipeCreate> PipeList { get; set; } = new List<DtoPipeCreate>();
+        public List<DtoTier_WithPipe> TierList { get; set; }
+
     }
 }

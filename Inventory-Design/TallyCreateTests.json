@@ -1,0 +1,945 @@
+-------------TEST: Assign single pipe to existing non-empty Tier (TierId = Guid of existing, non-empty tier.) ---------------
+
+{
+    "rackId": "B3CFC44C-879B-43EF-B6F0-02FA0D232430",
+    "tallyNumber": "TN-NEW-02",
+    "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+    "customerName": "FossilFuel Fusion",
+    "shopLocationId": "e2b0a76f-60d4-40d6-bd3d-761f55029edf",
+    "shopLocationName": "Red Deer Shop",
+    "tallyType": 1,
+    "dateOfCreation": "2023-12-01T17:49:05.8866667+00:00",
+    "notes": "Note for tally create test.",
+	"tierList": [
+	{
+		"TierId": "1EAA9661-25A8-4EFD-9F7A-272D15A1F820",
+	    "pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "b3cfc44c-879b-43ef-b6f0-02fa0d232430",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		}
+		]
+	}
+	],
+    "invoiceNumber": "INV-NEW-02",
+    "talliedByUserId": "b4d8b4a5-9b34-4376-ad19-dcceac4ea62a",
+    "talliedByUserName": "",
+    "carrierName": "Carrier C",
+    "weightInKg": 2714.6490,
+    "weightInLbs": 5984.75227
+}
+
+Expected Results (from new database):
+RackID: 4D7F90B7-A964-4BAA-8B52-6241A72E4DDA
+TierID: 1EAA9661-25A8-4EFD-9F7A-272D15A1F820
+1. Tier has 1 Pipe definition, should get a second Pipe definition section.
+2. DB Has 3 Tallies, so after query, should be 4.
+3. Pipe has 9 entries, should become 10 with TierId = 1EAA9661-25A8-4EFD-9F7A-272D15A1F820 and index of pipe = 10.
+
+
+
+-------------TEST: Assign single pipe to existing empty Tier (TierId = Guid.Empty) ---------------
+
+
+{
+    "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+    "tallyNumber": "TN-NEW-02",
+    "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+    "customerName": "FossilFuel Fusion",
+    "shopLocationId": "e2b0a76f-60d4-40d6-bd3d-761f55029edf",
+    "shopLocationName": "Red Deer Shop",
+    "tallyType": 1,
+    "dateOfCreation": "2023-12-01T17:49:05.8866667+00:00",
+    "notes": "Note for tally create test.",
+	"tierList": [
+	{
+		"tierId": "00000000-0000-0000-0000-000000000000",
+	    "pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		}
+		]
+	}
+	],
+    "invoiceNumber": "INV-NEW-02",
+    "talliedByUserId": "b4d8b4a5-9b34-4376-ad19-dcceac4ea62a",
+    "talliedByUserName": "",
+    "carrierName": "Carrier C",
+    "weightInKg": 2714.6490,
+    "weightInLbs": 5984.75227
+}
+
+Expected results (from new database):
+RackID: 4D7F90B7-A964-4BAA-8B52-6241A72E4DDA
+TierID: 00000000-0000-0000-0000-000000000000
+TierID set to pipe should be fb1ea2da-102f-4f45-a631-da3278c0e407, the first empty tier on Rack 4D7F90B7-A964-4BAA-8B52-6241A72E4DDA
+1. DB Has 3 Tallies, so after query, should be 4.
+2. Pipe has 9 entries, should become 10 with TierId =fb1ea2da-102f-4f45-a631-da3278c0e407 and index of pipe = 1.
+
+
+-------------TEST: Assign single pipe to existing Tier, no empty tiers on rack. Ie. Create new tier. (TierId = Guid.Empty) ---------------
+
+{
+    "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+    "tallyNumber": "TN-NEW-CREATE-TIER",
+    "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+    "customerName": "FossilFuel Fusion",
+    "shopLocationId": "e2b0a76f-60d4-40d6-bd3d-761f55029edf",
+    "shopLocationName": "Red Deer Shop",
+    "tallyType": 1,
+    "dateOfCreation": "2023-12-01T17:49:05.8866667+00:00",
+    "notes": "Note for tally create test.",
+	"tierList": [
+	{
+		"tierId": "00000000-0000-0000-0000-000000000000",
+	    "pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		}
+		]
+	}
+	],
+    "invoiceNumber": "INV-NEW-02",
+    "talliedByUserId": "b4d8b4a5-9b34-4376-ad19-dcceac4ea62a",
+    "talliedByUserName": "",
+    "carrierName": "Carrier C",
+    "weightInKg": 2714.6490,
+    "weightInLbs": 5984.75227
+}
+
+NOTE: Run second query above twice on an empty DB in order to fill the two empty tiers first.
+Expected results:
+RackID: 4D7F90B7-A964-4BAA-8B52-6241A72E4DDA
+TierID: 00000000-0000-0000-0000-000000000000
+1. DB Has 5 Tallies, so after query, should be 6.
+2. Pipe has 11 entries, should become 12 with TierId something new, and index of pipe = 1.
+3. Tier has 15 entries, should become 16 with number = 6;
+
+
+
+-------------TEST: Assign multiple pipe to different existing tiers on different racks ---------------
+
+{
+    "rackId": "B3CFC44C-879B-43EF-B6F0-02FA0D232430",
+    "tallyNumber": "TN-NEW-02",
+    "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+    "customerName": "FossilFuel Fusion",
+    "shopLocationId": "e2b0a76f-60d4-40d6-bd3d-761f55029edf",
+    "shopLocationName": "Red Deer Shop",
+    "tallyType": 1,
+    "dateOfCreation": "2023-12-01T17:49:05.8866667+00:00",
+    "notes": "Note for tally create test.",
+	"tierList": [
+	{
+		"TierId": "5A866C8C-7DBE-4F18-92C5-824D5A23C940",
+	    "pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+			}
+			]
+	},
+	{
+		"TierId": "B88C71C1-FAB1-4F66-84AA-C7A46056EF32",
+		"pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "B3CFC44C-879B-43EF-B6F0-02FA0D232430",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		}
+		]
+	}
+	],
+    "invoiceNumber": "INV-NEW-02",
+    "talliedByUserId": "b4d8b4a5-9b34-4376-ad19-dcceac4ea62a",
+    "talliedByUserName": "",
+    "carrierName": "Carrier C",
+    "weightInKg": 2714.6490,
+    "weightInLbs": 5984.75227
+}
+
+1. TierId 5A866C8C-7DBE-4F18-92C5-824D5A23C940 should get a second entry in Pipe with IndexOfPipe= 9
+2. TierId B88C71C1-FAB1-4F66-84AA-C7A46056EF32 should get a 5th entry in Pipe with IndexOfPipe= 28
+3. Pipe should go from 9 entris to 11 entries with tierIds above.
+4. No new Tiers should be created.
+
+
+
+-------------TEST: Assign multiple pipe to Rack, first two to existing empty, third and fourth to same new tier.---------------
+
+{
+    "tallyNumber": "TN-NEW-02",
+    "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+    "customerName": "FossilFuel Fusion",
+    "shopLocationId": "e2b0a76f-60d4-40d6-bd3d-761f55029edf",
+    "shopLocationName": "Red Deer Shop",
+    "tallyType": 1,
+    "dateOfCreation": "2023-12-01T17:49:05.8866667+00:00",
+    "notes": "Note for tally create test.",
+	"tierList": [
+	{
+		"TierId": "00000000-0000-0000-0000-000000000000",
+	    "pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+			}
+			]
+	},
+	{
+		"TierId": "00000000-0000-0000-0000-000000000000",
+		"pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		}
+		]
+	},
+		{
+		"TierId": "00000000-0000-0000-0000-000000000000",
+		"pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		},
+		{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		}
+		]
+	}
+	
+	],
+    "invoiceNumber": "INV-NEW-02",
+    "talliedByUserId": "b4d8b4a5-9b34-4376-ad19-dcceac4ea62a",
+    "talliedByUserName": "",
+    "carrierName": "Carrier C",
+    "weightInKg": 2714.6490,
+    "weightInLbs": 5984.75227
+}
+
+1. TierId fb1ea2da-102f-4f45-a631-da3278c0e407 should get an entry in Pipe with IndexOfPipe= 1
+2. TierId 4A14B12D-DCE7-4854-A0FA-976AA8190AA1 should get an entry in Pipe with IndexOfPipe= 1
+3. There should be a 16th tier added to thier for rack 4D7F90B7-A964-4BAA-8B52-6241A72E4DDA
+4. There should be two entries of pipe added to the new tier above.
+4. Pipe should go from 9 entris to 13 entries with tierIds above.
+4. There should be a 4th Tally added.
+
+
+
+-------------TEST: Assign multiple pipe to same existing empty rack---------------
+
+{
+    "tallyNumber": "TN-NEW-02",
+    "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+    "customerName": "FossilFuel Fusion",
+    "shopLocationId": "e2b0a76f-60d4-40d6-bd3d-761f55029edf",
+    "shopLocationName": "Red Deer Shop",
+    "tallyType": 1,
+    "dateOfCreation": "2023-12-01T17:49:05.8866667+00:00",
+    "notes": "Note for tally create test.",
+	"tierList": [
+	{
+		"TierId": "00000000-0000-0000-0000-000000000000",
+		"pipeList": [
+			{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		},
+		{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.90,
+            "lengthInFeet": 19.36,
+            "quantity": 7,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		},
+				{
+            "pipeId": "46ffcf45-4000-47f2-a06d-82b9bdc4e8ab",
+            "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+            "tierId": "00000000-0000-0000-0000-000000000000",
+            "customerId": "0bba1231-f0c3-4b32-8742-617eb80cdead",
+            "tierNumber": 1,
+            "rackId": "4D7F90B7-A964-4BAA-8B52-6241A72E4DDA",
+            "rackName": "Rack 3",
+            "lengthInMeters": 5.55,
+            "lengthInFeet": 19.36,
+            "quantity": 5,
+            "indexOfPipe": 1,
+            "pipeDefinition": {
+                "pipeDefinitionId": "b06e0ccd-5e02-41c4-95a7-5f36f2a81a14",
+                "isActive": true,
+                "categoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                "conditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                "gradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                "rangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                "sizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                "threadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                "wallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                "weightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                "category": {
+                    "pipeProperty_CategoryId": "09d4c976-69d9-49f1-bcae-dd797ea95a10",
+                    "name": "Rods"
+                },
+                "condition": {
+                    "pipeProperty_ConditionId": "f99d60f7-f6db-41e7-9252-8c1b9c84c17d",
+                    "name": "Y-Band"
+                },
+                "grade": {
+                    "pipeProperty_GradeId": "c543aa40-fc75-4210-bf2b-7652575be1d2",
+                    "name": "J55"
+                },
+                "range": {
+                    "pipeProperty_RangeId": "63f70b4a-a183-4544-9c95-c9089afe119c",
+                    "name": "3"
+                },
+                "size": {
+                    "pipeProperty_SizeId": "a2b33cea-3f89-4559-88d9-bbabad65b86b",
+                    "sizeMetric": 114.30,
+                    "sizeImperial": 4.500
+                },
+                "thread": {
+                    "pipeProperty_ThreadId": "c7abb603-2f67-4910-9d68-a03b37815fc3",
+                    "name": "NKEL"
+                },
+                "wall": {
+                    "pipeProperty_WallId": "eb45d65f-ecaf-4564-b29c-1711c18ed75c",
+                    "wallMetric": 8.46,
+                    "wallImperial": 0.333
+                },
+                "weight": {
+                    "pipeProperty_WeightId": "a6038b6a-a7b1-4443-ab46-131423d7ee83",
+                    "weightInKgPerMeter": 21.91,
+                    "weightInLbsPerFoot": 14.723
+                }
+            }
+		}
+		]
+	}
+	
+	],
+    "invoiceNumber": "INV-NEW-02",
+    "talliedByUserId": "b4d8b4a5-9b34-4376-ad19-dcceac4ea62a",
+    "talliedByUserName": "",
+    "carrierName": "Carrier C",
+    "weightInKg": 2714.6490,
+    "weightInLbs": 5984.75227
+}
+
+1. TierId fb1ea2da-102f-4f45-a631-da3278c0e407 should get 3 new entries in Pipe
+2. Pipe index should be 1, 8, 15
+3. Pipe should go from 9 entris to 12 entries with tierIds above.
+4. There should be a 4th Tally added.
