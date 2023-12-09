@@ -344,6 +344,10 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("Country")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
+
                     b.Property<string>("FaxNumber")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");

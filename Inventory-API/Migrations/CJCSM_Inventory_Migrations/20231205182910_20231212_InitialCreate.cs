@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20231121InitialCreate : Migration
+    public partial class _20231212InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -160,6 +160,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     Address2 = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     ProvinceState = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     FaxNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),

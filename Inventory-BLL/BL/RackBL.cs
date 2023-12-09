@@ -3,6 +3,7 @@ using AutoMapper;
 using Inventory_Dto.Dto;
 using Inventory_BLL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.IO.Pipelines;
 
 namespace Inventory_BLL.BL
 {
@@ -27,21 +28,11 @@ namespace Inventory_BLL.BL
             return await Task.FromResult(racks);
         }
 
-        public async Task<DtoRack?> GetRackById(Guid guid)
+        public IQueryable<DtoRack?> GetRackById(Guid guid)
         {
-            // Eager load the associated ShopLocation
-            var rack = await _context.Rack
-                .Include(r => r.ShopLocation)
-                .FirstOrDefaultAsync(x => x.RackId == guid);
-
-            if (rack != null)
-            {
-                // Map the Rack entity to DtoRack
-                var dtoRack = _mapper.Map<DtoRack>(rack);
-                return dtoRack;
-            }
-
-            throw new KeyNotFoundException($"No rack with guid {guid} can be found.");
+            IQueryable<Rack>? rackQuery = _context.Rack.Where(x => x.RackId == guid);
+            IQueryable<DtoRack> dtoRackQuery = _mapper.ProjectTo<DtoRack>(rackQuery);
+            return dtoRackQuery;
         }
 
         public async Task<DtoRack> CreateRack(DtoRackCreate dtoRack)
@@ -82,10 +73,11 @@ namespace Inventory_BLL.BL
             _context.SaveChanges();
         }
 
-        public async Task<IQueryable<DtoRack_WithPipe>> GetRackListWithPipeAndCustomer()
+        public IQueryable<DtoRack_WithPipe> GetRackListWithPipeAndCustomerByRackId(Guid rackId)
         {
             var rackWithPipeQuery = from rack in _context.Rack
                                            join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                                           where rack.RackId == rackId
                                            select new DtoRack_WithPipe
                                            {
                                                Description = rack.Description,
@@ -144,11 +136,120 @@ namespace Inventory_BLL.BL
                                                                    Weight = ppwe,
                                                                }
                                                            }).ToList()
+
                                            };
 
 
-            return await Task.FromResult(rackWithPipeQuery);
-
+            return rackWithPipeQuery;
         }
+
+
+        public IQueryable<DtoRack_WithPipe> GetRackListWithPipeAndCustomer()
+        {
+            var rackWithPipeQuery = from rack in _context.Rack
+                                    join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                                    select new DtoRack_WithPipe
+                                    {
+                                        Description = rack.Description,
+                                        Name = rack.Name,
+                                        RackId = rack.RackId,
+                                        ShopLocationId = rack.ShopLocationId,
+                                        IsActive = rack.IsActive,
+                                        JointsPerRack = rack.JointsPerRack,
+                                        ShopLocationName = shopLocation.Name,
+                                        PipeList = (from pipe in _context.Pipe
+                                                    join tier in _context.Tier on pipe.TierId equals tier.TierId
+                                                    join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
+                                                    join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
+                                                    join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                                    join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
+                                                    join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
+                                                    join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
+                                                    join pps in _context.PipeProperty_Size on pd.SizeId equals pps.PipeProperty_SizeId
+                                                    join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
+                                                    join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
+                                                    join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
+                                                    where tier.RackId == rack.RackId
+                                                    orderby rack.Name ascending, pipe.IndexOfPipe ascending
+                                                    select new DtoPipe
+                                                    {
+                                                        CustomerId = pipe.CustomerId,
+                                                        PipeId = pipe.PipeId,
+                                                        IndexOfPipe = pipe.IndexOfPipe,
+                                                        LengthInFeet = pipe.LengthInFeet,
+                                                        LengthInMeters = pipe.LengthInMeters,
+                                                        TierId = pipe.TierId,
+                                                        PipeDefinitionId = pipe.PipeDefinitionId,
+                                                        Quantity = pipe.Quantity,
+                                                        RackId = rack.RackId,
+                                                        RackName = rack.Name,
+                                                        TierNumber = tier.Number,
+                                                        PipeDefinition = new DtoPipeDefinition
+                                                        {
+                                                            PipeDefinitionId = pd.PipeDefinitionId,
+                                                            CategoryId = pd.CategoryId,
+                                                            ConditionId = pd.ConditionId,
+                                                            GradeId = pd.GradeId,
+                                                            RangeId = pd.RangeId,
+                                                            SizeId = pd.SizeId,
+                                                            ThreadId = pd.ThreadId,
+                                                            WallId = pd.WallId,
+                                                            WeightId = pd.WeightId,
+                                                            Category = ppc,
+                                                            Condition = ppcon,
+                                                            Grade = ppgr,
+                                                            IsActive = pd.IsActive,
+                                                            Range = ppr,
+                                                            Size = pps,
+                                                            Thread = ppt,
+                                                            Wall = ppw,
+                                                            Weight = ppwe,
+                                                        }
+                                                    }).ToList()
+                                    };
+
+
+            return rackWithPipeQuery;
+        }
+
+        public async Task<IQueryable<DtoRack_WithTier>> GetRackListWithTiers()
+        {
+            try
+            {
+                var rackWithTiersQuery = from rack in _context.Rack
+                                         join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                                         select new DtoRack_WithTier
+                                         {
+                                             RackId = rack.RackId,
+                                             Name = rack.Name,
+                                             ShopLocationId = rack.ShopLocationId,
+                                             ShopLocationName = shopLocation.Name,
+                                             IsActive = rack.IsActive,
+                                             Description = rack.Description,
+                                             JointsPerRack = rack.JointsPerRack,
+                                             TierList = (from tier in _context.Tier
+                                                         where tier.RackId == rack.RackId
+                                                         orderby tier.Number ascending
+                                                         select new DtoTier_WithPipeInfo
+                                                         {
+                                                             TierId = tier.TierId,
+                                                             RackId = tier.RackId,
+                                                             Number = tier.Number,
+                                                             PipeCount = _context.Pipe
+                                                                         .Where(pipe => pipe.TierId == tier.TierId)
+                                                                         .Sum(pipe => pipe.Quantity)
+                                                         }).ToList()
+                                         };
+
+                return await Task.FromResult(rackWithTiersQuery);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                throw; // Rethrow the exception to let it propagate up the call stack
+            }
+        }
+
+
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20231121184706_20231121_InitialCreate")]
-    partial class _20231121InitialCreate
+    [Migration("20231205182910_20231212_InitialCreate")]
+    partial class _20231212InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -346,6 +346,10 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<string>("City")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(2)
+                        .HasColumnType("nvarchar(2)");
 
                     b.Property<string>("FaxNumber")
                         .HasMaxLength(20)

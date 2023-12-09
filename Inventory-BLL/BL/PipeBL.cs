@@ -28,13 +28,8 @@ namespace Inventory_BLL.Interfaces
         public IQueryable<DtoPipe>? GetPipeById(Guid guid)
         {
             IQueryable<Pipe>? pipe = _context.Pipe.Where(x => x.PipeId == guid);
-            if (pipe.Any())
-            {
-                IQueryable<DtoPipe> dtoPipe = _mapper.ProjectTo<DtoPipe>(pipe);
-                return dtoPipe;
-            }
-
-            throw new KeyNotFoundException($"No pipe with guid {guid} can be found.");
+            IQueryable<DtoPipe> dtoPipe = _mapper.ProjectTo<DtoPipe>(pipe);
+            return dtoPipe;
         }
 
         public async Task<DtoPipe> CreatePipe(DtoPipeCreate dtoPipeCreate)
@@ -44,7 +39,7 @@ namespace Inventory_BLL.Interfaces
 
             Pipe pipe = _mapper.Map<Pipe>(dtoPipeCreate);
 
-            pipe.PipeId = Guid.NewGuid(); // This can be removed if the DB sets it.
+            pipe.PipeId = Guid.NewGuid();
             _context.Pipe.Add(pipe);
             await _context.SaveChangesAsync();
 
