@@ -11,7 +11,7 @@ export interface Customer {
     postalCode?: string;
     email?: string;
     isActive: boolean;
-    dateOfCreation: string; 
+    dateOfCreation: string;
     dateOfLastUpdate: string;
   }
 
@@ -25,6 +25,16 @@ export interface CustomerCreate {
     email?: string;
 }
 
+export interface CustomerUpdate {
+  name: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  provinceState?: string;
+  postalCode?: string;
+  email?: string;
+}
+
 export interface CustomerWithPipe {
     customerId: string;
     customer: Customer;
@@ -32,6 +42,6 @@ export interface CustomerWithPipe {
   }
 
 
-export interface CustomerSearchParams {   
-    customerId: string | null;   
+export interface CustomerSearchParams {
+    customerId: string | null;
 }

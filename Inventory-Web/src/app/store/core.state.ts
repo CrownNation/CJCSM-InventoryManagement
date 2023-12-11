@@ -14,6 +14,8 @@ import { TallyState } from './tally/tally.state';
 import { tallyReducers } from './tally/tally.reducers';
 import { CustomerState } from './customer/customer.state';
 import { customerReducers } from './customer/customer.reducers';
+import { PipeState } from './pipe/pipe.state';
+import { pipeReducers } from './pipe/pipe.reducers';
 
 
   export const reducers: ActionReducerMap<AppState> = {
@@ -22,7 +24,8 @@ import { customerReducers } from './customer/customer.reducers';
     // router: routerReducer,
     rack: rackReducers,
     tally: tallyReducers,
-    customer: customerReducers
+    customer: customerReducers,
+    pipe: pipeReducers
   };
 
   export const metaReducers: MetaReducer<AppState>[] = [
@@ -65,11 +68,15 @@ export const selectTallyFeature: MemoizedSelector<AppState, TallyState> =
 export const selectCustomerFeature: MemoizedSelector<AppState, CustomerState> =
   createFeatureSelector<CustomerState>('customer');
 
+  export const selectPipeFeature: MemoizedSelector<AppState, PipeState> =
+  createFeatureSelector<PipeState>('pipe');
+
   export interface AppState {
     // auth: AuthState;
     // settings: SettingsState;
     // router: RouterReducerState<RouterStateUrl>;
     rack: RackState;
     tally: TallyState;
-    customer: CustomerState
+    customer: CustomerState,
+    pipe: PipeState
   }

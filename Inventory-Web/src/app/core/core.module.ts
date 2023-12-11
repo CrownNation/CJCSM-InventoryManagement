@@ -17,10 +17,11 @@ import { metaReducers, reducers } from '../store/core.state';
 import { LoginComponent } from '../auth/login/login.component';
 import { RackEffects } from '../store/rack/rack.effects';
 import { TallyEffects } from '../store/tally/tally.effects';
-import { CustomerEffects } from '../store/customer/customer.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { TallyService } from './services/tally-service/tally.service';
 import { CustomerService } from './services/customer-service/customer.service';
+import { CustomerEffects } from '../store/customer/customer.effects';
+import { PipeEffects } from '../store/pipe/pipe.effects';
 
 @NgModule({
   declarations: [ ],
@@ -32,7 +33,7 @@ import { CustomerService } from './services/customer-service/customer.service';
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([RackEffects, TallyEffects, CustomerEffects]),
+    EffectsModule.forRoot([RackEffects, TallyEffects, CustomerEffects, PipeEffects]),
     environment.production ? [] : StoreDevtoolsModule.instrument({
       name: 'CJCSM Inventory'
     }),

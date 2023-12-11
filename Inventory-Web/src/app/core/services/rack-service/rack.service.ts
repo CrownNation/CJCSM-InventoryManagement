@@ -16,12 +16,8 @@ export class RackService {
 
   getRacks(searchParams: RackSearchParams | null): Observable<Rack[]> {
     const queryParams = this.generateOdataParams(searchParams);
-    console.log('hit');
-    console.log(queryParams);
     return this.http.get<Rack[]>(`${this.baseUrl}${queryParams}`);
   }
-
-
 
   getRackById(id: string): Observable<RackWithPipe[]> {
     // Todo: This should be baseUrl/rack/{id} and it should return RackWithPipe

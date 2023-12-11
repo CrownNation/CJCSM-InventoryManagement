@@ -1,0 +1,54 @@
+<mat-card>
+    <mat-card-header>
+        <div *ngIf="!pipe" class="title-container">
+            Pipe Information
+        </div>
+
+        <div *ngIf="pipe" class="title-container">
+            <span>{{pipe.rackName}}</span>
+            <span>Tier {{pipe.tierNumber}}</span>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="container" *ngIf="pipe">
+            <div class="container-row">
+
+                <div class="data-column-left">
+
+                    <span>{{pipe.pipeDefinition.category?.name}} </span>
+                    <span>{{pipe.pipeDefinition.condition?.name}} </span>
+                    <span>{{pipe.pipeDefinition.grade?.name}} </span>
+                    <span>{{pipe.pipeDefinition.thread?.name}} </span>
+                    <span>{{pipe.pipeDefinition.weight?.weightInKgPerMeter}} kg/m</span>
+                    <span>{{pipe.pipeDefinition.weight?.weightInLbsPerFoot}} lbs/ft</span>
+
+                </div>
+
+                <div class="data-column-right">
+                    <span>{{pipe.lengthInMeters}} m </span>
+                    <span>{{pipe.lengthInFeet}} ft </span>
+                    <span>{{pipe.pipeDefinition.size?.sizeMetric}} (size metric) </span>
+                    <span>{{pipe.pipeDefinition.size?.sizeImperial}} (size imperial)</span>
+                    <span>{{pipe.pipeDefinition.wall?.wallMetric}} (wall metric)</span>
+                    <span>{{pipe.pipeDefinition.wall?.wallImperial}} (wall imperial) </span>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </mat-card-content>
+
+
+
+    <div *ngIf="loading" class="spinner">
+        <mat-progress-spinner
+        color="primary"
+        mode="indeterminate">
+        </mat-progress-spinner>
+    </div>
+
+
+</mat-card>

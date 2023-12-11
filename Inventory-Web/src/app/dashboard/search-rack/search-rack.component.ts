@@ -67,9 +67,6 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource = new MatTableDataSource(racks as Rack[]);
         this.loadingRacks = false;
 
-        console.log('racks-search');
-        console.log(racks);
-
         if(racks.length > 0)
           this.store.dispatch(actionGetRackById({rackId: racks[0].rackId}));
       }
@@ -148,8 +145,6 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   viewRack(rack: Rack) {
-    console.log('view rack');
-    console.log(rack);
     this.store.dispatch(actionGetRackById({rackId: rack.rackId}));
   }
 

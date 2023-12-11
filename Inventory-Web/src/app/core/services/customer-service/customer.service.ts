@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Customer, CustomerCreate, CustomerSearchParams, CustomerWithPipe } from '../../../models/customer.model';
+import { Customer, CustomerCreate, CustomerSearchParams, CustomerUpdate, CustomerWithPipe } from '../../../models/customer.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -22,12 +22,12 @@ export class CustomerService {
     return this.http.get<CustomerWithPipe>(`${this.baseUrl}/WithPipe/${id}`);
   }
 
-  addCustomer(rack: CustomerCreate): Observable<Customer> {
-    return this.http.post<Customer>(this.baseUrl, rack);
+  addCustomer(customer: CustomerCreate): Observable<Customer> {
+    return this.http.post<Customer>(this.baseUrl, customer);
   }
 
-  updateCustomer(rack: CustomerCreate): Observable<void> {
-    return this.http.post<void>(this.baseUrl, rack);
+  updateCustomer(pipe: CustomerUpdate): Observable<void> {
+    return this.http.post<void>(this.baseUrl, pipe);
   }
 
   private generateOdataParams(searchParams: CustomerSearchParams | null): string {

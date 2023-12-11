@@ -19,7 +19,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RackModule } from '../rack/rack.module';
-import { PipeModule } from '../pipe/pipe.module';
 import { SearchRackComponent } from './search-rack/search-rack.component';
 import { SearchTallyComponent } from './search-tally/search-tally.component';
 import { SearchCustomerComponent } from './search-customer/search-customer.component';
@@ -29,6 +28,7 @@ import { CustomerViewComponent } from './customer-view/customer-view.component';
 import { CustomerAddComponent } from './customer-add/customer-add.component';
 import { RackViewComponent } from './rack-view/rack-view.component';
 import { RackAddComponent } from './rack-add/rack-add.component';
+import { PipeModule } from '../pipe/pipe.module';
 
 
 @NgModule({

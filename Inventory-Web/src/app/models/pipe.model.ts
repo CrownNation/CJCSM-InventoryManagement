@@ -11,7 +11,7 @@ export interface Pipe {
     lengthInFeet: number;
     quantity: number;
     indexOfPipe: number;
-    pipeDefinition: PipeDefinition; 
+    pipeDefinition: PipeDefinition;
 }
 
 export interface PipeDefinition {
@@ -77,6 +77,44 @@ export interface PipeProperty_Weight {
     weightInKgPerMeter: number;
     weightInLbsPerFoot: number;
 }
+
+export interface PipeSearchParams {
+    pipeId: string | null;
+    pipeDefinitionId: string | null;
+    lengthInMeters: number | null;
+    lengthInFeet: number | null;
+}
+
+export interface PipeDefinitionSearchParams {
+    pipeProperty_WeightId: string;
+    weightInKgPerMeter: number;
+    weightInLbsPerFoot: number;
+}
+
+export interface PipeCreate {
+    pipeProperty_WeightId: string;
+    weightInKgPerMeter: number;
+    weightInLbsPerFoot: number;
+}
+
+export interface PipeUpdate {
+    pipeProperty_WeightId: string;
+    weightInKgPerMeter: number;
+    weightInLbsPerFoot: number;
+}
+
+export interface PipeDefinitionCreate {
+    pipeProperty_WeightId: string;
+    weightInKgPerMeter: number;
+    weightInLbsPerFoot: number;
+}
+
+export interface PipeDefinitionUpdate {
+    pipeProperty_WeightId: string;
+    weightInKgPerMeter: number;
+    weightInLbsPerFoot: number;
+}
+
 
 
 // ---------- Todo: remove these once they are not used on the pipe forms

@@ -18,7 +18,6 @@ createSelector(
     Object.values(entities) as Customer[]
 );
 
-
 export const selectCustomerState = createSelector(
     selectCustomerFeature,
     (state: CustomerState) => state
@@ -46,7 +45,7 @@ export const selectSelectedCustomer = createSelector(
     selectCustomerFeature,
     (state: CustomerState) => state.selectedCustomer
   );
-export const selectSelectedTallyError = createSelector(
+export const selectSelectedCustomerError = createSelector(
     selectCustomerFeature,
     (state: CustomerState) => state.errorLoadingSelectedCustomer
 );

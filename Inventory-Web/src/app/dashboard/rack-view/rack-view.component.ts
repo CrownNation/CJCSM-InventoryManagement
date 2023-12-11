@@ -45,14 +45,7 @@ export class RackViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.rack$.pipe(takeUntil(this.destroy$)).subscribe((rack) => {
-
-      console.log('rack-view');
-      console.log(rack);
-
       if (rack) {
-
-        console.log(rack);
-
         this.loading = false;
         this.rack = rack;
         this.dataSource = new MatTableDataSource(rack.pipeList as Pipe[]);

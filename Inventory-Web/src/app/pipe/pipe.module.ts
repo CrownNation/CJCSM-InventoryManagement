@@ -26,6 +26,7 @@ import { PipeCoatingListComponent } from './pipe-coating-list/pipe-coating-list.
 import { PipeCoatingAddComponent } from './pipe-coating-add/pipe-coating-add.component';
 import { PipeTransferComponent } from './pipe-transfer/pipe-transfer.component';
 import { DialogPipeTransferComponent } from './dialog-pipe-transfer/dialog-pipe-transfer.component';
+import { PipeViewComponent } from './pipe-view/pipe-view.component';
 
 
 
@@ -38,7 +39,8 @@ import { DialogPipeTransferComponent } from './dialog-pipe-transfer/dialog-pipe-
     PipeCoatingListComponent,
     PipeCoatingAddComponent,
     PipeTransferComponent,
-    DialogPipeTransferComponent
+    DialogPipeTransferComponent,
+    PipeViewComponent
   ],
   imports: [
     CommonModule,

@@ -1,201 +1,145 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MeasurementUnit, Pipe, PipeSize } from '../../models/pipe.model';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ShopLocation } from '../../models/shop.model';
-import { Rack } from '../../models/rack.model';
 import { Customer } from '../../models/customer.model';
+import { Pipe, PipeDefinition, PipeSearchParams } from '../../models/pipe.model';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { selectLoadingPipe, selectPipe, selectPipeDefinitionsList } from '../../store/pipe/pipe.selectors';
+import { actionGetPipe, actionGetPipeById } from '../../store/pipe/pipe.actions';
 
 @Component({
   selector: 'app-pipe-search',
   templateUrl: './pipe-search.component.html',
   styleUrls: ['./pipe-search.component.scss']
 })
-export class PipeSearchComponent {
+export class PipeSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  filterPipeForm!: FormGroup
-  //  = new FormGroup({
-  //   pipeSize: new FormControl('', []),
-  //   pipeCondition: new FormControl('', []),
-  //   pipeThread: new FormControl('', []),
-  //   pipeGrade: new FormControl('', []),
-  //   pipeCoating: new FormControl('', []),
-  //   weight: new FormControl('', []),      
-  //   wallSize: new FormControl('', []),
-  //   length: new FormControl('', []),
-  //   rack: new FormControl('', []),
-  //   customer: new FormControl('', []),
-  //   shop: new FormControl('', [])
-  // });
-
-  displayedColumns: string[] = ['pipeCoating', 'length', 'quantity', 'rack', 'shop'];
-  dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>;
+  displayedColumns: string[] = [
+    'category',
+    'condition',
+    'lengthInMeters',
+    'lengthInFeet',
+    'quantity',
+    'rack',
+    'tier',
+    'actions'
+  ];
+  dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  pipes: Pipe[] = [
-    // { 
-    //   pipeId: 'pipe1',
-    //   pipeDefintion: {
-    //     pipeDefinitionId: '123',
-    //     pipeSize: {
-    //       pipeSizeId: 'M',
-    //       measurementUnit: MeasurementUnit.metric
-    //     },
-    //     pipeCondition: {
-    //       pipeConditionId: 'U',
-    //       pipeCondition: 'Used'
-    //     },
-    //     pipeThread: {
-    //       pipeThreadId: 'NPT',
-    //       pipeThread: 'National Pipe Thread'
-    //     },
-    //     pipeGrade: {
-    //       pipeGradeId: 'API5LX52',
-    //       pipeGrade: 'API 5L X52'
-    //     },
-    //     pipeCoating: {
-    //       pipeCoatingId: 'ExternalFBE',
-    //       pipeCoating: 'External Fusion Bonded Epoxy'
-    //     },
-    //     weight: 100,
-    //     wallSize: 0.5
-    //   },
-    //   length: 100,
-    //   quantity: 14,
-    //   rack: {
-    //     rackId: 'rack1',
-    //     name: 'Rack 1',
-    //     shopLocationId: 'shop1',
-    //     isActive: true,
-    //     shopName: 'Shop 1'
-    //   }
-    // }
-  ];
+  pipeForm!: FormGroup
 
-  // Todo: get this from the store
-  shops: ShopLocation[] = [
-    {
-      shopLocationId: '1',
-      shopLocationName: 'Shop 1'
-    },
-    {
-      shopLocationId: '2',
-      shopLocationName: 'Shop 2'
-    },
-    {
-      shopLocationId: '3',
-      shopLocationName: 'Shop 3'
-    },
-  ];
+  pipeDefinitionList: PipeDefinition[] = [];
+  searchParams: PipeSearchParams | null = {
+    pipeId: null,
+    pipeDefinitionId: null,
+    lengthInMeters: null,
+    lengthInFeet: null
+  };
 
-  pipeSizes: PipeSize[] = [
-    {
-      pipeSizeId: 'M',
-      measurementUnit: MeasurementUnit.metric
-    },
-    {
-      pipeSizeId: 'I',
-      measurementUnit: MeasurementUnit.imperial
-    }
-  ];
+  private destroy$ = new Subject<void>();
 
-  pipeConditions = [
-    {
-      pipeConditionId: 'U',
-      pipeCondition: 'Used'
-    },
-    {
-      pipeConditionId: 'N',
-      pipeCondition: 'New'
-    }
-  ];
+  pipe$: Observable<Pipe[]> = this.store.select(selectPipe);
+  loadingPipe: Boolean = false;
+  loading$: Observable<Boolean> = this.store.select((selectLoadingPipe));
 
-  pipeThreads = [
-    {
-      pipeThreadId: 'NPT',
-      pipeThread: 'National Pipe Thread'
-    },
-    {
-      pipeThreadId: 'BTC',
-      pipeThread: 'Buttress Thread Casing'
-    }
-  ];
+  pipeDefinitionsList$: Observable<PipeDefinition[] | null> = this.store.select(selectPipeDefinitionsList);
 
-  pipeGrades = [
-    {
-      pipeGradeId: 'API5LX52',
-      pipeGrade: 'API 5L X52'
-    },
-    {
-      pipeGradeId: 'API5LX60',
-      pipeGrade: 'API 5L X60'
-    }
-  ];
-
-  pipeCoatings = [
-    {
-      pipeCoatingId: 'ExternalFBE',
-      pipeCoating: 'External Fusion Bonded Epoxy'
-    },
-    {
-      pipeCoatingId: 'External3LPE',
-      pipeCoating: 'External 3 Layer Polyethylene'
-    }
-  ];
-
-  racks: Rack[] = [];
-  customers: Customer[] = [];
 
   constructor(
-    private router: Router,
-    private store: Store<AppState>) {
-  }
+    private store: Store<AppState>)
+  {  }
+
 
   ngOnInit(): void {
-    console.log('pipe search onInit');
-    console.log(this.pipes);
-    this.dataSource = new MatTableDataSource(this.pipes);   
-    
+
     this.buildForm();
+    this.loadingPipe = true;
+    this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));
+
+
+    this.pipe$.pipe(takeUntil(this.destroy$)).subscribe((pipe) => {
+      if (pipe) {
+        this.dataSource = new MatTableDataSource(pipe as Pipe[]);
+        this.loadingPipe = false;
+
+        if(pipe.length > 0)
+          this.store.dispatch(actionGetPipeById({pipeId: pipe[0].pipeId}));
+        }
+    });
+
+    this.pipeDefinitionsList$.pipe(takeUntil(this.destroy$)).subscribe((pipDefinitions) => {
+      if (pipDefinitions) {
+        this.pipeDefinitionList = pipDefinitions;
+      }
+    });
+
+    this.loading$.subscribe((loading) => {
+      this.loadingPipe = loading;
+    });
+
   }
 
   buildForm() {
-    this.filterPipeForm = new FormGroup({
-      pipeSize: new FormControl('', []),
-      pipeCondition: new FormControl('', []),
-      pipeThread: new FormControl('', []),
-      pipeGrade: new FormControl('', []),
-      pipeCoating: new FormControl('', []),
-      weight: new FormControl('', []),      
-      wallSize: new FormControl('', []),
-      length: new FormControl('', []),
-      rack: new FormControl('', []),
-      customer: new FormControl('', []),
-      shopLocation: new FormControl('', [])
+
+    this.pipeForm = new FormGroup({
+      pipeType: new FormControl('', []),
+      lengthInMeters: new FormControl('', []),
+      lengthInFeet: new FormControl('', [])
     });
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
   filter()  {
-    console.log('filter');
+    this.searchParams = {
+      pipeId: null,
+      pipeDefinitionId: this.pipeForm.value.pipeType,
+      lengthInMeters: this.pipeForm.value.lengthInMeters,
+      lengthInFeet: this.pipeForm.value.lengthInFeet
+    };
+    this.loadingPipe = true;
+    this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));
   }
 
   clearForm() {
-    this.filterPipeForm.reset();
+    this.pipeForm.reset();
+    this.searchParams = {
+      pipeId: null,
+      pipeDefinitionId: null,
+      lengthInMeters: null,
+      lengthInFeet: null
+    };
+
+    this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));
   }
 
-  editTier(pipe: Pipe) {
-    console.log(pipe);
+  viewCustomer(pipe: Pipe) {
+    this.store.dispatch(actionGetPipeById({pipeId: pipe.pipeId}));
   }
 
-
-
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
 
 }

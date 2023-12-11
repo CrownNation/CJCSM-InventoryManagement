@@ -3,12 +3,10 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Customer } from '../../models/customer.model';
 import { CustomerState } from './customer.state';
 import { actionCreateCustomer, actionCreateCustomerError, actionCreateCustomerSuccess,
-    actionGetCustomerById,
-    actionGetCustomerByIdError,
-    actionGetCustomerByIdSuccess,
-    actionGetCustomers, actionGetCustomersError, actionGetCustomersFullList, actionGetCustomersFullListError, actionGetCustomersFullListSuccess, actionGetCustomersSuccess } from './customer.actions';
-
-
+    actionGetCustomerById, actionGetCustomerByIdError, actionGetCustomerByIdSuccess,
+    actionGetCustomers, actionGetCustomersError, actionGetCustomersFullList, actionGetCustomersFullListError,
+    actionGetCustomersFullListSuccess, actionGetCustomersSuccess }
+    from './customer.actions';
 
 export function sortByName(a: Customer, b: Customer): number {
     return a.name.localeCompare(b.name);
@@ -51,13 +49,13 @@ const reducer: ActionReducer<CustomerState> = createReducer(
     on(actionGetCustomersSuccess, (state: CustomerState, { customers }) => {
         return customerAdapater.addMany(customers, {
           ...state,
-          loadingTallies: false,
-          errorLoadingTallies: null
+          loadingcustomers: false,
+          errorLoadingCustomers: null
         });
     }),
     on(actionGetCustomersError, (state: CustomerState, { errorLoadingCustomers }) => ({
         ...state,
-        loadingRacks: false,
+        loadingCustomers: false,
         errorLoadingCustomers
     })),
 
@@ -90,7 +88,6 @@ const reducer: ActionReducer<CustomerState> = createReducer(
         ...state,
         selectedCustomer,
         errorLoadingSelectedCustomer: null
-
     })),
     on(actionGetCustomerByIdError, (state: CustomerState, { errorLoadingSelectedCustomer }) => ({
         ...state,
