@@ -1,5 +1,5 @@
 import { Customer } from "./customer.model";
-import { Pipe, PipeCreate } from "./pipe.model";
+import { Pipe, PipeDefinition } from "./pipe.model";
 
 export enum TallyTypes {
     TallyIn = 0,
@@ -35,7 +35,24 @@ export interface DtoTallyCreate {
   invoiceNumber?: string;
   talliedByUserId: string;
   carrierName: string;
-  pipeList: Pipe[];
+  tierList: DtoTierWithPipe[];
+}
+
+export interface DtoTierWithPipe {
+  tierId: string;
+  pipeList: DtoPipeCreate[];
+}
+
+export interface DtoPipeCreate {
+  pipeDefinitionId: string;
+  tierId: string;
+  rackId: string;
+  customerId: string;
+  lengthInMeters: number;
+  lengthInFeet: number;
+  quantity: number;
+  indexOfPipe: number;
+  pipeDefinition?: PipeDefinition
 }
 
 export interface DtoTally_WithPipeAndCustomer {

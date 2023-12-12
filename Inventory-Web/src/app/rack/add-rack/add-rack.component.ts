@@ -17,18 +17,18 @@ export class AddRackComponent implements OnInit {
   addRackForm!: FormGroup;
 
   shops: ShopLocation[] = [
-    {
-      shopLocationId: 'DAB952D4-FDB5-4711-AEEC-668526075124',
-      shopLocationName: 'Shop 1'
-    },
-    {
-      shopLocationId: '0D0D449E-5941-4652-B45C-3826D7D3A1A9',
-      shopLocationName: 'Shop 2'
-    },
-    {
-      shopLocationId: 'C4776E09-EC7E-45E0-B77A-F3D07D6D0987',
-      shopLocationName: 'Shop 3'
-    },
+    // {
+    //   shopLocationId: 'DAB952D4-FDB5-4711-AEEC-668526075124',
+    //   name: 'Shop 1'
+    // },
+    // {
+    //   shopLocationId: '0D0D449E-5941-4652-B45C-3826D7D3A1A9',
+    //   shopLocationName: 'Shop 2'
+    // },
+    // {
+    //   shopLocationId: 'C4776E09-EC7E-45E0-B77A-F3D07D6D0987',
+    //   shopLocationName: 'Shop 3'
+    // },
   ];
 
   constructor(

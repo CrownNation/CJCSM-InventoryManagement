@@ -31,13 +31,31 @@ export interface RackCreate {
 }
 
 export interface RackUpdate {
-    name: string;
-    shopLocationId: string;
-    description: string;
-    jointsPerRack: number;
-  }
+  name: string;
+  shopLocationId: string;
+  description: string;
+  jointsPerRack: number;
+}
 
 export interface RackSearchParams {
-    name: string | null;
-    shopId: string | null;
+  name: string | null;
+  shopId: string | null;
+}
+
+export interface TierWithPipeInfo {
+  tierId: string;
+  rackId: string;
+  number: number;
+  pipeCount: number;
+}
+
+export interface RackWithTier {
+  rackId: string;
+  name: string;
+  shopLocationId: string;
+  shopLocationName: string;
+  isActive: boolean;
+  description: string;
+  jointsPerRack: number;
+  tierList: TierWithPipeInfo[];
 }

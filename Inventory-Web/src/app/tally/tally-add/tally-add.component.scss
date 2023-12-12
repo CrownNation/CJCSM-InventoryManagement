@@ -5,13 +5,16 @@
 }
 
 .section {
-    // max-width: 45%;
-    // flex: 1 1 auto;
+    flex: 1 1 auto;
+
+    &:first-of-type {
+        margin-right: 20px;
+    }
+
 }
 
 mat-card {
-    width: 500px;
-    margin: auto;
+    margin: 20px;
 }
 
 mat-card-header{
@@ -42,3 +45,17 @@ h1 {
 button {
     margin-right: 1rem;
 }
+
+.right-align {
+    text-align: right;
+}
+
+.display-message{
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.scrollable-table {
+    height: 300px;
+    overflow-y: auto;
+  }

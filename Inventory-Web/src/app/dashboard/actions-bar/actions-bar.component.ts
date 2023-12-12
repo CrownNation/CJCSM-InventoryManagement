@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TallyAddComponent } from '../../tally/tally-add/tally-add.component';
 import { CustomerAddComponent } from '../customer-add/customer-add.component';
 import { RackAddComponent } from '../rack-add/rack-add.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-actions-bar',
@@ -12,16 +13,12 @@ import { RackAddComponent } from '../rack-add/rack-add.component';
 export class ActionsBarComponent {
 
 
-  constructor(public dialog: MatDialog) { }
-
+  constructor(
+    public dialog: MatDialog,
+    private router: Router) { }
 
   openAddTallyDialog(): void {
-    const dialogRef = this.dialog.open(TallyAddComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // You can do something with the result here if needed
-    });
+    this.router.navigate(['/tally/add']);
   }
 
   openAddCustomerDialog(): void {

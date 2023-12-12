@@ -51,7 +51,7 @@ export const selectSelectedRackError = createSelector(
     (state: RackState) => state.errorLoadingSelectedRack
 );
 
-// Full customer list
+// Full racks full list
 export const selectRacksFullList = createSelector(
     selectRackFeature,
     (state: RackState) => state.racksFullList
@@ -59,4 +59,24 @@ export const selectRacksFullList = createSelector(
 export const selectRacksFullListError = createSelector(
     selectRackFeature,
     (state: RackState) => state.errorLoadingRacksList
+);
+
+// Racks with tiers
+export const selectRacksWithTiers = createSelector(
+  selectRackFeature,
+  (state: RackState) => state.racksWithTiers
+);
+export const selectRacksWithTiersError = createSelector(
+  selectRackFeature,
+  (state: RackState) => state.errorLoadingRacksWithTiers
+);
+
+// Shop Locations
+export const selectShopLocations = createSelector(
+  selectRackFeature,
+  (state: RackState) => state.shopLocations
+);
+export const selectShopLocationsError = createSelector(
+  selectRackFeature,
+  (state: RackState) => state.errorLoadingShopLocations
 );

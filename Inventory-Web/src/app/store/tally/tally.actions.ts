@@ -18,10 +18,9 @@ export const actionGetTalliesError = createAction(
     props<{ errorLoadingTallies: HttpErrorResponse }>()
 );
 
-
 // Create Tally
 export const actionCreateTally = createAction(
-    `${tallyKey} Create Tally`, 
+    `${tallyKey} Create Tally`,
     props<{ tallyCreate: DtoTallyCreate }>()
 );
 export const actionCreateTallySuccess = createAction(
@@ -35,7 +34,7 @@ export const actionCreateTallyError = createAction(
 
 // Get Tally by Id
 export const actionGetTallyById = createAction(
-    `${tallyKey} Get Tally By Id`, 
+    `${tallyKey} Get Tally By Id`,
     props<{ tallyId: string }>()
 );
 export const actionGetTallyByIdSuccess = createAction(
@@ -51,6 +50,6 @@ export const actionGetTallyByIdError = createAction(
 
 // Delete Tally
 export const actionDeleteTally = createAction(
-    `${tallyKey} Delete Tally`, 
+    `${tallyKey} Delete Tally`,
     props<{ id: string }>()
 );

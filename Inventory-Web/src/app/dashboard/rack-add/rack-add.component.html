@@ -20,7 +20,7 @@
                     <mat-label>Shop</mat-label>
                     <mat-select formControlName="shopLocation">
                         <mat-option *ngFor="let shop of shopsFullList" [value]="shop.shopLocationId">
-                        {{shop.shopLocationName}}
+                        {{shop.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

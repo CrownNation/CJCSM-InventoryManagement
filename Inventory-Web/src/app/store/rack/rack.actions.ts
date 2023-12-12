@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { Rack, RackCreate, RackSearchParams, RackWithPipe } from '../../models/rack.model';
+import { Rack, RackCreate, RackSearchParams, RackWithPipe, RackWithTier } from '../../models/rack.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ShopLocation } from '../../models/shop.model';
 
 export const rackKey = '[Rack]';
 
@@ -61,14 +62,34 @@ export const actionGetRacksFullListError = createAction(
     props<{ errorLoadingRacksList: HttpErrorResponse }>()
 );
 
-
-
-
-
-
-
-// Delete Rack
-export const actionDeleteRack = createAction(
-    `${rackKey} Delete Rack`,
-    props<{ id: string }>()
+// Get Racks With Tiers
+export const actionGetRacksWithTiers = createAction(
+    `${rackKey} Get Racks With Tiers`
 );
+export const actionGetRacksWithTiersSuccess = createAction(
+    `${rackKey} Get Racks With Tiers Success`,
+    props<{ racksWithTiers: RackWithTier[] | null}>()
+);
+export const actionGetRacksWithTiersError = createAction(
+    `${rackKey} Get Racks With Tiers Error`,
+    props<{ errorLoadingRacksWithTiers: HttpErrorResponse }>()
+);
+
+// Get Racks With Tiers
+export const actionGetShopLocations = createAction(
+    `${rackKey} Get Shop Locations`
+);
+export const actionGetShopLocationsSuccess = createAction(
+    `${rackKey} Get Shop Locations Success`,
+    props<{ shopLocations: ShopLocation[] | null}>()
+);
+export const actionGetShopLocationsError = createAction(
+    `${rackKey} Get Shop Locations Error`,
+    props<{ errorLoadingShopLocations: HttpErrorResponse }>()
+);
+
+
+
+
+
+

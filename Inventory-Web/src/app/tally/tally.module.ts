@@ -16,6 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatListModule } from '@angular/material/list';
 
 import { TallyRoutingModule } from './tally-routing.module';
 import { TallyDashboardComponent } from './tally-dashboard/tally-dashboard.component';
@@ -46,7 +47,8 @@ import { TallyAddComponent } from './tally-add/tally-add.component';
     MatDialogModule,
     MatExpansionModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatListModule
   ],
   exports: [TallyAddComponent]
 })

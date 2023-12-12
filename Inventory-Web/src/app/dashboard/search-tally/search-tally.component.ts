@@ -189,7 +189,6 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('');
     this.destroy$.next();
     this.destroy$.complete();
   }

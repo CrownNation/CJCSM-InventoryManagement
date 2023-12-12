@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, switchMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { RackService } from "../../core/services/rack-service/rack.service";
-import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksFullList, actionGetRacksFullListError, actionGetRacksFullListSuccess, actionGetRacksSuccess } from "./rack.actions";
+import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksFullList, actionGetRacksFullListError, actionGetRacksFullListSuccess, actionGetRacksSuccess, actionGetRacksWithTiers, actionGetRacksWithTiersError, actionGetRacksWithTiersSuccess, actionGetShopLocations, actionGetShopLocationsError, actionGetShopLocationsSuccess } from "./rack.actions";
 
 @Injectable()
 export class RackEffects {
@@ -63,5 +63,28 @@ export class RackEffects {
     )
   );
 
+  retrieveRacksWithTiers = createEffect( () =>
+    this.actions$.pipe(
+      ofType(actionGetRacksWithTiers),
+      switchMap(actionData =>
+        this.rackService.getRacksWithTiers().pipe(
+          map(racksWithTiers => actionGetRacksWithTiersSuccess({ racksWithTiers })),
+          catchError(errorLoadingRacksWithTiers => of(actionGetRacksWithTiersError({ errorLoadingRacksWithTiers })))
+        )
+      )
+    )
+  );
+
+  retrieveShopLocations = createEffect( () =>
+    this.actions$.pipe(
+      ofType(actionGetShopLocations),
+      switchMap(actionData =>
+        this.rackService.getShopLocations().pipe(
+          map(shopLocations => actionGetShopLocationsSuccess({ shopLocations })),
+          catchError(errorLoadingShopLocations => of(actionGetShopLocationsError({ errorLoadingShopLocations })))
+        )
+      )
+    )
+  );
 
 }

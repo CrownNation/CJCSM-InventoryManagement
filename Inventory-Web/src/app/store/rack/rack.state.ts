@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { EntityState } from '@ngrx/entity';
-import { Rack, RackWithPipe } from '../../models/rack.model';
+import { Rack, RackWithPipe, RackWithTier } from '../../models/rack.model';
+import { ShopLocation } from '../../models/shop.model';
 
 
 export interface RackState extends EntityState<any> {
@@ -15,6 +16,12 @@ export interface RackState extends EntityState<any> {
 
     racksFullList: Rack[] | null;
     errorLoadingRacksList: HttpErrorResponse | null;
+
+    racksWithTiers: RackWithTier[] | null;
+    errorLoadingRacksWithTiers: HttpErrorResponse | null;
+
+    shopLocations: ShopLocation[] | null;
+    errorLoadingShopLocations: HttpErrorResponse | null;
 }
 
 
