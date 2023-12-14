@@ -308,7 +308,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("JointsPerRack")
+                    b.Property<int>("JointsPerTier")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
