@@ -129,6 +129,15 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Quantity</mat-label>
+                        <input type="number" matInput placeholder="Quantity" formControlName="quantity" step="1"
+                            (keydown)="preventDecimal($event)"required>
+                        <mat-error>
+                            Please provide a value for quantity
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
                         <mat-label>Length in meters</mat-label>
                         <input type="number" matInput placeholder="Weight in kg" formControlName="lengthInMeters" required>
                         <mat-error>
@@ -143,15 +152,6 @@
                             Please provide a value for length in feet
                         </mat-error>
                     </mat-form-field> -->
-
-                    <mat-form-field appearance="outline" color="accent">
-                        <mat-label>Quantity</mat-label>
-                        <input type="number" matInput placeholder="Quantity" formControlName="quantity" step="1"
-                            (keydown)="preventDecimal($event)"required>
-                        <mat-error>
-                            Please provide a value for quantity
-                        </mat-error>
-                    </mat-form-field>
 
                     <!-- <button mat-raised-button color="primary" class="item" (click)="addPipe()">Add pipe</button> -->
                     <ng-container *ngIf="!selectedPipe">
@@ -196,7 +196,7 @@
                 </div>
 
             </div>
-            <button mat-raised-button color="primary" class="item" (click)="addTally()">Create Tally</button>
+            <button mat-raised-button color="primary" class="item" (click)="createTally()">Create Tally</button>
             <button mat-raised-button class="item" (click)="close()">Cancel</button>
 
     </mat-card-content>

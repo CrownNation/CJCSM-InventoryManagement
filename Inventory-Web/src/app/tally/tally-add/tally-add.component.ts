@@ -119,7 +119,7 @@ export class TallyAddComponent {
     });
   }
 
-  addTally() {
+  createTally() {
     console.log('add tally');
 
     if(this.tallyAddForm.invalid) {
@@ -134,11 +134,8 @@ export class TallyAddComponent {
     const tiersWithPipe: DtoTierWithPipe[] = [];
     this.registeredPipes.forEach(pipe => {
 
-      // const tier: DtoTierWithPipe = {
-      //   tierId: pipe.tierId,
-      //   pipeList: []
-      // }
       pipe.lengthInFeet = 0; // Dummy since this is calculated at the backend
+      pipe.customerId = this.tallyAddForm.get('customer')?.value;
       const tier = tiersWithPipe.find(t => t.tierId === pipe.tierId);
       if(tier) {
         tier.pipeList.push(pipe);
@@ -164,7 +161,7 @@ export class TallyAddComponent {
       carrierName: this.tallyAddForm.get('carrierName')?.value,
       tierList: tiersWithPipe,
 
-      customerId: 'B3CFC44C-879B-43EF-B6F0-02FA0D232430', // Not used in backend, dummy data
+      customerId: this.tallyAddForm.get('customer')?.value,
       talliedByUserId: 'B3CFC44C-879B-43EF-B6F0-02FA0D232430', // Not used in backend, dummy data
     };
 
@@ -251,14 +248,6 @@ export class TallyAddComponent {
   removePipe(row: any) {
     this.registeredPipes = this.registeredPipes.filter(pipe => pipe !== row);
     this.dataSource.data = this.registeredPipes;
-  }
-
-  createTally() {
-    console.log(this.tallyAddForm.value);
-
-    const tableData = this.dataSource.data;
-    console.log(tableData);
-
   }
 
   onRackChange(event: MatSelectChange) {

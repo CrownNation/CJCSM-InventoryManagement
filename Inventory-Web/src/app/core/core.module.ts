@@ -33,7 +33,12 @@ import { PipeEffects } from '../store/pipe/pipe.effects';
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([RackEffects, TallyEffects, CustomerEffects, PipeEffects]),
+    EffectsModule.forRoot([
+      RackEffects,
+      TallyEffects,
+      CustomerEffects,
+      PipeEffects
+    ]),
     environment.production ? [] : StoreDevtoolsModule.instrument({
       name: 'CJCSM Inventory'
     }),
