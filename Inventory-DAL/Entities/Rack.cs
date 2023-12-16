@@ -22,7 +22,7 @@ namespace Inventory_DAL.Entities
         [StringLength(5000)]
         public string Description { get; set; } = String.Empty; 
 
-        public int JointsPerRack { get; set; } = 0;
+        public int JointsPerTier { get; set; } = 0;
 
         public ShopLocation ShopLocation { get; set; }  // Navigation property to get ShopLocationName
     }

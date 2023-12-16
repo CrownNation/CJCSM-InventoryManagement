@@ -1,9 +1,11 @@
-﻿using Inventory_BLL.Interfaces;
+﻿using Inventory_BLL.BL;
+using Inventory_BLL.Interfaces;
 using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Inventory_API.Controllers
 {
@@ -21,6 +23,31 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetTallyWithFilters(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
+        {
+            try
+            {
+                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithPipeQuery();
+
+                if (tallyQuery == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(options.ApplyTo(tallyQuery));
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetTallyWithFilters: " + e.Message);
+                throw new Exception($"There was a problem querying for the tally with filters. " + e.Message);
+            }
+        }
+
+        [HttpGet("Basic")]
         public async Task<IActionResult> Get(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
@@ -34,6 +61,7 @@ namespace Inventory_API.Controllers
                 throw new Exception("There was a problem querying for tallies.");
             }
         }
+
 
         [HttpGet("{key}")]
         public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
@@ -55,7 +83,6 @@ namespace Inventory_API.Controllers
                 throw new Exception($"There was a problem querying for the tally with id {key}.");
             }
         }
-
 
         /* ------Create Tally ------ */
         [HttpPost]

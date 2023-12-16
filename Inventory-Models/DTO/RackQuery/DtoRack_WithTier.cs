@@ -17,7 +17,7 @@ namespace Inventory_Dto.Dto
         public bool IsActive { get; set; }
         public string Description { get; set; } = String.Empty;
 
-        public int JointsPerRack { get; set; } = 0;
+        public int JointsPeTier { get; set; } = 0;
 
         public List<DtoTier_WithPipeInfo> TierList{ get; set; } = new List<DtoTier_WithPipeInfo>();
     }

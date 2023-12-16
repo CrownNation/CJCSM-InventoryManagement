@@ -45,7 +45,7 @@ DECLARE @Rack1Id UNIQUEIDENTIFIER = '4D7F90B7-A964-4BAA-8B52-6241A72E4DDA',
         @Rack2Id UNIQUEIDENTIFIER = 'E44FD154-091F-43A1-BA5A-071ABD2B3694',
         @Rack3Id UNIQUEIDENTIFIER = 'B3CFC44C-879B-43EF-B6F0-02FA0D232430';
 
-INSERT INTO Rack (RackId, Name, ShopLocationId, JointsPerRack, Description, IsActive) VALUES
+INSERT INTO Rack (RackId, Name, ShopLocationId, JointsPerTier, Description, IsActive) VALUES
 (@Rack1Id, 'Rack 1', @ShopLocationId, 70, 'Rack1 Description', 1),
 (@Rack2Id, 'Rack 2', @ShopLocationId, 80, 'Rack2 Description', 1),
 (@Rack3Id, 'Rack 3', @ShopLocationId, 90, 'Rack3 Description', 1);

@@ -85,7 +85,7 @@ namespace Inventory_BLL.BL
                                                RackId = rack.RackId,
                                                ShopLocationId = rack.ShopLocationId,
                                                IsActive = rack.IsActive,
-                                               JointsPerRack = rack.JointsPerRack,
+                                               JointsPerTier = rack.JointsPerTier,
                                                ShopLocationName = shopLocation.Name,
                                                PipeList = (from pipe in _context.Pipe
                                                            join tier in _context.Tier on pipe.TierId equals tier.TierId
@@ -155,7 +155,7 @@ namespace Inventory_BLL.BL
                                         RackId = rack.RackId,
                                         ShopLocationId = rack.ShopLocationId,
                                         IsActive = rack.IsActive,
-                                        JointsPerRack = rack.JointsPerRack,
+                                        JointsPerTier = rack.JointsPerTier,
                                         ShopLocationName = shopLocation.Name,
                                         PipeList = (from pipe in _context.Pipe
                                                     join tier in _context.Tier on pipe.TierId equals tier.TierId
@@ -226,7 +226,7 @@ namespace Inventory_BLL.BL
                                              ShopLocationName = shopLocation.Name,
                                              IsActive = rack.IsActive,
                                              Description = rack.Description,
-                                             JointsPerRack = rack.JointsPerRack,
+                                             JointsPeTier = rack.JointsPerTier,
                                              TierList = (from tier in _context.Tier
                                                          where tier.RackId == rack.RackId
                                                          orderby tier.Number ascending
