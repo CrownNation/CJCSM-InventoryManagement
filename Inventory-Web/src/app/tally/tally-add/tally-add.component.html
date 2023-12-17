@@ -139,7 +139,8 @@
 
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Length in meters</mat-label>
-                        <input type="number" matInput placeholder="Weight in kg" formControlName="lengthInMeters" required>
+                        <input type="number" matInput placeholder="Weight in kg"
+                        formControlName="lengthInMeters" required #lengthInMetersInput>
                         <mat-error>
                             Please provide a value for length in meters
                         </mat-error>
@@ -196,6 +197,11 @@
                 </div>
 
             </div>
+
+            <div class="spinner-container" *ngIf="loading">
+                <mat-spinner [diameter]="30"></mat-spinner>
+            </div>
+
             <button mat-raised-button color="primary" class="item" (click)="createTally()">Create Tally</button>
             <button mat-raised-button class="item" (click)="close()">Cancel</button>
 

@@ -8,11 +8,12 @@ export interface CustomerState extends EntityState<any> {
     errorLoadingCustomers: HttpErrorResponse | null;
 
     creatingCustomer: boolean,
+    createdCustomer: Customer | null,
     errorCreatingCustomer: HttpErrorResponse | null,
 
     selectedCustomer: CustomerWithPipe | null;
     errorLoadingSelectedCustomer: HttpErrorResponse | null
 
     customersFullList: Customer[] | null;
-    errorLoadingCustomersList: HttpErrorResponse | null;    
+    errorLoadingCustomersList: HttpErrorResponse | null;
 }

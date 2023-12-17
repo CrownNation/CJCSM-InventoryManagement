@@ -19,15 +19,15 @@
                 <mat-form-field appearance="outline" color="accent" >
                     <mat-label>Shop</mat-label>
                     <mat-select formControlName="shopLocation">
-                        <mat-option *ngFor="let shop of shopsFullList" [value]="shop.shopLocationId">
+                        <mat-option *ngFor="let shop of shops" [value]="shop.shopLocationId">
                         {{shop.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" color="accent">
-                    <mat-label>Joints per rack</mat-label>
-                    <input matInput placeholder="Joints per rack" formControlName="jointsPerRack" rqeuired>
+                    <mat-label>Joints per tier</mat-label>
+                    <input matInput placeholder="Joints per tier" formControlName="jointsPerTier" rqeuired>
                     <mat-error>
                         Please provide a city
                     </mat-error>
@@ -38,10 +38,12 @@
                     <input matInput placeholder="Description" formControlName="description">
                 </mat-form-field>
 
-
+                <div class="spinner-container" *ngIf="loading">
+                    <mat-spinner [diameter]="30"></mat-spinner>
+                </div>
 
                 <button mat-raised-button color="primary" class="item" (click)="addRack()">Add Rack</button>
-                <button mat-raised-button class="item">Cancel</button>
+                <button mat-raised-button class="item" (click)="closeDialog()">Cancel</button>
             </form>
         </div>
 

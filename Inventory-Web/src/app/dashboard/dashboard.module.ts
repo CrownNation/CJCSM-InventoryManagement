@@ -29,6 +29,8 @@ import { CustomerAddComponent } from './customer-add/customer-add.component';
 import { RackViewComponent } from './rack-view/rack-view.component';
 import { RackAddComponent } from './rack-add/rack-add.component';
 import { PipeModule } from '../pipe/pipe.module';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 
 @NgModule({
@@ -64,7 +66,8 @@ import { PipeModule } from '../pipe/pipe.module';
     MatInputModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressBarModule
   ]
 })
 export class DashboardModule { }

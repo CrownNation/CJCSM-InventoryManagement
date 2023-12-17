@@ -41,11 +41,25 @@ export const selectErrorLoadingRacks = createSelector(
     (state: RackState) => state.errorLoadingRacks
 );
 
+// Create Rack
+export const selectCreatingRack = createSelector(
+  selectRackFeature,
+  (state: RackState) => state.creatingRack
+);
+export const selectCreatedRack = createSelector(
+  selectRackFeature,
+  (state: RackState) => state.createdRack
+);
+export const selectCreatedRackError = createSelector(
+  selectRackFeature,
+  (state: RackState) => state.errorCreatingRack
+);
+
 // Selected Rack
 export const selectSelectedRack = createSelector(
     selectRackFeature,
     (state: RackState) => state.selectedRack
-  );
+);
 export const selectSelectedRackError = createSelector(
     selectRackFeature,
     (state: RackState) => state.errorLoadingSelectedRack
@@ -55,7 +69,7 @@ export const selectSelectedRackError = createSelector(
 export const selectRacksFullList = createSelector(
     selectRackFeature,
     (state: RackState) => state.racksFullList
-  );
+);
 export const selectRacksFullListError = createSelector(
     selectRackFeature,
     (state: RackState) => state.errorLoadingRacksList

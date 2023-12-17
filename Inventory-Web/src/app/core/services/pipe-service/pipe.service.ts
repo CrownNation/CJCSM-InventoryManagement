@@ -21,7 +21,6 @@ export class PipeService {
   }
 
   getPipeById(id: string): Observable<Pipe[]> {
-    console.log('service');
     return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition?$filter=pipeId eq ${id}`);
   }
 
@@ -37,9 +36,6 @@ export class PipeService {
     if (!searchParams) {
       return '';
     }
-
-    console.log('hit');
-    console.log(searchParams);
 
     let odataParams = '';
 

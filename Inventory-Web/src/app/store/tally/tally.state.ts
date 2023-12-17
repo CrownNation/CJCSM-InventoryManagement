@@ -8,6 +8,7 @@ export interface TallyState extends EntityState<Tally> {
     errorLoadingTallies: HttpErrorResponse | null;
 
     creatingTally: boolean,
+    createdTally: Tally | null,
     errorCreatingTally: HttpErrorResponse | null,
 
     selectedTally: Tally | null,

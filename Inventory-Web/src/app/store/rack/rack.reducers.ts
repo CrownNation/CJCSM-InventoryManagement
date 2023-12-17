@@ -24,6 +24,7 @@ export const initialState: RackState = rackAdapater.getInitialState({
     errorLoadingRacks: null,
 
     creatingRack: false,
+    createdRack: null,
     errorCreatingRack: null,
 
     selectedRack: null,
@@ -68,18 +69,21 @@ const reducer: ActionReducer<RackState> = createReducer(
     on(actionCreateRack, (state: RackState, { rackCreate }) => ({
         ...state,
         creatingRack: true,
+        createdRack: null,
         errorCreatingRack: null
     })),
     on(actionCreateRackSuccess, (state: RackState, { rack }) => {
         return rackAdapater.addOne(rack, {
           ...state,
           creatingRack: false,
+          createdRack: rack,
           errorCreatingRack: null
         });
     }),
     on(actionCreateRackError, (state: RackState, { errorCreatingRack }) => ({
         ...state,
         loadincreatingRackgRacks: false,
+        createdRack: null,
         errorCreatingRack
     })),
 

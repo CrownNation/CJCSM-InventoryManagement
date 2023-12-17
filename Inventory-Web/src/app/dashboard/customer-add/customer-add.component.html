@@ -18,7 +18,7 @@
 
                 <mat-form-field appearance="outline" color="accent">
                     <mat-label>Address Line 1</mat-label>
-                    <input matInput placeholder="Tally name" formControlName="address1">
+                    <input matInput placeholder="Address line 1" formControlName="address1">
                     <mat-error>
                         Please provide an address
                     </mat-error>
@@ -26,7 +26,7 @@
 
                 <mat-form-field appearance="outline" color="accent">
                     <mat-label>Address Line 2</mat-label>
-                    <input matInput placeholder="Tally name" formControlName="address2">
+                    <input matInput placeholder="Address line 2" formControlName="address2">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" color="accent">
@@ -39,7 +39,7 @@
 
                 <mat-form-field appearance="outline" color="accent">
                     <mat-label>Province/State</mat-label>
-                    <input matInput placeholder="City" formControlName="provinceState">
+                    <input matInput placeholder="Province/State" formControlName="provinceState" maxlength="2">
                     <mat-error>
                         Please provide a province/state
                     </mat-error>
@@ -61,8 +61,12 @@
                     </mat-error>
                 </mat-form-field>
 
-                <button mat-raised-button color="primary" class="item" (click)="addCustomer()">Add Rack</button>
-                <button mat-raised-button class="item">Cancel</button>
+                <div class="spinner-container" *ngIf="loading">
+                    <mat-spinner [diameter]="30"></mat-spinner>
+                </div>
+
+                <button mat-raised-button color="primary" class="item" (click)="addCustomer()">Add Customer</button>
+                <button mat-raised-button class="item" (click)="closeDialog()">Cancel</button>
             </form>
         </div>
 

@@ -7,7 +7,7 @@ export interface Rack {
     shopLocationName: string;
     isActive: boolean;
     description: string;
-    jointsPerRack: number;
+    jointsPerTier: number;
 }
 
 
@@ -18,7 +18,7 @@ export interface RackWithPipe {
   shopLocationName: string;
   isActive: boolean;
   description: string;
-  jointsPerRack: number;
+  jointsPerTier: number;
   pipeList: Pipe[];
 }
 
@@ -27,14 +27,14 @@ export interface RackCreate {
     shopLocationId: string;
     isActive: boolean;
     description: string;
-    jointsPerRack: number;
+    jointsPerTier: number;
 }
 
 export interface RackUpdate {
   name: string;
   shopLocationId: string;
   description: string;
-  jointsPerRack: number;
+  jointsPerTier: number;
 }
 
 export interface RackSearchParams {
@@ -56,6 +56,6 @@ export interface RackWithTier {
   shopLocationName: string;
   isActive: boolean;
   description: string;
-  jointsPerRack: number;
+  jointsPerTier: number;
   tierList: TierWithPipeInfo[];
 }

@@ -2,7 +2,7 @@ import { Action, ActionReducer, createReducer, on} from '@ngrx/store';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { TallyState } from './tally.state';
 import { Tally } from '../../models/tally.model';
-import { actionCreateTally, actionCreateTallyError, actionCreateTallySuccess, 
+import { actionCreateTally, actionCreateTallyError, actionCreateTallySuccess,
     actionGetTallies, actionGetTalliesError, actionGetTalliesSuccess, actionGetTallyById, actionGetTallyByIdError, actionGetTallyByIdSuccess } from './tally.actions';
 
 
@@ -24,6 +24,7 @@ export const initialState: TallyState = tallyAdapter.getInitialState({
     errorLoadingTallies: null,
 
     creatingTally: false,
+    createdTally: null,
     errorCreatingTally: null,
 
     selectedTally: null,
@@ -40,14 +41,14 @@ const reducer: ActionReducer<TallyState> = createReducer(
           loadingTallies: true,
           errorLoadingTallies: null
         };
-    }),    
+    }),
     on(actionGetTalliesSuccess, (state: TallyState, { tallies }) => {
         return tallyAdapter.addMany(tallies, {
           ...state,
           loadingTallies: false,
           errorLoadingTallies: null
         });
-    }), 
+    }),
     on(actionGetTalliesError, (state: TallyState, { errorLoadingTallies }) => ({
         ...state,
         loadingTallies: false,
@@ -58,19 +59,22 @@ const reducer: ActionReducer<TallyState> = createReducer(
     on(actionCreateTally, (state: TallyState, { tallyCreate }) => ({
         ...state,
         creatingTally: true,
+        createdTally: null,
         errorCreatingTally: null
     })),
-    on(actionCreateTallySuccess, (state: TallyState, { tally }) => 
-        tallyAdapter.addOne(tally, state),        
+    on(actionCreateTallySuccess, (state: TallyState, { tally }) =>
+        tallyAdapter.addOne(tally, state),
     ),
     on(actionCreateTallySuccess, (state: TallyState, { tally }) => ({
         ...state,
         creatingTally: false,
+        createdTally: tally,
         errorCreatingTally: null
-    })),        
+    })),
     on(actionCreateTallyError, (state: TallyState, { errorCreatingTally }) => ({
         ...state,
         creatingTally: false,
+        createdTally: null,
         errorCreatingTally
     })),
 
@@ -79,13 +83,13 @@ const reducer: ActionReducer<TallyState> = createReducer(
         ...state,
         selectedTally: null,
         errorLoadingSelectedTally: null
-    })),    
+    })),
     on(actionGetTallyByIdSuccess, (state: TallyState, { selectedTally }) => ({
         ...state,
         selectedTally,
         errorLoadingSelectedTally: null
-        
-    })),        
+
+    })),
     on(actionGetTallyByIdError, (state: TallyState, { errorLoadingSelectedTally }) => ({
         ...state,
         errorLoadingSelectedTally

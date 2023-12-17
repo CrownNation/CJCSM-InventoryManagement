@@ -42,3 +42,12 @@ h1 {
 button {
     margin-right: 1rem;
 }
+
+
+// Note: This is how to define the color of the snack bar. It apparently needs to be in the component's scss file as
+// the global one doesn't work.
+// ::ng-deep .mat-mdc-snack-bar-container.success-notification-overlay {
+//     --mdc-snackbar-container-color: blue;
+//     --mat-mdc-snack-bar-button-color: #fff;
+//     --mdc-snackbar-supporting-text-color: #fff;
+//   }

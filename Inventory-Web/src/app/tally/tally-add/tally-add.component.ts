@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
 import { ShopLocation } from '../../models/shop.model';
 import { Customer } from '../../models/customer.model';
-import { DtoPipeCreate, DtoTallyCreate, DtoTierWithPipe, TallyTypes } from '../../models/tally.model';
+import { DtoPipeCreate, DtoTallyCreate, DtoTierWithPipe, Tally, TallyTypes } from '../../models/tally.model';
 import { actionGetCustomersFullList } from '../../store/customer/customer.actions';
 import { actionGetRacksWithTiers, actionGetShopLocations } from '../../store/rack/rack.actions';
 import { actionGetPipeDefinitionsList } from '../../store/pipe/pipe.actions';
@@ -18,6 +18,9 @@ import { selectPipeDefinitionsList } from '../../store/pipe/pipe.selectors';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { actionCreateTally } from '../../store/tally/tally.actions';
+import { HttpErrorResponse } from '@angular/common/http';
+import { selectCreatedTally, selectCreatingTally, selectCreatingTallyError } from '../../store/tally/tally.selectors';
+import { NotificationService } from '../../core/notifications/notification.service';
 
 @Component({
   selector: 'app-tally-add',
@@ -26,8 +29,15 @@ import { actionCreateTally } from '../../store/tally/tally.actions';
 })
 export class TallyAddComponent {
 
+  @ViewChild('lengthInMetersInput') lengthInMetersInput!: ElementRef;
+
+
   tallyAddForm!: FormGroup;
   pipeAddForm!: FormGroup;
+
+  isInit: boolean = true;
+  loading: Boolean = true;
+  error: HttpErrorResponse | null = null;
 
   shops: ShopLocation[] = [];
   customers: Customer[] = [];
@@ -37,7 +47,7 @@ export class TallyAddComponent {
   pipeDefinitionList: PipeDefinition[] = [];
   shopLocations: ShopLocation[] = [];
   tiers: TierWithPipeInfo[] = [];
-  emptyGuid = '00000000-0000-0000-0000-000000000000';
+  emptyGuid = '00000000-0000-0000-0000-000000000000'; // Used for creating a new tier when sending to api
   selectedPipe: DtoPipeCreate | null = null;
   formDirective: any;
 
@@ -55,10 +65,14 @@ export class TallyAddComponent {
   pipeDefinitionsList$: Observable<PipeDefinition[] | null> = this.store.select(selectPipeDefinitionsList);
   shopLocationList$: Observable<ShopLocation[] | null> = this.store.select(selectShopLocations);
 
+  creatingTally$: Observable<Boolean> = this.store.select((selectCreatingTally));
+  createdTally$: Observable<Tally | null> = this.store.select((selectCreatedTally));
+  error$: Observable<HttpErrorResponse | null> = this.store.select((selectCreatingTallyError));
 
   constructor(
     private store: Store<AppState>,
-    private router: Router)  {
+    private router: Router,
+    private notificationService: NotificationService)  {
   }
 
   ngOnInit(): void {
@@ -93,6 +107,28 @@ export class TallyAddComponent {
         this.shopLocations = shopLocations;
       }
     });
+
+    // Creating Tally
+    this.error$.subscribe((error) => {
+      if(error) {
+        console.error(error);
+        this.error = error;
+        this.notificationService.success('There was a problem creating the tally. ');
+      }
+    });
+
+    this.createdTally$.subscribe((tally) => {
+      console.log('tally: ', tally);
+
+      if(tally && !this.isInit) {
+        this.notificationService.success('Tally created successfully');
+        this.close();
+      }
+    });
+
+    this.creatingTally$.subscribe((loading) => {
+      this.loading = loading;
+    });
   }
 
   buildForm() {
@@ -120,17 +156,12 @@ export class TallyAddComponent {
   }
 
   createTally() {
-    console.log('add tally');
 
     if(this.tallyAddForm.invalid) {
-      console.log('invalid form');
       this.tallyAddForm.markAllAsTouched();
       return;
     }
 
-    console.log('valid form');
-
-    console.log(this.registeredPipes);
     const tiersWithPipe: DtoTierWithPipe[] = [];
     this.registeredPipes.forEach(pipe => {
 
@@ -148,14 +179,11 @@ export class TallyAddComponent {
       }
     });
 
-    console.log(tiersWithPipe);
-
-
     const newTally: DtoTallyCreate = {
       tallyNumber: this.tallyAddForm.get('tallyNumber')?.value,
       shopLocationId: this.tallyAddForm.get('shopLocation')?.value,
       tallyType: this.tallyAddForm.get('tallyType')?.value,
-      dateOfCreation: this.tallyAddForm.get('dateOfCreation')?.value,
+      dateOfCreation: new Date(this.tallyAddForm.get('dateOfCreation')?.value).toISOString(),
       notes: this.tallyAddForm.get('notes')?.value,
       invoiceNumber: this.tallyAddForm.get('invoiceNumber')?.value,
       carrierName: this.tallyAddForm.get('carrierName')?.value,
@@ -165,9 +193,7 @@ export class TallyAddComponent {
       talliedByUserId: 'B3CFC44C-879B-43EF-B6F0-02FA0D232430', // Not used in backend, dummy data
     };
 
-
-    console.log(newTally);
-
+    this.isInit = false;
     this.store.dispatch(actionCreateTally({ tallyCreate: newTally }));
 
 
@@ -194,13 +220,34 @@ export class TallyAddComponent {
       this.registeredPipes.push(newPipe);
       this.dataSource.data = this.registeredPipes;
 
-      this.pipeAddForm.reset();
-      formDirective.resetForm();
+      // this.pipeAddForm.reset();
+      // formDirective.resetForm();
+
+
+      // this.formDirective.resetForm();
+      this.clearAfterPipeAdd();
       this.formDirective = formDirective;
     }
     else{
       this.pipeAddForm.markAllAsTouched();
     }
+  }
+
+  clearAfterPipeAdd() {
+    this.pipeAddForm.patchValue({
+      lengthInMeters: null,
+    });
+    // This is to reset the length in meters so it doesn't display as an error after adding a pipe
+    this.pipeAddForm.get('lengthInMeters')?.setValidators([]);
+    this.pipeAddForm.get('lengthInMeters')?.updateValueAndValidity();
+    this.pipeAddForm.get('lengthInMeters')?.setValidators([
+      Validators.required,
+    ]);
+
+
+    this.lengthInMetersInput.nativeElement.focus();
+
+    // this.
   }
 
   editPipe(pipe: DtoPipeCreate) {

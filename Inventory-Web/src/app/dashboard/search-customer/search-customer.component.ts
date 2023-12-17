@@ -17,10 +17,10 @@ import { AppState } from '../../store/core.state';
 })
 export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  displayedColumns: string[] = [ 
-    'name', 
-    'city', 
-    'provinceState', 
+  displayedColumns: string[] = [
+    'name',
+    'city',
+    'provinceState',
     'country',
     'email',
     'actions'
@@ -33,8 +33,8 @@ export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy
   customerForm!: FormGroup
 
   customersFullList: Customer[] = [];
-  searchParams: CustomerSearchParams | null = {    
-    customerId: null   
+  searchParams: CustomerSearchParams | null = {
+    customerId: null
   };
 
   private destroy$ = new Subject<void>();
@@ -45,45 +45,44 @@ export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy
 
   customersFullList$: Observable<Customer[] | null> = this.store.select(selectCustomersFullList);
 
- 
+
   constructor(
-    private store: Store<AppState>)
-  {  }
+    private store: Store<AppState>) { }
 
 
   ngOnInit(): void {
 
     this.buildForm();
-    this.loadingCustomers = true;   
+    this.loadingCustomers = true;
     this.store.dispatch(actionGetCustomers({searchParams: this.searchParams}));
-   
+
 
     this.customers$.pipe(takeUntil(this.destroy$)).subscribe((customers) => {
-      if (customers) {       
+      if (customers) {
         this.dataSource = new MatTableDataSource(customers as Customer[]);
         this.loadingCustomers = false;
-        
+
         if(customers.length > 0)
           this.store.dispatch(actionGetCustomerById({customerId: customers[0].customerId}));
-      } 
+      }
     });
 
     this.customersFullList$.pipe(takeUntil(this.destroy$)).subscribe((customers) => {
-      if (customers) {     
+      if (customers) {
         this.customersFullList = customers;
-      } 
+      }
     });
 
     this.loading$.subscribe((loading) => {
-      this.loadingCustomers = loading; 
+      this.loadingCustomers = loading;
     });
 
   }
 
   buildForm() {
 
-    this.customerForm = new FormGroup({ 
-      customer: new FormControl('', [])          
+    this.customerForm = new FormGroup({
+      customer: new FormControl('', [])
     });
   }
 
@@ -103,7 +102,7 @@ export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy
 
   filter()  {
     this.searchParams = {
-      customerId: this.customerForm.value.customer      
+      customerId: this.customerForm.value.customer
     };
     this.loadingCustomers = true;
     this.store.dispatch(actionGetCustomers({searchParams: this.searchParams}));
@@ -112,12 +111,12 @@ export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy
   clearForm() {
     this.customerForm.reset();
     this.searchParams = {
-      customerId: null      
+      customerId: null
     };
     this.store.dispatch(actionGetCustomers({searchParams: this.searchParams}));
-  }  
+  }
 
-  viewCustomer(customer: Customer) {    
+  viewCustomer(customer: Customer) {
     this.store.dispatch(actionGetCustomerById({customerId: customer.customerId}));
   }
 

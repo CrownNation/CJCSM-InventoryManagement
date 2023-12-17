@@ -24,12 +24,6 @@ $cjcsm-theme: mat.define-light-theme((
 ));
 
 
-
-
-
-// @include angular-material-theme($cjcsm-theme);
-// @include custom-components-theme($cjcsm-theme);
-
 @include mat.core-theme($cjcsm-theme);
 @include mat.all-component-themes($cjcsm-theme);
 
@@ -41,3 +35,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-transform: uppercase;
   margin: 0 0 20px 0;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+
+// Note: This is how to define the color of the snack bar. It apparently needs to be in the component's scss file as
+// the global one doesn't work.
+// ::ng-deep .mat-mdc-snack-bar-container.success-notification-overlay {
+//     --mdc-snackbar-container-color: blue;
+//     --mat-mdc-snack-bar-button-color: #fff;
+//     --mdc-snackbar-supporting-text-color: #fff;
+//   }
+
+

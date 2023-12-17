@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { actionGetRacks, actionGetRacksFullList } from '../../store/rack/rack.actions';
+import { actionGetRacks, actionGetRacksFullList, actionGetShopLocations } from '../../store/rack/rack.actions';
 import { AppState } from '../../store/core.state';
 import { Rack } from '../../models/rack.model';
 import { Observable } from 'rxjs';
@@ -15,8 +15,8 @@ import { actionGetPipeDefinitionsList } from '../../store/pipe/pipe.actions';
 })
 export class DashboardComponent implements OnInit {
 
-  racks$: Observable<Rack[]> = this.store.select(selectRacks2);
-  loadingRacks$: Observable<Boolean> = this.store.pipe(select(selectLoadingRacks));
+  // racks$: Observable<Rack[]> = this.store.select(selectRacks2);
+  // loadingRacks$: Observable<Boolean> = this.store.pipe(select(selectLoadingRacks));
 
   constructor(private store: Store<AppState>) { }
 
@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
     this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));
     this.store.dispatch(actionGetRacksFullList({ searchParams: null }));
     this.store.dispatch(actionGetPipeDefinitionsList({ searchParams: null }));
+    this.store.dispatch(actionGetShopLocations());
 
   }
 

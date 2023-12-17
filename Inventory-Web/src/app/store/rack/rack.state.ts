@@ -9,6 +9,7 @@ export interface RackState extends EntityState<any> {
     errorLoadingRacks: HttpErrorResponse | null;
 
     creatingRack: boolean,
+    createdRack: Rack | null,
     errorCreatingRack: HttpErrorResponse | null,
 
     selectedRack: RackWithPipe | null,

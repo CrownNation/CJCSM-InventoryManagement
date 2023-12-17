@@ -50,6 +50,20 @@ export const selectSelectedCustomerError = createSelector(
     (state: CustomerState) => state.errorLoadingSelectedCustomer
 );
 
+// Creating customer
+export const selectCreatingCustomer = createSelector(
+  selectCustomerFeature,
+  (state: CustomerState) => state.creatingCustomer
+);
+export const selectCreatedCustomer = createSelector(
+  selectCustomerFeature,
+  (state: CustomerState) => state.createdCustomer
+);
+export const selectCreatingCustomerError = createSelector(
+  selectCustomerFeature,
+  (state: CustomerState) => state.errorCreatingCustomer
+);
+
 
 // Full customer list
 export const selectCustomersFullList = createSelector(

@@ -117,15 +117,18 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+
   setDefaultDateCriteria() {
     if (this.searchParams) {
       const date = new Date();
+      date.setDate(date.getDate() + 1);
       const year = date.getFullYear();
       const month = date.getMonth() + 1; // getMonth() returns a 0-based month
       const day = date.getDate();
+      date.setDate(date.getDate() + 1);
 
       const formattedDateEnd = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-      this.searchParams.dateEnd = formattedDateEnd;
+      this.searchParams.dateEnd = new Date(formattedDateEnd).toISOString();
       this.tallyForm.controls['dateEnd'].setValue(formattedDateEnd);
 
       const dateStart = new Date();
@@ -136,8 +139,11 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
       const dayStart = dateStart.getDate();
 
       const formattedDateStart = `${yearStart}-${monthStart.toString().padStart(2, '0')}-${dayStart.toString().padStart(2, '0')}`;
-      this.searchParams.dateStart = formattedDateStart;
+      this.searchParams.dateStart = new Date(formattedDateStart).toISOString();
       this.tallyForm.controls['dateStart'].setValue(formattedDateStart);
+
+      console.log('init');
+      console.log(this.searchParams);
     }
   }
 
@@ -147,14 +153,24 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   filter()  {
+
+    const startDate = new Date(this.tallyForm.value.dateStart);
+    const endDate = new Date(this.tallyForm.value.dateEnd);
+
     this.searchParams = {
       tallyType: this.tallyForm.value.tallyType,
       tallyNumber: this.tallyForm.value.tallyNumber,
       customerId: this.tallyForm.value.customer,
-      dateStart: this.tallyForm.value.dateStart,
-      dateEnd: this.tallyForm.value.dateEnd
+      dateStart: startDate.getFullYear() > 1971 ? new Date(startDate).toISOString() : null,
+      dateEnd: endDate.getFullYear() > 1971 ? new Date(endDate).toISOString() : null
     };
     this.loadingTallies = true;
+
+    console.log(this.searchParams);
+
+
+
+
     this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
   }
 

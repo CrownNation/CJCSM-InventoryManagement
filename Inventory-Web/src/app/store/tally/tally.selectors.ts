@@ -11,10 +11,10 @@ const { selectEntities, selectAll } = tallyAdapter.getSelectors();
 export const selectTallyFeature2: MemoizedSelector<AppState, TallyState> =
   createFeatureSelector<TallyState>('tally');
 
-export const selectTallies2: MemoizedSelector<AppState, Tally[]> = 
+export const selectTallies2: MemoizedSelector<AppState, Tally[]> =
 createSelector(
     selectTallyFeature2,
-  ({ entities }: TallyState): Tally[] => 
+  ({ entities }: TallyState): Tally[] =>
     Object.values(entities) as Tally[]
 );
 
@@ -43,6 +43,20 @@ export const selectLoadingTallies = createSelector(
 export const selectErrorLoadingTallies = createSelector(
     selectTallyFeature,
     (state: TallyState) => state.errorLoadingTallies
+);
+
+// Creating customer
+export const selectCreatingTally = createSelector(
+  selectTallyFeature,
+  (state: TallyState) => state.creatingTally
+);
+export const selectCreatedTally = createSelector(
+  selectTallyFeature,
+  (state: TallyState) => state.createdTally
+);
+export const selectCreatingTallyError = createSelector(
+  selectTallyFeature,
+  (state: TallyState) => state.errorCreatingTally
 );
 
 // Selected Tally

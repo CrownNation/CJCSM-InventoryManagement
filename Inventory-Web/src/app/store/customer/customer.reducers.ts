@@ -26,6 +26,7 @@ loadingCustomers: false,
 errorLoadingCustomers: null,
 
 creatingCustomer: false,
+createdCustomer: null,
 errorCreatingCustomer: null,
 
 selectedCustomer: null,
@@ -63,18 +64,21 @@ const reducer: ActionReducer<CustomerState> = createReducer(
     on(actionCreateCustomer, (state: CustomerState, { customerCreate }) => ({
         ...state,
         creatingCustomer: true,
+        createdCustomer: null,
         errorCreatingCustomer: null
     })),
     on(actionCreateCustomerSuccess, (state: CustomerState, { customer }) => {
         return customerAdapater.addOne(customer, {
           ...state,
           creatingCustomer: false,
+          createdCustomer: customer,
           errorCreatingCustomer: null
         });
       }),
     on(actionCreateCustomerError, (state: CustomerState, { errorCreatingCustomer }) => ({
         ...state,
         creatingCustomer: false,
+        createdCustomer: null,
         errorCreatingCustomer
     })),
 
