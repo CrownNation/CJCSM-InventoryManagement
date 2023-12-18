@@ -27,9 +27,10 @@ export class RackViewComponent implements OnInit, OnDestroy {
   rack: RackWithPipe | null = null;
   columnsToDisplay : string[] = [
     'quantity',
-    'lengthFeet',
+    // 'lengthFeet',
     'lengthMeters',
-    'rack'
+    'rack',
+    'tier'
   ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement!: Pipe | null;

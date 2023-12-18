@@ -1,15 +1,12 @@
-
 mat-card {
     min-width: 500px;
     padding: 1rem;
     width: 100%;
 }
 
-
-
 mat-card-title {
     font-weight: 700;
-    font-size: 1.5rem;    
+    font-size: 1.5rem;
     width:100%;
 }
 
@@ -19,11 +16,15 @@ mat-card-title {
     align-items: center;
     width: 100%;
     font-weight: 700;
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
 }
-    
+
 mat-form-field {
     display: block;
+}
+
+span {
+  padding-bottom: 5px;
 }
 
 .container {
@@ -33,9 +34,21 @@ mat-form-field {
     width: 100%;
 }
 
+.container-description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.element-description {
+  padding: 5px;
+}
+
 .container-row {
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
     justify-content: space-between;
     width: 100%;
     padding-top: 20px;
@@ -62,7 +75,7 @@ mat-form-field {
 }
 
 h4 {
-    margin: 0.5rem 1rem 0.5rem 0; 
+    margin: 0.5rem 1rem 0.5rem 0;
 }
 
 .column-actions {
@@ -83,7 +96,7 @@ mat-expansion-panel {
     .container-filter {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;    
+        flex-wrap: wrap;
     }
 
     .item-buttons {
@@ -114,24 +127,24 @@ table {
 tr.example-detail-row {
     height: 0;
   }
-  
+
   tr.example-element-row:not(.example-expanded-row):hover {
     background: whitesmoke;
   }
-  
+
   tr.example-element-row:not(.example-expanded-row):active {
     background: #efefef;
   }
-  
+
   .example-element-row td {
     border-bottom-width: 0;
   }
-  
+
   .example-element-detail {
     overflow: hidden;
     display: flex;
   }
-  
+
   .example-element-diagram {
     min-width: 80px;
     border: 2px solid black;
@@ -140,21 +153,21 @@ tr.example-detail-row {
     margin: 8px 0;
     height: 104px;
   }
-  
+
   .example-element-symbol {
     font-weight: bold;
     font-size: 40px;
     line-height: normal;
   }
-  
+
   .example-element-description {
     padding: 16px;
 
-    span {
-        padding: 10px;
-    }
+    // span {
+    //     padding: 10px;
+    // }
   }
-  
+
   .example-element-description-attribution {
-    opacity: 0.5;    
+    opacity: 0.5;
   }

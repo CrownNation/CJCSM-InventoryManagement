@@ -44,6 +44,37 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-bottom: 15px;
 }
 
+.container-tab {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.section-search {
+  flex: 1 1 auto;
+  align-self: flex-start;
+  min-width: 1000px;
+}
+
+.section-view {
+  flex: 1 1 auto;
+  align-self: flex-start;
+}
+
+.container-description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.element-description {
+  padding: 5px;
+}
 
 // Note: This is how to define the color of the snack bar. It apparently needs to be in the component's scss file as
 // the global one doesn't work.

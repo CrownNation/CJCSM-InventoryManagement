@@ -27,9 +27,10 @@ export class CustomerViewComponent implements OnInit, OnDestroy {
   customer: Customer | null = null;
   columnsToDisplay : string[] = [
     'quantity',
-    'lengthFeet',
+    // 'lengthFeet',
     'lengthMeters',
-    'rack'
+    'rack',
+    'tier'
   ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement!: Pipe | null;

@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container-tab">
 
-    <mat-card class="section">
+    <mat-card class="section-search">
         <mat-accordion>
 
             <mat-expansion-panel expanded="true" class="filter-options">
@@ -50,7 +50,7 @@
 
                         <div class="item-buttons">
                             <button mat-raised-button (click)="clearForm()">Clear filters</button>
-                            <button mat-raised-button color="accent" (click)="filter()">Filter</button>
+                            <button mat-raised-button color="primary" (click)="filter()">Filter</button>
                         </div>
 
                     </div>
@@ -115,7 +115,7 @@
     </mat-card>
 
     <!-- <mat-card > -->
-        <app-tally-view class="section"></app-tally-view>
+        <app-tally-view class="section-view"></app-tally-view>
     <!-- </mat-card>    -->
 
 </div>

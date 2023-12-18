@@ -28,6 +28,7 @@ export class PipeViewComponent implements OnInit, OnDestroy {
 
     this.pipe$.pipe(takeUntil(this.destroy$)).subscribe((pipe) => {
       if (pipe) {
+        console.log(pipe);
         this.loading = false;
         this.pipe = pipe;
       }

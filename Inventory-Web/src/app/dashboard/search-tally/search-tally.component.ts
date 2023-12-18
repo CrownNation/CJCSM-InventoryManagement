@@ -141,9 +141,6 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
       const formattedDateStart = `${yearStart}-${monthStart.toString().padStart(2, '0')}-${dayStart.toString().padStart(2, '0')}`;
       this.searchParams.dateStart = new Date(formattedDateStart).toISOString();
       this.tallyForm.controls['dateStart'].setValue(formattedDateStart);
-
-      console.log('init');
-      console.log(this.searchParams);
     }
   }
 
@@ -165,12 +162,6 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
       dateEnd: endDate.getFullYear() > 1971 ? new Date(endDate).toISOString() : null
     };
     this.loadingTallies = true;
-
-    console.log(this.searchParams);
-
-
-
-
     this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
   }
 
@@ -200,7 +191,6 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   viewTally(tally: Tally) {
-    // this.router.navigate([`/rack/${rack.rackId}`]);
     this.store.dispatch(actionGetTallyById({tallyId: tally.tallyId}));
   }
 

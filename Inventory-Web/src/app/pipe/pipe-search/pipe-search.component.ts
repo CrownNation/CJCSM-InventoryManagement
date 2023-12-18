@@ -10,6 +10,8 @@ import { Pipe, PipeDefinition, PipeSearchParams } from '../../models/pipe.model'
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectLoadingPipe, selectPipe, selectPipeDefinitionsList } from '../../store/pipe/pipe.selectors';
 import { actionGetPipe, actionGetPipeById } from '../../store/pipe/pipe.actions';
+import { Rack } from '../../models/rack.model';
+import { selectRacks } from '../../store/rack/rack.selectors';
 
 @Component({
   selector: 'app-pipe-search',
@@ -18,14 +20,16 @@ import { actionGetPipe, actionGetPipeById } from '../../store/pipe/pipe.actions'
 })
 export class PipeSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  // Pipe Summary headings: Qty, Length in Meters, Rack #, Tier Number, Category
+  // Search criteria = Category, Rack, Condition
+
   displayedColumns: string[] = [
-    'category',
-    'condition',
-    'lengthInMeters',
-    'lengthInFeet',
     'quantity',
+    'lengthInMeters',
     'rack',
     'tier',
+    'category',
+    'condition',
     'actions'
   ];
   dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>
@@ -36,20 +40,24 @@ export class PipeSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   pipeForm!: FormGroup
 
   pipeDefinitionList: PipeDefinition[] = [];
+  racks: Rack[] = [];
   searchParams: PipeSearchParams | null = {
     pipeId: null,
     pipeDefinitionId: null,
     lengthInMeters: null,
-    lengthInFeet: null
+    lengthInFeet: null,
+    categoryId: null,
+    conditionId: null,
+    rackId: null
   };
 
   private destroy$ = new Subject<void>();
-
   pipe$: Observable<Pipe[]> = this.store.select(selectPipe);
   loadingPipe: Boolean = false;
   loading$: Observable<Boolean> = this.store.select((selectLoadingPipe));
 
   pipeDefinitionsList$: Observable<PipeDefinition[] | null> = this.store.select(selectPipeDefinitionsList);
+  racks$: Observable<Rack[]> = this.store.select(selectRacks);
 
 
   constructor(
@@ -76,6 +84,7 @@ export class PipeSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.pipeDefinitionsList$.pipe(takeUntil(this.destroy$)).subscribe((pipDefinitions) => {
       if (pipDefinitions) {
+        console.log(pipDefinitions);
         this.pipeDefinitionList = pipDefinitions;
       }
     });
@@ -84,14 +93,20 @@ export class PipeSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadingPipe = loading;
     });
 
+    this.racks$.pipe(takeUntil(this.destroy$)).subscribe((racks) => {
+      if (racks) {
+        this.racks = racks;
+      }
+    });
+
   }
 
   buildForm() {
 
     this.pipeForm = new FormGroup({
-      pipeType: new FormControl('', []),
-      lengthInMeters: new FormControl('', []),
-      lengthInFeet: new FormControl('', [])
+      category: new FormControl('', []),
+      condition: new FormControl('', []),
+      rack: new FormControl('', [])
     });
   }
 
@@ -113,8 +128,12 @@ export class PipeSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchParams = {
       pipeId: null,
       pipeDefinitionId: this.pipeForm.value.pipeType,
-      lengthInMeters: this.pipeForm.value.lengthInMeters,
-      lengthInFeet: this.pipeForm.value.lengthInFeet
+      lengthInMeters: null,
+      lengthInFeet: null,
+      categoryId: this.pipeForm.value.category,
+      conditionId: this.pipeForm.value.condition,
+      rackId: this.pipeForm.value.rack
+
     };
     this.loadingPipe = true;
     this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));
@@ -126,7 +145,10 @@ export class PipeSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       pipeId: null,
       pipeDefinitionId: null,
       lengthInMeters: null,
-      lengthInFeet: null
+      lengthInFeet: null,
+      categoryId: null,
+      conditionId: null,
+      rackId: null
     };
 
     this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));

@@ -25,11 +25,12 @@ export class TallyViewComponent implements OnInit, OnDestroy {
 
   tallyForm!: FormGroup
   tally: Tally | null = null;
-  columnsToDisplay : string[] = [ 
-    'quantity', 
-    'lengthFeet', 
-    'lengthMeters', 
-    'rack'
+  columnsToDisplay : string[] = [
+    'quantity',
+    // 'lengthFeet',
+    'lengthMeters',
+    'rack',
+    'tier'
   ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement!: Pipe | null;
@@ -45,15 +46,12 @@ export class TallyViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.tally$.pipe(takeUntil(this.destroy$)).subscribe((tally) => {
-      if (tally) {       
-        
-        // console.log('tally', tally);
-
+      if (tally) {
         this.loading = false;
         this.tally = tally;
         this.dataSource = new MatTableDataSource(tally.pipeList as Pipe[]);
-      } 
-    });    
+      }
+    });
 
     this.buildForm();
   }
@@ -62,11 +60,11 @@ export class TallyViewComponent implements OnInit, OnDestroy {
   buildForm() {
 
     this.tallyForm = new FormGroup({
-      tallyType: new FormControl('', []),      
+      tallyType: new FormControl('', []),
       tallyNumber: new FormControl('', []),
       customer: new FormControl('', []),
       dateStart: new FormControl('', []),
-      dateEnd: new FormControl('', [])           
+      dateEnd: new FormControl('', [])
     });
   }
 
@@ -77,8 +75,8 @@ export class TallyViewComponent implements OnInit, OnDestroy {
     else if(tallyType === TallyTypes.TallyOut) {
       return 'Out'
     }
-    
-    return ''    
+
+    return ''
   }
 
   ngOnDestroy() {

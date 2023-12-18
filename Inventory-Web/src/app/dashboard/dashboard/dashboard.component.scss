@@ -1,26 +1,33 @@
-.section {
-    margin: 1rem;
-    padding: 1rem;
-    width: 100%;    
-}
-
 .container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 1rem;
-    
+    // padding: 1rem;
+    margin: 1rem;
+    // border: 1px solid black;
+}
+
+.section {
+    // margin: 1rem;
+    // padding: 1rem;
+    width: 100%;
+    // border: 1px solid red;
 }
 
 .item-rack-list {
-    flex: 1 1 auto;
+    // flex: 1 1 auto;
+    border: 1px solid green;
 }
 
-.item-pipe-search {
-    flex: 1 1 auto;    
-}
+// .item-rack-list {
+//     flex: 1 1 auto;
+// }
 
-button {
-    margin: 1rem;
-}
+// .item-pipe-search {
+//     flex: 1 1 auto;
+// }
+
+// button {
+//     margin: 1rem;
+// }
 

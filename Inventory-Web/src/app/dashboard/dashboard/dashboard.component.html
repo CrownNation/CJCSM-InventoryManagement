@@ -3,9 +3,17 @@
 </div>
 
 <div class="container">
-        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" >
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="section">
 
             <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon>plumbing</mat-icon>
+                    Search by Pipe
+                </ng-template>
+                <app-pipe-search></app-pipe-search>
+            </mat-tab>
+
+            <mat-tab >
                 <ng-template mat-tab-label>
                   <mat-icon>assignment</mat-icon>
                   Search by Tally
@@ -29,13 +37,7 @@
                 <app-search-customer></app-search-customer>
             </mat-tab>
 
-            <mat-tab>
-                <ng-template mat-tab-label>
-                    <mat-icon>plumbing</mat-icon>
-                    Search by Pipe
-                </ng-template>
-                <app-pipe-search></app-pipe-search>
-            </mat-tab>
+
 
         </mat-tab-group>
 </div>

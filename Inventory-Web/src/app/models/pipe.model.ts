@@ -83,6 +83,9 @@ export interface PipeSearchParams {
     pipeDefinitionId: string | null;
     lengthInMeters: number | null;
     lengthInFeet: number | null;
+    categoryId: string | null;
+    conditionId: string | null;
+    rackId: string | null;
 }
 
 export interface PipeDefinitionSearchParams {

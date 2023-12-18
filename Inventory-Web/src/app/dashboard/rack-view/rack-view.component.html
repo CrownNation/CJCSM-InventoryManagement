@@ -19,7 +19,10 @@
                 </div>
 
                 <div class="data-column-right">
-                    <span>{{rack.jointsPerTier}} </span>
+                    <div>
+                        <b>Jts/Tier: </b>
+                        <span>{{rack.jointsPerTier}} </span>
+                    </div>
                 </div>
             </div>
 
@@ -33,10 +36,10 @@
                     <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="lengthFeet">
+                <!-- <ng-container matColumnDef="lengthFeet">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Feet</th>
                     <td mat-cell *matCellDef="let row"> {{row.lengthInFeet}} </td>
-                </ng-container>
+                </ng-container> -->
 
                 <ng-container matColumnDef="lengthMeters">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Meters</th>
@@ -48,9 +51,14 @@
                     <td mat-cell *matCellDef="let row"> {{row.rackName}} </td>
                 </ng-container>
 
+                <ng-container matColumnDef="tier">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tier</th>
+                    <td mat-cell *matCellDef="let row"> {{row.tierNumber}} </td>
+                </ng-container>
+
                 <ng-container matColumnDef="expand">
                     <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-                    <td mat-cell *matCellDef="let element">
+                    <td mat-cell *matCellDef="let element" class="column-actions">
                     <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
                         <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
                         <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
@@ -64,7 +72,63 @@
                     <div class="example-element-detail"
                         [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
 
-                        <div class="example-element-description">
+                        <div class="container-description">
+                            <div>
+                                <div class="element-description">
+                                    <b>Category: </b>
+                                    <span>{{element.pipeDefinition.category.name}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Condition: </b>
+                                    <span>{{element.pipeDefinition.condition.name}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Grade: </b>
+                                    <span>{{element.pipeDefinition.grade.name}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Range: </b>
+                                    <span>{{element.pipeDefinition.range.name}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Thread: </b>
+                                    <span>{{element.pipeDefinition.thread.name}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Weight (kg/m): </b>
+                                    <span>{{element.pipeDefinition.weight.weightInKgPerMeter}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Weight (lbs/ft): </b>
+                                    <span>{{element.pipeDefinition.weight.weightInLbsPerFoot}}</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="element-description">
+                                    <b>Length (ft): </b>
+                                    <span>{{element.lengthInFeet}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Size (m): </b>
+                                    <span>{{element.pipeDefinition.size.sizeMetric}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Size (ft): </b>
+                                    <span>{{element.pipeDefinition.size.sizeMetric}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Wall (m): </b>
+                                    <span>{{element.pipeDefinition.wall.wallMetric}}</span>
+                                </div>
+                                <div class="element-description">
+                                    <b>Wall (ft): </b>
+                                    <span>{{element.pipeDefinition.wall.wallMetric}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="example-element-description">
                             <p>{{element.pipeDefinition.category.name}}</p>
                             <p>{{element.pipeDefinition.condition.name}}</p>
                             <p>{{element.pipeDefinition.grade.name}}</p>
@@ -76,8 +140,7 @@
                             <p>{{element.pipeDefinition.wall.wallMetric}}m</p>
                             <p>{{element.pipeDefinition.weight.weightInLbsPerFoot}}lbs/ft</p>
                             <p>{{element.pipeDefinition.weight.weightInKgPerMeter}}kg/m</p>
-
-                        </div>
+                        </div> -->
                     </div>
                     </td>
                 </ng-container>
