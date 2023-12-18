@@ -90,6 +90,7 @@ namespace Inventory_BLL.Interfaces
                                     CustomerId = pipe.CustomerId,
                                     PipeDefinitionId = pipe.PipeDefinitionId,
                                     TierId = pipe.TierId,
+                                    TierNumber = t.Number,
                                     LengthInMeters = pipe.LengthInMeters,
                                     LengthInFeet = pipe.LengthInFeet,
                                     Quantity = pipe.Quantity,
