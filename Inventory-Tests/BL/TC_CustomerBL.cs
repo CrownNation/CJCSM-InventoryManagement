@@ -1,17 +1,11 @@
 ﻿using Inventory_DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using AutoMapper;
 using Xunit;
 using Inventory_BLL.BL;
 using System.Reflection;
-using Inventory_Models.ViewModels;
-using System.ComponentModel.DataAnnotations;
+using Inventory_Dto.Dto;
 
 namespace Inventory_Tests.BL
 {
@@ -36,7 +30,7 @@ namespace Inventory_Tests.BL
          var optionsBuilder = new DbContextOptionsBuilder<InventoryContext>();
          optionsBuilder.UseInMemoryDatabase(databaseName: "CustomerBL");
 
-         _context = new InventoryContext(optionsBuilder.Options);
+         //_context = new InventoryContext(optionsBuilder.Options);
          _mapper = (new MapperConfiguration(cfg => cfg.AddMaps(Assembly.Load("Inventory-BLL")))).CreateMapper();
          _customerBl = new CustomerBL(_context, _mapper);
 
@@ -47,8 +41,8 @@ namespace Inventory_Tests.BL
          _sampleGuids.Add(new Guid("147130ff-a98d-4340-a222-fdcb3af53dff"));
          _sampleGuids.Add(new Guid("bf85cd69-a46b-4b7c-9100-27a8cb172746"));
 
-         _context.Database.EnsureDeleted();
-         _context.Database.EnsureCreated();
+         //_context.Database.EnsureDeleted();
+         //_context.Database.EnsureCreated();
       }
 
       #region Helpers
@@ -64,7 +58,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY",
+            ProvinceState = "NY",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
          });
@@ -77,7 +71,7 @@ namespace Inventory_Tests.BL
             City = "Calgary ",
             Email = "test@test.com",
             PostalCode = "2B2B2B",
-            Province = "AB",
+            ProvinceState = "AB",
             IsActive = false,
             DateOfCreation = DateTimeOffset.MaxValue
          });
@@ -90,7 +84,7 @@ namespace Inventory_Tests.BL
             City = "Red Deer",
             Email = "cjcsm@test.com",
             PostalCode = "3C3C3C",
-            Province = "AB",
+            ProvinceState = "AB",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
          });
@@ -102,10 +96,10 @@ namespace Inventory_Tests.BL
       #region GetCustomers
 
       [Fact]
-      public void GetCustomers_Valid()
+      public async Task GetCustomers_Valid()
       {
          SetupDatabase_Get();
-         IQueryable<CustomerDto>? customerQuery = _customerBl.GetCustomers();
+         IQueryable<DtoCustomer>? customerQuery = await _customerBl.GetCustomers();
 
          Assert.NotNull(customerQuery);
          Assert.Equal(3, customerQuery.ToList().Count);
@@ -118,24 +112,24 @@ namespace Inventory_Tests.BL
       #region GetCustomerById
 
       [Fact]
-      public void GetCustomerById_Valid()
+      public async Task GetCustomerById_Valid()
       {
          SetupDatabase_Get();
          Customer? dbCustomer = _context.Customer.FirstOrDefault(x => x.CustomerId == _sampleGuids[2]);
-         IQueryable<CustomerDto>? customerQuery = _customerBl.GetCustomerById(_sampleGuids[2]);
+         IQueryable<DtoCustomer>? customerQuery = await _customerBl.GetCustomerById(_sampleGuids[2]);
 
          Assert.NotNull(dbCustomer);
          Assert.NotNull(customerQuery);
          Assert.Single(customerQuery);
 
-         CustomerDto customer = customerQuery.ToList()[0];
+         DtoCustomer customer = customerQuery.ToList()[0];
 
          Assert.True(dbCustomer.CustomerId == customer.CustomerId);
          Assert.True(dbCustomer.Name == customer.Name);         
          Assert.True(dbCustomer.Address1 == customer.Address1);
          Assert.True(dbCustomer.Address2 == customer.Address2);
          Assert.True(dbCustomer.City == customer.City);
-         Assert.True(dbCustomer.Province == customer.Province);
+         Assert.True(dbCustomer.ProvinceState == customer.ProvinceState);
          Assert.True(dbCustomer.PostalCode == customer.PostalCode);
          Assert.True(dbCustomer.Email == customer.Email);
          Assert.True(dbCustomer.IsActive == customer.IsActive);
@@ -144,10 +138,10 @@ namespace Inventory_Tests.BL
       }
 
       [Fact]
-      public void GetCustomerById_Exc_NotFound()
+      public async Task GetCustomerById_Exc_NotFound()
       {
          SetupDatabase_Get();
-         Assert.Throws<KeyNotFoundException>(() => _customerBl.GetCustomerById(_sampleGuids[3]));
+         await Assert.ThrowsAsync<KeyNotFoundException>(() => _customerBl.GetCustomerById(_sampleGuids[3]));
       }
 
 
@@ -157,7 +151,7 @@ namespace Inventory_Tests.BL
       [Fact]
       public void CreateCustomer_Valid()
       {
-         CustomerCreateDto newCustomer = new CustomerCreateDto
+         DtoCustomerCreate newCustomer = new DtoCustomerCreate
          {
             Name = "Ghostbusters",
             Address1 = "123 Street",
@@ -165,9 +159,9 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY"
+            ProvinceState = "NY"
          };
-         CustomerDto createdCustomer = _customerBl.CreateCustomer(newCustomer).Result;
+         DtoCustomer createdCustomer = _customerBl.CreateCustomer(newCustomer).Result;
 
          Customer? customer = _context.Customer.Find(createdCustomer.CustomerId);
 
@@ -179,7 +173,7 @@ namespace Inventory_Tests.BL
          Assert.True(customer.City == createdCustomer.City);
          Assert.True(customer.Email == createdCustomer.Email);
          Assert.True(customer.PostalCode == createdCustomer.PostalCode);
-         Assert.True(customer.Province == createdCustomer.Province);
+         Assert.True(customer.ProvinceState == createdCustomer.ProvinceState);
 
          // Verify logic
          Assert.NotEqual(customer.CustomerId, Guid.Empty);
@@ -192,7 +186,7 @@ namespace Inventory_Tests.BL
       [Fact]
       public async void CreateCustomer_Exc_EmptyName()
       {
-         CustomerCreateDto newCustomer = new CustomerCreateDto
+         DtoCustomerCreate newCustomer = new DtoCustomerCreate
          {
             Name = "",
             Address1 = "123 Street",
@@ -200,7 +194,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY"
+            ProvinceState = "NY"
          };
          await Assert.ThrowsAsync<ArgumentNullException>(() => _customerBl.CreateCustomer(newCustomer));
       }
@@ -227,7 +221,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY",
+            ProvinceState = "NY",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
          };
@@ -252,7 +246,7 @@ namespace Inventory_Tests.BL
             City = "New York",
             Email = "gb@ghostbusters.com",
             PostalCode = "1A1A1A",
-            Province = "NY",
+            ProvinceState = "NY",
             IsActive = true,
             DateOfCreation = DateTimeOffset.MaxValue
          };

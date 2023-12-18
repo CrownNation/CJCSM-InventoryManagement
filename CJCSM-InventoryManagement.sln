@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-API", "Inventory-API\Inventory-API.csproj", "{1BC6C006-A515-4208-BBC1-42FEA00B94C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory-API", "Inventory-API\Inventory-API.csproj", "{1BC6C006-A515-4208-BBC1-42FEA00B94C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-DAL", "Inventory-DAL\Inventory-DAL.csproj", "{D3A83977-F8D9-4DDC-ADC5-8214256B5CFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory-DAL", "Inventory-DAL\Inventory-DAL.csproj", "{D3A83977-F8D9-4DDC-ADC5-8214256B5CFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-BLL", "Inventory-BLL\Inventory-BLL.csproj", "{B237D42B-CD64-4C8F-928D-86482DC103B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory-BLL", "Inventory-BLL\Inventory-BLL.csproj", "{B237D42B-CD64-4C8F-928D-86482DC103B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-Models", "Inventory-Models\Inventory-Models.csproj", "{2C67B097-E6FB-4CDE-B47A-3AD7D9CF6E7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory-Models", "Inventory-Models\Inventory-Models.csproj", "{2C67B097-E6FB-4CDE-B47A-3AD7D9CF6E7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory-Tests", "Inventory-Tests\Inventory-Tests.csproj", "{C7EE5FE4-ACAE-41F2-A8E3-75B09DD8861A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inventory-Tests", "Inventory-Tests\Inventory-Tests.csproj", "{C7EE5FE4-ACAE-41F2-A8E3-75B09DD8861A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CJCSM-Common", "CJCSM-Common\CJCSM-Common.csproj", "{81F43110-9850-4881-8989-40B7460B0652}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{C7EE5FE4-ACAE-41F2-A8E3-75B09DD8861A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7EE5FE4-ACAE-41F2-A8E3-75B09DD8861A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7EE5FE4-ACAE-41F2-A8E3-75B09DD8861A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81F43110-9850-4881-8989-40B7460B0652}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81F43110-9850-4881-8989-40B7460B0652}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81F43110-9850-4881-8989-40B7460B0652}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81F43110-9850-4881-8989-40B7460B0652}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

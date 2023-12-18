@@ -1,0 +1,6 @@
+
+
+<app-rack-list 
+    *ngIf="!(loadingRacks$ | async)" 
+    [racks]="racks$ | async">
+</app-rack-list>

@@ -1,134 +1,282 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_Dto.Dto;
-using Inventory_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Query.Validator;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Inventory_API.Controllers
 {
-   [ApiController]
-   [Route("[controller]")]
-   public class RackController : ODataController
-   {
+    [ApiController]
+    [Route("[controller]")]
+    public class RackController : ODataController
+    {
 
-      private readonly ILogger<RackController> _logger;
-      private readonly IRackBL _rackBl;
-      
-      public RackController(ILogger<RackController> logger, IRackBL rackBl)
-      {
-         _logger = logger;
-         _rackBl = rackBl;
-      }
+        private readonly ILogger<RackController> _logger;
+        private readonly IRackBL _rackBl;
 
-      [HttpGet]
-      public IActionResult Get(ODataQueryOptions<RackDto> options)
-      {
+        public RackController(ILogger<RackController> logger, IRackBL rackBl)
+        {
+            _logger = logger;
+        _rackBl = rackBl;
+        }
 
-         try
-         {
-            IQueryable<RackDto>? racks = _rackBl.GetRacks();
-            return Ok(options.ApplyTo(racks));
-         }
-         catch(Exception e)
-         {
-            _logger.LogError($"GetRacks: " + e.Message);
-            throw new Exception("There was a problem querying for Rrcks.");
-         }
-      }
+        [HttpGet]
+        public async Task<IActionResult> Get(ODataQueryOptions<DtoRack> options)
+        {
+            try
+            {
+                IQueryable<DtoRack>? racks = await _rackBl.GetRackList();
+                return Ok(options.ApplyTo(racks));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetRacks: " + e.Message);
+                throw new Exception("There was a problem querying for Racks.");
+            }
+        }
 
-      [HttpGet("{key}")]
-      public IActionResult Get(Guid key, ODataQueryOptions<RackDto> options)
-      {
-         try
-         {
-            IQueryable<RackDto>? rack = _rackBl.GetRackById(key);
-            return Ok(options.ApplyTo(rack));
-         }
-         catch (KeyNotFoundException e)
-         {
-            return NotFound();
-         }
-         catch (Exception e)
-         {
-            _logger.LogError($"GetRackById: " + e.Message);
-            throw new Exception($"There was a problem querying for the rack with id {key}.");
-         }
-      }
+        [HttpGet("{key}")]
+        public IActionResult Get(Guid key, ODataQueryOptions<DtoRack> options)
+        {
+            try
+            {
+                IQueryable<DtoRack?> rack = _rackBl.GetRackById(key);
 
-      [HttpPost]
-      public async Task<IActionResult> Post([FromBody] RackCreateDto rack)
-      {
-         if (!ModelState.IsValid)
-         {
-            return BadRequest(ModelState);
-         }
+                // Apply the OData options and return
+                // Returning a 200 OK response, where the content of the response is the result of options.ApplyTo(queryableRack).
+                // The options.ApplyTo() method is from the OData library and it applies the specified OData query
+                // options (like filtering, sorting, etc.) to the provided IQueryable source.
+                return Ok(options.ApplyTo(rack));
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetRackById: " + e.Message);
+                throw new Exception($"There was a problem querying for the rack with id {key}.");
+            }
+        }
 
-         RackDto rackDto;
-         try
-         {
-            rackDto = await _rackBl.CreateRack(rack);
-         }
-         catch (Exception e)
-         {
-            _logger.LogError($"CreateRack: " + e.Message);
-            throw new Exception($"There was a problem creating rack.");
-         }
+        [HttpGet("WithPipe")]
+        public IActionResult GetRackListWithPipeAndCustomer(ODataQueryOptions<DtoRack_WithPipe> options)
+        {
+            try
+            {
+                if (_rackBl == null)
+                {
+                    return NotFound();
+                }
 
-         // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
-         //return CreatedAtAction(nameof(GetRackById), new { key = rackDto.RackId, odataPath = $"Rack/{rackDto.RackId}" }, rackDto);
-         return CreatedAtAction("Get", new { key = rackDto.RackId }, rackDto);
-      }
+                IQueryable<DtoRack_WithPipe>? rackQuery = _rackBl.GetRackListWithPipeAndCustomer();
 
-      [HttpPut("{key}")]
-      public IActionResult Put(Guid key, [FromBody] RackUpdateDto rack)
-      {
-         if (!ModelState.IsValid)
-         {
-            return BadRequest(ModelState);
-         }
+                if (rackQuery == null)
+                {
+                    return NotFound();
+                }
 
-         try
-         {
-            _rackBl.UpdateRack(rack, key);
-         }
-         catch (KeyNotFoundException e)
-         {
-            return NotFound();
-         }
-         catch (Exception e)
-         {
-            _logger.LogError($"UpdateRack: " + e.Message);
-            throw new Exception($"There was a problem updating the rack with id {key}");
-         }
-
-         return NoContent();
-      }
+                // Apply the OData options and return
+                // Returning a 200 OK response, where the content of the response is the result of options.ApplyTo(queryableRack).
+                // The options.ApplyTo() method is from the OData library and it applies the specified OData query
+                // options (like filtering, sorting, etc.) to the provided IQueryable source.
+                return Ok(options.ApplyTo(rackQuery));
 
 
-      [HttpDelete("{key}")]
-      public IActionResult Delete(Guid key)
-      {
-         try
-         {
-            _rackBl.DeleteRack(key);
-         }
-         catch (KeyNotFoundException e)
-         {
-            return NotFound();
-         }
-         catch (Exception e)
-         {
-            _logger.LogError($"DeleteRack: " + e.Message);
-            throw new Exception($"There was a problem deleting the rack with id {key}");
-         }
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetRackListWithPipeAndCustomer: " + e.Message);
+                throw new Exception($"There was a problem querying for the rack with pipe.");
+            }
+        }
 
-         return NoContent();
-      }
+        [HttpGet("{key}/WithPipe")]
+        public IActionResult GetRackWithPipeById(Guid key, ODataQueryOptions<DtoRack_WithPipe> options)
+        {
+            try
+            {
+                if (_rackBl == null)
+                {
+                    return NotFound();
+                }
+
+                IQueryable<DtoRack_WithPipe>? rackQuery =  _rackBl.GetRackListWithPipeAndCustomerByRackId(key);
 
 
-   }
+                if (rackQuery == null)
+                {
+                    return NotFound();
+                }
+
+
+                return Ok(options.ApplyTo(rackQuery));
+
+
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetRackListWithPipeAndCustomer: " + e.Message);
+                throw new Exception($"There was a problem querying for the rack with pipe.");
+            }
+        }
+
+        [HttpGet("WithTier")]
+        public async Task<IActionResult> GetRackListWithTiers(ODataQueryOptions<DtoRack_WithTier> options)
+        {
+            try
+            {
+                if (_rackBl == null)
+                {
+                    return NotFound();
+                }
+
+                IQueryable<DtoRack_WithTier>? rackList = await _rackBl.GetRackListWithTiers();
+
+                if (rackList == null)
+                {
+                    return NotFound();
+                }
+
+                // Step 2: Convert that list into an IQueryable
+                var queryableRack = rackList.AsQueryable();
+
+                // Step 3: Apply the OData options and return
+                // Returning a 200 OK response, where the content of the response is the result of options.ApplyTo(queryableRack).
+                // The options.ApplyTo() method is from the OData library and it applies the specified OData query
+                // options (like filtering, sorting, etc.) to the provided IQueryable source.
+                return Ok(options.ApplyTo(queryableRack));
+
+
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetRackListWithTiers: " + e.Message);
+                throw new Exception($"There was a problem querying for the rack wtih Tier.");
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] DtoRackCreate rack)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            DtoRack DtoRack;
+            try
+            {
+                DtoRack = await _rackBl.CreateRack(rack);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"CreateRack: " + e.Message);
+                throw new Exception($"There was a problem creating rack.");
+            }
+
+            return CreatedAtAction("Get", new { key = DtoRack.RackId }, DtoRack);
+        }
+        
+
+        [HttpPut("{key}")]
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoRackUpdate dtoRack)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _rackBl.UpdateRack(dtoRack, key); // Call the asynchronous business logic method
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"UpdateRack: " + e.Message);
+                throw new Exception($"There was a problem updating the rack with id {key}");
+            }
+
+            return NoContent();
+        }
+
+
+        [HttpDelete("{key}")]
+        public IActionResult Delete(Guid key)
+        {
+            try
+            {
+                _rackBl.DeleteRack(key);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"DeleteRack: " + e.Message);
+                throw new Exception($"There was a problem deleting the rack with id {key}");
+            }
+
+            return NoContent();
+        }
+
+        [HttpGet("dummy/{key}")]
+        public IActionResult GetDummy(ODataQueryOptions<DtoRack> options)
+        {
+            DtoRack rack = new DtoRack();
+            rack.RackId = Guid.NewGuid();
+            rack.Name = "RackTest01";
+
+            return Ok(rack);
+        }
+
+
+        [HttpGet("dummy")]
+        public IActionResult GetDummies(ODataQueryOptions<List<DtoRack>> options)
+        {
+            DtoRack rack1 = new DtoRack();
+            rack1.RackId = new Guid("2fcad579-f74b-4904-b50e-42735a02b2a1");
+            rack1.Name = "RackTest01";
+            rack1.ShopLocationId = Guid.NewGuid();
+
+            DtoRack rack2 = new DtoRack();
+            rack2.RackId = new Guid("69000f48-ce88-4bd0-af30-fde2cacf41eb");
+            rack2.Name = "RackTest02";
+            rack2.ShopLocationId = Guid.NewGuid();
+
+            DtoRack rack3 = new DtoRack();
+            rack3.RackId = new Guid("eb9160a6-3c03-426f-867f-82888051a564");
+            rack3.Name = "RackTest03";
+            rack3.ShopLocationId = Guid.NewGuid();
+
+            List<DtoRack> racks = new List<DtoRack>();
+            racks.Add(rack1);
+            racks.Add(rack2);
+            racks.Add(rack3);
+
+            return Ok(racks);
+        }
+
+
+
+    }
 }

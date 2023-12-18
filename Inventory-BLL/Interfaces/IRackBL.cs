@@ -1,16 +1,19 @@
-﻿using Inventory_DAL.Entities;
-using Inventory_Dto.Dto;
-using Inventory_Models.ViewModels;
-using Microsoft.AspNetCore.OData.Query;
+﻿using Inventory_Dto.Dto;
 
 namespace Inventory_BLL.Interfaces
 {
-   public interface IRackBL
-   {
-      public IQueryable<RackDto> GetRacks();
-      public IQueryable<RackDto>? GetRackById(Guid guid);
-      public Task<RackDto> CreateRack(RackCreateDto rack);
-      public void UpdateRack(RackUpdateDto rack, Guid guid);
-      public void DeleteRack(Guid guid);
-   }
+    public interface IRackBL
+    {
+        public Task<IQueryable<DtoRack>> GetRackList();
+        public IQueryable<DtoRack?> GetRackById(Guid guid);
+        public IQueryable<DtoRack_WithPipe> GetRackListWithPipeAndCustomerByRackId(Guid rackId);
+
+        public IQueryable<DtoRack_WithPipe> GetRackListWithPipeAndCustomer();
+
+        public Task<IQueryable<DtoRack_WithTier>> GetRackListWithTiers();
+
+        public Task<DtoRack> CreateRack(DtoRackCreate rack);
+        public Task UpdateRack(DtoRackUpdate dtoRack, Guid guid);
+        public void DeleteRack(Guid guid);
+    }
 }

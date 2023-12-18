@@ -1,12 +1,8 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_Dto.Dto;
-using Inventory_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Inventory_API.Controllers
 {
@@ -25,12 +21,12 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet]
-      public IActionResult Get(ODataQueryOptions<PipeDefinitionDto> options)
+      public IActionResult Get(ODataQueryOptions<DtoPipeDefinition> options)
       {
 
          try
          {
-            IQueryable<PipeDefinitionDto>? pipeDefinitions = _pipeDefinitionBl.GetPipeDefintions();
+            IQueryable<DtoPipeDefinition>? pipeDefinitions = _pipeDefinitionBl.GetPipeDefinitions();
             return Ok(options.ApplyTo(pipeDefinitions));
          }
          catch(Exception e)
@@ -41,14 +37,14 @@ namespace Inventory_API.Controllers
       }
 
       [HttpGet("{key}")]
-      public IActionResult Get(Guid key, ODataQueryOptions<PipeDefinitionDto> options)
+      public IActionResult Get(Guid key, ODataQueryOptions<DtoPipeDefinition> options)
       {
          try
          {
-            IQueryable<PipeDefinitionDto>? pipeDefinition = _pipeDefinitionBl.GetPipeDefinitionById(key);
+            IQueryable<DtoPipeDefinition>? pipeDefinition = _pipeDefinitionBl.GetPipeDefinitionById(key);
             return Ok(options.ApplyTo(pipeDefinition));
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }
@@ -60,17 +56,17 @@ namespace Inventory_API.Controllers
       }
 
       [HttpPost]
-      public async Task<IActionResult> Post([FromBody] PipeDefinitionCreateDto pipeDefinition)
+      public async Task<IActionResult> Post([FromBody] DtoPipeDefinitionCreate pipeDefinition)
       {
          if (!ModelState.IsValid)
          {
             return BadRequest(ModelState);
          }
 
-            PipeDefinitionDto pipeDefinitionDto;
+            DtoPipeDefinition DtoPipeDefinition;
          try
          {
-                pipeDefinitionDto = await _pipeDefinitionBl.CreatePipeDefinition(pipeDefinition);
+                DtoPipeDefinition = await _pipeDefinitionBl.CreatePipeDefinition(pipeDefinition);
          }
          catch (Exception e)
          {
@@ -80,11 +76,11 @@ namespace Inventory_API.Controllers
 
          // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
          //return CreatedAtAction(nameof(GetCustomerById), new { key = customerDto.CustomerId, odataPath = $"Customer/{customerDto.CustomerId}" }, customerDto);
-         return CreatedAtAction("Get", new { key = pipeDefinitionDto.PipeDefinitionId }, pipeDefinitionDto);
+         return CreatedAtAction("Get", new { key = DtoPipeDefinition.PipeDefinitionId }, DtoPipeDefinition);
       }
 
       [HttpPut("{key}")]
-      public IActionResult Put(Guid key, [FromBody] PipeDefinitionUpdateDto pipeDefinition)
+      public IActionResult Put(Guid key, [FromBody] DtoPipeDefinitionUpdate pipeDefinition)
       {
          if (!ModelState.IsValid)
          {
@@ -95,7 +91,7 @@ namespace Inventory_API.Controllers
          {
                 _pipeDefinitionBl.UpdatePipeDefinition(pipeDefinition, key);
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }
@@ -114,9 +110,9 @@ namespace Inventory_API.Controllers
       {
          try
          {
-                _pipeDefinitionBl.DeletePipeDefinition(key);
+                _pipeDefinitionBl.DisablePipeDefinition(key);
          }
-         catch (KeyNotFoundException e)
+         catch (KeyNotFoundException)
          {
             return NotFound();
          }

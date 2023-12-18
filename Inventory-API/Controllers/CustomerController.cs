@@ -1,142 +1,170 @@
 ﻿using Inventory_BLL.Interfaces;
-using Inventory_Models.ViewModels;
+using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Inventory_API.Controllers
 {
-   [ApiController]
-   [Route("[controller]")]
-   public class CustomerController : ODataController
-   {
 
-      private readonly ILogger<CustomerController> _logger;
-      private readonly ICustomerBL _customerBl;
-      
-      public CustomerController(ILogger<CustomerController> logger, ICustomerBL customerBl)
-      {
-         _logger = logger;
-         _customerBl = customerBl;
-      }
+    [ApiController]
+    [Route("[controller]")]
+    public class CustomerController : ODataController
+    {
+        // In an ASP.NET Core application, registering the ILogger is done automatically by the framework when you use Dependency Injection(DI)
+        // to inject it into your classes.
+        private readonly ILogger<CustomerController> _logger;
+        private readonly ICustomerBL _customerBl;
 
-      [HttpGet]
-      public IActionResult Get(ODataQueryOptions<CustomerDto> options)
-      {
+        public CustomerController(ILogger<CustomerController> logger, ICustomerBL customerBl)
+        {
+            System.Diagnostics.Debug.WriteLine("INJECTING INTO CUSTOMER CONTROLLER");
+            _logger = logger;
+            _customerBl = customerBl;
+        }
 
-         try
-         {
-            IQueryable<CustomerDto>? customers = _customerBl.GetCustomers();
-            return Ok(options.ApplyTo(customers));
-         }
-         catch(Exception e)
-         {
-            _logger.LogError($"GetCustomers: " + e.Message);
-            throw new Exception("There was a problem querying for customers.");
-         }
-      }
+        [HttpGet]
+        public async Task<IActionResult> Get(ODataQueryOptions<DtoCustomer> options)
+        {
 
-      [HttpGet("{key}")]
-      public IActionResult Get(Guid key, ODataQueryOptions<CustomerDto> options)
-      {
-         try
-         {
-            IQueryable<CustomerDto>? customer = _customerBl.GetCustomerById(key);
-            // Todo: this should return a SingleResult
-            return Ok(options.ApplyTo(customer));
-         }
-         catch (KeyNotFoundException e)
-         {
-            _logger.LogInformation($"GetCustomerById: " + e.Message);
-            return NotFound();
-         }
-         catch (Exception e)
-         {
-            _logger.LogError($"GetCustomerById: " + e.Message);
-            throw new Exception($"There was a problem querying for the customer with id {key}.");
-         }
-      }
+            try
+            {
+                IQueryable<DtoCustomer>? customers = await _customerBl.GetCustomers();
+                return Ok(options.ApplyTo(customers));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetCustomers: " + e.Message);
+                throw new Exception("There was a problem querying for customers.");
+            }
+        }
 
-      [HttpPost]
-      public async Task<IActionResult> Post([FromBody] CustomerCreateDto customer)
-      {
-         if (!ModelState.IsValid)
-         {
-            return BadRequest(ModelState);
-         }
+        [HttpGet("{key}")]
+        public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoCustomer> options)
+        {
+            try
+            {
+                IQueryable<DtoCustomer>? customer = await _customerBl.GetCustomerById(key);
+                return Ok(options.ApplyTo(customer));
+            }
+            catch (KeyNotFoundException e)
+            {
+                _logger.LogInformation($"GetCustomerById: " + e.Message);
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetCustomerById: " + e.Message);
+                throw new Exception($"There was a problem querying for the customer with id {key}.");
+            }
+        }
 
-         CustomerDto customerDto;
-         try
-         {
-            customerDto = await _customerBl.CreateCustomer(customer);
-         }
-         catch (ArgumentNullException e)
-         {
-            _logger.LogError($"CreateCustomer: " + e.Message);
-            return BadRequest(e.Message);
-         }
-         catch (Exception e)
-         {
-            _logger.LogError($"CreateCustomer: " + e.Message);
-            throw new Exception($"There was a problem creating customer.");
-         }
+        [HttpGet("WithPipe/{key}")]
+        public async Task<IActionResult> GetCustomerWithPipeById(Guid key)
+        {
+            try
+            {
+                var customer = await _customerBl.GetCustomerWithPipeByCustomerId(key);
 
-         // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
-         //return CreatedAtAction(nameof(GetCustomerById), new { key = customerDto.CustomerId, odataPath = $"Customer/{customerDto.CustomerId}" }, customerDto);
-         return CreatedAtAction("Get", new { key = customerDto.CustomerId }, customerDto);
-      }
+                if (customer == null)
+                {
+                    return NotFound();
+                }
 
-      [HttpPut("{key}")]
-      public IActionResult Put(Guid key, [FromBody] CustomerUpdateDto customer)
-      {
-         if (!ModelState.IsValid)
-         {
-            return BadRequest(ModelState);
-         }
-
-         try
-         {
-            _customerBl.UpdateCustomer(customer, key);
-         }
-         catch (KeyNotFoundException e)
-         {
-            _logger.LogInformation($"UpdateCustomer: " + e.Message);
-            return NotFound();
-         }
-         catch (Exception e)
-         {
-            _logger.LogError($"UpdateCustomer: " + e.Message);
-            throw new Exception($"There was a problem updating the customer with id {key}");
-         }
-
-         return NoContent();
-      }
+                return Ok(customer);
+            }
+            catch (KeyNotFoundException e)
+            {
+                _logger.LogInformation($"GetCustomerWithPipeById: " + e.Message);
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetCustomerWithPipeById: " + e.Message);
+                throw new Exception($"There was a problem querying for the customer with id {key} using the pipe.");
+            }
+        }
 
 
-      [HttpDelete("{key}")]
-      public IActionResult Delete(Guid key)
-      {
-         try
-         {
-            _customerBl.DeleteCustomer(key);
-         }
-         catch (KeyNotFoundException e)
-         {
-            _logger.LogInformation($"DeleteCustomer: " + e.Message);
-            return NotFound();
-         }
-         catch (Exception e)
-         {
-            _logger.LogError($"DeleteCustomer: " + e.Message);
-            throw new Exception($"There was a problem deleting the customer with id {key}");
-         }
 
-         return NoContent();
-      }
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] DtoCustomerCreate customer)
+        {
+            //This checks the incoming data based on the attributes in the DtoCustomerCreate class (eg. [StringLength(50)]). If the data is invalid, it returns a 400 Bad Request.
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            DtoCustomer DtoCustomer;
+            try
+            {
+                DtoCustomer = await _customerBl.CreateCustomer(customer);
+            }
+            catch (ArgumentNullException e)
+            {
+                _logger.LogError($"CreateCustomer: " + e.Message);
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"CreateCustomer: " + e.Message);
+                throw new Exception($"There was a problem creating customer.");
+            }
+
+            // Todo: This is not creating the correct odata path. The one below creates the regular endpoint, which works, just not odata, which is fine for now.
+            //return CreatedAtAction(nameof(GetCustomerById), new { key = DtoCustomer.CustomerId, odataPath = $"Customer/{DtoCustomer.CustomerId}" }, DtoCustomer);
+            return CreatedAtAction("Get", new { key = DtoCustomer.CustomerId }, DtoCustomer);
+        }
+
+        [HttpPut("{key}")]
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoCustomerUpdate customer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _customerBl.UpdateCustomer(customer, key);
+            }
+            catch (KeyNotFoundException e)
+            {
+                _logger.LogInformation($"UpdateCustomer: " + e.Message);
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"UpdateCustomer: " + e.Message);
+                throw new Exception($"There was a problem updating the customer with id {key}");
+            }
+
+            return NoContent();
+        }
 
 
-   }
+        [HttpDelete("{key}")]
+        public IActionResult Delete(Guid key)
+        {
+            try
+            {
+                _customerBl.DeleteCustomer(key);
+            }
+            catch (KeyNotFoundException e)
+            {
+                _logger.LogInformation($"DeleteCustomer: " + e.Message);
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"DeleteCustomer: " + e.Message);
+                throw new Exception($"There was a problem deleting the customer with id {key}");
+            }
+
+            return NoContent();
+        }
+
+
+    }
 }
