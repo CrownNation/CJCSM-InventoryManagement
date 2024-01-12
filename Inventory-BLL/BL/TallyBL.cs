@@ -2,9 +2,11 @@
 using CJCSM_Common;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
+using Inventory_Documents;
 using Inventory_Dto.Dto;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Xml.Linq;
 using static CJCSM_Common.ApplicationEnums;
 
 namespace Inventory_BLL.BL
@@ -414,6 +416,44 @@ namespace Inventory_BLL.BL
 
             _context.Tally.Remove(tally);
             _context.SaveChanges();
+        }
+
+        public Stream GenerateTallyPdfDocument(Guid tallyId)
+        {
+            TallyPDFGenerator generator = new TallyPDFGenerator();
+
+            // 1. Fetch the data for the specified tally using tallyId.
+            // You may use your data access layer to retrieve the necessary information.
+            // Example:
+
+            /*
+            if (tallyData == null)
+            {
+                throw new NotFoundException($"Tally with ID {tallyId} not found");
+            }
+            */
+
+            // 2. Create a PDF document using a PDF library of your choice.
+            // There are several libraries available for generating PDFs in C#.
+            // Common libraries include iTextSharp, PdfSharp, and Syncfusion PDF.
+
+            // Example using PdfSharp:
+            /*
+            using (var document = new PdfDocument())
+            {
+                var page = document.AddPage();
+                //var document = generator.GenerateTallyPDFDocuemnt();
+
+                // 4. Save the PDF document to a memory stream.
+                using (var stream = new MemoryStream())
+                {
+                    document.Save(stream, false);
+                    return stream.ToArray();
+                }
+            }
+            */
+            MemoryStream stream = new MemoryStream();
+            return stream;
         }
 
     }

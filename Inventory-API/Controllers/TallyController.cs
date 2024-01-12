@@ -84,6 +84,43 @@ namespace Inventory_API.Controllers
             }
         }
 
+        [HttpGet("GeneratePdf/{tallyId}")]
+        public IActionResult GeneratePdf(Guid tallyId)
+        {
+            try
+            {
+                // Call your TallyBL or other service to generate the PDF document here.
+                // You'll need to implement the logic for PDF generation based on the tallyId.
+
+                // Example:
+                // Stream pdfStream = _tallyBl.GeneratePdfFieldTicket(tallyId);
+
+                // Check if the PDF stream is null or empty (handle this based on your logic)
+                // Example:
+                // if (pdfStream == null || pdfStream.Length == 0)
+                // {
+                //     return NotFound(); // Or any other appropriate response
+                // }
+
+                // Return the PDF document as a file response.
+                // You can use the File() method to return the PDF stream as a file download.
+                // Set appropriate headers to specify the content type and file name.
+
+                // Example:
+                // return File(pdfStream, "application/pdf", "TallyReport.pdf");
+
+                // Replace the example code above with your actual PDF generation logic.
+
+                return NotFound(); // Return appropriate responses based on the logic.
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GeneratePdf: " + e.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+
         /* ------Create Tally ------ */
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)  
