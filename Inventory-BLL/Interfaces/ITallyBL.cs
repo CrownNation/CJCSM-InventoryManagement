@@ -14,8 +14,5 @@ namespace Inventory_BLL.Interfaces
         Task UpdateTally(DtoTallyUpdate tally, Guid guid);
         void DeleteTally(Guid guid);
 
-        //--Document Generation--//
-        public Stream GenerateTallyPdfDocument(Guid tallyId);
-
     }
 }

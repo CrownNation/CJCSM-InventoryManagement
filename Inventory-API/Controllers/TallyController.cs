@@ -1,5 +1,6 @@
 ﻿using Inventory_BLL.BL;
 using Inventory_BLL.Interfaces;
+using Inventory_Documents;
 using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -89,29 +90,20 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                // Call your TallyBL or other service to generate the PDF document here.
-                // You'll need to implement the logic for PDF generation based on the tallyId.
+                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithPipeQuery();
 
-                // Example:
-                // Stream pdfStream = _tallyBl.GeneratePdfFieldTicket(tallyId);
+                DtoTally_WithPipeAndCustomer? dto = tallyQuery.ToList().FirstOrDefault();
 
-                // Check if the PDF stream is null or empty (handle this based on your logic)
-                // Example:
-                // if (pdfStream == null || pdfStream.Length == 0)
-                // {
-                //     return NotFound(); // Or any other appropriate response
-                // }
+                TallyPDFGenerator generator = new TallyPDFGenerator();
+                
+                if(dto == null)
+                    return NotFound();
 
-                // Return the PDF document as a file response.
-                // You can use the File() method to return the PDF stream as a file download.
-                // Set appropriate headers to specify the content type and file name.
+                Stream pdfStream = generator.GenerateTallyPDFDocuemnt(dto);
 
-                // Example:
-                // return File(pdfStream, "application/pdf", "TallyReport.pdf");
+                String filename = $"TallyReport_{dto.TallyNumber}_{DateTime.Now.ToString("yyyy-MM-dd.HH-mm")}.pdf";
+                return File(pdfStream, "application/pdf", filename);
 
-                // Replace the example code above with your actual PDF generation logic.
-
-                return NotFound(); // Return appropriate responses based on the logic.
             }
             catch (Exception e)
             {

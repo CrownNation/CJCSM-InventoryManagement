@@ -5,7 +5,11 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using QuestPDF.Infrastructure;
 using System.Reflection;
+
+//Set up QuestPDF license to community in order to generate PDFs
+QuestPDF.Settings.License = LicenseType.Community;
 
 // Program.cs in .Net Core 6.0+ is the entry point for the application that 
 // It implies using System;
