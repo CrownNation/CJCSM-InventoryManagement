@@ -1,0 +1,28 @@
+mat-card-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+mat-card-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+    
+mat-form-field {
+    display: block;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+
+h4 {
+    margin: 0.5rem 1rem 0.5rem 0; 
+}
+
+.column-actions {
+    width: 0;
+}
+

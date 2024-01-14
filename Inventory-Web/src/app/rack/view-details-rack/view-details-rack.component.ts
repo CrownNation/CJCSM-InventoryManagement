@@ -16,27 +16,22 @@ export class ViewDetailsRackComponent implements OnInit {
 
   // Todo: get this from the store
   shops: ShopLocation[] = [
-    {
-      shopLocationId: '1',
-      shopLocationName: 'Shop 1'
-    },
-    {
-      shopLocationId: '2',
-      shopLocationName: 'Shop 2'
-    },
-    {
-      shopLocationId: '3',
-      shopLocationName: 'Shop 3'
-    },
+    // {
+    //   shopLocationId: '1',
+    //   shopLocationName: 'Shop 1'
+    // },
+    // {
+    //   shopLocationId: '2',
+    //   shopLocationName: 'Shop 2'
+    // },
+    // {
+    //   shopLocationId: '3',
+    //   shopLocationName: 'Shop 3'
+    // },
   ];
 
   // Todo: get this from the store
-  rack: Rack = {
-    rackId: '1',
-    name: 'Rack 1',
-    shopLocationId: '1',
-    shopName: 'Shop 1'
-  }
+  rack: Rack = {} as Rack;
 
   constructor() { }
 

@@ -19,12 +19,12 @@ export class LoginComponent implements OnInit {
     console.log('login init');
     // this.rackFacade.getRacks();
 
-    this.store.dispatch(actionGetRacks());
+    // this.store.dispatch(actionGetRacks());
 
   }
 
   // StoreModule.forRoot(reducers, { metaReducers }),
   // isDevMode() ? StoreDevtoolsModule.instrument() : [],
-  // EffectsModule.forRoot([AppEffects])  
+  // EffectsModule.forRoot([AppEffects])
 
 }

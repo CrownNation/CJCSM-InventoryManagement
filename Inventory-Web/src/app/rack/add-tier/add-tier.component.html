@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Add Tier</h1>
+
+<div mat-dialog-content>
+            
+    <mat-card-content>
+        <form [formGroup]="addTierForm">
+                
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Tier number</mat-label>
+                <input matInput placeholder="Tier number" formControlName="tierNumber" required>
+                <mat-error>
+                    Please provide a valid tier number
+                </mat-error>
+            </mat-form-field>
+        
+            <!-- <mat-form-field appearance="outline" color="accent">
+                <mat-label>Choose pipe type</mat-label>
+                <mat-select required>
+                    <mat-option *ngFor="let pipe of pipes" [value]="pipe.pipeDefinitionId">
+                        {{pipe.pipeCoating.pipeCoating}}
+                        </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+
+            <mat-form-field appearance="outline" color="accent">
+                <mat-label>Number of pipe</mat-label>
+                <input matInput type="number" placeholder="Number of pipe" formControlName="numberOfPipe" required min="0">
+                <mat-error>
+                    Please provide a valid number
+                </mat-error>
+            </mat-form-field>
+            
+        </form>
+    </mat-card-content>
+    
+    
+</div>
+
+
+<div mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button mat-dialog-close cdkFocusInitial color="accent">Ok</button>
+</div>

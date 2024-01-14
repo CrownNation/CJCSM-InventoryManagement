@@ -6,28 +6,26 @@ import {
   } from '@ngrx/store';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 
-import { environment } from 'src/environments/environment';
 import { initStateFromLocalStorage } from '../core/meta-reducers/init-state-from-local-storage.reducer';
 import { initStateFromSessionStorage } from '../core/meta-reducers/init-state-from-session-storage.reducer';
 import { rackReducers } from './rack/rack.reducers';
 import { RackState } from './rack/rack.state';
-
-//   import { initStateFromLocalStorage } from './meta-reducers/init-state-from-local-storage.reducer';
-//   import { initStateFromSessionStorage } from './meta-reducers/init-state-from-session-storage.reducer';
-//   import { AuthState } from './auth/auth.model';
-//   import { authReducer } from './auth/auth.reducer';
-//   import { RouterStateUrl } from './router/router.state';
-//   import { settingsReducer } from './settings/settings.reducer';
-//   import { SettingsState } from './settings/settings.model';
-//   import { dashboardReducer } from '../dashboard/dashboard.reducer';
-//   import { DashboardState } from '../dashboard/dashboard.state';
+import { TallyState } from './tally/tally.state';
+import { tallyReducers } from './tally/tally.reducers';
+import { CustomerState } from './customer/customer.state';
+import { customerReducers } from './customer/customer.reducers';
+import { PipeState } from './pipe/pipe.state';
+import { pipeReducers } from './pipe/pipe.reducers';
 
 
   export const reducers: ActionReducerMap<AppState> = {
     // auth: authReducer,
     // settings: settingsReducer,
     // router: routerReducer,
-    rack: rackReducers
+    rack: rackReducers,
+    tally: tallyReducers,
+    customer: customerReducers,
+    pipe: pipeReducers
   };
 
   export const metaReducers: MetaReducer<AppState>[] = [
@@ -64,9 +62,21 @@ import { RackState } from './rack/rack.state';
 export const selectRackFeature: MemoizedSelector<AppState, RackState> =
   createFeatureSelector<RackState>('rack');
 
+export const selectTallyFeature: MemoizedSelector<AppState, TallyState> =
+  createFeatureSelector<TallyState>('tally');
+
+export const selectCustomerFeature: MemoizedSelector<AppState, CustomerState> =
+  createFeatureSelector<CustomerState>('customer');
+
+  export const selectPipeFeature: MemoizedSelector<AppState, PipeState> =
+  createFeatureSelector<PipeState>('pipe');
+
   export interface AppState {
     // auth: AuthState;
     // settings: SettingsState;
     // router: RouterReducerState<RouterStateUrl>;
     rack: RackState;
+    tally: TallyState;
+    customer: CustomerState,
+    pipe: PipeState
   }

@@ -15,10 +15,13 @@ export class AppComponent implements OnInit{
   isProd = env.production;
   version: string = env.versions.app;
   year = new Date().getFullYear();
-  logo = '../../assets/cjcsm_logo_small.png';
+  logo = '../../assets/TallyOneLogo.png';
   navigation = [
-    { link: 'admin', label: 'Admin' },
-    { link: 'dashboard', label: 'Dashboard' },     
+    // { link: 'admin', label: 'Admin' },
+    { link: 'dashboard', label: 'Dashboard' },
+    { link: 'pipe', label: 'Pipe Config' },
+    // { link: 'Equipment', label: 'Equipment' },
+    // { link: 'customer', label: 'Customers' },
   ];
   navigationSideMenu = [
     ...this.navigation

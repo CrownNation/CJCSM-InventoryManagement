@@ -6,26 +6,26 @@
 
     <mat-card-content>
         <form [formGroup]="addRackForm">
-                
+
             <mat-form-field appearance="outline" color="accent">
                 <mat-label>Rack name</mat-label>
                 <input matInput placeholder="Rack name" formControlName="name" required>
                 <mat-error>
-                    Please provide a valid email address
+                    Please provide a valid rack formControlName
                 </mat-error>
             </mat-form-field>
-        
+
             <mat-form-field appearance="outline" color="accent">
                 <mat-label>Choose a shop</mat-label>
-                <mat-select required>
+                <mat-select required formControlName="shop">
                     <mat-option *ngFor="let shop of shops" [value]="shop.shopLocationId">
-                        {{shop.shopLocationName}}
+                        {{shop.name}}
                         </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <button mat-raised-button color="primary" class="item">Add Rack</button>
-          
+            <button mat-raised-button color="primary" class="item" (click)="addRack()">Add Rack</button>
+
         </form>
     </mat-card-content>
 

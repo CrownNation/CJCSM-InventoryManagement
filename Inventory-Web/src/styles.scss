@@ -1,7 +1,7 @@
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat; 
+@use '@angular/material' as mat;
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -13,7 +13,7 @@
 
 $cjcsm-primary: mat.define-palette($cjcsm-gray);
 $cjcsm-accent: mat.define-palette($cjcsm-red);
-$cjcsm-warn: mat.define-palette($cjcsm-red, A100);
+$cjcsm-warn: mat.define-palette($cjcsm-warn);
 
 $cjcsm-theme: mat.define-light-theme((
   color: (
@@ -23,12 +23,6 @@ $cjcsm-theme: mat.define-light-theme((
   )
 ));
 
-
-
-
-
-// @include angular-material-theme($cjcsm-theme);  
-// @include custom-components-theme($cjcsm-theme);
 
 @include mat.core-theme($cjcsm-theme);
 @include mat.all-component-themes($cjcsm-theme);
@@ -41,3 +35,53 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-transform: uppercase;
   margin: 0 0 20px 0;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.container-tab {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.section-search {
+  flex: 1 1 auto;
+  align-self: flex-start;
+  min-width: 1000px;
+}
+
+.section-view {
+  flex: 1 1 auto;
+  align-self: flex-start;
+}
+
+.container-description {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.element-description {
+  padding: 5px;
+}
+
+// Note: This is how to define the color of the snack bar. It apparently needs to be in the component's scss file as
+// the global one doesn't work.
+// ::ng-deep .mat-mdc-snack-bar-container.success-notification-overlay {
+//     --mdc-snackbar-container-color: blue;
+//     --mat-mdc-snack-bar-button-color: #fff;
+//     --mdc-snackbar-supporting-text-color: #fff;
+//   }
+
+

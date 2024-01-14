@@ -713,7 +713,7 @@ TierID: 00000000-0000-0000-0000-000000000000
 		}
 		]
 	}
-	
+
 	],
     "invoiceNumber": "INV-NEW-02",
     "talliedByUserId": "b4d8b4a5-9b34-4376-ad19-dcceac4ea62a",
@@ -929,7 +929,7 @@ TierID: 00000000-0000-0000-0000-000000000000
 		}
 		]
 	}
-	
+
 	],
     "invoiceNumber": "INV-NEW-02",
     "talliedByUserId": "b4d8b4a5-9b34-4376-ad19-dcceac4ea62a",
@@ -943,3 +943,7 @@ TierID: 00000000-0000-0000-0000-000000000000
 2. Pipe index should be 1, 8, 15
 3. Pipe should go from 9 entris to 12 entries with tierIds above.
 4. There should be a 4th Tally added.
+
+
+-------------------- From UI
+

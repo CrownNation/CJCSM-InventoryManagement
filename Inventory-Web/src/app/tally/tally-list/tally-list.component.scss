@@ -1,0 +1,59 @@
+mat-card-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+mat-card-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.column-actions {
+    width: 0;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+
+mat-expansion-panel {
+    margin: 1rem 0 1rem 0;
+
+    .container-filter {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;    
+    }
+
+    .item-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    mat-form-field {
+        margin-right: 1rem;
+        width: 12rem;
+    }
+
+    .date-field {
+        width: auto;
+    }
+
+    button {
+        margin-right: 1.5rem;
+    }
+}
+
+table {
+    margin-top: 1rem;
+}
+
+h4 {
+    margin: 0.5rem 1rem 0.5rem 0; 
+}
+
+.column-actions {
+    width: 0;
+}

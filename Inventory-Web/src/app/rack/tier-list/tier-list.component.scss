@@ -1,8 +1,3 @@
-// .section {
-    // width: 100%;
-    // margin: 3rem;
-// }
-
 mat-card-header{
     display: flex;
     justify-content: space-between;
@@ -13,11 +8,6 @@ mat-card-title {
     font-weight: 700;
     font-size: 1.5rem;
 }
-
-// mat-card {
-//     margin: 2em auto;
-//     text-align: center;
-// }
     
 mat-form-field {
     display: block;
@@ -33,6 +23,8 @@ h4 {
 }
 
 .column-actions {
-    width: 0;
+    flex: 1 1 0;
+    display: flex;
+    justify-content: flex-end;
 }
 

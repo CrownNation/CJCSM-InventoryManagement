@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.section {
+    // max-width: 45%;
+    // flex: 1 1 auto;
+}
+
+mat-card {
+    width: 500px;
+    margin: auto;
+}
+
+mat-card-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+mat-card-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+mat-form-field {
+    display: block;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.close-icon {
+    margin-left: auto;
+    cursor: pointer;
+}
+
+button {
+    margin-right: 1rem;
+}

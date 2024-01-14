@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Pipe } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { RackRoutingModule } from './rack-routing.module';
@@ -14,11 +14,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AddRackComponent } from './add-rack/add-rack.component';
 import { ViewRackComponent } from './view-rack/view-rack.component';
 import { ViewDetailsRackComponent } from './view-details-rack/view-details-rack.component';
 import { TierListComponent } from './tier-list/tier-list.component';
+import { AddTierComponent } from './add-tier/add-tier.component';
+import { PipeModule } from '../pipe/pipe.module';
 
 
 @NgModule({
@@ -27,7 +30,8 @@ import { TierListComponent } from './tier-list/tier-list.component';
     AddRackComponent,
     ViewRackComponent,
     ViewDetailsRackComponent,
-    TierListComponent
+    TierListComponent,
+    AddTierComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +46,11 @@ import { TierListComponent } from './tier-list/tier-list.component';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule,
+    
+    PipeModule,
+    
   ],
   exports: [
     RackListComponent

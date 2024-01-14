@@ -1,6 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RackService } from './services/rack.service';
+import { RackService } from './services/rack-service/rack.service';
 
 import { environment } from '../../environments/environment';
 
@@ -16,7 +16,14 @@ import { AuthModule } from '../auth/auth.module';
 import { metaReducers, reducers } from '../store/core.state';
 import { LoginComponent } from '../auth/login/login.component';
 import { RackEffects } from '../store/rack/rack.effects';
+import { TallyEffects } from '../store/tally/tally.effects';
 import { HttpClientModule } from '@angular/common/http';
+import { TallyService } from './services/tally-service/tally.service';
+import { CustomerService } from './services/customer-service/customer.service';
+import { CustomerEffects } from '../store/customer/customer.effects';
+import { PipeEffects } from '../store/pipe/pipe.effects';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NotificationService } from './notifications/notification.service';
 
 @NgModule({
   declarations: [ ],
@@ -24,16 +31,22 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     HttpClientModule,
     AuthModule,
-    
+    MatSnackBarModule,
+
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([RackEffects]),
+    EffectsModule.forRoot([
+      RackEffects,
+      TallyEffects,
+      CustomerEffects,
+      PipeEffects
+    ]),
     environment.production ? [] : StoreDevtoolsModule.instrument({
       name: 'CJCSM Inventory'
     }),
   ],
-  providers:[ RackService ],
+  providers:[ RackService, TallyService, CustomerService ],
   exports: [
     HttpClientModule,
     LoginComponent

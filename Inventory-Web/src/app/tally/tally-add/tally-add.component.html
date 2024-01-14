@@ -1,0 +1,210 @@
+<mat-card class="tally-card">
+    <mat-card-header>
+        <mat-card-title>Add Tally</mat-card-title>
+        <mat-icon class="close-icon" (click)="close()">close</mat-icon>
+    </mat-card-header>
+
+    <mat-card-content >
+
+            <div class="container">
+
+                <div class="section">
+                    <form [formGroup]="tallyAddForm">
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Tally Type</mat-label>
+                        <mat-select formControlName='tallyType' required >
+                            <mat-option *ngFor="let tallyType of tallyTypes" [value]="tallyType">
+                                {{displayTallyType(tallyType)}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Tally Number</mat-label>
+                        <input matInput placeholder="Tally name" formControlName="tallyNumber" required>
+                        <mat-error>
+                            Please provide a tally name
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Invoice Number</mat-label>
+                        <input matInput placeholder="Invoice number" formControlName="invoiceNumber" required>
+                        <mat-error>
+                            Please provide an invoice number
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Yard</mat-label>
+                        <mat-select formControlName='shopLocation' required >
+                            <mat-option *ngFor="let shop of shopLocations" [value]="shop.shopLocationId">
+                                {{shop.name}}
+                                </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Customer</mat-label>
+                        <mat-select formControlName='customer' required >
+                            <mat-option *ngFor="let customer of customersFullList" [value]="customer.customerId">
+                                {{customer.name}}
+                                </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field >
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="datepicker" formControlName="dateOfCreation">
+                        <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+                        <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+                        <mat-datepicker #datepicker>
+                          <mat-datepicker-actions>
+                            <button mat-button matDatepickerCancel>Cancel</button>
+                            <button mat-raised-button color="primary" matDatepickerApply>Ok</button>
+                          </mat-datepicker-actions>
+                        </mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Consultant Name</mat-label>
+                        <input matInput placeholder="Consultant name" formControlName="carrierName" required>
+                        <mat-error>
+                            Please provide a consultant name
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Weight in kg</mat-label>
+                        <input type="number" matInput placeholder="Weight in kg" formControlName="weightInKg" required>
+                        <mat-error>
+                            Please provide a value for weight in kg
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Weight in lbs</mat-label>
+                        <input type="number" matInput placeholder="Weight in lbs" formControlName="weightInLbs" required>
+                        <mat-error>
+                            Please provide a value for weight in lbs
+                        </mat-error>
+                    </mat-form-field> -->
+
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Notes</mat-label>
+                        <textarea matInput placeholder="Enter notes" formControlName="notes"></textarea>
+                    </mat-form-field>
+                </form>
+                </div>
+
+
+
+                <div class="section">
+                    <form [formGroup]="pipeAddForm" (ngSubmit)="addPipe(formDirective)" #formDirective="ngForm">
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Rack</mat-label>
+                        <mat-select formControlName='rack' required (selectionChange)="onRackChange($event)">
+                            <mat-option *ngFor="let rack of racksWithTiers" [value]="rack.rackId">
+                                {{rack.name}}
+                                </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Tier</mat-label>
+                        <mat-select formControlName='tier' required >
+                            <mat-option *ngFor="let tier of tiers" [value]="tier.tierId">
+                                {{tierDisplay(tier)}}
+                                </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Pipe Type</mat-label>
+                        <mat-select formControlName='pipeDefinition' required >
+                            <mat-option *ngFor="let pipeDefinition of pipeDefinitionList" [value]="pipeDefinition.pipeDefinitionId">
+                                {{pipeDefinition.category?.name}} - {{pipeDefinition.condition?.name}}
+                                </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Quantity</mat-label>
+                        <input type="number" matInput placeholder="Quantity" formControlName="quantity" step="1"
+                            (keydown)="preventDecimal($event)"required>
+                        <mat-error>
+                            Please provide a value for quantity
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Length in meters</mat-label>
+                        <input type="number" matInput placeholder="Weight in kg"
+                        formControlName="lengthInMeters" required #lengthInMetersInput>
+                        <mat-error>
+                            Please provide a value for length in meters
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline" color="accent">
+                        <mat-label>Length in feet</mat-label>
+                        <input type="number" matInput placeholder="Length in feet" formControlName="lengthInFeet" required>
+                        <mat-error>
+                            Please provide a value for length in feet
+                        </mat-error>
+                    </mat-form-field> -->
+
+                    <!-- <button mat-raised-button color="primary" class="item" (click)="addPipe()">Add pipe</button> -->
+                    <ng-container *ngIf="!selectedPipe">
+                        <button mat-raised-button color="primary" class="item" type="submit">Add pipe</button>
+                    </ng-container>
+                    <ng-container *ngIf="selectedPipe">
+                        <button mat-raised-button color="primary" class="item" (click)="updatePipe()">Update pipe</button>
+                        <button mat-raised-button class="item" (click)="cancelEdit()">Cancel</button>
+                    </ng-container>
+
+
+                    <div class="scrollable-table">
+                        <table mat-table [dataSource]="dataSource" >
+
+                            <ng-container matColumnDef="tallyNumber">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Pipe</th>
+                                <td mat-cell *matCellDef="let row"> {{row.quantity}} - {{row.pipeDefinition?.category?.name}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header class="right-align"></th>
+                                <td mat-cell *matCellDef="let row" class="column-actions right-align">
+                                    <button mat-icon-button aria-label="Edit pipe" (click)="editPipe(row)">
+                                        <mat-icon aria-hidden="false" fontIcon="edit" color="accent"></mat-icon>
+                                    </button>
+                                    <button mat-icon-button aria-label="Remove pipe" (click)="removePipe(row)">
+                                        <mat-icon aria-hidden="false" fontIcon="delete" color="accent"></mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+
+                        <div *ngIf="registeredPipes.length === 0" class="display-message">
+                            No pipe have been added yet
+                        </div>
+                    </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="spinner-container" *ngIf="loading">
+                <mat-spinner [diameter]="30"></mat-spinner>
+            </div>
+
+            <button mat-raised-button color="primary" class="item" (click)="createTally()">Create Tally</button>
+            <button mat-raised-button class="item" (click)="close()">Cancel</button>
+
+    </mat-card-content>
+
+</mat-card>

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { actionGetRacks } from '../../store/rack/rack.actions';
+import { actionGetRacks, actionGetRacksFullList, actionGetShopLocations } from '../../store/rack/rack.actions';
 import { AppState } from '../../store/core.state';
-import { RackBasic } from '../../models/rack.model';
+import { Rack } from '../../models/rack.model';
 import { Observable } from 'rxjs';
 import { selectLoadingRacks, selectRacks2 } from '../../store/rack/rack.selectors';
+import { actionGetCustomersFullList } from '../../store/customer/customer.actions';
+import { actionGetPipeDefinitionsList } from '../../store/pipe/pipe.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,14 +15,18 @@ import { selectLoadingRacks, selectRacks2 } from '../../store/rack/rack.selector
 })
 export class DashboardComponent implements OnInit {
 
-  racks$: Observable<RackBasic[]> = this.store.select(selectRacks2);
-  loadingRacks$: Observable<Boolean> = this.store.pipe(select(selectLoadingRacks));
+  // racks$: Observable<Rack[]> = this.store.select(selectRacks2);
+  // loadingRacks$: Observable<Boolean> = this.store.pipe(select(selectLoadingRacks));
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-    console.log('dashboard onInit');
-    this.store.dispatch(actionGetRacks());    
+
+    this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));
+    this.store.dispatch(actionGetRacksFullList({ searchParams: null }));
+    this.store.dispatch(actionGetPipeDefinitionsList({ searchParams: null }));
+    this.store.dispatch(actionGetShopLocations());
+
   }
 
 }

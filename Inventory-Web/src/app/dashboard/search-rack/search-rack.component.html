@@ -1,0 +1,93 @@
+<div class="container-tab">
+
+    <mat-card class="section-search">
+        <mat-accordion>
+
+            <mat-expansion-panel expanded="true" class="filter-options">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Filter options</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <form [formGroup]="rackForm" >
+                    <div class="container-filter">
+
+                        <mat-form-field appearance="outline" color="accent" >
+                        <mat-label>Rack</mat-label>
+                        <mat-select formControlName="rack">
+                            <mat-option *ngFor="let rack of racksFullList" [value]="rack.rackId">
+                                {{rack.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" color="accent" >
+                            <mat-label>Shop</mat-label>
+                            <mat-select formControlName="rack">
+                                <mat-option *ngFor="let shop of shopsFullList" [value]="shop.shopLocationId">
+                                {{shop.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="item-buttons">
+                            <button mat-raised-button (click)="clearForm()">Clear filters</button>
+                            <button mat-raised-button color="primary" (click)="filter()">Filter</button>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Rack Name</th>
+                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="shopName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Shop</th>
+                <td mat-cell *matCellDef="let row"> {{row.shopLocationName}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header ></th>
+                <td mat-cell *matCellDef="let row" class="column-actions">
+                    <button mat-icon-button aria-label="View tally" (click)="viewRack(row)">
+                        <mat-icon aria-hidden="false" fontIcon="open_in_new" color="accent"></mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <!-- <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+            </tr> -->
+        </table>
+
+        <div *ngIf="loadingRacks" class="spinner">
+        <mat-progress-spinner
+            color="primary"
+            mode="indeterminate">
+        </mat-progress-spinner>
+        </div>
+
+    </mat-card>
+
+    <!-- <mat-card > -->
+        <app-rack-view class="section-view"></app-rack-view>
+    <!-- </mat-card>    -->
+
+</div>
+
+
+
+
+

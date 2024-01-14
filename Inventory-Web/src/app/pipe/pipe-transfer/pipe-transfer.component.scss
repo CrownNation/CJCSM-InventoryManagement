@@ -1,0 +1,36 @@
+mat-card-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+mat-card-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+    
+mat-form-field {
+    display: block;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+h4 {
+    margin: 0.5rem 1rem 0.5rem 0; 
+}
+
+.item {
+    flex: 1 1 0;
+}
+
+.item-buttons {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+

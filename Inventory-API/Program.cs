@@ -51,7 +51,7 @@ builder.Configuration.AddEnvironmentVariables();
 // Add services to the container. A service is a reusable component that provides app functionality.
 // Services are registered in the app's DI container and then consumed throughout the app.
 // Anything registered here is injected into constructors that declare a parameter of the same type. You can also use method injection.
-// AddRouteComponents() is a method that adds the OData route components to the OData service. 
+// AddRouteComponents() is a method that adds the OData route components to the OData service.
 // The .Select(), etc are option flags to enable OData functionality for different query types.
 builder.Services.AddControllers()
     .AddOData(options => options
@@ -69,7 +69,7 @@ builder.Services.AddControllers()
 //options.UseSqlServer(...): This method is part of Entity Framework's API and configures the database provider to be used.
 //In this case, you're configuring it to use SQL Server as the database provider.
 //builder.Configuration.GetConnectionString("defaultConnection"): This gets the connection string from the appsettings.json file.
-//This injects the context to allow access to the database  that has the structure defined in InventoryContext 
+//This injects the context to allow access to the database  that has the structure defined in InventoryContext
 //into any place in the application that requires the functionality to read and write data to the database.
 string connectionString = builder.Configuration.GetConnectionString("developmentConnection")!;
 
@@ -88,7 +88,7 @@ System.Diagnostics.Debug.WriteLine("IN PROGRAM.CS");
 
 //builder.Services: This accesses the collection of services that the DI container will manage.
 //In the context of dependency injection and service registration, the first type in the <> brackets should typically be an interface
-//This is the interface that defines a contract for working with a business logic component related to customers. 
+//This is the interface that defines a contract for working with a business logic component related to customers.
 //The second type in the <> brackets is the implementation of the interface.
 
 
@@ -185,7 +185,7 @@ app.UseAuthorization();
 // It's a part of the request processing pipeline and serves as a central point for routing requests to controllers based on the URL and HTTP
 // verb (GET, POST, PUT, DELETE, etc.).
 // When a request reaches this point in the middleware pipeline, ASP.NET Core examines the URL and determines which controller and action
-// method should handle the request. 
+// method should handle the request.
 // Eg. URL: https://api.example.com/Customer/{customerId}
 // Method: GET
 // Maps to: Get action method in CustomerController with a parameter named key (customerId)
