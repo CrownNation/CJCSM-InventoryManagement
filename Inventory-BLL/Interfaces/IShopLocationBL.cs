@@ -11,7 +11,6 @@ namespace Inventory_BLL.Interfaces
         public IQueryable<DtoShopLocation> GetShopLocations();
         public IQueryable<DtoShopLocation>? GetShopLocationById(Guid guid);
 
-        // A Task represents an asynchronous operation.
         public Task<DtoShopLocation> CreateShopLocation(DtoShopLocationCreateAndUpdate shopLocation);
         public void UpdateShopLocation(DtoShopLocationCreateAndUpdate shopLocation, Guid guid);
         public void DeleteShopLocation(Guid guid);

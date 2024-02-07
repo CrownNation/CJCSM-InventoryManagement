@@ -38,11 +38,23 @@ export interface PipeDefinition {
 export interface PipeProperty_Category {
     pipeProperty_CategoryId: string;
     name: string;
+    isActive: boolean;
 }
+
+export interface PipeProperty_CategoryCreate {
+    name: string;
+    isActive: boolean;
+}
+
+export interface PipeProperty_CategorySearchParams {
+    isActive: boolean | null;
+  }
+  
 
 export interface PipeProperty_Condition {
     pipeProperty_ConditionId: string;
     name: string;
+    isActive: boolean;
 }
 
 export interface PipeProperty_Grade {

@@ -27,7 +27,7 @@ export class TallyService {
   }
 
   updateTally(tally: DtoTallyCreate): Observable<void> {
-    return this.http.post<void>(this.baseUrl, tally);
+    return this.http.put<void>(this.baseUrl, tally);
   }
 
 

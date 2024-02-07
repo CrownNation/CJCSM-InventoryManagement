@@ -32,6 +32,8 @@ export const selectTalliesEntities = createSelector(
     selectTallyFeature,
     (state: TallyState) => state.entities
 );
+
+
 export const selectTallies = createSelector(
     selectAllTallyEntities,
     (talliesDictionary: Dictionary<Tally>) => Object.values(talliesDictionary) as Tally[]

@@ -16,6 +16,7 @@ import { CustomerState } from './customer/customer.state';
 import { customerReducers } from './customer/customer.reducers';
 import { PipeState } from './pipe/pipe.state';
 import { pipeReducers } from './pipe/pipe.reducers';
+import { PipeProperty_CategoryState } from './pipe-properties/pipe-property-category/pipe-property-category.state';
 
 
   export const reducers: ActionReducerMap<AppState> = {
@@ -25,7 +26,7 @@ import { pipeReducers } from './pipe/pipe.reducers';
     rack: rackReducers,
     tally: tallyReducers,
     customer: customerReducers,
-    pipe: pipeReducers
+    pipe: pipeReducers,
   };
 
   export const metaReducers: MetaReducer<AppState>[] = [
@@ -78,5 +79,6 @@ export const selectCustomerFeature: MemoizedSelector<AppState, CustomerState> =
     rack: RackState;
     tally: TallyState;
     customer: CustomerState,
-    pipe: PipeState
+    pipe: PipeState,
+    pipeProperty_Category: PipeProperty_CategoryState
   }

@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
   navigation = [
     // { link: 'admin', label: 'Admin' },
     { link: 'dashboard', label: 'Dashboard' },
-    { link: 'pipe', label: 'Pipe Config' },
+    { link: 'pipeproperties', label: 'Pipe Properties' },
     // { link: 'Equipment', label: 'Equipment' },
     // { link: 'customer', label: 'Customers' },
   ];

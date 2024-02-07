@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20231213170036_20231213_InitialCreate")]
-    partial class _20231213InitialCreate
+    [Migration("20240131040750_20240129_InitialCreate")]
+    partial class _20240129InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,6 +171,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<Guid>("PipeProperty_CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

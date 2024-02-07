@@ -26,6 +26,7 @@ export class TallyEffects {
   //     )
   //   )
   // );
+  
   retrieveTallies = createEffect( () =>
     this.actions$.pipe(
       ofType(actionGetTallies),    

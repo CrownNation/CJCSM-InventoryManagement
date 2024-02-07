@@ -1,6 +1,7 @@
 using Inventory_BLL.BL;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
+using Inventory_DAL.Entities.PipeProperties;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
@@ -36,6 +37,7 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<Tally>("Tally");
     builder.EntitySet<TallyPipe>("TallyPipe");
     builder.EntitySet<ShopLocation>("ShopLocation");
+    builder.EntitySet<PipeProperty_Category>("PipeProperty_Category");
 
     return builder.GetEdmModel();
 }
@@ -103,6 +105,7 @@ builder.Services.AddScoped<IPipeBL, PipeBL>();
 builder.Services.AddScoped<ITallyBL, TallyBL>();
 builder.Services.AddScoped<ITallyPipeBL, TallyPipeBL>();
 builder.Services.AddScoped<IShopLocationBL, ShopLocationBL>();
+builder.Services.AddScoped<IPipeProperty_CategoryBL, PipeProperty_CategoryBL>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // This method adds metadata about your API's endpoints to the ASP.NET Core application. It doesn't directly generate human-readable

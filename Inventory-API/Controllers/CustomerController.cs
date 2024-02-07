@@ -85,8 +85,6 @@ namespace Inventory_API.Controllers
             }
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoCustomerCreate customer)
         {

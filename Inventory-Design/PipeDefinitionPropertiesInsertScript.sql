@@ -1,11 +1,11 @@
 USE [CJCSM-Inventory];
 
 -- PipeProperty_Category
-INSERT INTO PipeProperty_Category (PipeProperty_CategoryId, Name) VALUES
-  (NEWID(), 'Casing'),
-  (NEWID(), 'Freight'),
-  (NEWID(), 'Rods'),
-  (NEWID(), 'Tubing');
+INSERT INTO PipeProperty_Category (PipeProperty_CategoryId, Name, IsActive) VALUES
+  (NEWID(), 'Casing', 1),
+  (NEWID(), 'Freight', 1),
+  (NEWID(), 'Rods', 1),
+  (NEWID(), 'Tubing', 1);
 
 -- PipeProperty_Condition
 INSERT INTO PipeProperty_Condition (PipeProperty_ConditionId, Name) VALUES

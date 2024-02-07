@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20231213InitialCreate : Migration
+    public partial class _20240129InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,7 +56,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 columns: table => new
                 {
                     PipePropertyCategoryId = table.Column<Guid>(name: "PipeProperty_CategoryId", type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
