@@ -36,15 +36,15 @@ export const actionCreatePipeProperty_CategoryError = createAction(
 // Update actions
 export const actionUpdatePipeProperty_Category = createAction(
     `${categoriesKey} Update PipeProperty_Category`,
-    props<{ categoryId: string; categoryUpdate: PipeProperty_Category }>()
+    props<{ id: string; category: PipeProperty_Category }>()
 );
 
 export const actionUpdatePipeProperty_CategorySuccess = createAction(
     `${categoriesKey} Update PipeProperty_Category Success`,
-    props<{ category: PipeProperty_Category }>()
+    props<{ id: string; category: PipeProperty_Category }>()
 );
 
 export const actionUpdatePipeProperty_CategoryError = createAction(
     `${categoriesKey} Update PipeProperty_Category Error`,
-    props<{ errorUpdatingCategory: HttpErrorResponse }>()
+    props<{ error: HttpErrorResponse }>()
 );

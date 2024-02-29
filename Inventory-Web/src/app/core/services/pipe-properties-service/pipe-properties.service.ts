@@ -9,7 +9,7 @@ import { PipeProperty_Category, PipeProperty_CategoryCreate, PipeProperty_Catego
 })
 export class PipePropertiesService {
 
-  private baseUrl = environment.apiUrl + 'pipe-property';
+  private baseUrl = environment.apiUrl + 'PipeProperty_Category';
 
   constructor(private readonly http: HttpClient) { }
 
@@ -17,14 +17,13 @@ export class PipePropertiesService {
     return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}`);
   }
 
-  addCategory(category: PipeProperty_CategoryCreate): Observable<PipeProperty_Category> {
+  createCategory(category: PipeProperty_CategoryCreate): Observable<PipeProperty_Category> {
     return this.http.post<PipeProperty_Category>(this.baseUrl, category);
   }
 
-  updateCategory(category: PipeProperty_Category): Observable<void> {
-    return this.http.put<void>(this.baseUrl, category);
+  updateCategory(id: string, category: PipeProperty_Category): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}`, category);
   }
-
 
   // Generic method to fetch properties by type 
   getProperties<T>(propertyType: string): Observable<T[]> {

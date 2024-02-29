@@ -9,7 +9,7 @@ import { AppState } from "../../core.state";
 const { selectEntities, selectAll } = pipeProperty_CategoryAdapter.getSelectors();
 
 export const selectCategoryFeature: MemoizedSelector<AppState, PipeProperty_CategoryState> =
-  createFeatureSelector<PipeProperty_CategoryState>('pipePropertyCategory');
+  createFeatureSelector<PipeProperty_CategoryState>('pipeProperty_Category');
 
 export const selectCategoryState = createSelector(
     selectCategoryFeature,

@@ -17,6 +17,7 @@ import { customerReducers } from './customer/customer.reducers';
 import { PipeState } from './pipe/pipe.state';
 import { pipeReducers } from './pipe/pipe.reducers';
 import { PipeProperty_CategoryState } from './pipe-properties/pipe-property-category/pipe-property-category.state';
+import { pipeProperty_CategoryReducers } from './pipe-properties/pipe-property-category/pipe-property-category.reducers';
 
 
   export const reducers: ActionReducerMap<AppState> = {
@@ -27,6 +28,7 @@ import { PipeProperty_CategoryState } from './pipe-properties/pipe-property-cate
     tally: tallyReducers,
     customer: customerReducers,
     pipe: pipeReducers,
+    pipeProperty_Category: pipeProperty_CategoryReducers
   };
 
   export const metaReducers: MetaReducer<AppState>[] = [
@@ -34,30 +36,7 @@ import { PipeProperty_CategoryState } from './pipe-properties/pipe-property-cate
     initStateFromSessionStorage
   ];
 
-//   if (!environment.production) {
-//     if (!environment.test) {
-//       metaReducers.unshift(debug);
-//     }
-//   }
 
-//   export const selectAuthState = createFeatureSelector<AppState, AuthState>(
-//     'auth'
-//   );
-
-//   export const selectSettingsState = createFeatureSelector<
-//     AppState,
-//     SettingsState
-//   >('settings');
-
-//   export const selectRouterState = createFeatureSelector<
-//     AppState,
-//     RouterReducerState<RouterStateUrl>
-//   >('router');
-
-//   export const selectRack = createFeatureSelector<
-//     AppState,
-//     RackState
-//     >('rack');
 
 // export const selectRack = createFeatureSelector<AppState, RackState>('rack');
 export const selectRackFeature: MemoizedSelector<AppState, RackState> =
@@ -69,8 +48,11 @@ export const selectTallyFeature: MemoizedSelector<AppState, TallyState> =
 export const selectCustomerFeature: MemoizedSelector<AppState, CustomerState> =
   createFeatureSelector<CustomerState>('customer');
 
-  export const selectPipeFeature: MemoizedSelector<AppState, PipeState> =
-  createFeatureSelector<PipeState>('pipe');
+export const selectPipeFeature: MemoizedSelector<AppState, PipeState> =
+createFeatureSelector<PipeState>('pipe');
+
+export const selectPipeProperty_CategoryFeature: MemoizedSelector<AppState, PipeProperty_CategoryState> =
+createFeatureSelector<PipeProperty_CategoryState>('pipeProperty_Category');
 
   export interface AppState {
     // auth: AuthState;

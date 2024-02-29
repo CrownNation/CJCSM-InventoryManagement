@@ -1,8 +1,8 @@
-import { ActionReducer, createReducer, on } from "@ngrx/store";
+import { Action, ActionReducer, createReducer, on } from "@ngrx/store";
 import { PipeProperty_CategoryState } from "./pipe-property-category.state";
 import { PipeProperty_Category } from "src/app/models/pipe.model";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
-import { actionGetCategories, actionGetCategoriesError, actionGetCategoriesSuccess } from "./pipe-property-category.actions";
+import { actionCreatePipeProperty_CategorySuccess, actionGetCategories, actionGetCategoriesError, actionGetCategoriesSuccess, actionUpdatePipeProperty_CategorySuccess } from "./pipe-property-category.actions";
 
 
 export function sortByName(a: PipeProperty_Category, b: PipeProperty_Category): number {
@@ -55,6 +55,19 @@ const reducer: ActionReducer<PipeProperty_CategoryState> = createReducer(
           errorLoadingCategories: null
         };
     }),
+    on(actionCreatePipeProperty_CategorySuccess, (state, { category }) => 
+    pipeProperty_CategoryAdapter.addOne(category, {
+        ...state,
+        loadingCategories: false,
+        errorCreatingCategory: null, 
+        createdCategory: category
+    })),
+    on(actionUpdatePipeProperty_CategorySuccess, (state, { category }) => {
+        return pipeProperty_CategoryAdapter.updateOne({
+          id: category.pipeProperty_CategoryId,
+          changes: category
+        }, state);
+      }),
     on(actionGetCategoriesSuccess, (state: PipeProperty_CategoryState, { categories }) => {
         return pipeProperty_CategoryAdapter.addMany(categories, {
           ...state,
@@ -69,3 +82,7 @@ const reducer: ActionReducer<PipeProperty_CategoryState> = createReducer(
     }))
 
 );
+
+export function pipeProperty_CategoryReducers(state: PipeProperty_CategoryState | undefined, action: Action) {
+    return reducer(state, action);
+}
