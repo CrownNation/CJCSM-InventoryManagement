@@ -51,6 +51,9 @@ namespace Inventory_DAL.Entities
         public virtual DbSet<Tally> Tally { get; set; }
         public virtual DbSet<TallyPipe> TallyPipe { get; set; }
 
+        public virtual DbSet<Equipment> Equipment { get; set; }
+        public virtual DbSet<EquipmentDefinition> EquipmentDefinition{ get; set; }
+
         public virtual DbSet<PipeProperty_Category> PipeProperty_Category { get; set; }
         public virtual DbSet<PipeProperty_Condition> PipeProperty_Condition { get; set; }
         public virtual DbSet<PipeProperty_Grade> PipeProperty_Grade { get; set; }
@@ -59,6 +62,8 @@ namespace Inventory_DAL.Entities
         public virtual DbSet<PipeProperty_Thread> PipeProperty_Thread { get; set; }
         public virtual DbSet<PipeProperty_Wall> PipeProperty_Wall { get; set; }
         public virtual DbSet<PipeProperty_Weight> PipeProperty_Weight { get; set; }
+
+
 
         // Since we are using DI, this will only be called during migrations. DI provides the configuration, so it doesn't need to call it during runtime.
         // This is called when a DbContext object is required by EF Core. We also only need to provide the development connection string since migrations are only run during development.

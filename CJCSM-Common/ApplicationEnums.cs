@@ -8,5 +8,14 @@
             TallyOut
         }
 
+        public enum  EquipmentCategories
+        {
+            PupJoint,
+            Collar,
+            StabbingGuide,
+            Drift,
+            SuckerRod,
+            Other
+        }
     }
 }

@@ -37,6 +37,8 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<Tally>("Tally");
     builder.EntitySet<TallyPipe>("TallyPipe");
     builder.EntitySet<ShopLocation>("ShopLocation");
+    builder.EntitySet<Equipment>("Equipment");
+    builder.EntitySet<EquipmentDefinition>("EquipmentDefinition");
     builder.EntitySet<PipeProperty_Category>("PipeProperty_Category");
 
     return builder.GetEdmModel();
@@ -105,6 +107,8 @@ builder.Services.AddScoped<IPipeBL, PipeBL>();
 builder.Services.AddScoped<ITallyBL, TallyBL>();
 builder.Services.AddScoped<ITallyPipeBL, TallyPipeBL>();
 builder.Services.AddScoped<IShopLocationBL, ShopLocationBL>();
+builder.Services.AddScoped<IEquipmentBL, EquipmentBL>();
+builder.Services.AddScoped<IEquipmentDefinitionBL, EquipmentDefinitionBL>();
 builder.Services.AddScoped<IPipeProperty_CategoryBL, PipeProperty_CategoryBL>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
