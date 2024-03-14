@@ -48,8 +48,9 @@ namespace Inventory_API.Controllers
             }
         }
 
-        [HttpGet("Basic")]
-        public async Task<IActionResult> Get(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
+        //This will get just the tally object without any pipe or equipment.
+        [HttpGet("tallyonly")]
+        public async Task<IActionResult> GetTallyOnly(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
@@ -63,27 +64,31 @@ namespace Inventory_API.Controllers
             }
         }
 
-
-        [HttpGet("{key}")]
-        public async Task<IActionResult> Get(Guid key, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
+        [HttpGet("{tallyId}")]
+        public IActionResult Get(Guid tallyId, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
-                DtoTally_WithPipeAndCustomer tally = await _tallyBl.GetTallyById(key);
+                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithPipeAndEquipmentByIdQuery(tallyId);
 
-                return Ok(tally);
+                if (tallyQuery == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(options.ApplyTo(tallyQuery));
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
-                _logger.LogInformation($"GetTallyById: " + e.Message);
                 return NotFound();
             }
             catch (Exception e)
             {
-                _logger.LogError($"GetTallyById: " + e.Message);
-                throw new Exception($"There was a problem querying for the tally with id {key}.");
+                _logger.LogError($"GetTallyWithPipeAndEquipmentByIdQuery: " + e.Message);
+                throw new Exception($"There was a problem querying for the tally for tallyID {tallyId.ToString()}. " + e.Message);
             }
         }
+
 
         [HttpGet("GeneratePdf/{tallyId}")]
         public IActionResult GeneratePdf(Guid tallyId)

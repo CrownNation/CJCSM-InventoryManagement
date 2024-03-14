@@ -23,7 +23,9 @@ namespace Inventory_Dto.Dto
 
         public string CarrierName { get; set; } = string.Empty;
 
-        public List<DtoTier_WithPipe> TierList { get; set; }
+        public List<DtoTier_WithPipe> TierWithPipeList { get; set; }
+
+        public List<DtoEquipmentCreate> EquipmentList { get; set; }
 
     }
 }

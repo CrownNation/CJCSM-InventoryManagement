@@ -43,12 +43,16 @@ VALUES (
 -- Racks
 DECLARE @Rack1Id UNIQUEIDENTIFIER = '4D7F90B7-A964-4BAA-8B52-6241A72E4DDA',
         @Rack2Id UNIQUEIDENTIFIER = 'E44FD154-091F-43A1-BA5A-071ABD2B3694',
-        @Rack3Id UNIQUEIDENTIFIER = 'B3CFC44C-879B-43EF-B6F0-02FA0D232430';
+        @Rack3Id UNIQUEIDENTIFIER = 'B3CFC44C-879B-43EF-B6F0-02FA0D232430',
+        @Rack4Id UNIQUEIDENTIFIER = '2a8cefdc-6181-4749-b9f6-f890ce90eea4',
+        @Rack5Id UNIQUEIDENTIFIER = '0e0a856a-bbac-49b4-a67d-825f38e4aef7';
 
 INSERT INTO Rack (RackId, Name, ShopLocationId, JointsPerTier, Description, IsActive) VALUES
 (@Rack1Id, 'Rack 1', @ShopLocationId, 70, 'Rack1 Description', 1),
 (@Rack2Id, 'Rack 2', @ShopLocationId, 80, 'Rack2 Description', 1),
-(@Rack3Id, 'Rack 3', @ShopLocationId, 90, 'Rack3 Description', 1);
+(@Rack3Id, 'Rack 3', @ShopLocationId, 90, 'Rack3 Description', 1),
+(@Rack4Id, 'Rack 4 Equipment 1', @ShopLocationId, 100, 'For Equipment', 1),
+(@Rack5Id, 'Rack 5 Equipment 2', @ShopLocationId, 100, 'For Equipment', 1);
 
 -- Tiers
 DECLARE @Tier1Id UNIQUEIDENTIFIER = 'F47E160F-B7C8-49B2-99B1-3E21BAA66F37',
@@ -158,6 +162,133 @@ INSERT INTO Pipe (PipeId, PipeDefinitionId, CustomerId, TierId, LengthInMeters, 
 (@Pipe8Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.95, 19.521, 7,2),
 (@Pipe9Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.85, 19.192, 7,3);
 
+-- Equipment
+DECLARE @EquipmentDef1Id UNIQUEIDENTIFIER = '1512b3e7-c5dc-4720-a9c8-5b3f13138196',
+        @EquipmentDef2Id UNIQUEIDENTIFIER = 'c313ddb4-3f62-43fa-a3aa-48d1bc26d6fc',
+        @EquipmentDef3Id UNIQUEIDENTIFIER = 'b00aea53-b5f4-4880-bf69-50d9c847cea3',
+        @EquipmentDef4Id UNIQUEIDENTIFIER = '953880a2-4966-431a-8b0a-6e2e066a31a9';
+
+INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, PipeProperty_GradeId, PipeProperty_SizeId, Notes)
+VALUES 
+  (@EquipmentDef1Id, 
+   1,  -- IsActive
+   'Description of item', 
+   'PupJoint',  -- Directly using the string representation of the enum
+   (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
+   'Notes go here');
+   
+INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, PipeProperty_GradeId, PipeProperty_SizeId, Notes)
+VALUES 
+  (@EquipmentDef2Id, 
+   1,  -- IsActive
+   'Description of item', 
+   'Collar',  -- Directly using the string representation of the enum
+   (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
+   'Notes go here');
+   
+INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, PipeProperty_GradeId, PipeProperty_SizeId, Notes)
+VALUES 
+  (@EquipmentDef3Id, 
+   1,  -- IsActive
+   'Description of item', 
+   'StabbingGuide',  -- Directly using the string representation of the enum
+   (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
+   'Notes go here');
+   
+INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, PipeProperty_GradeId, PipeProperty_SizeId, Notes)
+VALUES 
+  (@EquipmentDef4Id, 
+   1,  -- IsActive
+   'Description of item', 
+   'Drift',  -- Directly using the string representation of the enum
+   (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
+   'Notes go here');
+   
+DECLARE @Equipment1Id UNIQUEIDENTIFIER = 'dc245cb7-7497-4535-b558-9f9e097b939b',
+		@Equipment2Id UNIQUEIDENTIFIER = 'd814be6e-bc42-446c-af1b-17750ef5dcb1',
+		@Equipment3Id UNIQUEIDENTIFIER = '582cd453-25af-4064-a415-9fa47fbadbf8',
+		@Equipment4Id UNIQUEIDENTIFIER = '09815875-c0a8-4335-8c0b-a672d220aa0d',
+		@Equipment5Id UNIQUEIDENTIFIER = '54b12ebf-8105-485d-aa9d-71a63333d223',
+		@Equipment6Id UNIQUEIDENTIFIER = '540f74b5-85ca-46c5-b155-8060b7ae50ad';
+		
+		
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+VALUES 
+  (@Equipment1Id, 
+   @Rack4Id, 
+   @EquipmentDef1Id,
+   @Customer1Id, 
+   @ShopLocationId, 
+   10,  -- Example quantity
+   100.0,  -- Example length in meters
+   328.084  -- Example length in feet
+  );		
+		
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+VALUES 
+  (@Equipment2Id, 
+   @Rack4Id, 
+   @EquipmentDef2Id,
+   @Customer1Id, 
+   @ShopLocationId, 
+   5,  -- Example quantity
+   10.0,  -- Example length in meters
+   150.084  -- Example length in feet
+  );		
+
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+VALUES 
+  (@Equipment3Id, 
+   @Rack5Id, 
+   @EquipmentDef3Id,
+   @Customer2Id, 
+   @ShopLocationId, 
+   10,  -- Example quantity
+   100.0,  -- Example length in meters
+   328.084  -- Example length in feet
+  );		
+
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+VALUES 
+  (@Equipment4Id, 
+   @Rack5Id, 
+   @EquipmentDef4Id,
+   @Customer1Id, 
+   @ShopLocationId, 
+   10,  -- Example quantity
+   100.0,  -- Example length in meters
+   328.084  -- Example length in feet
+  );
+	
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+VALUES 
+  (@Equipment5Id, 
+   @Rack5Id, 
+   @EquipmentDef1Id,
+   @Customer3Id, 
+   @ShopLocationId, 
+   10,  -- Example quantity
+   100.0,  -- Example length in meters
+   328.084  -- Example length in feet
+  );
+  
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+VALUES 
+  (@Equipment6Id, 
+   @Rack5Id, 
+   @EquipmentDef2Id,
+   @Customer1Id, 
+   @ShopLocationId, 
+   10,  -- Example quantity
+   100.0,  -- Example length in meters
+   328.084  -- Example length in feet
+  );
+		
+		
 -- Tally
 DECLARE @Tally1Id UNIQUEIDENTIFIER = '96fb53a5-a421-488c-b725-d77c16b1a9f9',
         @Tally2Id UNIQUEIDENTIFIER = 'DEAB8BFD-FC9E-4D6A-AB69-FBF3A4D37012',
@@ -182,5 +313,14 @@ INSERT INTO TallyPipe (TallyId, PipeId) VALUES
 (@Tally3Id, @Pipe7Id),
 (@Tally3Id, @Pipe8Id),
 (@Tally3Id, @Pipe9Id);
+
+-- TallyEquipment
+INSERT INTO TallyEquipment (TallyId, EquipmentId) VALUES
+(@Tally1Id, @Equipment1Id),
+(@Tally1Id, @Equipment2Id),
+(@Tally1Id, @Equipment3Id),
+(@Tally2Id, @Equipment1Id),
+(@Tally2Id, @Equipment2Id),
+(@Tally3Id, @Equipment4Id);
 
 GO

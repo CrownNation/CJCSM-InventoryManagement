@@ -6,10 +6,10 @@ namespace Inventory_BLL.Interfaces
     public interface IEquipmentDefinitionBL
     {
         // Gets all EquipmentDefinition entities as an IQueryable
-        IQueryable<EquipmentDefinition> GetEquipmentDefinitions();
+        public IQueryable<DtoEquipmentDefinition> GetEquipmentDefinitions();
 
         // Gets a single EquipmentDefinition entity by its ID
-        EquipmentDefinition? GetEquipmentDefinitionById(Guid id);
+        public IQueryable<DtoEquipmentDefinition> GetEquipmentDefinitionById(Guid id);
 
         // Creates a new EquipmentDefinition entity using a DTO
         EquipmentDefinition CreateEquipmentDefinition(DtoEquipmentDefinitionCreate equipmentDefinitionCreateDto);

@@ -24,5 +24,9 @@ namespace Inventory_Dto.Dto
         public Guid PipeProperty_SizeId { get; set; }
 
         public string? Notes { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
+
     }
 }

@@ -17,7 +17,7 @@ namespace Inventory_DAL.Entities
         //add-migration [vxxxx_to_vxxxx_CamelCaseDescription_Project] -Context CjcsmSqliteContext -Output Migrations/ProjectMigrations
 
         //This command is used with the Package Manager Console(PMC) in Visual Studio
-        //Add-Migration 20240129_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
+        //Add-Migration 20240313_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
         //Update-Database
 
         //This command is used in the command-line interface (CLI) outside of Visual Studio.
@@ -52,7 +52,8 @@ namespace Inventory_DAL.Entities
         public virtual DbSet<TallyPipe> TallyPipe { get; set; }
 
         public virtual DbSet<Equipment> Equipment { get; set; }
-        public virtual DbSet<EquipmentDefinition> EquipmentDefinition{ get; set; }
+        public virtual DbSet<EquipmentDefinition> EquipmentDefinition { get; set; }
+        public virtual DbSet<TallyEquipment> TallyEquipment { get; set; }
 
         public virtual DbSet<PipeProperty_Category> PipeProperty_Category { get; set; }
         public virtual DbSet<PipeProperty_Condition> PipeProperty_Condition { get; set; }
@@ -82,13 +83,24 @@ namespace Inventory_DAL.Entities
             modelBuilder.Entity<TallyPipe>()
                 .HasKey(tp => new { tp.TallyId, tp.PipeId });
 
+            modelBuilder.Entity<TallyEquipment>()
+                .HasKey(te => new { te.TallyId, te.EquipmentId });
+
             modelBuilder.Entity<Pipe>()
                 .Property(p => p.LengthInFeet)
                 .HasPrecision(18, 2);
 
             modelBuilder.Entity<Pipe>()
                 .Property(p => p.LengthInMeters)
-                .HasPrecision(18, 2); 
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Equipment>()
+                .Property(p => p.LengthInFeet)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Equipment>()
+                .Property(p => p.LengthInMeters)
+                .HasPrecision(18, 2);
 
         }
     }

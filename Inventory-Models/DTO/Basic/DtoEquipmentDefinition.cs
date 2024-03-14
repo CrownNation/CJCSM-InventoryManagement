@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Inventory_DAL.Entities.PipeProperties;
+using CJCSM_Common;
 
 namespace Inventory_Dto.Dto
 {
@@ -22,7 +24,7 @@ namespace Inventory_Dto.Dto
 
         [Required]
         [StringLength(25)]
-        public string Cateogry { get; set; } = string.Empty;
+        public String Category { get; set; } = string.Empty;
 
         [Required]
         [ForeignKey("PipeProperty_Grade")]
@@ -32,6 +34,9 @@ namespace Inventory_Dto.Dto
         [ForeignKey("PipeProperty_GradeSize")]
         public Guid PipeProperty_SizeId { get; set; }
         public string? Notes { get; set; }
+
+        public PipeProperty_Grade Grade { get; set; }
+        public PipeProperty_Size Size { get; set; }
 
     }
 }

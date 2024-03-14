@@ -16,17 +16,23 @@ namespace Inventory_BLL.BL
             _mapper = mapper;
         }
 
-        public IQueryable<EquipmentDefinition> GetEquipmentDefinitions()
+        public IQueryable<DtoEquipmentDefinition> GetEquipmentDefinitions()
         {
-            return _context.EquipmentDefinition.AsQueryable();
+            IQueryable<EquipmentDefinition> entity = _context.EquipmentDefinition.AsQueryable();
+            IQueryable<DtoEquipmentDefinition> equipmentDefinitions = _mapper.ProjectTo<DtoEquipmentDefinition>(entity);
+
+            return equipmentDefinitions;
         }
 
-        public EquipmentDefinition GetEquipmentDefinitionById(Guid id)  
+        public IQueryable<DtoEquipmentDefinition> GetEquipmentDefinitionById(Guid id)  
         {
-            var equipmentDefinition = _context.EquipmentDefinition.Find(id);
-            if (equipmentDefinition == null)
-                throw new KeyNotFoundException($"EquipmentDefinition with ID {id} not found.");
-            return equipmentDefinition;
+            IQueryable<EquipmentDefinition>? equipmentDefinitino = _context.EquipmentDefinition.Where(x => x.EquipmentDefinitionId== id);
+            if (equipmentDefinitino.Any())
+            {
+                IQueryable<DtoEquipmentDefinition> dtoEquipmentDefinition = _mapper.ProjectTo<DtoEquipmentDefinition>(equipmentDefinitino);
+                return dtoEquipmentDefinition;
+            }
+            throw new KeyNotFoundException($"No equipment definition with guid {id} can be found.");
         }
 
         public EquipmentDefinition CreateEquipmentDefinition(DtoEquipmentDefinitionCreate dto)

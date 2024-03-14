@@ -31,9 +31,9 @@ namespace Inventory_Dto.Dto
         public PipeProperty_Grade Grade { get; set; }
         public PipeProperty_Range Range { get; set; }
         public PipeProperty_Size Size { get; set; }
-        public virtual PipeProperty_Thread Thread { get; set; }
+        public PipeProperty_Thread Thread { get; set; }
         public PipeProperty_Wall Wall { get; set; }
-        public virtual PipeProperty_Weight Weight { get; set; }
+        public PipeProperty_Weight Weight { get; set; }
 
 
     }

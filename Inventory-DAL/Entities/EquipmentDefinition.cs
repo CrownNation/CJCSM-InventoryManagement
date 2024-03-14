@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Inventory_DAL.Entities.PipeProperties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,7 +23,7 @@ namespace Inventory_DAL.Entities
 
         [Required]
         [StringLength(25)]
-        public string Cateogry { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
 
         [Required]
         [ForeignKey("PipeProperty_Grade")]
@@ -32,5 +33,10 @@ namespace Inventory_DAL.Entities
         [ForeignKey("PipeProperty_GradeSize")]
         public Guid PipeProperty_SizeId { get; set; }
         public string? Notes { get; set; }
+
+        // Navigation properties
+        public virtual PipeProperty_Grade Grade { get; set; }
+        public virtual PipeProperty_Size Size { get; set; }
+
     }
 }

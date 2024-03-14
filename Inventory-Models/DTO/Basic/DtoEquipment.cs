@@ -15,6 +15,9 @@ namespace Inventory_Dto.Dto
         [Required]
         public Guid RackId { get; set; }
 
+        public String RackName { get; set; }
+
+
         [Required]
         public Guid EquipmentDefinitionId { get; set; }
 
@@ -31,5 +34,7 @@ namespace Inventory_Dto.Dto
         public Decimal LengthInMeters { get; set; }
         [Required]
         public Decimal LengthInFeet { get; set; }
+
+        public DtoEquipmentDefinition EquipmentDefinition { get; set; }
     }
 }

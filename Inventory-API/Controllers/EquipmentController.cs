@@ -1,5 +1,6 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
+using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -19,13 +20,14 @@ namespace Inventory_API.Controllers
             _equipmentBL = equipmentBL;
         }
 
+        //Get all equipment WITHOUT equipment definitions and apply odata filters to it.
         [HttpGet]
         public IActionResult Get(ODataQueryOptions<Equipment> options)
         {
             try
             {
-                var equipments = _equipmentBL.GetEquipments();
-                return Ok(options.ApplyTo(equipments));
+                IQueryable<Equipment> equipmentList = _equipmentBL.GetEquipmentList();
+                return Ok(options.ApplyTo(equipmentList));
             }
             catch (Exception e)
             {
@@ -34,12 +36,29 @@ namespace Inventory_API.Controllers
             }
         }
 
+        // Get all equipment WITH equipment definitions and apply odata filters to it.
+        [HttpGet("withDefinition")]
+        public IActionResult GetEquipmentWithDefinitionList(ODataQueryOptions<DtoEquipment> options)
+        {
+            try
+            {
+                IQueryable<DtoEquipment>? equipmentList = _equipmentBL.GetEquipmentWithDefinitionList();
+                return Ok(options.ApplyTo(equipmentList));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetEquipments: " + e.Message);
+                return BadRequest("There was a problem querying for equipments.");
+            }
+        }
+
+        //Get a specific piece of equipment with the associated definition.
         [HttpGet("{key}")]
         public IActionResult Get(Guid key)
         {
             try
             {
-                var equipment = _equipmentBL.GetEquipmentById(key);
+                Equipment equipment = _equipmentBL.GetEquipmentById(key);
                 if (equipment != null)
                 {
                     return Ok(equipment);
@@ -56,6 +75,30 @@ namespace Inventory_API.Controllers
                 return BadRequest($"There was a problem querying for the equipment with id {key}.");
             }
         }
+
+        [HttpGet("{key}/withDefinition")]
+        public IActionResult GetEquipmentWithDefinitionById(Guid key)
+        {
+            try
+            {
+                IQueryable<DtoEquipment> equipment = _equipmentBL.GetEquipmentWithDefinitionById(key);
+                if (equipment != null)
+                {
+                    return Ok(equipment);
+                }
+                else
+                {
+                    _logger.LogInformation($"GetEquipmentWithDefinitionById: Equipment with id {key} not found.");
+                    return NotFound();
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetEquipmentWithDefinitionById: " + e.Message);
+                return BadRequest($"There was a problem querying for the equipment with id {key}.");
+            }
+        }
+
 
         [HttpPost]
         public IActionResult Post([FromBody] DtoEquipmentCreate dtoEquipmentCreate)

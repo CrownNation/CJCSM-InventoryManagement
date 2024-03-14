@@ -25,11 +25,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(ODataQueryOptions<EquipmentDefinition> options)
+        public IActionResult Get(ODataQueryOptions<DtoEquipmentDefinition> options)
         {
             try
             {
-                IQueryable<EquipmentDefinition>? equipmentDefinitions = _equipmentDefinitionBL.GetEquipmentDefinitions();
+                IQueryable<DtoEquipmentDefinition>? equipmentDefinitions = _equipmentDefinitionBL.GetEquipmentDefinitions();
                 return Ok(options.ApplyTo(equipmentDefinitions));
             }
             catch (Exception e)
@@ -44,7 +44,7 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                var equipmentDefinition = _equipmentDefinitionBL.GetEquipmentDefinitionById(key);
+                IQueryable<DtoEquipmentDefinition> equipmentDefinition = _equipmentDefinitionBL.GetEquipmentDefinitionById(key);
                 if (equipmentDefinition != null)
                 {
                     return Ok(equipmentDefinition);

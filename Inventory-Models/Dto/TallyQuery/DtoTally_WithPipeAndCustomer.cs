@@ -29,7 +29,7 @@ namespace Inventory_Dto.Dto
         public string? Notes { get; set; }
 
         public List<DtoPipe> PipeList { get; set; }
-
+        public List<DtoEquipment> EquipmentList {  get; set; }
         public string? InvoiceNumber { get; set; }
 
         public Guid TalliedByUserId { get; set; }

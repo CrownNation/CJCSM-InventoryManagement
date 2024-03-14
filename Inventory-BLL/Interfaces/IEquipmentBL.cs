@@ -1,14 +1,20 @@
 ﻿using Inventory_DAL.Entities;
+using Inventory_Dto.Dto;
 
 namespace Inventory_BLL.Interfaces
 {
     public interface IEquipmentBL
     {
         // Retrieves all equipment records as a queryable object.
-        IQueryable<Equipment> GetEquipments();
+        IQueryable<Equipment> GetEquipmentList();
+
+        public IQueryable<DtoEquipment>? GetEquipmentWithDefinitionList();
 
         // Retrieves a single equipment record by its unique identifier.
         Equipment GetEquipmentById(Guid id);
+
+        public IQueryable<DtoEquipment> GetEquipmentWithDefinitionById(Guid equipmentId);
+
 
         // Creates a new equipment record based on the provided DTO.
         Equipment CreateEquipment(DtoEquipmentCreate dto);
