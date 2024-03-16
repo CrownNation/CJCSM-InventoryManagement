@@ -7,6 +7,22 @@ INSERT INTO PipeProperty_Category (PipeProperty_CategoryId, Name, IsActive) VALU
   (NEWID(), 'Rods', 1),
   (NEWID(), 'Tubing', 1);
 
+-- Coating
+INSERT INTO PipeProperty_Coating (PipeProperty_CoatingId, Name, IsActive) VALUES
+    (NEWID(), 'Boronized', 1),
+    (NEWID(), 'Enertube', 1),
+    (NEWID(), 'IPC XL', 1),
+    (NEWID(), 'MAC 100', 1),
+    (NEWID(), 'MAC 200', 1),
+    (NEWID(), 'Other', 1),
+    (NEWID(), 'Polycore Lined', 1),
+    (NEWID(), 'Polycore Modified', 1),
+    (NEWID(), 'TK-69', 1),
+    (NEWID(), 'TK-7', 1),
+    (NEWID(), 'TK-99', 1),
+    (NEWID(), 'Ultratube', 1),
+    (NEWID(), 'Z-Core 100', 1);
+	
 -- PipeProperty_Condition
 INSERT INTO PipeProperty_Condition (PipeProperty_ConditionId, Name) VALUES
   (NEWID(), '10 Ft Pup'),
@@ -28,6 +44,7 @@ INSERT INTO PipeProperty_Condition (PipeProperty_ConditionId, Name) VALUES
   (NEWID(), 'New DMG'),
   (NEWID(), 'New ISP'),
   (NEWID(), 'New Bent'),
+  (NEWID(), 'Other'),
   (NEWID(), 'Plugged'),
   (NEWID(), 'Red / End'),
   (NEWID(), 'Repair'),

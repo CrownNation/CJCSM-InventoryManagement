@@ -88,11 +88,12 @@ DECLARE @PipeDef1Id UNIQUEIDENTIFIER = 'B06E0CCD-5E02-41C4-95A7-5F36F2A81A14',
         @PipeDef3Id UNIQUEIDENTIFIER = 'EAF46425-5310-43C3-BD58-2F6CC79F6017',
         @PipeDef4Id UNIQUEIDENTIFIER = 'D4386745-AE36-4C20-8A1D-16DA6B727A9B';
 
-INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
+INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, CoatingId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
 VALUES 
   (@PipeDef1Id,
    1,  -- Assuming IsActive is set to true by default
    (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_CoatingId FROM PipeProperty_Coating ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_ConditionId FROM PipeProperty_Condition ORDER BY NEWID()),  
    (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
@@ -101,11 +102,12 @@ VALUES
    (SELECT TOP 1 PipeProperty_WallId FROM PipeProperty_Wall ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_WeightId FROM PipeProperty_Weight ORDER BY NEWID()));
 
-INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
+INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, CoatingId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
 VALUES
   (@PipeDef2Id,
    1,  -- Assuming IsActive is set to true by default
    (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_CoatingId FROM PipeProperty_Coating ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_ConditionId FROM PipeProperty_Condition ORDER BY NEWID()),  
    (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
@@ -114,11 +116,12 @@ VALUES
    (SELECT TOP 1 PipeProperty_WallId FROM PipeProperty_Wall ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_WeightId FROM PipeProperty_Weight ORDER BY NEWID()));
 
-INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
+INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, CoatingId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
 VALUES 
   (@PipeDef3Id,
    1,  -- Assuming IsActive is set to true by default
    (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
+   (SELECT TOP 1 PipeProperty_CoatingId FROM PipeProperty_Coating ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_ConditionId FROM PipeProperty_Condition ORDER BY NEWID()),  
    (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),
@@ -127,11 +130,12 @@ VALUES
    (SELECT TOP 1 PipeProperty_WallId FROM PipeProperty_Wall ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_WeightId FROM PipeProperty_Weight ORDER BY NEWID()));
 
-INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
+INSERT INTO PipeDefinition (PipeDefinitionId, IsActive, CategoryId, CoatingId, ConditionId, GradeId, RangeId, SizeId, ThreadId, WallId, WeightId)
 VALUES 
   (@PipeDef4Id,
    1,  -- Assuming IsActive is set to true by default
    (SELECT TOP 1 PipeProperty_CategoryId FROM PipeProperty_Category ORDER BY NEWID()),
+      (SELECT TOP 1 PipeProperty_CoatingId FROM PipeProperty_Coating ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_ConditionId FROM PipeProperty_Condition ORDER BY NEWID()),  
    (SELECT TOP 1 PipeProperty_GradeId FROM PipeProperty_Grade ORDER BY NEWID()),
    (SELECT TOP 1 PipeProperty_RangeId FROM PipeProperty_Range ORDER BY NEWID()),

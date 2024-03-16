@@ -16,6 +16,7 @@ namespace Inventory_Dto.Dto
 
         // Foreign keys
         public Guid? CategoryId { get; set; }
+        public Guid? CoatingId { get; set; }
         public Guid? ConditionId { get; set; }
         public Guid? GradeId { get; set; }
         public Guid? RangeId { get; set; }
@@ -26,7 +27,8 @@ namespace Inventory_Dto.Dto
 
 
         // Navigation properties
-        public  PipeProperty_Category Category { get; set; }
+        public PipeProperty_Category Category { get; set; }
+        public PipeProperty_Coating Coating { get; set; }
         public PipeProperty_Condition Condition { get; set; }
         public PipeProperty_Grade Grade { get; set; }
         public PipeProperty_Range Range { get; set; }

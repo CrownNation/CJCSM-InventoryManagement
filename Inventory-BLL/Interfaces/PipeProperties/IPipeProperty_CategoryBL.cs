@@ -2,6 +2,7 @@
 using System.Linq;
 using Inventory_DAL.Entities.PipeProperties;
 using Inventory_Dto.Dto;
+using Inventory_Models.DTO;
 
 namespace Inventory_BLL.Interfaces
 {
@@ -11,7 +12,7 @@ namespace Inventory_BLL.Interfaces
         IQueryable<PipeProperty_Category> GetCategories();
 
         // Gets a single PipeProperty_Category entity by its ID
-        IQueryable<PipeProperty_Category>? GetCategoryById(Guid guid);
+        DtoPipeProperty_Category GetCategoryById(Guid guid);
 
         // Creates a new PipeProperty_Category entity
         PipeProperty_Category CreateCategory(PipeProperty_Category category);

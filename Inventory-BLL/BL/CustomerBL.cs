@@ -99,6 +99,7 @@ namespace Inventory_BLL.BL
                                                             join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
                                                             join t in _context.Tier on pipe.TierId equals t.TierId
                                                             join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                                            join ppco in _context.PipeProperty_Coating on pd.CoatingId equals ppco.PipeProperty_CoatingId
                                                             join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
                                                             join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
                                                             join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
@@ -114,6 +115,7 @@ namespace Inventory_BLL.BL
                                                                 PipeDefinition = pd,
                                                                 Tier = t,
                                                                 Category = ppc,
+                                                                Coating = ppco,
                                                                 Condition = ppcon,
                                                                 Grade = ppgr,
                                                                 Range = ppr,
@@ -175,6 +177,7 @@ namespace Inventory_BLL.BL
                             WallId = pipeData.PipeDefinition.WallId,
                             WeightId = pipeData.PipeDefinition.WeightId,
                             Category = pipeData.PipeDefinition.Category,
+                            Coating = pipeData.PipeDefinition.Coating,
                             Condition = pipeData.PipeDefinition.Condition,
                             Grade = pipeData.PipeDefinition.Grade,
                             Range = pipeData.PipeDefinition.Range,

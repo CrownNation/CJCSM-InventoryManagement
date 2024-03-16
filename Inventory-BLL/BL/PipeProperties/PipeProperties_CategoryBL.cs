@@ -3,6 +3,7 @@ using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
 using Inventory_DAL.Entities.PipeProperties;
 using Inventory_Dto.Dto;
+using Inventory_Models.DTO;
 using System;
 using System.Linq;
 
@@ -25,15 +26,14 @@ namespace Inventory_BLL.BL
             return entity;
         }
 
-        public IQueryable<PipeProperty_Category>? GetCategoryById(Guid guid)
+        public DtoPipeProperty_Category GetCategoryById(Guid id)
         {
-            IQueryable<PipeProperty_Category>? category = _context.PipeProperty_Category.Where(x => x.PipeProperty_CategoryId == guid);
-            if (category.Any())
+            var entity = _context.PipeProperty_Category.FirstOrDefault(e => e.PipeProperty_CategoryId== id);
+            if (entity == null)
             {
-                return category;
+                throw new KeyNotFoundException($"No coating with ID {id} can be found.");
             }
-
-            throw new KeyNotFoundException($"No category with guid {guid} can be found.");
+            return _mapper.Map<DtoPipeProperty_Category>(entity);
         }
 
         public PipeProperty_Category CreateCategory(PipeProperty_Category category)

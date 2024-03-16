@@ -17,6 +17,7 @@ namespace Inventory_DAL.Entities
 
         // Foreign keys
         public Guid? CategoryId { get; set; }
+        public Guid? CoatingId { get; set; }
         public Guid? ConditionId { get; set; }
         public Guid? GradeId { get; set; }
         public Guid? RangeId { get; set; }
@@ -28,6 +29,7 @@ namespace Inventory_DAL.Entities
 
         // Navigation properties
         public virtual PipeProperty_Category Category { get; set; }
+        public virtual PipeProperty_Coating Coating { get; set; }
         public virtual PipeProperty_Condition Condition { get; set; }
         public virtual PipeProperty_Grade Grade { get; set; }
         public virtual PipeProperty_Range Range { get; set; }

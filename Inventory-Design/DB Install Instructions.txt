@@ -1,0 +1,9 @@
+1. Run Migration
+Run the migration either from Visual Studio (command found in Inventory_Context.cs) or by running the migration package on the server.
+
+2. Run SQL Commands.
+Run PipeDefinitionPropertiesInsertScript.sql first, which will insert all of the default fields for pipe properties.
+
+OPTIONALLY:
+Second, run TestDataInsertScript.sql if you want to insert test data into the database.
+

@@ -1,6 +1,7 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities.PipeProperties;
 using Inventory_Dto.Dto;
+using Inventory_Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -37,12 +38,12 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key, ODataQueryOptions<PipeProperty_Category> options)
+        public IActionResult Get(Guid key)
         {
             try
             {
-                IQueryable<PipeProperty_Category>? category = _pipePropertyCategoryBl.GetCategoryById(key);
-                return Ok(options.ApplyTo(category));
+                DtoPipeProperty_Category category = _pipePropertyCategoryBl.GetCategoryById(key);
+                return Ok(category);
             }
             catch (KeyNotFoundException e)
             {
