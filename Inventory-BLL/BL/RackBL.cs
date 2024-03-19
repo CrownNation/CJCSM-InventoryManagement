@@ -92,6 +92,7 @@ namespace Inventory_BLL.BL
                                                            join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
                                                            join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
                                                            join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                                           join ppco in _context.PipeProperty_Coating on pd.CoatingId equals ppco.PipeProperty_CoatingId
                                                            join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
                                                            join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
                                                            join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
@@ -118,6 +119,7 @@ namespace Inventory_BLL.BL
                                                                {
                                                                    PipeDefinitionId = pd.PipeDefinitionId,
                                                                    CategoryId = pd.CategoryId,
+                                                                   CoatingId = pd.CoatingId,
                                                                    ConditionId = pd.ConditionId,
                                                                    GradeId = pd.GradeId,
                                                                    RangeId = pd.RangeId,
@@ -126,6 +128,7 @@ namespace Inventory_BLL.BL
                                                                    WallId = pd.WallId,
                                                                    WeightId = pd.WeightId,
                                                                    Category = ppc,
+                                                                   Coating = ppco,
                                                                    Condition = ppcon,
                                                                    Grade = ppgr,
                                                                    IsActive = pd.IsActive,
@@ -162,6 +165,7 @@ namespace Inventory_BLL.BL
                                                     join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
                                                     join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
                                                     join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                                    join ppco in _context.PipeProperty_Coating on pd.CoatingId equals ppco.PipeProperty_CoatingId
                                                     join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
                                                     join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
                                                     join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
@@ -188,6 +192,7 @@ namespace Inventory_BLL.BL
                                                         {
                                                             PipeDefinitionId = pd.PipeDefinitionId,
                                                             CategoryId = pd.CategoryId,
+                                                            CoatingId = pd.CoatingId,
                                                             ConditionId = pd.ConditionId,
                                                             GradeId = pd.GradeId,
                                                             RangeId = pd.RangeId,
@@ -196,6 +201,7 @@ namespace Inventory_BLL.BL
                                                             WallId = pd.WallId,
                                                             WeightId = pd.WeightId,
                                                             Category = ppc,
+                                                            Coating = ppco,
                                                             Condition = ppcon,
                                                             Grade = ppgr,
                                                             IsActive = pd.IsActive,

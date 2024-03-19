@@ -7,7 +7,7 @@ namespace Inventory_BLL.Interfaces
 {
     public interface ITallyBL
     {
-        Task<IQueryable<DtoTally_WithPipeAndCustomer>> GetTallies();
+        IQueryable<DtoTally_WithPipeAndCustomer> GetTallies();
         public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyWithPipeAndEquipmentByIdQuery(Guid tallyId);
         public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyWithPipeQuery();
         Task<DtoTally_WithPipeAndCustomer> CreateTallyWithPipe(DtoTallyCreate tallyWithPipe);

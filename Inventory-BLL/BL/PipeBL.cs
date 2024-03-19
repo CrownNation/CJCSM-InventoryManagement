@@ -77,6 +77,7 @@ namespace Inventory_BLL.Interfaces
                                 join t in _context.Tier on pipe.TierId equals t.TierId
                                 join r in _context.Rack on t.RackId equals r.RackId
                                 join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                join ppco in _context.PipeProperty_Coating on pd.CoatingId equals ppco.PipeProperty_CoatingId
                                 join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
                                 join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
                                 join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
@@ -101,6 +102,7 @@ namespace Inventory_BLL.Interfaces
                                     {
                                         PipeDefinitionId = pd.PipeDefinitionId,
                                         CategoryId = pd.CategoryId,
+                                        CoatingId = pd.CoatingId,
                                         ConditionId = pd.ConditionId,
                                         GradeId = pd.GradeId,
                                         RangeId = pd.RangeId,
@@ -109,6 +111,7 @@ namespace Inventory_BLL.Interfaces
                                         WallId = pd.WallId,
                                         WeightId = pd.WeightId,
                                         Category = new PipeProperty_Category { PipeProperty_CategoryId = ppc.PipeProperty_CategoryId, Name = ppc.Name },
+                                        Coating = ppco,
                                         Condition = new PipeProperty_Condition { PipeProperty_ConditionId = ppcon.PipeProperty_ConditionId, Name = ppcon.Name },
                                         Grade = new PipeProperty_Grade { PipeProperty_GradeId = ppgr.PipeProperty_GradeId, Name = ppgr.Name },
                                         Range = new PipeProperty_Range { PipeProperty_RangeId = ppr.PipeProperty_RangeId, Name = ppr.Name },

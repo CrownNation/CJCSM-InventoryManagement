@@ -1,7 +1,4 @@
 ﻿using Inventory_Dto.Dto;
-using Inventory_Models.DTO.PipeProperties;
-using System;
-using System.Linq;
 
 namespace Inventory_BLL.Interfaces
 {

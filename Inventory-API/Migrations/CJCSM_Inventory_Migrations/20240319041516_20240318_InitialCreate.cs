@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20240313InitialCreate : Migration
+    public partial class _20240318InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -83,11 +83,25 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PipeProperty_Coating",
+                columns: table => new
+                {
+                    PipePropertyCoatingId = table.Column<Guid>(name: "PipeProperty_CoatingId", type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PipeProperty_Coating", x => x.PipePropertyCoatingId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PipeProperty_Condition",
                 columns: table => new
                 {
                     PipePropertyConditionId = table.Column<Guid>(name: "PipeProperty_ConditionId", type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,7 +113,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 columns: table => new
                 {
                     PipePropertyGradeId = table.Column<Guid>(name: "PipeProperty_GradeId", type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,7 +126,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 columns: table => new
                 {
                     PipePropertyRangeId = table.Column<Guid>(name: "PipeProperty_RangeId", type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,6 +275,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     PipeDefinitionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CoatingId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ConditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     GradeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     RangeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -275,6 +292,11 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         column: x => x.CategoryId,
                         principalTable: "PipeProperty_Category",
                         principalColumn: "PipeProperty_CategoryId");
+                    table.ForeignKey(
+                        name: "FK_PipeDefinition_PipeProperty_Coating_CoatingId",
+                        column: x => x.CoatingId,
+                        principalTable: "PipeProperty_Coating",
+                        principalColumn: "PipeProperty_CoatingId");
                     table.ForeignKey(
                         name: "FK_PipeDefinition_PipeProperty_Condition_ConditionId",
                         column: x => x.ConditionId,
@@ -398,6 +420,11 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PipeDefinition_CoatingId",
+                table: "PipeDefinition",
+                column: "CoatingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PipeDefinition_ConditionId",
                 table: "PipeDefinition",
                 column: "ConditionId");
@@ -474,6 +501,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 
             migrationBuilder.DropTable(
                 name: "PipeProperty_Category");
+
+            migrationBuilder.DropTable(
+                name: "PipeProperty_Coating");
 
             migrationBuilder.DropTable(
                 name: "PipeProperty_Condition");

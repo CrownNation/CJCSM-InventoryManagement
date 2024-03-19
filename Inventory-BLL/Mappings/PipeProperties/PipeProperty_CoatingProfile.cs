@@ -17,7 +17,6 @@ namespace Inventory_BLL.Mappings
 
             CreateMap<DtoPipeProperty_CoatingUpdate, PipeProperty_Coating>()
                 .ForMember(dest => dest.PipeProperty_CoatingId, opt => opt.Ignore());
-            ;
 
         }
     }

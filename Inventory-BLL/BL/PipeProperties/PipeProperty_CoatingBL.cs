@@ -19,7 +19,7 @@ namespace Inventory_BLL.BL
 
         public IQueryable<DtoPipeProperty_Coating> GetCoatings()
         {
-            var entities = _context.PipeProperty_Coating;
+            var entities = _context.PipeProperty_Coating.OrderBy(c => c.Name);
             return _mapper.ProjectTo<DtoPipeProperty_Coating>(entities.AsQueryable());
         }
 

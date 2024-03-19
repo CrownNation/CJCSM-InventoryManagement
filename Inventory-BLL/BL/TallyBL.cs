@@ -30,7 +30,7 @@ namespace Inventory_BLL.BL
             _rackBL = rackBL;
         }
 
-        public async Task<IQueryable<DtoTally_WithPipeAndCustomer>> GetTallies()
+        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallies()
         {
             var tallyQuery = from tally in _context.Tally
                              join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
@@ -52,12 +52,14 @@ namespace Inventory_BLL.BL
                              };
 
 
-            return await Task.FromResult(tallyQuery);
+            return tallyQuery;
         }
 
 
         public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyWithPipeAndEquipmentByIdQuery(Guid tallyId)
         {
+            //Note: I tested this query and watched for DB call timing, and even though this query has internal .ToList() calls (which at a base level will trigger
+            //the db call, the nested .ToList() does not trigger the db call.
             var tallyQuery = from tally in _context.Tally
                              join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
                              join shopLocation in _context.ShopLocation on tally.ShopLocationId equals shopLocation.ShopLocationId
@@ -84,6 +86,7 @@ namespace Inventory_BLL.BL
                                              join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
                                              join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
                                              join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                             join ppco in _context.PipeProperty_Coating on pd.CoatingId equals ppco.PipeProperty_CoatingId
                                              join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
                                              join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
                                              join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
@@ -109,6 +112,7 @@ namespace Inventory_BLL.BL
                                                  {
                                                      PipeDefinitionId = pd.PipeDefinitionId,
                                                      CategoryId = pd.CategoryId,
+                                                     CoatingId = pd.CoatingId,
                                                      ConditionId = pd.ConditionId,
                                                      GradeId = pd.GradeId,
                                                      RangeId = pd.RangeId,
@@ -117,6 +121,7 @@ namespace Inventory_BLL.BL
                                                      WallId = pd.WallId,
                                                      WeightId = pd.WeightId,
                                                      Category = ppc,
+                                                     Coating = ppco,
                                                      Condition = ppcon,
                                                      Grade = ppgr,
                                                      IsActive = pd.IsActive,
@@ -171,6 +176,7 @@ namespace Inventory_BLL.BL
                                                 where tp.TallyId == tally.TallyId
                                                 select pipe.Quantity * pipe.LengthInFeet * pd.Weight.WeightInLbsPerFoot).Sum()
                              };
+
             return tallyQuery;
         }
 
@@ -201,6 +207,7 @@ namespace Inventory_BLL.BL
                                              join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
                                              join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
                                              join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                             join ppco in _context.PipeProperty_Coating on pd.CoatingId equals ppco.PipeProperty_CoatingId
                                              join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
                                              join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
                                              join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
@@ -226,6 +233,7 @@ namespace Inventory_BLL.BL
                                                  {
                                                      PipeDefinitionId = pd.PipeDefinitionId,
                                                      CategoryId = pd.CategoryId,
+                                                     CoatingId = pd.CoatingId,
                                                      ConditionId = pd.ConditionId,
                                                      GradeId = pd.GradeId,
                                                      RangeId = pd.RangeId,
@@ -234,6 +242,7 @@ namespace Inventory_BLL.BL
                                                      WallId = pd.WallId,
                                                      WeightId = pd.WeightId,
                                                      Category = ppc,
+                                                     Coating = ppco,
                                                      Condition = ppcon,
                                                      Grade = ppgr,
                                                      IsActive = pd.IsActive,

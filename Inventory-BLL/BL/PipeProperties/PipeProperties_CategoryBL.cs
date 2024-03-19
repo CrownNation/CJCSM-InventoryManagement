@@ -22,7 +22,7 @@ namespace Inventory_BLL.BL
 
         public IQueryable<PipeProperty_Category> GetCategories()
         {
-            IQueryable<PipeProperty_Category> entity = _context.PipeProperty_Category.AsQueryable();
+            IQueryable<PipeProperty_Category> entity = _context.PipeProperty_Category.OrderBy(c=>c.Name);
             return entity;
         }
 

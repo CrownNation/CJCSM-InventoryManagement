@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using System.ComponentModel.DataAnnotations;
-using Inventory_Models.DTO.PipeProperties;
+using Inventory_Dto.Dto;
 
 namespace Inventory_API.Controllers
 {

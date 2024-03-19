@@ -1,13 +1,8 @@
 ﻿using Inventory_BLL.Interfaces;
-using Inventory_DAL.Entities.PipeProperties;
 using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.ComponentModel.DataAnnotations;
 
 namespace Inventory_API.Controllers
 {

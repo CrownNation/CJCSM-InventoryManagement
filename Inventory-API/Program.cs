@@ -43,6 +43,8 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<PipeProperty_Category>("PipeProperty_Category");
     builder.EntitySet<PipeProperty_Coating>("PipeProperty_Coating");
     builder.EntitySet<PipeProperty_Condition>("PipeProperty_Condition");
+    builder.EntitySet<PipeProperty_Grade>("PipeProperty_Grade");
+    builder.EntitySet<PipeProperty_Range>("PipeProperty_Range");
 
     return builder.GetEdmModel();
 }
@@ -116,6 +118,8 @@ builder.Services.AddScoped<ITallyEquipmentBL, TallyEquipmentBL>();
 builder.Services.AddScoped<IPipeProperty_CategoryBL, PipeProperty_CategoryBL>();
 builder.Services.AddScoped<IPipeProperty_CoatingBL, PipeProperty_CoatingBL>();
 builder.Services.AddScoped<IPipeProperty_ConditionBL, PipeProperty_ConditionBL>();
+builder.Services.AddScoped<IPipeProperty_GradeBL, PipeProperty_GradeBL>();
+builder.Services.AddScoped<IPipeProperty_RangeBL, PipeProperty_RangeBL>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // This method adds metadata about your API's endpoints to the ASP.NET Core application. It doesn't directly generate human-readable

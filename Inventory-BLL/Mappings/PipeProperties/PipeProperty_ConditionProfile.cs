@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Inventory_DAL.Entities.PipeProperties;
-using Inventory_Models.DTO.PipeProperties;
+using Inventory_Dto.Dto;
 
 namespace Inventory_BLL.Mappings.PipeProperties
 {

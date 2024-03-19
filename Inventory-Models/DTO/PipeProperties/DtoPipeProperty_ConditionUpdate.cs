@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Inventory_Models.DTO.PipeProperties
+namespace Inventory_Dto.Dto
 {
     public class DtoPipeProperty_ConditionUpdate
     {

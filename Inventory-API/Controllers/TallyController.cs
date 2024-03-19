@@ -50,11 +50,11 @@ namespace Inventory_API.Controllers
 
         //This will get just the tally object without any pipe or equipment.
         [HttpGet("tallyonly")]
-        public async Task<IActionResult> GetTallyOnly(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
+        public IActionResult GetTallyOnly(ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
         {
             try
             {
-                IQueryable<DtoTally_WithPipeAndCustomer>? tallies = await _tallyBl.GetTallies();
+                IQueryable<DtoTally_WithPipeAndCustomer>? tallies = _tallyBl.GetTallies();
                 return Ok(options.ApplyTo(tallies));
             }
             catch (Exception e)

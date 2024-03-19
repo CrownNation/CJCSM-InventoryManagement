@@ -2,10 +2,9 @@
 
 namespace Inventory_Dto.Dto
 {
-    public class DtoPipeProperty_Category
+    public class DtoPipeProperty_Range
     {
-        public Guid PipeProperty_CategoryId { get; set; }
-
+        public Guid PipeProperty_RangeId { get; set; }
         [StringLength(15)]
         public string Name { get; set; } = String.Empty;
 
