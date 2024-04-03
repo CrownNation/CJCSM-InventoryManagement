@@ -3,6 +3,7 @@ using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using System.Threading.Tasks;
 
 namespace Inventory_API.Controllers
 {
@@ -35,11 +36,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key)
+        public async Task<IActionResult> Get(Guid key)
         {
             try
             {
-                DtoPipeProperty_Coating? coating = _pipePropertyCoatingBl.GetCoatingById(key);
+                DtoPipeProperty_Coating coating = await _pipePropertyCoatingBl.GetCoatingById(key);
                 return Ok(coating);
             }
             catch (KeyNotFoundException e)
@@ -55,29 +56,27 @@ namespace Inventory_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] DtoPipeProperty_Coating coating)
+        public async Task<IActionResult> Post([FromBody] DtoPipeProperty_Coating coating)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            DtoPipeProperty_Coating createdCoating;
             try
             {
-                createdCoating = _pipePropertyCoatingBl.CreateCoating(coating);
+                DtoPipeProperty_Coating createdCoating = await _pipePropertyCoatingBl.CreateCoating(coating);
+                return CreatedAtAction("Get", new { key = createdCoating.PipeProperty_CoatingId }, createdCoating);
             }
             catch (Exception e)
             {
                 _logger.LogError($"CreateCoating: " + e.Message);
                 return BadRequest("There was a problem creating the coating.");
             }
-
-            return CreatedAtAction("Get", new { key = createdCoating.PipeProperty_CoatingId }, createdCoating);
         }
 
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoPipeProperty_CoatingUpdate coating)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoPipeProperty_CoatingUpdate coating)
         {
             if (!ModelState.IsValid)
             {
@@ -86,7 +85,8 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _pipePropertyCoatingBl.UpdateCoating(coating, key);
+                await _pipePropertyCoatingBl.UpdateCoating(coating, key);
+                return NoContent();
             }
             catch (KeyNotFoundException e)
             {
@@ -98,16 +98,15 @@ namespace Inventory_API.Controllers
                 _logger.LogError($"UpdateCoating: " + e.Message);
                 return BadRequest("There was a problem updating the coating.");
             }
-
-            return NoContent();
         }
 
         [HttpDelete("{key}")]
-        public IActionResult Delete(Guid key)
+        public async Task<IActionResult> Delete(Guid key)
         {
             try
             {
-                _pipePropertyCoatingBl.DeactivateCoating(key);
+                await _pipePropertyCoatingBl.DeactivateCoating(key);
+                return NoContent();
             }
             catch (KeyNotFoundException e)
             {
@@ -119,8 +118,6 @@ namespace Inventory_API.Controllers
                 _logger.LogError($"DeleteCoating: " + e.Message);
                 return BadRequest("There was a problem deleting the coating.");
             }
-
-            return NoContent();
         }
     }
 }

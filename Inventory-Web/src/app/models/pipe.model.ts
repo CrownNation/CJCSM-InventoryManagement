@@ -26,6 +26,7 @@ export interface PipeDefinition {
     wallId: string | null;
     weightId: string | null;
     category: PipeProperty_Category | null;
+    coating: PipeProperty_Coating | null;
     condition: PipeProperty_Condition | null;
     grade: PipeProperty_Grade | null;
     range: PipeProperty_Range | null;
@@ -46,10 +47,36 @@ export interface PipeProperty_CategoryCreate {
     isActive: boolean;
 }
 
+export interface PipeProperty_CategoryUpdate {
+    name: string;
+    isActive: boolean;
+}
+
 export interface PipeProperty_CategorySearchParams {
     isActive: boolean | null;
+    name: string | null;
   }
   
+  export interface PipeProperty_Coating {
+    pipeProperty_CoatingId: string;
+    name: string;
+    isActive: boolean;
+  }
+
+export interface PipeProperty_CoatingCreate {
+    name: string;
+    isActive: boolean;
+}
+
+export interface PipeProperty_CoatingUpdate {
+    name: string;
+    isActive: boolean;
+}
+
+export interface PipeProperty_CoatingSearchParams {
+    name: string | null;
+    isActive: boolean | null;
+  }
 
 export interface PipeProperty_Condition {
     pipeProperty_ConditionId: string;

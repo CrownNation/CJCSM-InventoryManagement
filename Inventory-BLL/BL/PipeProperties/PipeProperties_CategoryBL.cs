@@ -3,9 +3,9 @@ using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
 using Inventory_DAL.Entities.PipeProperties;
 using Inventory_Dto.Dto;
-using Inventory_Models.DTO;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Inventory_BLL.BL
 {
@@ -22,53 +22,52 @@ namespace Inventory_BLL.BL
 
         public IQueryable<PipeProperty_Category> GetCategories()
         {
-            IQueryable<PipeProperty_Category> entity = _context.PipeProperty_Category.OrderBy(c=>c.Name);
+            IQueryable<PipeProperty_Category> entity = _context.PipeProperty_Category.OrderBy(c => c.Name);
             return entity;
         }
 
-        public DtoPipeProperty_Category GetCategoryById(Guid id)
+        public async Task<DtoPipeProperty_Category> GetCategoryById(Guid id)
         {
-            var entity = _context.PipeProperty_Category.FirstOrDefault(e => e.PipeProperty_CategoryId== id);
+            var entity = await _context.PipeProperty_Category.FindAsync(id);
             if (entity == null)
             {
-                throw new KeyNotFoundException($"No coating with ID {id} can be found.");
+                throw new KeyNotFoundException($"No category with ID {id} can be found.");
             }
             return _mapper.Map<DtoPipeProperty_Category>(entity);
         }
 
-        public PipeProperty_Category CreateCategory(PipeProperty_Category category)
+        public async Task<PipeProperty_Category> CreateCategory(PipeProperty_Category category)
         {
             if (category == null)
                 throw new ArgumentNullException("Create Category failed. The category data is null");
 
             category.PipeProperty_CategoryId = Guid.NewGuid();
             _context.PipeProperty_Category.Add(category);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return category;
         }
 
-        public void UpdateCategory(DtoPipeProperty_CategoryUpdate category, Guid guid)
+        public async Task UpdateCategory(DtoPipeProperty_CategoryUpdate categoryDto, Guid guid)
         {
-            PipeProperty_Category? existingCategory = _context.PipeProperty_Category.Find(guid);
+            PipeProperty_Category? existingCategory = await _context.PipeProperty_Category.FindAsync(guid);
 
             if (existingCategory == null)
                 throw new KeyNotFoundException($"No category with guid {guid} can be found.");
 
-            _mapper.Map(category, existingCategory);
-            _context.SaveChanges();
+            _mapper.Map(categoryDto, existingCategory);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeactivateCategory(Guid guid)
+        public async Task DeactivateCategory(Guid guid)
         {
-            PipeProperty_Category? category = _context.PipeProperty_Category.Find(guid);
+            PipeProperty_Category? category = await _context.PipeProperty_Category.FindAsync(guid);
 
             if (category == null)
                 throw new KeyNotFoundException($"No category with guid {guid} can be found.");
 
-            // Set IsActive to false instead of removing the category
             category.IsActive = false;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

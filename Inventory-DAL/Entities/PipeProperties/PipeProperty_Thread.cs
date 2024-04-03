@@ -9,6 +9,7 @@ namespace Inventory_DAL.Entities.PipeProperties
         [StringLength(15)]
         public string Name { get; set; } = String.Empty;
 
+        public bool IsActive { get; set; }
 
     }
 }

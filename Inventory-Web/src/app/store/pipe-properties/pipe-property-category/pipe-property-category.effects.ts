@@ -9,13 +9,14 @@ import {
     actionGetCategories,
     actionGetCategoriesSuccess,
     actionGetCategoriesError,
-    actionCreatePipeProperty_Cateogry,
+    actionCreatePipeProperty_Category,
     actionCreatePipeProperty_CategorySuccess,
     actionCreatePipeProperty_CategoryError,
     actionUpdatePipeProperty_Category,
     actionUpdatePipeProperty_CategorySuccess,
     actionUpdatePipeProperty_CategoryError
   } from './pipe-property-category.actions';
+import { PipeProperty_Category, PipeProperty_CategoryCreate } from "src/app/models/pipe.model";
 
 @Injectable()
 export class PipeProperty_CategoryEffects {
@@ -25,7 +26,6 @@ export class PipeProperty_CategoryEffects {
       private pipePropertiesService: PipePropertiesService,
   ) {}
 
-  // Creates a new observable effect
   loadCategories$ = createEffect(() =>
   this.actions$.pipe(
     ofType(actionGetCategories),
@@ -40,7 +40,7 @@ export class PipeProperty_CategoryEffects {
 
 createCategory$ = createEffect(() =>
   this.actions$.pipe(
-    ofType(actionCreatePipeProperty_Cateogry),
+    ofType(actionCreatePipeProperty_Category),
     switchMap(data =>
       this.pipePropertiesService.createCategory(data.categoryCreate).pipe(
         map(category => actionCreatePipeProperty_CategorySuccess({ category })),
@@ -49,7 +49,6 @@ createCategory$ = createEffect(() =>
     )
   )
 );
-
 
   // Effect to handle category updates
 updateCategory$ = createEffect(() =>

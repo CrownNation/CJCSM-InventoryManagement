@@ -110,15 +110,15 @@ namespace Inventory_BLL.Interfaces
                                         ThreadId = pd.ThreadId,
                                         WallId = pd.WallId,
                                         WeightId = pd.WeightId,
-                                        Category = new PipeProperty_Category { PipeProperty_CategoryId = ppc.PipeProperty_CategoryId, Name = ppc.Name },
+                                        Category= ppc,
                                         Coating = ppco,
-                                        Condition = new PipeProperty_Condition { PipeProperty_ConditionId = ppcon.PipeProperty_ConditionId, Name = ppcon.Name },
-                                        Grade = new PipeProperty_Grade { PipeProperty_GradeId = ppgr.PipeProperty_GradeId, Name = ppgr.Name },
-                                        Range = new PipeProperty_Range { PipeProperty_RangeId = ppr.PipeProperty_RangeId, Name = ppr.Name },
-                                        Size = new PipeProperty_Size { PipeProperty_SizeId = pps.PipeProperty_SizeId, SizeImperial = pps.SizeImperial, SizeMetric = pps.SizeMetric },
-                                        Thread = new PipeProperty_Thread { PipeProperty_ThreadId = ppt.PipeProperty_ThreadId, Name = ppt.Name },
-                                        Wall = new PipeProperty_Wall { PipeProperty_WallId = ppw.PipeProperty_WallId, WallImperial = ppw.WallImperial, WallMetric = ppw.WallMetric },
-                                        Weight = new PipeProperty_Weight { PipeProperty_WeightId = ppwe.PipeProperty_WeightId, WeightInKgPerMeter = ppwe.WeightInKgPerMeter, WeightInLbsPerFoot = ppwe.WeightInLbsPerFoot }
+                                        Condition = ppcon,
+                                        Grade = ppgr,
+                                        Range = ppr,
+                                        Size = pps,
+                                        Thread = ppt,
+                                        Wall = ppw,
+                                        Weight = ppwe
                                     }
                                 };
 

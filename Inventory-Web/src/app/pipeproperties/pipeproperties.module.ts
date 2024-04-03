@@ -20,12 +20,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { pipeProperty_CategoryReducers } from '../store/pipe-properties/pipe-property-category/pipe-property-category.reducers';
 import { PipeProperty_CategoryEffects } from '../store/pipe-properties/pipe-property-category/pipe-property-category.effects';
+import { PipePropertyCoatingComponent } from './pipe-property-coating/pipe-property-coating.component';
+import { pipeProperty_CoatingReducers } from '../store/pipe-properties/pipe-property-coating/pipe-property-coating.reducers';
+import { PipeProperty_CoatingEffects } from '../store/pipe-properties/pipe-property-coating/pipe-property-coating.effects';
 
 
 @NgModule({
   declarations: [
     PipepropertiesComponent,
-    PipePropertyCategoryComponent
+    PipePropertyCategoryComponent,
+    PipePropertyCoatingComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +46,8 @@ import { PipeProperty_CategoryEffects } from '../store/pipe-properties/pipe-prop
     ReactiveFormsModule,
     StoreModule.forFeature('pipeProperty_Category', pipeProperty_CategoryReducers),
     EffectsModule.forFeature([PipeProperty_CategoryEffects]),
+    StoreModule.forFeature('pipeProperty_Coating', pipeProperty_CoatingReducers),
+    EffectsModule.forFeature([PipeProperty_CoatingEffects]),
   ]
 })
 export class PipepropertiesModule { }

@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Inventory_DAL.Entities.PipeProperties
 {
@@ -19,6 +14,6 @@ namespace Inventory_DAL.Entities.PipeProperties
         [Column(TypeName = "decimal(4, 3)")]
         public decimal WallImperial { get; set; }
 
-
+        public bool IsActive { get; set; }
     }
 }

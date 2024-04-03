@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { createAction, props } from "@ngrx/store";
 import { PipeProperty_Category, PipeProperty_CategoryCreate, PipeProperty_CategorySearchParams } from "src/app/models/pipe.model";
-import { PipePropertyCategoryComponent } from "src/app/pipeproperties/pipe-property-category/pipe-property-category.component";
 
 export const categoriesKey = '[Pipe Properties Category]';
 
@@ -20,7 +19,7 @@ export const actionGetCategoriesError = createAction(
 );
 
 // Create actions
-export const actionCreatePipeProperty_Cateogry = createAction(
+export const actionCreatePipeProperty_Category = createAction(
     `${categoriesKey} Create PipeProperty_Cateogry`,
     props<{ categoryCreate: PipeProperty_CategoryCreate }>()
 );

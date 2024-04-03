@@ -23,9 +23,9 @@ namespace Inventory_BLL.BL
             return _mapper.ProjectTo<DtoPipeProperty_Coating>(entities.AsQueryable());
         }
 
-        public DtoPipeProperty_Coating GetCoatingById(Guid id)
+        public async Task<DtoPipeProperty_Coating> GetCoatingById(Guid id)
         {
-            var entity = _context.PipeProperty_Coating.FirstOrDefault(e => e.PipeProperty_CoatingId == id);
+            var entity = await _context.PipeProperty_Coating.FindAsync(id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"No coating with ID {id} can be found.");
@@ -33,35 +33,35 @@ namespace Inventory_BLL.BL
             return _mapper.Map<DtoPipeProperty_Coating>(entity);
         }
 
-        public DtoPipeProperty_Coating CreateCoating(DtoPipeProperty_Coating coating)
+        public async Task<DtoPipeProperty_Coating> CreateCoating(DtoPipeProperty_Coating coating)
         {
             var entity = _mapper.Map<PipeProperty_Coating>(coating);
             entity.PipeProperty_CoatingId = Guid.NewGuid();
-            _context.PipeProperty_Coating.Add(entity);
-            _context.SaveChanges();
+            await _context.PipeProperty_Coating.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return _mapper.Map<DtoPipeProperty_Coating>(entity);
         }
 
-        public void UpdateCoating(DtoPipeProperty_CoatingUpdate coating, Guid guid)
+        public async Task UpdateCoating(DtoPipeProperty_CoatingUpdate coating, Guid guid)
         {
-            var entity = _context.PipeProperty_Coating.FirstOrDefault(e => e.PipeProperty_CoatingId == guid);
+            var entity = await _context.PipeProperty_Coating.FindAsync(guid);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"No coating with ID {guid} can be found.");
             }
             _mapper.Map(coating, entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeactivateCoating(Guid id)
+        public async Task DeactivateCoating(Guid id)
         {
-            var entity = _context.PipeProperty_Coating.FirstOrDefault(e => e.PipeProperty_CoatingId == id);
+            var entity = await _context.PipeProperty_Coating.FindAsync(id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"No coating with ID {id} can be found.");
             }
             entity.IsActive = false;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

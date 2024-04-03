@@ -7,7 +7,7 @@ import { AppState } from '../../store/core.state';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, combineLatest, map, takeUntil } from 'rxjs';
 import { selectAllCategories, selectCreatingCategoryError, selectErrorLoadingCategories, selectLoadingCategories, selectSelectedCategoryError } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.selectors';
-import { actionGetCategories, actionCreatePipeProperty_Cateogry, actionUpdatePipeProperty_Category } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.actions';
+import { actionCreatePipeProperty_Category, actionGetCategories, actionUpdatePipeProperty_Category } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.actions';
 
 @Component({
   selector: 'app-pipe-property-category',
@@ -75,8 +75,7 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
       };
       this.store.dispatch(actionUpdatePipeProperty_Category({ id: categoryId, category: categoryUpdate }));
     } else {
-      // Assuming your form value matches the structure expected for creation
-      this.store.dispatch(actionCreatePipeProperty_Cateogry({ categoryCreate: this.categoryForm.value }));
+      this.store.dispatch(actionCreatePipeProperty_Category({ categoryCreate: this.categoryForm.value }));
     }
     this.resetForm();
   }

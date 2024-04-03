@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using Inventory_DAL.Entities.PipeProperties;
+﻿using Inventory_DAL.Entities.PipeProperties;
 using Inventory_Dto.Dto;
-using Inventory_Models.DTO;
 
 namespace Inventory_BLL.Interfaces
 {
@@ -11,16 +8,16 @@ namespace Inventory_BLL.Interfaces
         // Gets all PipeProperty_Category entities as an IQueryable
         IQueryable<PipeProperty_Category> GetCategories();
 
-        // Gets a single PipeProperty_Category entity by its ID
-        DtoPipeProperty_Category GetCategoryById(Guid guid);
+        // Gets a single PipeProperty_Category entity by its ID asynchronously
+        Task<DtoPipeProperty_Category> GetCategoryById(Guid id);
 
-        // Creates a new PipeProperty_Category entity
-        PipeProperty_Category CreateCategory(PipeProperty_Category category);
+        // Creates a new PipeProperty_Category entity asynchronously
+        Task<PipeProperty_Category> CreateCategory(PipeProperty_Category category);
 
-        // Updates an existing PipeProperty_Category entity identified by its ID
-        void UpdateCategory(DtoPipeProperty_CategoryUpdate category, Guid guid);
+        // Updates an existing PipeProperty_Category entity identified by its ID asynchronously
+        Task UpdateCategory(DtoPipeProperty_CategoryUpdate category, Guid id);
 
-        // Deletes a PipeProperty_Category entity identified by its ID
-        void DeactivateCategory(Guid guid);
+        // Deletes a PipeProperty_Category entity identified by its ID asynchronously
+        Task DeactivateCategory(Guid id);
     }
 }

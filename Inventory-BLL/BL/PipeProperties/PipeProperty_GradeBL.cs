@@ -3,8 +3,10 @@ using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
 using Inventory_DAL.Entities.PipeProperties;
 using Inventory_Dto.Dto;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Inventory_BLL.BL
 {
@@ -21,13 +23,13 @@ namespace Inventory_BLL.BL
 
         public IQueryable<DtoPipeProperty_Grade> GetGrades()
         {
-            var entities = _context.PipeProperty_Grade.OrderBy(g=>g.Name);
+            var entities = _context.PipeProperty_Grade.OrderBy(c => c.Name);
             return _mapper.ProjectTo<DtoPipeProperty_Grade>(entities.AsQueryable());
         }
 
-        public DtoPipeProperty_Grade GetGradeById(Guid id)
+        public async Task<DtoPipeProperty_Grade> GetGradeById(Guid id)
         {
-            var entity = _context.PipeProperty_Grade.FirstOrDefault(e => e.PipeProperty_GradeId == id);
+            var entity = await _context.PipeProperty_Grade.FirstOrDefaultAsync(e => e.PipeProperty_GradeId == id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"No grade with ID {id} can be found.");
@@ -35,35 +37,35 @@ namespace Inventory_BLL.BL
             return _mapper.Map<DtoPipeProperty_Grade>(entity);
         }
 
-        public DtoPipeProperty_Grade CreateGrade(DtoPipeProperty_Grade grade)
+        public async Task<DtoPipeProperty_Grade> CreateGrade(DtoPipeProperty_Grade grade)
         {
             var entity = _mapper.Map<PipeProperty_Grade>(grade);
             entity.PipeProperty_GradeId = Guid.NewGuid();
-            _context.PipeProperty_Grade.Add(entity);
-            _context.SaveChanges();
+            await _context.PipeProperty_Grade.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return _mapper.Map<DtoPipeProperty_Grade>(entity);
         }
 
-        public void UpdateGrade(DtoPipeProperty_GradeUpdate grade, Guid id)
+        public async Task UpdateGrade(DtoPipeProperty_GradeUpdate grade, Guid id)
         {
-            var entity = _context.PipeProperty_Grade.FirstOrDefault(e => e.PipeProperty_GradeId == id);
+            var entity = await _context.PipeProperty_Grade.FirstOrDefaultAsync(e => e.PipeProperty_GradeId == id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"No grade with ID {id} can be found.");
             }
             _mapper.Map(grade, entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeactivateGrade(Guid id)
+        public async Task DeactivateGrade(Guid id)
         {
-            var entity = _context.PipeProperty_Grade.FirstOrDefault(e => e.PipeProperty_GradeId == id);
+            var entity = await _context.PipeProperty_Grade.FirstOrDefaultAsync(e => e.PipeProperty_GradeId == id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"No grade with ID {id} can be found.");
             }
             entity.IsActive = false;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

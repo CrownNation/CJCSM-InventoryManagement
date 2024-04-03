@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20240319041516_20240318_InitialCreate")]
-    partial class _20240318InitialCreate
+    [Migration("20240321032143_20240320_InitialCreate")]
+    partial class _20240320InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -343,6 +343,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("SizeImperial")
                         .HasColumnType("decimal(6, 3)");
 
@@ -360,6 +363,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -375,6 +381,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<Guid>("PipeProperty_WallId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("WallImperial")
                         .HasColumnType("decimal(4, 3)");
@@ -392,6 +401,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<Guid>("PipeProperty_WeightId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("WeightInKgPerMeter")
                         .HasColumnType("decimal(6, 2)");

@@ -340,6 +340,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("SizeImperial")
                         .HasColumnType("decimal(6, 3)");
 
@@ -357,6 +360,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -372,6 +378,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<Guid>("PipeProperty_WallId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("WallImperial")
                         .HasColumnType("decimal(4, 3)");
@@ -389,6 +398,9 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<Guid>("PipeProperty_WeightId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("WeightInKgPerMeter")
                         .HasColumnType("decimal(6, 2)");

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Inventory_Dto.Dto;
+using System;
+using System.Threading.Tasks;
 
 namespace Inventory_API.Controllers
 {
@@ -19,27 +21,12 @@ namespace Inventory_API.Controllers
             _pipePropertyConditionBl = pipePropertyConditionBl;
         }
 
-        [HttpGet]
-        public IActionResult Get(ODataQueryOptions<DtoPipeProperty_Condition> options)
-        {
-            try
-            {
-                IQueryable<DtoPipeProperty_Condition> conditions = _pipePropertyConditionBl.GetConditions();
-                return Ok(options.ApplyTo(conditions));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError($"GetConditions: " + e.Message);
-                return BadRequest("There was a problem querying for conditions.");
-            }
-        }
-
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key)
+        public async Task<IActionResult> Get(Guid key)
         {
             try
             {
-                DtoPipeProperty_Condition? condition = _pipePropertyConditionBl.GetConditionById(key);
+                var condition = await _pipePropertyConditionBl.GetConditionByIdAsync(key);
                 if (condition != null)
                 {
                     return Ok(condition);
@@ -62,29 +49,27 @@ namespace Inventory_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] DtoPipeProperty_Condition condition)
+        public async Task<IActionResult> Post([FromBody] DtoPipeProperty_Condition conditionDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            DtoPipeProperty_Condition createdCondition;
             try
             {
-                createdCondition = _pipePropertyConditionBl.CreateCondition(condition);
+                var createdCondition = await _pipePropertyConditionBl.CreateConditionAsync(conditionDto);
+                return CreatedAtAction("Get", new { key = createdCondition.PipeProperty_ConditionId }, createdCondition);
             }
             catch (Exception e)
             {
                 _logger.LogError($"CreateCondition: " + e.Message);
                 return BadRequest("There was a problem creating the condition.");
             }
-
-            return CreatedAtAction("Get", new { key = createdCondition.PipeProperty_ConditionId }, createdCondition);
         }
 
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoPipeProperty_ConditionUpdate condition)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoPipeProperty_ConditionUpdate conditionDto)
         {
             if (!ModelState.IsValid)
             {
@@ -93,7 +78,8 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _pipePropertyConditionBl.UpdateCondition(condition, key);
+                await _pipePropertyConditionBl.UpdateConditionAsync(conditionDto, key);
+                return NoContent();
             }
             catch (KeyNotFoundException e)
             {
@@ -105,16 +91,15 @@ namespace Inventory_API.Controllers
                 _logger.LogError($"UpdateCondition: " + e.Message);
                 return BadRequest("There was a problem updating the condition.");
             }
-
-            return NoContent();
         }
 
         [HttpDelete("{key}")]
-        public IActionResult Delete(Guid key)
+        public async Task<IActionResult> Delete(Guid key)
         {
             try
             {
-                _pipePropertyConditionBl.DeactivateCondition(key);
+                await _pipePropertyConditionBl.DeactivateConditionAsync(key);
+                return NoContent();
             }
             catch (KeyNotFoundException e)
             {
@@ -126,8 +111,6 @@ namespace Inventory_API.Controllers
                 _logger.LogError($"DeleteCondition: " + e.Message);
                 return BadRequest("There was a problem deleting the condition.");
             }
-
-            return NoContent();
         }
     }
 }

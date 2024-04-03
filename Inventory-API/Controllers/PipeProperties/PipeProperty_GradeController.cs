@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Inventory_API.Controllers
 {
@@ -27,7 +27,7 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                IQueryable<DtoPipeProperty_Grade> grades = _pipePropertyGradeBl.GetGrades();
+                var grades = _pipePropertyGradeBl.GetGrades();
                 return Ok(options.ApplyTo(grades));
             }
             catch (Exception e)
@@ -38,11 +38,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key)
+        public async Task<IActionResult> Get(Guid key)
         {
             try
             {
-                DtoPipeProperty_Grade? grade = _pipePropertyGradeBl.GetGradeById(key);
+                var grade = await _pipePropertyGradeBl.GetGradeById(key);
                 return Ok(grade);
             }
             catch (KeyNotFoundException e)
@@ -58,29 +58,27 @@ namespace Inventory_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] DtoPipeProperty_Grade grade)
+        public async Task<IActionResult> Post([FromBody] DtoPipeProperty_Grade grade)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            DtoPipeProperty_Grade createdGrade;
             try
             {
-                createdGrade = _pipePropertyGradeBl.CreateGrade(grade);
+                var createdGrade = await _pipePropertyGradeBl.CreateGrade(grade);
+                return CreatedAtAction("Get", new { key = createdGrade.PipeProperty_GradeId }, createdGrade);
             }
             catch (Exception e)
             {
                 _logger.LogError($"CreateGrade: " + e.Message);
                 return BadRequest("There was a problem creating the grade.");
             }
-
-            return CreatedAtAction("Get", new { key = createdGrade.PipeProperty_GradeId }, createdGrade);
         }
 
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoPipeProperty_GradeUpdate grade)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoPipeProperty_GradeUpdate grade)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +87,8 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _pipePropertyGradeBl.UpdateGrade(grade, key);
+                await _pipePropertyGradeBl.UpdateGrade(grade, key);
+                return NoContent();
             }
             catch (KeyNotFoundException e)
             {
@@ -101,16 +100,15 @@ namespace Inventory_API.Controllers
                 _logger.LogError($"UpdateGrade: " + e.Message);
                 return BadRequest("There was a problem updating the grade.");
             }
-
-            return NoContent();
         }
 
         [HttpDelete("{key}")]
-        public IActionResult Delete(Guid key)
+        public async Task<IActionResult> Delete(Guid key)
         {
             try
             {
-                _pipePropertyGradeBl.DeactivateGrade(key);
+                await _pipePropertyGradeBl.DeactivateGrade(key);
+                return NoContent();
             }
             catch (KeyNotFoundException e)
             {
@@ -122,8 +120,6 @@ namespace Inventory_API.Controllers
                 _logger.LogError($"DeleteGrade: " + e.Message);
                 return BadRequest("There was a problem deleting the grade.");
             }
-
-            return NoContent();
         }
     }
 }

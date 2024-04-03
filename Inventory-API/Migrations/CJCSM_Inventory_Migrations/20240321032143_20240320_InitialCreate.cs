@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20240318InitialCreate : Migration
+    public partial class _20240320InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -140,7 +140,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 {
                     PipePropertySizeId = table.Column<Guid>(name: "PipeProperty_SizeId", type: "uniqueidentifier", nullable: false),
                     SizeMetric = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    SizeImperial = table.Column<decimal>(type: "decimal(6,3)", nullable: false)
+                    SizeImperial = table.Column<decimal>(type: "decimal(6,3)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -152,7 +153,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 columns: table => new
                 {
                     PipePropertyThreadId = table.Column<Guid>(name: "PipeProperty_ThreadId", type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,7 +167,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 {
                     PipePropertyWallId = table.Column<Guid>(name: "PipeProperty_WallId", type: "uniqueidentifier", nullable: false),
                     WallMetric = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
-                    WallImperial = table.Column<decimal>(type: "decimal(4,3)", nullable: false)
+                    WallImperial = table.Column<decimal>(type: "decimal(4,3)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,7 +181,8 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 {
                     PipePropertyWeightId = table.Column<Guid>(name: "PipeProperty_WeightId", type: "uniqueidentifier", nullable: false),
                     WeightInKgPerMeter = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
-                    WeightInLbsPerFoot = table.Column<decimal>(type: "decimal(6,3)", nullable: false)
+                    WeightInLbsPerFoot = table.Column<decimal>(type: "decimal(6,3)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

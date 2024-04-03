@@ -1,13 +1,20 @@
 ﻿using Inventory_Dto.Dto;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Inventory_BLL.Interfaces
 {
     public interface IPipeProperty_ConditionBL
     {
         IQueryable<DtoPipeProperty_Condition> GetConditions();
-        DtoPipeProperty_Condition GetConditionById(Guid id);
-        DtoPipeProperty_Condition CreateCondition(DtoPipeProperty_Condition condition);
-        void UpdateCondition(DtoPipeProperty_ConditionUpdate condition, Guid guid);
-        void DeactivateCondition(Guid id);
+
+        Task<DtoPipeProperty_Condition> GetConditionByIdAsync(Guid id);
+
+        Task<DtoPipeProperty_Condition> CreateConditionAsync(DtoPipeProperty_Condition condition);
+
+        Task UpdateConditionAsync(DtoPipeProperty_ConditionUpdate condition, Guid guid);
+
+        Task DeactivateConditionAsync(Guid id);
     }
 }

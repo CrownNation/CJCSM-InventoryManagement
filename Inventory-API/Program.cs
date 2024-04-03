@@ -45,6 +45,10 @@ static IEdmModel GetEdmModel()
     builder.EntitySet<PipeProperty_Condition>("PipeProperty_Condition");
     builder.EntitySet<PipeProperty_Grade>("PipeProperty_Grade");
     builder.EntitySet<PipeProperty_Range>("PipeProperty_Range");
+    builder.EntitySet<PipeProperty_Size>("PipeProperty_Size");
+    builder.EntitySet<PipeProperty_Thread>("PipeProperty_Thread");
+    builder.EntitySet<PipeProperty_Wall>("PipeProperty_Wall");
+    builder.EntitySet<PipeProperty_Weight>("PipeProperty_Weight");
 
     return builder.GetEdmModel();
 }
@@ -120,6 +124,10 @@ builder.Services.AddScoped<IPipeProperty_CoatingBL, PipeProperty_CoatingBL>();
 builder.Services.AddScoped<IPipeProperty_ConditionBL, PipeProperty_ConditionBL>();
 builder.Services.AddScoped<IPipeProperty_GradeBL, PipeProperty_GradeBL>();
 builder.Services.AddScoped<IPipeProperty_RangeBL, PipeProperty_RangeBL>();
+builder.Services.AddScoped<IPipeProperty_SizeBL, PipeProperty_SizeBL>();
+builder.Services.AddScoped<IPipeProperty_ThreadBL, PipeProperty_ThreadBL>();
+builder.Services.AddScoped<IPipeProperty_WallBL, PipeProperty_WallBL>();
+builder.Services.AddScoped<IPipeProperty_WeightBL, PipeProperty_WeightBL>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // This method adds metadata about your API's endpoints to the ASP.NET Core application. It doesn't directly generate human-readable

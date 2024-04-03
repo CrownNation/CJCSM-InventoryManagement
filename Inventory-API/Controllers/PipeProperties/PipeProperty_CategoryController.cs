@@ -1,11 +1,12 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities.PipeProperties;
 using Inventory_Dto.Dto;
-using Inventory_Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Inventory_API.Controllers
 {
@@ -27,7 +28,7 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                IQueryable<PipeProperty_Category>? categories = _pipePropertyCategoryBl.GetCategories();
+                var categories = _pipePropertyCategoryBl.GetCategories();
                 return Ok(options.ApplyTo(categories));
             }
             catch (Exception e)
@@ -38,11 +39,11 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}")]
-        public IActionResult Get(Guid key)
+        public async Task<IActionResult> Get(Guid key)
         {
             try
             {
-                DtoPipeProperty_Category category = _pipePropertyCategoryBl.GetCategoryById(key);
+                var category = await _pipePropertyCategoryBl.GetCategoryById(key);
                 return Ok(category);
             }
             catch (KeyNotFoundException e)
@@ -58,29 +59,27 @@ namespace Inventory_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] PipeProperty_Category category)
+        public async Task<IActionResult> Post([FromBody] PipeProperty_Category category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            PipeProperty_Category createdCategory;
             try
             {
-                createdCategory = _pipePropertyCategoryBl.CreateCategory(category);
+                var createdCategory = await _pipePropertyCategoryBl.CreateCategory(category);
+                return CreatedAtAction("Get", new { key = createdCategory.PipeProperty_CategoryId }, createdCategory);
             }
             catch (Exception e)
             {
                 _logger.LogError($"CreateCategory: " + e.Message);
                 return BadRequest("There was a problem creating the category.");
             }
-
-            return CreatedAtAction("Get", new { key = createdCategory.PipeProperty_CategoryId }, createdCategory);
         }
 
         [HttpPut("{key}")]
-        public IActionResult Put(Guid key, [FromBody] DtoPipeProperty_CategoryUpdate category)
+        public async Task<IActionResult> Put(Guid key, [FromBody] DtoPipeProperty_CategoryUpdate category)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +88,8 @@ namespace Inventory_API.Controllers
 
             try
             {
-                _pipePropertyCategoryBl.UpdateCategory(category, key);
+                await _pipePropertyCategoryBl.UpdateCategory(category, key);
+                return NoContent();
             }
             catch (KeyNotFoundException e)
             {
@@ -101,16 +101,15 @@ namespace Inventory_API.Controllers
                 _logger.LogError($"UpdateCategory: " + e.Message);
                 return BadRequest("There was a problem updating the category.");
             }
-
-            return NoContent();
         }
 
         [HttpDelete("{key}")]
-        public IActionResult Delete(Guid key)
+        public async Task<IActionResult> Delete(Guid key)
         {
             try
             {
-                _pipePropertyCategoryBl.DeactivateCategory(key);
+                await _pipePropertyCategoryBl.DeactivateCategory(key);
+                return NoContent();
             }
             catch (KeyNotFoundException e)
             {
@@ -122,8 +121,6 @@ namespace Inventory_API.Controllers
                 _logger.LogError($"DeleteCategory: " + e.Message);
                 return BadRequest("There was a problem deleting the category.");
             }
-
-            return NoContent();
         }
     }
 }

@@ -13,5 +13,7 @@ namespace Inventory_DAL.Entities.PipeProperties
         [Column(TypeName = "decimal(6, 3)")]
         public decimal WeightInLbsPerFoot { get; set; }
 
+        public bool IsActive { get; set; }
+
     }
 }
