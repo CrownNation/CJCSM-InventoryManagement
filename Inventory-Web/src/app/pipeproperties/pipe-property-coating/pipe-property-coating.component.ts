@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PipeProperty_Coating } from 'src/app/models/pipe.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subject, combineLatest } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { AppState } from '../../store/core.state';
 import {
@@ -26,6 +26,9 @@ import {
   styleUrls: ['./pipe-property-coating.component.scss']
 })
 export class PipePropertyCoatingComponent implements OnInit, OnDestroy {
+
+  loadingCoatingsSubscription : Subscription | undefined;
+
   dataSource: MatTableDataSource<PipeProperty_Coating>;
   displayedColumns: string[] = ['name', 'isActive', 'actions'];
   coatingForm: FormGroup;
@@ -56,11 +59,21 @@ export class PipePropertyCoatingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log("COATINGS INIT");
     this.store.dispatch(actionGetCoatings({ searchParams: null }));
     this.store.pipe(
       select(selectAllCoatings),
       takeUntil(this.destroy$)
     ).subscribe(coatings => this.dataSource.data = coatings);
+
+    this.loadingCoatingsSubscription = this.store.select(selectLoadingCoatings)
+    .pipe(
+      takeUntil(this.destroy$)
+    )
+    .subscribe(loading => {
+      console.log('loadingCoatings$ value:', loading);
+    }
+  );
   }
 
   ngOnDestroy(): void {

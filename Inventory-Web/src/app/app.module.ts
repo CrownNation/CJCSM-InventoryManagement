@@ -33,7 +33,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { PipepropertiesModule } from './pipeproperties/pipeproperties.module';
 // import { provideStore } from '@ngrx/store';
 // import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 
@@ -58,7 +57,6 @@ import { PipepropertiesModule } from './pipeproperties/pipeproperties.module';
     MatListModule,
     MatMenuModule,
     MatButtonModule,
-    PipepropertiesModule,
 
     // StoreModule.forRoot({rack: rackReducers}, {}),
 

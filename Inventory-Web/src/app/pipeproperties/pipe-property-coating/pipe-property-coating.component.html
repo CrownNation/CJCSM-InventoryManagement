@@ -1,8 +1,8 @@
 <div class="container-tab">
-    <mat-card class="section">
+  <mat-card class="section">
 
     <mat-card-header>
-        <mat-card-title>Coating - Pipe Property</mat-card-title>
+      <mat-card-title>Coating - Pipe Property</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
@@ -10,43 +10,41 @@
       <table mat-table [dataSource]="dataSource" matSort class="myTable">
 
         <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
         </ng-container>
-      
+
         <ng-container matColumnDef="isActive">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Active</th>
-            <td mat-cell *matCellDef="let row">
-                <mat-icon *ngIf="row.isActive; else inactiveIcon" class="isActive-icon">check</mat-icon>
-                <ng-template #inactiveIcon><mat-icon class="isInactive-icon">close</mat-icon></ng-template>
-            </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Active</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-icon *ngIf="row.isActive; else inactiveIcon" class="isActive-icon">check</mat-icon>
+            <ng-template #inactiveIcon><mat-icon class="isInactive-icon">close</mat-icon></ng-template>
+          </td>
         </ng-container>
-      
+
         <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let row">
-              <button class="item-buttons" aria-label="Edit Coating" (click)="selectCoating(row)">
-                <mat-icon aria-hidden="false" fontIcon="edit" color="accent"></mat-icon>
-              </button>
-            </td>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button class="item-buttons" aria-label="Edit Coating" (click)="selectCoating(row)">
+              <mat-icon aria-hidden="false" fontIcon="edit" color="accent"></mat-icon>
+            </button>
+          </td>
         </ng-container>
-      
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      
-      </table>
-      
-        <div *ngIf="loadingCoatings$ | async" class="spinner">
-        <mat-progress-spinner
-            color="primary"
-            mode="indeterminate">
-        </mat-progress-spinner>
-        </div>
-    </mat-card-content>
-</mat-card>
 
-<!-- Coating Form -->
-<mat-card class="coating-editor-card">
+      </table>
+
+      <div *ngIf="loadingCoatings$ | async" class="spinner">
+        <mat-progress-spinner color="primary" mode="indeterminate">
+        </mat-progress-spinner>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Coating Form -->
+  <mat-card class="coating-editor-card">
     <mat-card-header>
       <mat-card-title>{{ editingCoating ? 'Edit Coating' : 'Create New Coating' }}</mat-card-title>
     </mat-card-header>

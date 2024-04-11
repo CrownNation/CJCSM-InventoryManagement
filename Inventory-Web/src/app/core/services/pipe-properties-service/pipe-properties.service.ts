@@ -3,39 +3,45 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { PipeProperty_Category, PipeProperty_CategoryCreate, PipeProperty_CategorySearchParams, PipeProperty_Coating, PipeProperty_CoatingCreate, PipeProperty_CoatingSearchParams } from 'src/app/models/pipe.model';
-
+import { tap  } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class PipePropertiesService {
 
-  private baseUrl = environment.apiUrl + 'PipeProperty_Category';
-
+  private baseUrl = environment.apiUrl;
   constructor(private readonly http: HttpClient) { }
 
 
   // --- Category ---
+  // getCategory(searchParams: PipeProperty_CategorySearchParams | null): Observable<PipeProperty_Category[]> {
+
+  //   return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}`);
+
+  // }
   getCategory(searchParams: PipeProperty_CategorySearchParams | null): Observable<PipeProperty_Category[]> {
-    return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}`);
+    return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}PipeProperty_Category`).pipe(
+      tap(categories => console.log('Categories retrieved:', categories))
+    );
   }
 
   createCategory(category: PipeProperty_CategoryCreate): Observable<PipeProperty_Category> {
-    return this.http.post<PipeProperty_Category>(this.baseUrl, category);
+    return this.http.post<PipeProperty_Category>('{this.baseUrl}PipeProperty_Category', category);
   }
   updateCategory(id: string, category: PipeProperty_Category): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${id}`, category);
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Category/${id}`, category);
   }
 
   // --- Coating ---
   getGetCoating(searchParams: PipeProperty_CoatingSearchParams | null): Observable<PipeProperty_Coating[]> {
-    return this.http.get<PipeProperty_Coating[]>(`${this.baseUrl}`);
+    return this.http.get<PipeProperty_Coating[]>(`${this.baseUrl}PipeProperty_Coating`);
   }
 
   createCoating(coating: PipeProperty_CoatingCreate): Observable<PipeProperty_Coating> {
-    return this.http.post<PipeProperty_Coating>(`${this.baseUrl}/Coating`, coating);
+    return this.http.post<PipeProperty_Coating>(`${this.baseUrl}PipeProperty_Coating`, coating);
   }
   updateCoating(id: string, coating: PipeProperty_Coating): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/Coating/${id}`, coating);
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Coating/${id}`, coating);
   }
 
 

@@ -1,26 +1,29 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, booleanAttribute, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PipeProperty_Category } from 'src/app/models/pipe.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AppState } from '../../store/core.state';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subject, combineLatest, map, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest, map, takeUntil } from 'rxjs';
 import { selectAllCategories, selectCreatingCategoryError, selectErrorLoadingCategories, selectLoadingCategories, selectSelectedCategoryError } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.selectors';
 import { actionCreatePipeProperty_Category, actionGetCategories, actionUpdatePipeProperty_Category } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.actions';
 
 @Component({
   selector: 'app-pipe-property-category',
   templateUrl: './pipe-property-category.component.html',
-  styleUrls: ['./pipe-property-category.component.scss']
+  styleUrls: ['./pipe-property-category.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
 
+  loadingCategoriesSubscription : Subscription | undefined;
+  
   dataSource: MatTableDataSource<PipeProperty_Category>;
   displayedColumns: string[] = ['name', 'isActive', 'actions'];
   categoryForm: FormGroup;
   editingCategory: PipeProperty_Category | null = null;
-  loadingCategories$: Observable<Boolean>;
+  loadingCategories$: Observable<boolean> | undefined;
   private destroy$ = new Subject<void>();
   
   errorMessage$: Observable<string>;
@@ -40,7 +43,6 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
         return error ? error.message : '';
       }));
 
-    this.loadingCategories$ = this.store.select(selectLoadingCategories);
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
       isActive: [true, Validators.required]
@@ -49,16 +51,34 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadingCategories$ = this.store.select(selectLoadingCategories); 
+
+    console.log('WE ARE IN INIT!!');
     this.store.dispatch(actionGetCategories({ searchParams: null }));
     this.store.pipe(
       select(selectAllCategories),
       takeUntil(this.destroy$)
     ).subscribe(categories => this.dataSource.data = categories);
+
+
+    this.loadingCategoriesSubscription = this.store.select(selectLoadingCategories)
+    .pipe(
+      takeUntil(this.destroy$)
+    )
+    .subscribe(loading => {
+      console.log('loadingCategories$ value:', loading);
+    }
+    );
+    
+
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.loadingCategoriesSubscription) {
+      this.loadingCategoriesSubscription.unsubscribe();
+    }
   }
 
   selectCategory(category: PipeProperty_Category): void {
@@ -88,6 +108,4 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
   cancelEdit(): void {
     this.resetForm();
   }
-
-
 }

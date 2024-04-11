@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NavigationStart, Router, RouterModule, Routes } from '@angular/router';
 import { PipepropertiesComponent } from './pipeproperties/pipeproperties.component';
 
 const routes: Routes = [
@@ -8,12 +8,16 @@ const routes: Routes = [
     component: PipepropertiesComponent,
     children: [
       {
-        path: 'category',
-        loadChildren: () => import('src/app/pipeproperties/pipe-property-category/pipe-property-category.component').then(m => m.PipePropertyCategoryComponent)
+        path: '', // Empty path redirects to category
+        pathMatch: 'full',
+        redirectTo: 'category'
       },
       {
+        path: 'category',
+        loadChildren: () => import('./pipe-property-category/pipe-property-category.module').then(m => m.PipePropertyCategoryModule)      },
+      {
         path: 'coating',
-        loadChildren: () => import('src/app/pipeproperties/pipe-property-coating/pipe-property-coating.component').then(m => m.PipePropertyCoatingComponent)
+        loadChildren: () => import('./pipe-property-coating/pipe-property-coating.module').then(m => m.PipePropertyCoatingModule)
       }
     ]
   }
@@ -23,4 +27,13 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PipepropertiesRoutingModule { }
+export class PipepropertiesRoutingModule { 
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        console.log('Navigation started:', event.url);
+        // You can add more logic here to filter specific routes if needed
+      }
+    });
+  }
+}

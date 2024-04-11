@@ -47,7 +47,9 @@ export const initialState: PipeProperty_CategoryState = pipeProperty_CategoryAda
 const reducer: ActionReducer<PipeProperty_CategoryState> = createReducer(
     initialState,
     // Retrieve Pipe Property Categories
+    /*
     on(actionGetCategories, (state: PipeProperty_CategoryState, { }) => {
+      console.log('[Reducer] actionGetCategories');
         const newState = pipeProperty_CategoryAdapter.removeAll(state); // Needed so it refreshes the subscription fires with new data
         return {
           ...newState,
@@ -55,6 +57,15 @@ const reducer: ActionReducer<PipeProperty_CategoryState> = createReducer(
           errorLoadingCategories: null
         };
     }),
+    */
+    on(actionGetCategories, (state: PipeProperty_CategoryState, { }) => {
+      console.log('[Reducer] actionGetCategories triggered');
+      return {
+          ...state,
+          loadingCategories: true,
+          errorLoadingCategories: null
+      };
+  }),
     on(actionCreatePipeProperty_CategorySuccess, (state, { category }) => 
     pipeProperty_CategoryAdapter.addOne(category, {
         ...state,

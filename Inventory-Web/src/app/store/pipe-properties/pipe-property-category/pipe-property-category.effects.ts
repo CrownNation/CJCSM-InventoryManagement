@@ -26,15 +26,43 @@ export class PipeProperty_CategoryEffects {
       private pipePropertiesService: PipePropertiesService,
   ) {}
 
-  loadCategories$ = createEffect(() =>
+//   loadCategories$ = createEffect(() =>
+//   this.actions$.pipe(
+//     ofType(actionGetCategories),
+//     switchMap(() =>
+//       this.pipePropertiesService.getCategory(null).pipe(
+//         map(categories => actionGetCategoriesSuccess({ categories })),
+//         catchError(errorLoadingCategories => of(actionGetCategoriesError({ errorLoadingCategories })))
+//       )
+//     )
+//   )
+// );
+
+// loadCategories$ = createEffect(() =>
+//   this.actions$.pipe(
+//     ofType(actionGetCategories),
+//     tap(() => console.log('Loading categories...')), // Add this line
+//     switchMap(() =>{
+
+//       this.pipePropertiesService.getCategory(null).pipe(
+//         map(categories => actionGetCategoriesSuccess({ categories })),
+//         catchError(errorLoadingCategories => of(actionGetCategoriesError({ errorLoadingCategories })))
+//       )
+//     )
+//   )
+// );
+loadCategories$ = createEffect(() =>
   this.actions$.pipe(
     ofType(actionGetCategories),
-    switchMap(() =>
-      this.pipePropertiesService.getCategory(null).pipe(
+    tap(() => console.log('Loading categories...')),
+    switchMap(() => {
+      console.log('Inside switchMap for loading categories');
+      return this.pipePropertiesService.getCategory(null).pipe(
+        tap(categories => console.log('Categories retrieved:', categories)),
         map(categories => actionGetCategoriesSuccess({ categories })),
         catchError(errorLoadingCategories => of(actionGetCategoriesError({ errorLoadingCategories })))
-      )
-    )
+      );
+    })
   )
 );
 
