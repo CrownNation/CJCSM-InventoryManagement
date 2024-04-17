@@ -8,7 +8,8 @@ import {
   actionGetCategoriesError,
   actionGetCategoriesSuccess,
   actionUpdatePipeProperty_CategorySuccess,
-  actionUpdatePipeProperty_Category
+  actionUpdatePipeProperty_Category,
+  resetCategoryNotifications
 } from "./pipe-property-category.actions";
 
 export function sortByName(a: PipeProperty_Category, b: PipeProperty_Category): number {
@@ -75,7 +76,15 @@ const reducer: ActionReducer<PipeProperty_CategoryState> = createReducer(
         ...state,
         loadingCategories: false,
         errorLoadingCategories
-    }))
+    })),
+    on(resetCategoryNotifications, (state) => ({
+        ...state,
+        createdCategory: null,
+        updatedCategory: null,
+        errorLoadingCategories: null,
+        errorCreatingCategory: null,
+        errorUpdatingCategory: null
+      }))
 );
 
 export function pipeProperty_CategoryReducers(state: PipeProperty_CategoryState | undefined, action: Action) {

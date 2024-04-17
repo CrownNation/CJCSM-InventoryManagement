@@ -47,3 +47,6 @@ export const actionUpdatePipeProperty_ConditionError = createAction(
     `${conditionsKey} Update PipeProperty_Condition Error`,
     props<{ error: HttpErrorResponse }>()
 );
+
+//Reset notifcations
+export const resetConditionNotifications = createAction(`${conditionsKey} Reset Conditions Notifications`);

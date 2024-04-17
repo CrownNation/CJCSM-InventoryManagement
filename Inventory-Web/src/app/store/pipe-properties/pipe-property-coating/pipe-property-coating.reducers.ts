@@ -7,7 +7,8 @@ import {
     actionGetCoatings, 
     actionGetCoatingsError, 
     actionGetCoatingsSuccess, 
-    actionUpdatePipeProperty_CoatingSuccess 
+    actionUpdatePipeProperty_CoatingSuccess, 
+    resetCoatingNotifications
 } from "./pipe-property-coating.actions";
 
 export function sortByName(a: PipeProperty_Coating, b: PipeProperty_Coating): number {
@@ -74,7 +75,16 @@ const reducer: ActionReducer<PipeProperty_CoatingState> = createReducer(
         ...state,
         loadingCoatings: false,
         errorLoadingCoatings
-    }))
+    })),
+    on(resetCoatingNotifications, (state) => ({
+        ...state,
+        createdCoating: null,
+        updatedCoating: null,
+        errorLoadingCoatings: null,
+        errorCreatingCoating: null,
+        errorUpdatingCoating: null
+      }))
+
 );
 
 export function PipeProperty_CoatingReducers(state: PipeProperty_CoatingState | undefined, action: Action) {

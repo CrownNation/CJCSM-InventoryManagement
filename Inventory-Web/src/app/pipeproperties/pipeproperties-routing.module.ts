@@ -31,7 +31,23 @@ const routes: Routes = [
       {
         path: 'range',
         loadChildren: () => import('./pipe-property-range/pipe-property-range.module').then(m => m.PipePropertyRangeModule)
-      }
+      },
+      {
+        path: 'size',
+        loadChildren: () => import('./pipe-property-size/pipe-property-size.module').then(m => m.PipePropertySizeModule)
+      },
+      {
+        path: 'thread',
+        loadChildren: () => import('./pipe-property-thread/pipe-property-thread.module').then(m => m.PipePropertyThreadModule)
+      },
+      {
+        path: 'wall',
+        loadChildren: () => import('./pipe-property-wall/pipe-property-wall.module').then(m => m.PipePropertyWallModule)
+      },
+      {
+        path: 'weight',
+        loadChildren: () => import('./pipe-property-weight/pipe-property-weight.module').then(m => m.PipePropertyWeightModule)
+      },
 
 
     ]

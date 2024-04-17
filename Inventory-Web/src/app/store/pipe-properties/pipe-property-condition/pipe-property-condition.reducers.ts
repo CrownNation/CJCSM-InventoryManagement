@@ -7,7 +7,8 @@ import {
     actionGetConditions, 
     actionGetConditionsError, 
     actionGetConditionsSuccess, 
-    actionUpdatePipeProperty_ConditionSuccess 
+    actionUpdatePipeProperty_ConditionSuccess, 
+    resetConditionNotifications
 } from "./pipe-property-condition.actions";
 
 export function sortByName(a: PipeProperty_Condition, b: PipeProperty_Condition): number {
@@ -74,7 +75,16 @@ const reducer: ActionReducer<PipeProperty_ConditionState> = createReducer(
         ...state,
         loadingConditions: false,
         errorLoadingConditions
-    }))
+    })),
+    on(resetConditionNotifications, (state) => ({
+        ...state,
+        createdCondition: null,
+        updatedCondition: null,
+        errorLoadingConditions: null,
+        errorCreatingCondition: null,
+        errorUpdatingCondition: null
+      }))
+
 );
 
 export function PipeProperty_ConditionReducers(state: PipeProperty_ConditionState | undefined, action: Action) {

@@ -1,0 +1,92 @@
+<div class="container-tab">
+  <mat-card class="section">
+    <mat-card-header>
+      <mat-card-title>Weight - Pipe Property</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" matSort class="myTable">
+        <!-- Corrected Column Definitions -->
+        <ng-container matColumnDef="weightInKgPerMeter">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Weight Metric (kg)</th>
+          <td mat-cell *matCellDef="let row">{{ row.weightInKgPerMeter }}</td>
+        </ng-container>
+        <ng-container matColumnDef="weightInLbsPerFoot">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Weight Imperial (pounds)</th>
+          <td mat-cell *matCellDef="let row">{{ row.weightInLbsPerFoot }}</td>
+        </ng-container>
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Active</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-icon *ngIf="row.isActive; else inactiveIcon" class="isActive-icon">check</mat-icon>
+            <ng-template #inactiveIcon><mat-icon class="isInactive-icon">close</mat-icon></ng-template>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+          <td mat-cell *matCellDef="let row">
+            <button class="item-buttons" aria-label="View Weight" (click)="selectWeight(row)">
+              <mat-icon aria-hidden="false" fontIcon="open_in_new" color="accent"></mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="small-element"></tr>
+      </table>
+      <div *ngIf="loadingWeights$ | async" class="spinner">
+        <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
+  <!-- Weight Form -->
+  <mat-card class="editor-card">
+    <mat-card-header>
+      <mat-card-title>{{ editingWeight ? 'Edit Weight' : 'Create New Weight' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="weightForm" class="weight-form">
+        <!-- Corrected Form Field Names -->
+        <mat-form-field appearance="fill" class="full-width-input">
+          <mat-label>Weight Metric (kg)</mat-label>
+          <input matInput formControlName="weightInKgPerMeter" type="number" min="0" step="0.001">
+          <mat-error *ngIf="weightForm.get('weightInKgPerMeter')?.errors?.['required']">
+            Weight in metric is required.
+          </mat-error>
+          <mat-error *ngIf="weightForm.get('weightInKgPerMeter')?.errors?.['min']">
+            The value must be a non-negative number.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width-input">
+          <mat-label>Weight Imperial (pounds)</mat-label>
+          <input matInput formControlName="weightInLbsPerFoot" type="number" min="0" step="0.001">
+          <mat-error *ngIf="weightForm.get('weightInLbsPerFoot')?.errors?.['required']">
+            Weight in imperial is required.
+          </mat-error>
+          <mat-error *ngIf="weightForm.get('weightInLbsPerFoot')?.errors?.['min']">
+            The value must be a non-negative number.
+          </mat-error>
+        </mat-form-field>
+        <mat-checkbox formControlName="isActive">
+          <div class="checkbox-label">Is Active</div>
+        </mat-checkbox>
+        <div *ngIf="errorMessage$ | async as errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+        <div *ngIf="isWeightCreated$ | async" class="alert alert-success">
+          Weight created successfully!
+        </div>
+        <div *ngIf="isWeightUpdated$ | async" class="alert alert-success">
+          Weight updated successfully!
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="item-buttons">
+        <button mat-raised-button (click)="saveOrUpdateWeight()" [disabled]="!weightForm.valid">
+          {{ editingWeight ? 'Update' : 'Create' }}
+        </button>
+        <button mat-raised-button (click)="resetForm()">Cancel</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

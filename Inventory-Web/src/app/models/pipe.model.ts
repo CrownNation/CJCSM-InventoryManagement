@@ -128,29 +128,105 @@ export interface PipeProperty_RangeSearchParams {
     name: string | null;
   }
 
+// --- Size ---
 export interface PipeProperty_Size {
     pipeProperty_SizeId: string;
-    sizeMetric: number;
-    sizeImperial: number;
+    sizeMetric: number; // Decimal value for metric size with precision up to three decimal places
+    sizeImperial: number; // Decimal value for imperial size with precision up to three decimal places
+    isActive: boolean;
 }
 
+export interface PipeProperty_SizeCreate {
+    sizeMetric: number; // Metric size to create
+    sizeImperial: number; // Imperial size to create
+    isActive: boolean;
+}
+
+export interface PipeProperty_SizeUpdate {
+    sizeMetric: number; // New metric size
+    sizeImperial: number; // New imperial size
+    isActive: boolean;
+}
+
+export interface PipeProperty_SizeSearchParams {
+    isActive: boolean | null;
+    sizeMetric: number | null;
+    sizeImperial: number | null;
+}
+
+// --- Thread ---
 export interface PipeProperty_Thread {
-    pipeProperty_ThreadId: string;
+    pipeProperty_ThreadId: string; // Unique identifier for the thread
+    name: string;
+    isActive: boolean; // Status to indicate if the thread is active
+}
+
+export interface PipeProperty_ThreadCreate {
+    name: string;
+    isActive: boolean;
+}
+
+export interface PipeProperty_ThreadUpdate {
+    name: string;
+    isActive: boolean;
+}
+
+export interface PipeProperty_ThreadSearchParams {
+    isActive: boolean | null;
     name: string;
 }
 
+// --- Wall ---
 export interface PipeProperty_Wall {
     pipeProperty_WallId: string;
-    wallMetric: number;
-    wallImperial: number;
+    wallThicknessMetric: number; // Decimal value for wall thickness in metric units with precision up to three decimal places
+    wallThicknessImperial: number; // Decimal value for wall thickness in imperial units with precision up to three decimal places
+    isActive: boolean;
+}
+export interface PipeProperty_WallCreate {
+    wallThicknessMetric: number; // Wall thickness in metric units to create
+    wallThicknessImperial: number; // Wall thickness in imperial units to create
+    isActive: boolean;
+}
+export interface PipeProperty_WallUpdate {
+    wallThicknessMetric: number; // New metric wall thickness
+    wallThicknessImperial: number; // New imperial wall thickness
+    isActive: boolean;
+}
+export interface PipeProperty_WallSearchParams {
+    isActive: boolean | null;
+    wallThicknessMetric: number | null;
+    wallThicknessImperial: number | null;
 }
 
+// --- Weight ---
+
+
+// --- Weight ---
 export interface PipeProperty_Weight {
     pipeProperty_WeightId: string;
-    weightInKgPerMeter: number;
-    weightInLbsPerFoot: number;
+    weightInKgPerMeter: number; // Decimal value for metric weight with precision up to three decimal places
+    weightInLbsPerFoot: number; // Decimal value for imperial weight with precision up to three decimal places
+    isActive: boolean;
+}
+export interface PipeProperty_WeightCreate {
+    weightInKgPerMeter: number; // Metric weight to create
+    weightInLbsPerFoot: number; // Imperial weight to create
+    isActive: boolean;
+}
+export interface PipeProperty_WeightUpdate {
+    weightInKgPerMeter: number; // New metric weight
+    weightInLbsPerFoot: number; // New imperial weight
+    isActive: boolean;
+}
+export interface PipeProperty_WeightSearchParams {
+    isActive: boolean | null;
+    weightInKgPerMeter: number | null;
+    weightInLbsPerFoot: number | null;
 }
 
+
+// --- Pipe ---
 export interface PipeSearchParams {
     pipeId: string | null;
     pipeDefinitionId: string | null;

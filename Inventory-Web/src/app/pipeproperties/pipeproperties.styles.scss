@@ -4,7 +4,7 @@
     align-items: flex-start; /* Align items at the start of the cross-axis (top-aligned) */
   }
   
-  .section, .category-editor-card {
+  .section, .editor-card {
     flex: 1; /* Flex-grow: 1 to make them fill available space */
     margin: 1rem; /* Add margin to create space between the cards */
   }

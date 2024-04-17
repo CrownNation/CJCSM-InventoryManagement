@@ -47,3 +47,6 @@ export const actionUpdatePipeProperty_CoatingError = createAction(
     `${coatingsKey} Update PipeProperty_Coating Error`,
     props<{ error: HttpErrorResponse }>()
 ); 
+
+//Reset notifcations
+export const resetCoatingNotifications = createAction(`${coatingsKey} Reset Coating Notifications`);

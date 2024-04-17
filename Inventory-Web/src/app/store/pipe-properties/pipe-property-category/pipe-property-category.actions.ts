@@ -47,3 +47,6 @@ export const actionUpdatePipeProperty_CategoryError = createAction(
     `${categoriesKey} Update PipeProperty_Category Error`,
     props<{ error: HttpErrorResponse }>()
 );
+
+//Reset notifcations
+export const resetCategoryNotifications = createAction(`${categoriesKey} Reset Category Notifications`);

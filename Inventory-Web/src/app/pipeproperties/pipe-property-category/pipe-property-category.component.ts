@@ -14,12 +14,14 @@ import {
   selectLoadingCategories,
   selectSelectedCategoryError,
   selectCreatedCategory,
-  selectUpdatedCategory
+  selectUpdatedCategory,
+
 } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.selectors';
 import {
   actionCreatePipeProperty_Category,
   actionGetCategories,
-  actionUpdatePipeProperty_Category
+  actionUpdatePipeProperty_Category,
+  resetCategoryNotifications
 } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.actions';
 
 @Component({
@@ -31,14 +33,12 @@ import {
 export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
 
   loadingCategoriesSubscription: Subscription | undefined;
-
   dataSource: MatTableDataSource<PipeProperty_Category>;
   displayedColumns: string[] = ['name', 'isActive', 'actions'];
   categoryForm: FormGroup;
   editingCategory: PipeProperty_Category | null = null;
   loadingCategories$: Observable<boolean> | undefined;
   private destroy$ = new Subject<void>();
-
   errorMessage$: Observable<string>;
   isCategoryCreated$: Observable<boolean>;
   isCategoryUpdated$: Observable<boolean>;
@@ -85,6 +85,8 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
   selectCategory(category: PipeProperty_Category): void {
     this.editingCategory = category;
     this.categoryForm.patchValue(category);
+    // Reset notifications when a new category is selected
+    this.resetNotifications();
   }
 
   saveOrUpdateCategory(): void {
@@ -104,5 +106,12 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
   resetForm(): void {
     this.editingCategory = null;
     this.categoryForm.reset({ name: '', isActive: true });
+    // Reset notifications when the form is reset
+    this.resetNotifications();
+  }
+
+  // Method to reset any success or error messages
+  resetNotifications() {
+    this.store.dispatch(resetCategoryNotifications());
   }
 }
