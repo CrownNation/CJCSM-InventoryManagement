@@ -1,13 +1,26 @@
-import { Component, OnInit, OnDestroy, booleanAttribute, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PipeProperty_Category } from 'src/app/models/pipe.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { AppState } from '../../store/core.state';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subject, Subscription, combineLatest, map, takeUntil } from 'rxjs';
-import { selectAllCategories, selectCreatingCategoryError, selectErrorLoadingCategories, selectLoadingCategories, selectSelectedCategoryError } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.selectors';
-import { actionCreatePipeProperty_Category, actionGetCategories, actionUpdatePipeProperty_Category } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.actions';
+import { Observable, Subject, Subscription, combineLatest } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { PipeProperty_Category } from 'src/app/models/pipe.model';
+import { AppState } from '../../store/core.state';
+
+import {
+  selectAllCategories,
+  selectCreatingCategoryError,
+  selectErrorLoadingCategories,
+  selectLoadingCategories,
+  selectSelectedCategoryError,
+  selectCreatedCategory,
+  selectUpdatedCategory
+} from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.selectors';
+import {
+  actionCreatePipeProperty_Category,
+  actionGetCategories,
+  actionUpdatePipeProperty_Category
+} from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.actions';
 
 @Component({
   selector: 'app-pipe-property-category',
@@ -17,60 +30,48 @@ import { actionCreatePipeProperty_Category, actionGetCategories, actionUpdatePip
 })
 export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
 
-  loadingCategoriesSubscription : Subscription | undefined;
-  
+  loadingCategoriesSubscription: Subscription | undefined;
+
   dataSource: MatTableDataSource<PipeProperty_Category>;
   displayedColumns: string[] = ['name', 'isActive', 'actions'];
   categoryForm: FormGroup;
   editingCategory: PipeProperty_Category | null = null;
   loadingCategories$: Observable<boolean> | undefined;
   private destroy$ = new Subject<void>();
-  
+
   errorMessage$: Observable<string>;
+  isCategoryCreated$: Observable<boolean>;
+  isCategoryUpdated$: Observable<boolean>;
 
   constructor(
-    private router: Router,
     private store: Store<AppState>,
     private fb: FormBuilder
   ) {
-    this.errorMessage$ = combineLatest([
-      this.store.select(selectErrorLoadingCategories),
-      this.store.select(selectCreatingCategoryError),
-      this.store.select(selectSelectedCategoryError)
-    ]).pipe(
-      map(([loadingError, creatingError, updatingError]) => {
-        const error = loadingError || creatingError || updatingError;
-        return error ? error.message : '';
-      }));
-
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
       isActive: [true, Validators.required]
     });
     this.dataSource = new MatTableDataSource<PipeProperty_Category>([]);
+
+    this.errorMessage$ = combineLatest([
+      this.store.select(selectErrorLoadingCategories),
+      this.store.select(selectCreatingCategoryError),
+      this.store.select(selectSelectedCategoryError)
+    ]).pipe(
+      map(([loadingError, creatingError, updatingError]) => loadingError || creatingError || updatingError ? "An error occurred" : '')
+    );
+
+    this.isCategoryCreated$ = this.store.select(selectCreatedCategory).pipe(map(category => !!category));
+    this.isCategoryUpdated$ = this.store.select(selectUpdatedCategory).pipe(map(category => !!category));
   }
 
   ngOnInit(): void {
-    this.loadingCategories$ = this.store.select(selectLoadingCategories); 
-
-    console.log('WE ARE IN INIT!!');
+    this.loadingCategories$ = this.store.select(selectLoadingCategories);
     this.store.dispatch(actionGetCategories({ searchParams: null }));
     this.store.pipe(
       select(selectAllCategories),
       takeUntil(this.destroy$)
     ).subscribe(categories => this.dataSource.data = categories);
-
-
-    this.loadingCategoriesSubscription = this.store.select(selectLoadingCategories)
-    .pipe(
-      takeUntil(this.destroy$)
-    )
-    .subscribe(loading => {
-      console.log('loadingCategories$ value:', loading);
-    }
-    );
-    
-
   }
 
   ngOnDestroy(): void {
@@ -103,9 +104,5 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
   resetForm(): void {
     this.editingCategory = null;
     this.categoryForm.reset({ name: '', isActive: true });
-  }
-
-  cancelEdit(): void {
-    this.resetForm();
   }
 }

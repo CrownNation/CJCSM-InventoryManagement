@@ -15,8 +15,6 @@ import {
     actionUpdatePipeProperty_CoatingSuccess,
     actionUpdatePipeProperty_CoatingError
 } from './pipe-property-coating.actions';
-import { PipeProperty_Coating } from "src/app/models/pipe.model";
-import { selectErrorLoadingCoatings } from "./pipe-property-coating.selectors";
 
 @Injectable()
 export class PipeProperty_CoatingEffects {

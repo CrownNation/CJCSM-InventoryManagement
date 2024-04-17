@@ -41,58 +41,92 @@ export interface PipeProperty_Category {
     name: string;
     isActive: boolean;
 }
-
 export interface PipeProperty_CategoryCreate {
     name: string;
     isActive: boolean;
 }
-
 export interface PipeProperty_CategoryUpdate {
     name: string;
     isActive: boolean;
 }
-
 export interface PipeProperty_CategorySearchParams {
     isActive: boolean | null;
     name: string | null;
   }
   
-  export interface PipeProperty_Coating {
+export interface PipeProperty_Coating {
     pipeProperty_CoatingId: string;
     name: string;
     isActive: boolean;
   }
-
 export interface PipeProperty_CoatingCreate {
     name: string;
     isActive: boolean;
 }
-
 export interface PipeProperty_CoatingUpdate {
     name: string;
     isActive: boolean;
 }
-
 export interface PipeProperty_CoatingSearchParams {
     name: string | null;
     isActive: boolean | null;
-  }
+}
 
 export interface PipeProperty_Condition {
     pipeProperty_ConditionId: string;
     name: string;
     isActive: boolean;
 }
+export interface PipeProperty_ConditionCreate {
+    name: string;
+    isActive: boolean;
+}
+export interface PipeProperty_ConditionUpdate {
+    name: string;
+    isActive: boolean;
+}
+export interface PipeProperty_ConditionSearchParams {
+    isActive: boolean | null;
+    name: string | null;
+}
 
+// --- Grade ---
 export interface PipeProperty_Grade {
     pipeProperty_GradeId: string;
     name: string;
+    isActive: boolean;
 }
+export interface PipeProperty_GradeCreate {
+    name: string;
+    isActive: boolean;
+}
+export interface PipeProperty_GradeUpdate {
+    name: string;
+    isActive: boolean;
+}
+export interface PipeProperty_GradeSearchParams {
+    isActive: boolean | null;
+    name: string | null;
+  }
 
+// --- Range ---
 export interface PipeProperty_Range {
     pipeProperty_RangeId: string;
     name: string;
+    isActive: boolean;
 }
+export interface PipeProperty_RangeCreate {
+    name: string;
+    isActive: boolean;
+}
+export interface PipeProperty_RangeUpdate {
+    name: string;
+    isActive: boolean;
+}
+export interface PipeProperty_RangeSearchParams {
+    isActive: boolean | null;
+    name: string | null;
+  }
 
 export interface PipeProperty_Size {
     pipeProperty_SizeId: string;

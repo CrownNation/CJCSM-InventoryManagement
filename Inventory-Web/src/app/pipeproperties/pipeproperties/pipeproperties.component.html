@@ -1,21 +1,30 @@
-
-
 <div class="container">
-    <mat-tab-group  (selectedIndexChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start" class="section">
-        <mat-tab label="Category"></mat-tab>
-        <mat-tab label="Coating"></mat-tab>
-
-        <mat-tab >
+    <mat-tab-group (selectedIndexChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start"
+        class="section">
+        <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon>manage_search</mat-icon>
-              Condition
+                <mat-icon>dataset</mat-icon>
+                Category
             </ng-template>
         </mat-tab>
 
         <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon>analytics</mat-icon>
-              Grade
+                <mat-icon>layers</mat-icon>
+                Coating
+            </ng-template>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>manage_search</mat-icon>
+                Condition
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>analytics</mat-icon>
+                Grade
             </ng-template>
         </mat-tab>
 

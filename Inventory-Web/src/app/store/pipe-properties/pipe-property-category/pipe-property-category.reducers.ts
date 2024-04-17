@@ -2,27 +2,20 @@ import { Action, ActionReducer, createReducer, on } from "@ngrx/store";
 import { PipeProperty_CategoryState } from "./pipe-property-category.state";
 import { PipeProperty_Category } from "src/app/models/pipe.model";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
-import { actionCreatePipeProperty_CategorySuccess, actionGetCategories, actionGetCategoriesError, actionGetCategoriesSuccess, actionUpdatePipeProperty_CategorySuccess } from "./pipe-property-category.actions";
-
+import {
+  actionCreatePipeProperty_CategorySuccess,
+  actionGetCategories,
+  actionGetCategoriesError,
+  actionGetCategoriesSuccess,
+  actionUpdatePipeProperty_CategorySuccess,
+  actionUpdatePipeProperty_Category
+} from "./pipe-property-category.actions";
 
 export function sortByName(a: PipeProperty_Category, b: PipeProperty_Category): number {
     return a.name.localeCompare(b.name);
-  }
+}
 
-// export const selectId= ({ pipeProperty_CategoryId }: PipeProperty_Category) => pipeProperty_CategoryId;
-
-// export const selectId = ({ pipeProperty_CategoryId }: PipeProperty_Category): string => pipeProperty_CategoryId;
-
-// selectId is of type 'function', and that function takes one parameter.
-// That function returns a string. This string is the pipeProperty_CategoryId of the object passed in as the parameter.
- export const selectId: (category: PipeProperty_Category) => string = (category: PipeProperty_Category) => category.pipeProperty_CategoryId;
-
-//This can be done this way:
-// export const selectId = ({ pipeProperty_CategoryId }: PipeProperty_Category): string => pipeProperty_CategoryId;
-// This uses destructure syntax to get the pipeProperty_CategoryId from the object passed in as the parameter. { pipeProperty_CategoryId }: PipeProperty_Category
-// (): string. This defines the return type of the function.
-// => Is the implementation of the function. It returns the pipeProperty_CategoryId of the object passed in as the parameter.
-
+export const selectId: (category: PipeProperty_Category) => string = (category: PipeProperty_Category) => category.pipeProperty_CategoryId;
 
 export const pipeProperty_CategoryAdapter: EntityAdapter<PipeProperty_Category> = createEntityAdapter<PipeProperty_Category>({
     sortComparer: sortByName,
@@ -31,67 +24,58 @@ export const pipeProperty_CategoryAdapter: EntityAdapter<PipeProperty_Category> 
 
 export const initialState: PipeProperty_CategoryState = pipeProperty_CategoryAdapter.getInitialState({
     ids: [],
-    entities: { },
+    entities: {},
     loadingCategories: false,
     errorLoadingCategories: null,
-
     creatingCategory: false,
     createdCategory: null,
     errorCreatingCategory: null,
-
+    updatingCategory: false,
+    updatedCategory: null,
+    errorUpdatingCategory: null,
     selectedCategory: null,
     errorLoadingSelectedCategory: null
 });
 
-
 const reducer: ActionReducer<PipeProperty_CategoryState> = createReducer(
     initialState,
-    // Retrieve Pipe Property Categories
-    /*
-    on(actionGetCategories, (state: PipeProperty_CategoryState, { }) => {
-      console.log('[Reducer] actionGetCategories');
-        const newState = pipeProperty_CategoryAdapter.removeAll(state); // Needed so it refreshes the subscription fires with new data
-        return {
-          ...newState,
-          loadingCategories: true,
-          errorLoadingCategories: null
-        };
-    }),
-    */
-    on(actionGetCategories, (state: PipeProperty_CategoryState, { }) => {
-      console.log('[Reducer] actionGetCategories triggered');
-      return {
-          ...state,
-          loadingCategories: true,
-          errorLoadingCategories: null
-      };
-  }),
-    on(actionCreatePipeProperty_CategorySuccess, (state, { category }) => 
-    pipeProperty_CategoryAdapter.addOne(category, {
+    on(actionGetCategories, (state: PipeProperty_CategoryState) => ({
         ...state,
-        loadingCategories: false,
-        errorCreatingCategory: null, 
-        createdCategory: category
+        loadingCategories: true,
+        errorLoadingCategories: null
     })),
-    on(actionUpdatePipeProperty_CategorySuccess, (state, { category }) => {
-        return pipeProperty_CategoryAdapter.updateOne({
-          id: category.pipeProperty_CategoryId,
-          changes: category
-        }, state);
-      }),
-    on(actionGetCategoriesSuccess, (state: PipeProperty_CategoryState, { categories }) => {
-        return pipeProperty_CategoryAdapter.addMany(categories, {
-          ...state,
-          loadingCategories: false,
-          errorLoadingCategories: null
-        });
-    }),
-    on(actionGetCategoriesError, (state: PipeProperty_CategoryState, { errorLoadingCategories }) => ({
+    on(actionCreatePipeProperty_CategorySuccess, (state, { category }) => 
+        pipeProperty_CategoryAdapter.addOne(category, {
+            ...state,
+            loadingCategories: false,
+            errorCreatingCategory: null, 
+            createdCategory: category
+        })),
+    on(actionUpdatePipeProperty_Category, (state) => ({
+        ...state,
+        updatingCategory: true,
+        errorUpdatingCategory: null
+    })),
+    on(actionUpdatePipeProperty_CategorySuccess, (state, { category }) => 
+        pipeProperty_CategoryAdapter.updateOne({
+            id: category.pipeProperty_CategoryId,
+            changes: category
+        }, {
+            ...state,
+            updatingCategory: false,
+            updatedCategory: category
+        })),
+    on(actionGetCategoriesSuccess, (state, { categories }) => 
+        pipeProperty_CategoryAdapter.addMany(categories, {
+            ...state,
+            loadingCategories: false,
+            errorLoadingCategories: null
+        })),
+    on(actionGetCategoriesError, (state, { errorLoadingCategories }) => ({
         ...state,
         loadingCategories: false,
         errorLoadingCategories
     }))
-
 );
 
 export function pipeProperty_CategoryReducers(state: PipeProperty_CategoryState | undefined, action: Action) {

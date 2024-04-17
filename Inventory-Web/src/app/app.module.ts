@@ -13,6 +13,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 
+import { MatCardModule } from '@angular/material/card';
+
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
 
@@ -57,6 +59,9 @@ import { EffectsModule } from '@ngrx/effects';
     MatListModule,
     MatMenuModule,
     MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatCardModule,
 
     // StoreModule.forRoot({rack: rackReducers}, {}),
 

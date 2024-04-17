@@ -77,6 +77,6 @@ const reducer: ActionReducer<PipeProperty_CoatingState> = createReducer(
     }))
 );
 
-export function pipeProperty_CoatingReducers(state: PipeProperty_CoatingState | undefined, action: Action) {
+export function PipeProperty_CoatingReducers(state: PipeProperty_CoatingState | undefined, action: Action) {
     return reducer(state, action);
 }

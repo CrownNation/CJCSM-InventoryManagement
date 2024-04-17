@@ -1,47 +1,52 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PipeProperty_Coating } from 'src/app/models/pipe.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, Subscription, combineLatest } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { PipeProperty_Coating } from 'src/app/models/pipe.model';
 import { AppState } from '../../store/core.state';
-import {
-  actionGetCoatings,
-  actionCreatePipeProperty_Coating,
-  actionUpdatePipeProperty_Coating,
-  actionGetCoatingsSuccess,
-  actionGetCoatingsError
-} from 'src/app/store/pipe-properties/pipe-property-coating/pipe-property-coating.actions';
+
 import {
   selectAllCoatings,
-  selectLoadingCoatings,
+  selectCreatingCoatingError,
   selectErrorLoadingCoatings,
-  selectCreatingCoatingError
+  selectLoadingCoatings,
+  selectSelectedCoatingError,
+  selectCreatedCoating,
+  selectUpdatedCoating
 } from 'src/app/store/pipe-properties/pipe-property-coating/pipe-property-coating.selectors';
+import {
+  actionCreatePipeProperty_Coating,
+  actionGetCoatings,
+  actionUpdatePipeProperty_Coating
+} from 'src/app/store/pipe-properties/pipe-property-coating/pipe-property-coating.actions';
 
 @Component({
   selector: 'app-pipe-property-coating',
   templateUrl: './pipe-property-coating.component.html',
-  styleUrls: ['./pipe-property-coating.component.scss']
+  styleUrls: ['./pipe-property-coating.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class PipePropertyCoatingComponent implements OnInit, OnDestroy {
 
-  loadingCoatingsSubscription : Subscription | undefined;
+  loadingCoatingsSubscription: Subscription | undefined;
 
   dataSource: MatTableDataSource<PipeProperty_Coating>;
   displayedColumns: string[] = ['name', 'isActive', 'actions'];
   coatingForm: FormGroup;
   editingCoating: PipeProperty_Coating | null = null;
-  loadingCoatings$: Observable<boolean>;
-  errorMessage$: Observable<string>;
+  loadingCoatings$: Observable<boolean> | undefined;
   private destroy$ = new Subject<void>();
+
+  errorMessage$: Observable<string>;
+  isCoatingCreated$: Observable<boolean>;
+  isCoatingUpdated$: Observable<boolean>;
 
   constructor(
     private store: Store<AppState>,
     private fb: FormBuilder
   ) {
-    this.loadingCoatings$ = this.store.pipe(select(selectLoadingCoatings));
     this.coatingForm = this.fb.group({
       name: ['', Validators.required],
       isActive: [true, Validators.required]
@@ -50,35 +55,31 @@ export class PipePropertyCoatingComponent implements OnInit, OnDestroy {
 
     this.errorMessage$ = combineLatest([
       this.store.select(selectErrorLoadingCoatings),
-      this.store.select(selectCreatingCoatingError)
+      this.store.select(selectCreatingCoatingError),
+      this.store.select(selectSelectedCoatingError)
     ]).pipe(
-      map(([loadingError, creatingError]) => {
-        return loadingError || creatingError ? "An error occurred" : ''; // Customize based on actual error handling needs
-      })
+      map(([loadingError, creatingError, updatingError]) => loadingError || creatingError || updatingError ? "An error occurred" : '')
     );
+
+    this.isCoatingCreated$ = this.store.select(selectCreatedCoating).pipe(map(coating => !!coating));
+    this.isCoatingUpdated$ = this.store.select(selectUpdatedCoating).pipe(map(coating => !!coating));
   }
 
   ngOnInit(): void {
-    console.log("COATINGS INIT");
+    this.loadingCoatings$ = this.store.select(selectLoadingCoatings);
     this.store.dispatch(actionGetCoatings({ searchParams: null }));
     this.store.pipe(
       select(selectAllCoatings),
       takeUntil(this.destroy$)
     ).subscribe(coatings => this.dataSource.data = coatings);
-
-    this.loadingCoatingsSubscription = this.store.select(selectLoadingCoatings)
-    .pipe(
-      takeUntil(this.destroy$)
-    )
-    .subscribe(loading => {
-      console.log('loadingCoatings$ value:', loading);
-    }
-  );
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.loadingCoatingsSubscription) {
+      this.loadingCoatingsSubscription.unsubscribe();
+    }
   }
 
   selectCoating(coating: PipeProperty_Coating): void {
@@ -88,7 +89,7 @@ export class PipePropertyCoatingComponent implements OnInit, OnDestroy {
 
   saveOrUpdateCoating(): void {
     if (this.editingCoating) {
-      const coatingId = this.editingCoating.pipeProperty_CoatingId; // Adjust based on your model
+      const coatingId = this.editingCoating.pipeProperty_CoatingId;
       const coatingUpdate = {
         ...this.editingCoating,
         ...this.coatingForm.value

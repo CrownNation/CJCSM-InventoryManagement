@@ -14,11 +14,26 @@ const routes: Routes = [
       },
       {
         path: 'category',
-        loadChildren: () => import('./pipe-property-category/pipe-property-category.module').then(m => m.PipePropertyCategoryModule)      },
+        loadChildren: () => import('./pipe-property-category/pipe-property-category.module').then(m => m.PipePropertyCategoryModule)      
+      },
       {
         path: 'coating',
         loadChildren: () => import('./pipe-property-coating/pipe-property-coating.module').then(m => m.PipePropertyCoatingModule)
+      },
+      {
+        path: 'condition',
+        loadChildren: () => import('./pipe-property-condition/pipe-property-condition.module').then(m => m.PipePropertyConditionModule)
+      },
+      {
+        path: 'grade',
+        loadChildren: () => import('./pipe-property-grade/pipe-property-grade.module').then(m => m.PipePropertyGradeModule)
+      },
+      {
+        path: 'range',
+        loadChildren: () => import('./pipe-property-range/pipe-property-range.module').then(m => m.PipePropertyRangeModule)
       }
+
+
     ]
   }
 ];
