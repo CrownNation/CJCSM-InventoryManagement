@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, Subscription, combineLatest } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil } from 'rxjs/operators';
 import { PipeProperty_Coating } from 'src/app/models/pipe.model';
 import { AppState } from '../../store/core.state';
 
@@ -19,7 +19,8 @@ import {
 import {
   actionCreatePipeProperty_Coating,
   actionGetCoatings,
-  actionUpdatePipeProperty_Coating
+  actionUpdatePipeProperty_Coating,
+  resetCoatingNotifications
 } from 'src/app/store/pipe-properties/pipe-property-coating/pipe-property-coating.actions';
 
 @Component({
@@ -80,13 +81,34 @@ export class PipePropertyCoatingComponent implements OnInit, OnDestroy {
     if (this.loadingCoatingsSubscription) {
       this.loadingCoatingsSubscription.unsubscribe();
     }
+    this.checkAndResetNotifications();
   }
 
   selectCoating(coating: PipeProperty_Coating): void {
     this.editingCoating = coating;
     this.coatingForm.patchValue(coating);
+    // Reset notifications when a new grade is selected
+    this.checkAndResetNotifications();
   }
 
+  //Checks for any notifications present, if there are any, reset them.
+  checkAndResetNotifications(): void {
+    combineLatest([
+      this.store.select(selectCreatedCoating),
+      this.store.select(selectUpdatedCoating),
+      this.store.select(selectErrorLoadingCoatings),
+      this.store.select(selectCreatingCoatingError),
+      this.store.select(selectSelectedCoatingError)
+    ]).pipe(
+      take(1)
+    ).subscribe(([created, updated, loadingError, creatingError, selectedError]) => {
+      // Check if any of the states are truthy (i.e., there is either a success message or an error message)
+      if (created || updated || loadingError || creatingError || selectedError) {
+        this.store.dispatch(resetCoatingNotifications());
+      }
+    });
+  }
+  
   saveOrUpdateCoating(): void {
     if (this.editingCoating) {
       const coatingId = this.editingCoating.pipeProperty_CoatingId;
@@ -104,5 +126,7 @@ export class PipePropertyCoatingComponent implements OnInit, OnDestroy {
   resetForm(): void {
     this.editingCoating = null;
     this.coatingForm.reset({ name: '', isActive: true });
+    this.checkAndResetNotifications();
   }
+
 }

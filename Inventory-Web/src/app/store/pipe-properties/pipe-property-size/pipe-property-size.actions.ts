@@ -43,7 +43,7 @@ export const actionUpdatePipeProperty_SizeSuccess = createAction(
 );
 export const actionUpdatePipeProperty_SizeError = createAction(
     `${sizesKey} Update PipeProperty_Size Error`,
-    props<{ error: HttpErrorResponse }>()
+    props<{ errorUpdatingSize: HttpErrorResponse }>()
 );
 
 // Reset notifications

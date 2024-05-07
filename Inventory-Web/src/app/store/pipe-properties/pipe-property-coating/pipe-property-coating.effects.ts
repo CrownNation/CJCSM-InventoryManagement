@@ -24,7 +24,6 @@ export class PipeProperty_CoatingEffects {
       private pipePropertiesService: PipePropertiesService,
   ) {}
 
-
   loadcoatings$ = createEffect(() =>
   this.actions$.pipe(
     ofType(actionGetCoatings),
@@ -55,7 +54,7 @@ export class PipeProperty_CoatingEffects {
       switchMap(({ id, coating }) =>
         this.pipePropertiesService.updateCoating(id, coating).pipe(
           map(() => actionUpdatePipeProperty_CoatingSuccess({ id, coating })),
-          catchError(errorUpdatingCoating => of(actionUpdatePipeProperty_CoatingError({ error: errorUpdatingCoating })))
+          catchError(errorUpdatingCoating => of(actionUpdatePipeProperty_CoatingError({ errorUpdatingCoating : errorUpdatingCoating })))
         )
       )
     )

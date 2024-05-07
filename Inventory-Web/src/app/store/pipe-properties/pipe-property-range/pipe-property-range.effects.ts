@@ -55,7 +55,7 @@ export class PipeProperty_RangeEffects {
       switchMap(({ id, range }) =>
         this.pipePropertiesService.updateRange(id, range).pipe(
           map(() => actionUpdatePipeProperty_RangeSuccess({ id, range })),
-          catchError(errorUpdatingRange => of(actionUpdatePipeProperty_RangeError({ error: errorUpdatingRange })))
+          catchError(errorUpdatingRange => of(actionUpdatePipeProperty_RangeError({ errorUpdatingRange: errorUpdatingRange })))
         )
       )
     )

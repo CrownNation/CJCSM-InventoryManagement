@@ -87,6 +87,7 @@ export class PipePropertyGradeComponent implements OnInit, OnDestroy {
   selectGrade(grade: PipeProperty_Grade): void {
     this.editingGrade = grade;
     this.gradeForm.patchValue(grade);
+    // Reset notifications when a new grade is selected
     this.checkAndResetNotifications();
   }
 
@@ -127,4 +128,5 @@ export class PipePropertyGradeComponent implements OnInit, OnDestroy {
     this.gradeForm.reset({ name: '', isActive: true });
     this.checkAndResetNotifications();
   }
+  
 }

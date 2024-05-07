@@ -3,12 +3,15 @@ import { PipeProperty_SizeState } from './pipe-property-size.state';
 import { PipeProperty_Size } from 'src/app/models/pipe.model';
 import { EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import {
+  actionCreatePipeProperty_Size,
   actionCreatePipeProperty_SizeSuccess,
+  actionCreatePipeProperty_SizeError,
   actionGetSizes,
   actionGetSizesError,
   actionGetSizesSuccess,
   actionUpdatePipeProperty_Size,
   actionUpdatePipeProperty_SizeSuccess,
+  actionUpdatePipeProperty_SizeError,
   resetSizeNotifications,
 } from './pipe-property-size.actions';
 
@@ -40,33 +43,13 @@ export const initialState: PipeProperty_SizeState = pipeProperty_SizeAdapter.get
 
 const reducer: ActionReducer<PipeProperty_SizeState> = createReducer(
     initialState,
-    on(actionGetSizes, (state: PipeProperty_SizeState) => ({
+    // Get sizes
+    on(actionGetSizes, (state) => ({
         ...state,
         loadingSizes: true,
         errorLoadingSizes: null
     })),
-    on(actionCreatePipeProperty_SizeSuccess, (state, { size }) => 
-        pipeProperty_SizeAdapter.addOne(size, {
-            ...state,
-            loadingSizes: false,
-            errorCreatingSize: null, 
-            createdSize: size
-        })),
-    on(actionUpdatePipeProperty_Size, (state) => ({
-        ...state,
-        updatingSize: true,
-        errorUpdatingSize: null
-    })),
-    on(actionUpdatePipeProperty_SizeSuccess, (state, { id, size }) => 
-        pipeProperty_SizeAdapter.updateOne({
-            id: id,
-            changes: size
-        }, {
-            ...state,
-            updatingSize: false,
-            updatedSize: size
-        })),
-    on(actionGetSizesSuccess, (state, { sizes }) => 
+    on(actionGetSizesSuccess, (state, { sizes }) =>
         pipeProperty_SizeAdapter.addMany(sizes, {
             ...state,
             loadingSizes: false,
@@ -76,7 +59,51 @@ const reducer: ActionReducer<PipeProperty_SizeState> = createReducer(
         ...state,
         loadingSizes: false,
         errorLoadingSizes
-    })),  
+    })),
+
+    // Create size
+    on(actionCreatePipeProperty_Size, (state) => ({
+        ...state,
+        creatingSize: true,
+        createdSize: null,
+        errorCreatingSize: null
+    })),
+    on(actionCreatePipeProperty_SizeSuccess, (state, { size }) =>
+        pipeProperty_SizeAdapter.addOne(size, {
+            ...state,
+            creatingSize: false,
+            createdSize: size,
+            errorCreatingSize: null
+        })),
+    on(actionCreatePipeProperty_SizeError, (state, { errorCreatingSize }) => ({
+        ...state,
+        creatingSize: false,
+        errorCreatingSize
+    })),
+
+    // Update size
+    on(actionUpdatePipeProperty_Size, (state) => ({
+        ...state,
+        updatingSize: true,
+        errorUpdatingSize: null
+    })),
+    on(actionUpdatePipeProperty_SizeSuccess, (state, { id, size }) =>
+        pipeProperty_SizeAdapter.updateOne({
+            id,
+            changes: size
+        }, {
+            ...state,
+            updatingSize: false,
+            updatedSize: size,
+            errorUpdatingSize: null
+        })),
+    on(actionUpdatePipeProperty_SizeError, (state, { errorUpdatingSize }) => ({
+        ...state,
+        updatingSize: false,
+        errorUpdatingSize
+    })),
+
+    // Reset notifications
     on(resetSizeNotifications, (state) => ({
         ...state,
         createdSize: null,
@@ -84,8 +111,8 @@ const reducer: ActionReducer<PipeProperty_SizeState> = createReducer(
         errorLoadingSizes: null,
         errorCreatingSize: null,
         errorUpdatingSize: null
-      }))
-    );
+    }))
+);
 
 export function pipeProperty_SizeReducers(state: PipeProperty_SizeState | undefined, action: Action) {
     return reducer(state, action);

@@ -26,31 +26,6 @@ export class PipeProperty_CategoryEffects {
       private pipePropertiesService: PipePropertiesService,
   ) {}
 
-//   loadCategories$ = createEffect(() =>
-//   this.actions$.pipe(
-//     ofType(actionGetCategories),
-//     switchMap(() =>
-//       this.pipePropertiesService.getCategory(null).pipe(
-//         map(categories => actionGetCategoriesSuccess({ categories })),
-//         catchError(errorLoadingCategories => of(actionGetCategoriesError({ errorLoadingCategories })))
-//       )
-//     )
-//   )
-// );
-
-// loadCategories$ = createEffect(() =>
-//   this.actions$.pipe(
-//     ofType(actionGetCategories),
-//     tap(() => console.log('Loading categories...')), // Add this line
-//     switchMap(() =>{
-
-//       this.pipePropertiesService.getCategory(null).pipe(
-//         map(categories => actionGetCategoriesSuccess({ categories })),
-//         catchError(errorLoadingCategories => of(actionGetCategoriesError({ errorLoadingCategories })))
-//       )
-//     )
-//   )
-// );
 loadCategories$ = createEffect(() =>
   this.actions$.pipe(
     ofType(actionGetCategories),
@@ -85,7 +60,7 @@ this.actions$.pipe(
   switchMap(({ id: categoryId, category: categoryUpdate }) =>
     this.pipePropertiesService.updateCategory(categoryId, categoryUpdate).pipe(
       map(() => actionUpdatePipeProperty_CategorySuccess({ id: categoryId, category: categoryUpdate})),
-      catchError(errorUpdatingCategory => of(actionUpdatePipeProperty_CategoryError({ error: errorUpdatingCategory })))
+      catchError(errorUpdatingCategory => of(actionUpdatePipeProperty_CategoryError({ errorUpdatingCategory : errorUpdatingCategory })))
     )
   )
 )

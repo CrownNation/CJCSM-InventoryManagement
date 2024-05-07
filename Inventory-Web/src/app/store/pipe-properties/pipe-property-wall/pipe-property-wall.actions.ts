@@ -43,7 +43,7 @@ export const actionUpdatePipeProperty_WallSuccess = createAction(
 );
 export const actionUpdatePipeProperty_WallError = createAction(
     `${wallsKey} Update PipeProperty_Wall Error`,
-    props<{ error: HttpErrorResponse }>()
+    props<{ errorUpdatingWall: HttpErrorResponse }>()
 );
 
 // Reset notifications

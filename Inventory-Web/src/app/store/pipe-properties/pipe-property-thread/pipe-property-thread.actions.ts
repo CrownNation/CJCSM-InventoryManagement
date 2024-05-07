@@ -43,7 +43,7 @@ export const actionUpdatePipeProperty_ThreadSuccess = createAction(
 );
 export const actionUpdatePipeProperty_ThreadError = createAction(
     `${threadsKey} Update PipeProperty_Thread Error`,
-    props<{ error: HttpErrorResponse }>()
+    props<{ errorUpdatingThread: HttpErrorResponse }>()
 );
 
 // Reset notifications

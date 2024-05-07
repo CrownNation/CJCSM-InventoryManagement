@@ -43,7 +43,7 @@ export const actionUpdatePipeProperty_WeightSuccess = createAction(
 );
 export const actionUpdatePipeProperty_WeightError = createAction(
     `${weightsKey} Update PipeProperty_Weight Error`,
-    props<{ error: HttpErrorResponse }>()
+    props<{ errorUpdatingWeight: HttpErrorResponse }>()
 );
 
 // Reset notifications

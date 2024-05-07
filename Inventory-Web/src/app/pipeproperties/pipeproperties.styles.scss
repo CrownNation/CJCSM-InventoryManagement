@@ -1,147 +1,208 @@
+.center-text {
+  text-align: center;
+}
+
+.messages-container {
+  margin-top: 0px;
+  /* Space between the checkbox and messages */
+}
+
+.error-message,
+.alert.alert-success {
+  margin-bottom: 5px;
+  /* Additional spacing between messages if multiple are shown */
+}
+
+.error-message {
+  color: #961b0f;
+  font-weight: bold;
+}
+
+.alert.alert-success {
+  color: #19806f;
+  font-weight: bold;
+}
+
 .container-tab {
-    display: flex;
-    flex-wrap: wrap; /* Allow cards to wrap to a new line if there's not enough space */
-    align-items: flex-start; /* Align items at the start of the cross-axis (top-aligned) */
+  display: flex;
+  flex-wrap: wrap;
+  /* Allow cards to wrap to a new line if there's not enough space */
+  align-items: flex-start;
+  /* Align items at the start of the cross-axis (top-aligned) */
+}
+
+.widget-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.section,
+.editor-card {
+  flex: 1;
+  /* Flex-grow: 1 to make them fill available space */
+  margin: 1rem;
+  /* Add margin to create space between the cards */
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+}
+
+.category-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width-input {
+  width: 100%;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-top: 20px;
+}
+
+.isActive-icon {
+  color: green;
+}
+
+.isInactive-icon {
+  color: red;
+}
+
+.item-buttons {
+  width: 100%;
+  text-align: center;
+  border: 0;
+  background-color: transparent;
+}
+
+.item-buttons button {
+  font-size: medium;
+  margin-bottom: 1rem;
+}
+
+.item-buttons button:first-child {
+  margin-right: 8px;
+  /* Adjust the margin as needed */
+}
+
+.mat-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-card-actions {
+  margin-top: auto;
+  /* Push the actions to the bottom */
+}
+
+.mat-card {
+  text-align: center;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+}
+
+mat-card-title,
+h1 {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+mat-form-field {
+  display: block;
+}
+
+@media (max-width: 768px) {
+
+  .section,
+  .category-editor-card {
+    width: calc(100% - 2rem);
+    /* Full width on smaller screens */
   }
-  
-  .section, .editor-card {
-    flex: 1; /* Flex-grow: 1 to make them fill available space */
-    margin: 1rem; /* Add margin to create space between the cards */
-  }
-  
-  .spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: white;
-  }
-  
-  .category-form {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .full-width-input {
-    width: 100%;
-  }
-  
-  .error-message {
-    color: #d32f2f;
-    margin-top: 20px;
-  }
-  
-  .isActive-icon {
-    color: green;
-  }
-  
-  .isInactive-icon {
-    color: red;
-  }
-  
-  .item-buttons {
-    width: 100%;
-    text-align: center;
-    border: 0;
-    background-color: transparent;
-  }
-  
-  .item-buttons button {
-    font-size: medium;
-    margin-bottom: 1rem;
-  }
-  
-  .item-buttons button:first-child {
-    margin-right: 8px; /* Adjust the margin as needed */
-  }
-  
-  .mat-card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .mat-card-actions {
-    margin-top: auto; /* Push the actions to the bottom */
-  }
-  
-  .mat-card {
-    text-align: center;
-  }
-  
-  mat-card-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: .5rem;
-  }
-  
-  mat-card-title,
-  h1 {
-    font-weight: 500;
-    font-size: 1.4rem;
-  }
-  
-  mat-form-field {
-    display: block;
-  }
-  
-  @media (max-width: 768px) {
-    .section,
-    .category-editor-card {
-      width: calc(100% - 2rem); /* Full width on smaller screens */
-    }
-  }
-  
-  /* Target the Material table header row and cells directly with higher specificity */
-  .mat-mdc-header-row.mdc-data-table__header-row, .mat-mdc-header-row.mdc-data-table__header-row th.mat-mdc-header-cell {
-    padding-top: 4px; /* Reduce top padding */
-    padding-bottom: 4px; /* Reduce bottom padding */
-    height: auto; /* Allow height to adjust based on content and padding */
-    line-height: normal; /* Adjust line height if necessary */
-  }
-  
-  /* Ensure that the table's layout does not add extra height */
-  .myTable .mat-mdc-header-row, .myTable th.mat-mdc-header-cell {
-    white-space: nowrap; /* Prevent line breaks */
-    width: 100%;
-    box-sizing: border-box; /* Ensure padding does not add to the width */
-    background-color: #ffffff; /* White for even rows */
-  
-  }
-  
-  /* Ensures icons within cells do not expand the row height */
-  .myTable .mat-icon {
-    font-size: 1.5rem; /* Adjust size to fit within the row height */
-    height: 1.5rem; /* Match icon height to row height */
-    width: 1.5rem; /* Match icon width to its height for consistency */
-    line-height: 1.5rem; /* Aligns icon line height with the new row height */
-  }
-  
-  .myTable tr:nth-child(odd) {
-    background-color: #f2f2f2; /* Light gray for odd rows */
-  }
-  
-  .myTable tr:nth-child(even) {
-    background-color: #ffffff; /* White for even rows */
-  }
-  
-  /* Apply this class to elements that need to be smaller to fit in the new row height */
-  .small-element {
-    height: 30px;
-    min-height: 30px;
-  }
-  
-  /* Ensure that the styles target the checkbox and its label specifically */
-  .mat-checkbox .mat-checkbox-layout {
-    width: auto; /* Set width to auto to allow the checkbox to take up its natural width */
-  }
-  
-  .mat-checkbox .mat-checkbox-label {
-    white-space: nowrap; /* Prevent line breaks */
-  }
-  
-  .checkbox-label {
-    width: auto; /* Set width to auto to allow the label to take up its natural width */
-    white-space: nowrap; /* Prevent line breaks */
-  }
-  
-  
+}
+
+/* Target the Material table header row and cells directly with higher specificity */
+.mat-mdc-header-row.mdc-data-table__header-row,
+.mat-mdc-header-row.mdc-data-table__header-row th.mat-mdc-header-cell {
+  padding-top: 4px;
+  /* Reduce top padding */
+  padding-bottom: 4px;
+  /* Reduce bottom padding */
+  height: auto;
+  /* Allow height to adjust based on content and padding */
+  line-height: normal;
+  /* Adjust line height if necessary */
+}
+
+.myTable {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Ensure that the table's layout does not add extra height */
+.myTable .mat-mdc-header-row,
+.myTable th.mat-mdc-header-cell {
+  white-space: nowrap;
+  /* Prevent line breaks */
+  width: 100%;
+  box-sizing: border-box;
+  /* Ensure padding does not add to the width */
+  background-color: #ffffff;
+  /* White for even rows */
+
+}
+
+/* Ensures icons within cells do not expand the row height */
+.myTable .mat-icon {
+  font-size: 1.5rem;
+  /* Adjust size to fit within the row height */
+  height: 1.5rem;
+  /* Match icon height to row height */
+  width: 1.5rem;
+  /* Match icon width to its height for consistency */
+  line-height: 1.5rem;
+  /* Aligns icon line height with the new row height */
+}
+
+.myTable tr:nth-child(odd) {
+  background-color: #f2f2f2;
+  /* Light gray for odd rows */
+}
+
+.myTable tr:nth-child(even) {
+  background-color: #ffffff;
+  /* White for even rows */
+}
+
+/* Apply this class to elements that need to be smaller to fit in the new row height */
+.small-element {
+  height: 30px;
+  min-height: 30px;
+}
+
+/* Ensure that the styles target the checkbox and its label specifically */
+.mat-checkbox .mat-checkbox-layout {
+  width: auto;
+  /* Set width to auto to allow the checkbox to take up its natural width */
+}
+
+.mat-checkbox .mat-checkbox-label {
+  white-space: nowrap;
+  /* Prevent line breaks */
+}
+
+.checkbox-label {
+  width: auto;
+  /* Set width to auto to allow the label to take up its natural width */
+  white-space: nowrap;
+  /* Prevent line breaks */
+}

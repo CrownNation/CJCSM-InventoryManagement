@@ -54,7 +54,7 @@ export class PipeProperty_ConditionEffects {
       switchMap(({ id, condition }) =>
         this.pipePropertiesService.updateCondition(id, condition).pipe(
           map(() => actionUpdatePipeProperty_ConditionSuccess({ id, condition })),
-          catchError(errorUpdatingCondition => of(actionUpdatePipeProperty_ConditionError({ error: errorUpdatingCondition })))
+          catchError(errorUpdatingCondition => of(actionUpdatePipeProperty_ConditionError({ errorUpdatingCondition: errorUpdatingCondition })))
         )
       )
     )

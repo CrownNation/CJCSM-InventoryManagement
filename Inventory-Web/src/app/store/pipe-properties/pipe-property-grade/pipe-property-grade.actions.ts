@@ -43,7 +43,7 @@ export const actionUpdatePipeProperty_GradeSuccess = createAction(
 );
 export const actionUpdatePipeProperty_GradeError = createAction(
     `${gradesKey} Update PipeProperty_Grade Error`,
-    props<{ error: HttpErrorResponse }>()
+    props<{ errorUpdatingGrade: HttpErrorResponse }>()
 );
 
 //Reset notifcations

@@ -3,12 +3,15 @@ import { PipeProperty_CategoryState } from "./pipe-property-category.state";
 import { PipeProperty_Category } from "src/app/models/pipe.model";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 import {
+  actionCreatePipeProperty_Category,
   actionCreatePipeProperty_CategorySuccess,
+  actionCreatePipeProperty_CategoryError,
   actionGetCategories,
-  actionGetCategoriesError,
   actionGetCategoriesSuccess,
-  actionUpdatePipeProperty_CategorySuccess,
+  actionGetCategoriesError,
   actionUpdatePipeProperty_Category,
+  actionUpdatePipeProperty_CategorySuccess,
+  actionUpdatePipeProperty_CategoryError,
   resetCategoryNotifications
 } from "./pipe-property-category.actions";
 
@@ -40,43 +43,71 @@ export const initialState: PipeProperty_CategoryState = pipeProperty_CategoryAda
 
 const reducer: ActionReducer<PipeProperty_CategoryState> = createReducer(
     initialState,
-    on(actionGetCategories, (state: PipeProperty_CategoryState) => ({
+    // Get categories
+    on(actionGetCategories, (state) => ({
         ...state,
         loadingCategories: true,
         errorLoadingCategories: null
     })),
-    on(actionCreatePipeProperty_CategorySuccess, (state, { category }) => 
-        pipeProperty_CategoryAdapter.addOne(category, {
+    on(actionGetCategoriesSuccess, (state, { categories }) =>
+        pipeProperty_CategoryAdapter.addMany(categories, {
             ...state,
             loadingCategories: false,
-            errorCreatingCategory: null, 
-            createdCategory: category
-        })),
+            errorLoadingCategories: null
+        })
+    ),
+    on(actionGetCategoriesError, (state, { errorLoadingCategories }) => ({
+        ...state,
+        loadingCategories: false,
+        errorLoadingCategories
+    })),
+
+    // Create category
+    on(actionCreatePipeProperty_Category, (state) => ({
+        ...state,
+        creatingCategory: true,
+        createdCategory: null,
+        errorCreatingCategory: null
+    })),
+    on(actionCreatePipeProperty_CategorySuccess, (state, { category }) =>
+        pipeProperty_CategoryAdapter.addOne(category, {
+            ...state,
+            creatingCategory: false,
+            createdCategory: category,
+            errorCreatingCategory: null
+        })
+    ),
+    on(actionCreatePipeProperty_CategoryError, (state, { errorCreatingCategory }) => ({
+        ...state,
+        creatingCategory: false,
+        errorCreatingCategory
+    })),
+
+    // Update category
     on(actionUpdatePipeProperty_Category, (state) => ({
         ...state,
         updatingCategory: true,
+        updatedCategory: null,
         errorUpdatingCategory: null
     })),
-    on(actionUpdatePipeProperty_CategorySuccess, (state, { category }) => 
+    on(actionUpdatePipeProperty_CategorySuccess, (state, { category }) =>
         pipeProperty_CategoryAdapter.updateOne({
             id: category.pipeProperty_CategoryId,
             changes: category
         }, {
             ...state,
             updatingCategory: false,
-            updatedCategory: category
-        })),
-    on(actionGetCategoriesSuccess, (state, { categories }) => 
-        pipeProperty_CategoryAdapter.addMany(categories, {
-            ...state,
-            loadingCategories: false,
-            errorLoadingCategories: null
-        })),
-    on(actionGetCategoriesError, (state, { errorLoadingCategories }) => ({
+            updatedCategory: category,
+            errorUpdatingCategory: null
+        })
+    ),
+    on(actionUpdatePipeProperty_CategoryError, (state, { errorUpdatingCategory }) => ({
         ...state,
-        loadingCategories: false,
-        errorLoadingCategories
+        updatingCategory: false,
+        errorUpdatingCategory
     })),
+
+    // Reset notifications
     on(resetCategoryNotifications, (state) => ({
         ...state,
         createdCategory: null,
@@ -84,7 +115,7 @@ const reducer: ActionReducer<PipeProperty_CategoryState> = createReducer(
         errorLoadingCategories: null,
         errorCreatingCategory: null,
         errorUpdatingCategory: null
-      }))
+    }))
 );
 
 export function pipeProperty_CategoryReducers(state: PipeProperty_CategoryState | undefined, action: Action) {

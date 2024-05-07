@@ -3,12 +3,15 @@ import { PipeProperty_RangeState } from './pipe-property-range.state';
 import { PipeProperty_Range } from 'src/app/models/pipe.model';
 import { EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import {
+  actionCreatePipeProperty_Range,
   actionCreatePipeProperty_RangeSuccess,
+  actionCreatePipeProperty_RangeError,
   actionGetRanges,
   actionGetRangesError,
   actionGetRangesSuccess,
   actionUpdatePipeProperty_Range,
   actionUpdatePipeProperty_RangeSuccess,
+  actionUpdatePipeProperty_RangeError,
   resetRangeNotifications,
 } from './pipe-property-range.actions';
 
@@ -40,33 +43,13 @@ export const initialState: PipeProperty_RangeState = pipeProperty_RangeAdapter.g
 
 const reducer: ActionReducer<PipeProperty_RangeState> = createReducer(
     initialState,
-    on(actionGetRanges, (state: PipeProperty_RangeState) => ({
+    // Get ranges
+    on(actionGetRanges, (state) => ({
         ...state,
         loadingRanges: true,
         errorLoadingRanges: null
     })),
-    on(actionCreatePipeProperty_RangeSuccess, (state, { range }) => 
-        pipeProperty_RangeAdapter.addOne(range, {
-            ...state,
-            loadingRanges: false,
-            errorCreatingRange: null, 
-            createdRange: range
-        })),
-    on(actionUpdatePipeProperty_Range, (state) => ({
-        ...state,
-        updatingRange: true,
-        errorUpdatingRange: null
-    })),
-    on(actionUpdatePipeProperty_RangeSuccess, (state, { id, range }) => 
-        pipeProperty_RangeAdapter.updateOne({
-            id: id,
-            changes: range
-        }, {
-            ...state,
-            updatingRange: false,
-            updatedRange: range
-        })),
-    on(actionGetRangesSuccess, (state, { ranges }) => 
+    on(actionGetRangesSuccess, (state, { ranges }) =>
         pipeProperty_RangeAdapter.addMany(ranges, {
             ...state,
             loadingRanges: false,
@@ -76,7 +59,51 @@ const reducer: ActionReducer<PipeProperty_RangeState> = createReducer(
         ...state,
         loadingRanges: false,
         errorLoadingRanges
-    })),  
+    })),
+
+    // Create range
+    on(actionCreatePipeProperty_Range, (state) => ({
+        ...state,
+        creatingRange: true,
+        createdRange: null,
+        errorCreatingRange: null
+    })),
+    on(actionCreatePipeProperty_RangeSuccess, (state, { range }) =>
+        pipeProperty_RangeAdapter.addOne(range, {
+            ...state,
+            creatingRange: false,
+            createdRange: range,
+            errorCreatingRange: null
+        })),
+    on(actionCreatePipeProperty_RangeError, (state, { errorCreatingRange }) => ({
+        ...state,
+        creatingRange: false,
+        errorCreatingRange
+    })),
+
+    // Update range
+    on(actionUpdatePipeProperty_Range, (state) => ({
+        ...state,
+        updatingRange: true,
+        errorUpdatingRange: null
+    })),
+    on(actionUpdatePipeProperty_RangeSuccess, (state, { id, range }) =>
+        pipeProperty_RangeAdapter.updateOne({
+            id,
+            changes: range
+        }, {
+            ...state,
+            updatingRange: false,
+            updatedRange: range,
+            errorUpdatingRange: null
+        })),
+    on(actionUpdatePipeProperty_RangeError, (state, { errorUpdatingRange }) => ({
+        ...state,
+        updatingRange: false,
+        errorUpdatingRange
+    })),
+
+    // Reset notifications
     on(resetRangeNotifications, (state) => ({
         ...state,
         createdRange: null,
@@ -84,8 +111,8 @@ const reducer: ActionReducer<PipeProperty_RangeState> = createReducer(
         errorLoadingRanges: null,
         errorCreatingRange: null,
         errorUpdatingRange: null
-      }))
-    );
+    }))
+);
 
 export function pipeProperty_RangeReducers(state: PipeProperty_RangeState | undefined, action: Action) {
     return reducer(state, action);

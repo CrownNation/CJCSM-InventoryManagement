@@ -55,7 +55,7 @@ export class PipeProperty_WeightEffects {
       switchMap(({ id, weight }) =>
         this.pipePropertiesService.updateWeight(id, weight).pipe(
           map(() => actionUpdatePipeProperty_WeightSuccess({ id, weight })),
-          catchError(errorUpdatingWeight => of(actionUpdatePipeProperty_WeightError({ error: errorUpdatingWeight })))
+          catchError(errorUpdatingWeight => of(actionUpdatePipeProperty_WeightError({ errorUpdatingWeight: errorUpdatingWeight })))
         )
       )
     )

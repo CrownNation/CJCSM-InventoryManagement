@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, Subscription, combineLatest } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil } from 'rxjs/operators';
 import { PipeProperty_Category } from 'src/app/models/pipe.model';
 import { AppState } from '../../store/core.state';
 
@@ -15,7 +15,6 @@ import {
   selectSelectedCategoryError,
   selectCreatedCategory,
   selectUpdatedCategory,
-
 } from 'src/app/store/pipe-properties/pipe-property-category/pipe-property-category.selectors';
 import {
   actionCreatePipeProperty_Category,
@@ -33,12 +32,14 @@ import {
 export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
 
   loadingCategoriesSubscription: Subscription | undefined;
+
   dataSource: MatTableDataSource<PipeProperty_Category>;
   displayedColumns: string[] = ['name', 'isActive', 'actions'];
   categoryForm: FormGroup;
   editingCategory: PipeProperty_Category | null = null;
   loadingCategories$: Observable<boolean> | undefined;
   private destroy$ = new Subject<void>();
+
   errorMessage$: Observable<string>;
   isCategoryCreated$: Observable<boolean>;
   isCategoryUpdated$: Observable<boolean>;
@@ -80,13 +81,32 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
     if (this.loadingCategoriesSubscription) {
       this.loadingCategoriesSubscription.unsubscribe();
     }
+    this.checkAndResetNotifications();
   }
 
   selectCategory(category: PipeProperty_Category): void {
     this.editingCategory = category;
     this.categoryForm.patchValue(category);
     // Reset notifications when a new category is selected
-    this.resetNotifications();
+    this.checkAndResetNotifications();
+  }
+
+  //Checks for any notifications present, if there are any, reset them.
+  checkAndResetNotifications(): void {
+    combineLatest([
+      this.store.select(selectCreatedCategory),
+      this.store.select(selectUpdatedCategory),
+      this.store.select(selectErrorLoadingCategories),
+      this.store.select(selectCreatingCategoryError),
+      this.store.select(selectSelectedCategoryError)
+    ]).pipe(
+      take(1)
+    ).subscribe(([created, updated, loadingError, creatingError, selectedError]) => {
+      // Check if any of the states are truthy (i.e., there is either a success message or an error message)
+      if (created || updated || loadingError || creatingError || selectedError) {
+        this.store.dispatch(resetCategoryNotifications());
+      }
+    });
   }
 
   saveOrUpdateCategory(): void {
@@ -106,12 +126,7 @@ export class PipePropertyCategoryComponent implements OnInit, OnDestroy {
   resetForm(): void {
     this.editingCategory = null;
     this.categoryForm.reset({ name: '', isActive: true });
-    // Reset notifications when the form is reset
-    this.resetNotifications();
+    this.checkAndResetNotifications();
   }
 
-  // Method to reset any success or error messages
-  resetNotifications() {
-    this.store.dispatch(resetCategoryNotifications());
-  }
 }

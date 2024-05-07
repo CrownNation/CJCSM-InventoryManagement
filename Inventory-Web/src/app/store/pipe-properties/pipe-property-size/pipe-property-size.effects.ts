@@ -55,7 +55,7 @@ export class PipeProperty_SizeEffects {
       switchMap(({ id, size }) =>
         this.pipePropertiesService.updateSize(id, size).pipe(
           map(() => actionUpdatePipeProperty_SizeSuccess({ id, size })),
-          catchError(errorUpdatingSize => of(actionUpdatePipeProperty_SizeError({ error: errorUpdatingSize })))
+          catchError(errorUpdatingSize => of(actionUpdatePipeProperty_SizeError({ errorUpdatingSize: errorUpdatingSize })))
         )
       )
     )

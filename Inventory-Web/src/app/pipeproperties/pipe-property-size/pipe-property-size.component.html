@@ -1,81 +1,88 @@
 <div class="container-tab">
-    <mat-card class="section">
-      <mat-card-header>
-        <mat-card-title>Size - Pipe Property</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <table mat-table [dataSource]="dataSource" matSort class="myTable">
-          <ng-container matColumnDef="sizeMetric">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Size Metric (cm)</th>
-            <td mat-cell *matCellDef="let row">{{ row.sizeMetric }}</td>
-          </ng-container>
-          <ng-container matColumnDef="sizeImperial">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Size Imperial (inches)</th>
-            <td mat-cell *matCellDef="let row">{{ row.sizeImperial }}</td>
-          </ng-container>
-          <ng-container matColumnDef="isActive">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Active</th>
-            <td mat-cell *matCellDef="let row">
-              <mat-icon *ngIf="row.isActive; else inactiveIcon" class="isActive-icon">check</mat-icon>
-              <ng-template #inactiveIcon><mat-icon class="isInactive-icon">close</mat-icon></ng-template>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-            <td mat-cell *matCellDef="let row">
-              <button class="item-buttons" aria-label="View Size" (click)="selectSize(row)">
-                <mat-icon aria-hidden="false" fontIcon="open_in_new" color="accent"></mat-icon>
-              </button>
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="small-element"></tr>
-        </table>
-        <div *ngIf="loadingSizes$ | async" class="spinner">
-          <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
-        </div>
-      </mat-card-content>
-    </mat-card>
-    
- <!-- Size Form -->
-<mat-card class="editor-card">
+  <mat-card class="section">
+    <mat-card-header>
+      <mat-card-title>Size - Pipe Property</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" matSort class="myTable">
+        <ng-container matColumnDef="sizeMetric">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Size Metric (cm)</th>
+          <td mat-cell *matCellDef="let row">{{ row.sizeMetric }}</td>
+        </ng-container>
+        <ng-container matColumnDef="sizeImperial">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Size Imperial (inches)</th>
+          <td mat-cell *matCellDef="let row">{{ row.sizeImperial }}</td>
+        </ng-container>
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Active</th>
+          <td mat-cell *matCellDef="let row">
+            <mat-icon *ngIf="row.isActive; else inactiveIcon" class="isActive-icon">check</mat-icon>
+            <ng-template #inactiveIcon><mat-icon class="isInactive-icon">close</mat-icon></ng-template>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-text">Edit</th>
+          <td mat-cell *matCellDef="let row">
+            <button class="item-buttons" aria-label="View Size" (click)="selectSize(row)">
+              <mat-icon aria-hidden="false" fontIcon="open_in_new" color="accent"></mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="small-element"></tr>
+      </table>
+      <div *ngIf="loadingSizes$ | async" class="spinner">
+        <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Size Form -->
+  <mat-card class="editor-card">
     <mat-card-header>
       <mat-card-title>{{ editingSize ? 'Edit Size' : 'Create New Size' }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="sizeForm" class="size-form">
-        <mat-form-field appearance="fill" class="full-width-input">
-          <mat-label>Size Metric (cm)</mat-label>
-          <input matInput formControlName="sizeMetric" type="number" min="0" step="0.001">
-          <mat-error *ngIf="sizeForm.get('sizeMetric')?.hasError('required')">
-            Size in metric is required.
-          </mat-error>
-          <mat-error *ngIf="sizeForm.get('sizeMetric')?.hasError('min')">
-            The value must be a non-negative number.
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="full-width-input">
-          <mat-label>Size Imperial (inches)</mat-label>
-          <input matInput formControlName="sizeImperial" type="number" min="0" step="0.001">
-          <mat-error *ngIf="sizeForm.get('sizeImperial')?.hasError('required')">
-            Size in imperial is required.
-          </mat-error>
-          <mat-error *ngIf="sizeForm.get('sizeImperial')?.hasError('min')">
-            The value must be a non-negative number.
-          </mat-error>
-        </mat-form-field>
-        <mat-checkbox formControlName="isActive">
-          <div class="checkbox-label">Is Active</div>
-        </mat-checkbox>
-        <div *ngIf="errorMessage$ | async as errorMessage" class="error-message">
-          {{ errorMessage }}
+
+        <div class="widget-container" style="flex-direction: column;">
+          <mat-form-field appearance="fill" class="full-width-input" style="margin-right: 4px;">
+            <mat-label>Size Metric (cm)</mat-label>
+            <input matInput formControlName="sizeMetric" type="number" min="0" step="0.001">
+            <mat-error *ngIf="sizeForm.get('sizeMetric')?.hasError('required')">
+              Size in metric is required.
+            </mat-error>
+            <mat-error *ngIf="sizeForm.get('sizeMetric')?.hasError('min')">
+              The value must be a non-negative number.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width-input">
+            <mat-label>Size Imperial (inches)</mat-label>
+            <input matInput formControlName="sizeImperial" type="number" min="0" step="0.001">
+            <mat-error *ngIf="sizeForm.get('sizeImperial')?.hasError('required')">
+              Size in imperial is required.
+            </mat-error>
+            <mat-error *ngIf="sizeForm.get('sizeImperial')?.hasError('min')">
+              The value must be a non-negative number.
+            </mat-error>
+          </mat-form-field>
+          <mat-checkbox formControlName="isActive">
+            <div class="checkbox-label">Is Active</div>
+          </mat-checkbox>
         </div>
-        <div *ngIf="isSizeCreated$ | async" class="alert alert-success">
-          Size created successfully!
+
+        <div class="messages-container">
+          <div *ngIf="errorMessage$ | async as errorMessage" class="error-message">
+            {{ errorMessage }}
+          </div>
+          <div *ngIf="isSizeCreated$ | async" class="alert alert-success">
+            Size created successfully!
+          </div>
+          <div *ngIf="isSizeUpdated$ | async" class="alert alert-success">
+            Size updated successfully!
+          </div>
         </div>
-        <div *ngIf="isSizeUpdated$ | async" class="alert alert-success">
-          Size updated successfully!
-        </div>
+
       </form>
     </mat-card-content>
     <mat-card-actions>
@@ -87,6 +94,6 @@
       </div>
     </mat-card-actions>
   </mat-card>
-  
-  
-  </div>
+
+
+</div>

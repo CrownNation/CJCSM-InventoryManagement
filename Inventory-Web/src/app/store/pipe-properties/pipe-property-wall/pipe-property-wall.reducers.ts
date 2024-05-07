@@ -3,12 +3,15 @@ import { PipeProperty_WallState } from './pipe-property-wall.state';
 import { PipeProperty_Wall } from 'src/app/models/pipe.model';
 import { EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import {
+  actionCreatePipeProperty_Wall,
   actionCreatePipeProperty_WallSuccess,
+  actionCreatePipeProperty_WallError,
   actionGetWalls,
   actionGetWallsError,
   actionGetWallsSuccess,
   actionUpdatePipeProperty_Wall,
   actionUpdatePipeProperty_WallSuccess,
+  actionUpdatePipeProperty_WallError,
   resetWallNotifications,
 } from './pipe-property-wall.actions';
 
@@ -40,33 +43,13 @@ export const initialState: PipeProperty_WallState = pipeProperty_WallAdapter.get
 
 const reducer: ActionReducer<PipeProperty_WallState> = createReducer(
     initialState,
-    on(actionGetWalls, (state: PipeProperty_WallState) => ({
+    // Get walls
+    on(actionGetWalls, (state) => ({
         ...state,
         loadingWalls: true,
         errorLoadingWalls: null
     })),
-    on(actionCreatePipeProperty_WallSuccess, (state, { wall }) => 
-        pipeProperty_WallAdapter.addOne(wall, {
-            ...state,
-            loadingWalls: false,
-            errorCreatingWall: null, 
-            createdWall: wall
-        })),
-    on(actionUpdatePipeProperty_Wall, (state) => ({
-        ...state,
-        updatingWall: true,
-        errorUpdatingWall: null
-    })),
-    on(actionUpdatePipeProperty_WallSuccess, (state, { id, wall }) => 
-        pipeProperty_WallAdapter.updateOne({
-            id: id,
-            changes: wall
-        }, {
-            ...state,
-            updatingWall: false,
-            updatedWall: wall
-        })),
-    on(actionGetWallsSuccess, (state, { walls }) => 
+    on(actionGetWallsSuccess, (state, { walls }) =>
         pipeProperty_WallAdapter.addMany(walls, {
             ...state,
             loadingWalls: false,
@@ -76,7 +59,51 @@ const reducer: ActionReducer<PipeProperty_WallState> = createReducer(
         ...state,
         loadingWalls: false,
         errorLoadingWalls
-    })),  
+    })),
+
+    // Create wall
+    on(actionCreatePipeProperty_Wall, (state) => ({
+        ...state,
+        creatingWall: true,
+        createdWall: null,
+        errorCreatingWall: null
+    })),
+    on(actionCreatePipeProperty_WallSuccess, (state, { wall }) =>
+        pipeProperty_WallAdapter.addOne(wall, {
+            ...state,
+            creatingWall: false,
+            createdWall: wall,
+            errorCreatingWall: null
+        })),
+    on(actionCreatePipeProperty_WallError, (state, { errorCreatingWall }) => ({
+        ...state,
+        creatingWall: false,
+        errorCreatingWall
+    })),
+
+    // Update wall
+    on(actionUpdatePipeProperty_Wall, (state) => ({
+        ...state,
+        updatingWall: true,
+        errorUpdatingWall: null
+    })),
+    on(actionUpdatePipeProperty_WallSuccess, (state, { id, wall }) =>
+        pipeProperty_WallAdapter.updateOne({
+            id,
+            changes: wall
+        }, {
+            ...state,
+            updatingWall: false,
+            updatedWall: wall,
+            errorUpdatingWall: null
+        })),
+    on(actionUpdatePipeProperty_WallError, (state, { errorUpdatingWall }) => ({
+        ...state,
+        updatingWall: false,
+        errorUpdatingWall
+    })),
+
+    // Reset notifications
     on(resetWallNotifications, (state) => ({
         ...state,
         createdWall: null,
@@ -84,8 +111,8 @@ const reducer: ActionReducer<PipeProperty_WallState> = createReducer(
         errorLoadingWalls: null,
         errorCreatingWall: null,
         errorUpdatingWall: null
-      }))
-    );
+    }))
+);
 
 export function pipeProperty_WallReducers(state: PipeProperty_WallState | undefined, action: Action) {
     return reducer(state, action);

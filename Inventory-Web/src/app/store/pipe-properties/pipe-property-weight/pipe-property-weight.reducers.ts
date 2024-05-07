@@ -3,12 +3,15 @@ import { PipeProperty_WeightState } from './pipe-property-weight.state';
 import { PipeProperty_Weight } from 'src/app/models/pipe.model';
 import { EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import {
+  actionCreatePipeProperty_Weight,
   actionCreatePipeProperty_WeightSuccess,
+  actionCreatePipeProperty_WeightError,
   actionGetWeights,
   actionGetWeightsError,
   actionGetWeightsSuccess,
   actionUpdatePipeProperty_Weight,
   actionUpdatePipeProperty_WeightSuccess,
+  actionUpdatePipeProperty_WeightError,
   resetWeightNotifications,
 } from './pipe-property-weight.actions';
 
@@ -40,33 +43,13 @@ export const initialState: PipeProperty_WeightState = pipeProperty_WeightAdapter
 
 const reducer: ActionReducer<PipeProperty_WeightState> = createReducer(
     initialState,
-    on(actionGetWeights, (state: PipeProperty_WeightState) => ({
+    // Get weights
+    on(actionGetWeights, (state) => ({
         ...state,
         loadingWeights: true,
         errorLoadingWeights: null
     })),
-    on(actionCreatePipeProperty_WeightSuccess, (state, { weight }) => 
-        pipeProperty_WeightAdapter.addOne(weight, {
-            ...state,
-            loadingWeights: false,
-            errorCreatingWeight: null, 
-            createdWeight: weight
-        })),
-    on(actionUpdatePipeProperty_Weight, (state) => ({
-        ...state,
-        updatingWeight: true,
-        errorUpdatingWeight: null
-    })),
-    on(actionUpdatePipeProperty_WeightSuccess, (state, { id, weight }) => 
-        pipeProperty_WeightAdapter.updateOne({
-            id: id,
-            changes: weight
-        }, {
-            ...state,
-            updatingWeight: false,
-            updatedWeight: weight
-        })),
-    on(actionGetWeightsSuccess, (state, { weights }) => 
+    on(actionGetWeightsSuccess, (state, { weights }) =>
         pipeProperty_WeightAdapter.addMany(weights, {
             ...state,
             loadingWeights: false,
@@ -76,7 +59,51 @@ const reducer: ActionReducer<PipeProperty_WeightState> = createReducer(
         ...state,
         loadingWeights: false,
         errorLoadingWeights
-    })),  
+    })),
+
+    // Create weight
+    on(actionCreatePipeProperty_Weight, (state) => ({
+        ...state,
+        creatingWeight: true,
+        createdWeight: null,
+        errorCreatingWeight: null
+    })),
+    on(actionCreatePipeProperty_WeightSuccess, (state, { weight }) =>
+        pipeProperty_WeightAdapter.addOne(weight, {
+            ...state,
+            creatingWeight: false,
+            createdWeight: weight,
+            errorCreatingWeight: null
+        })),
+    on(actionCreatePipeProperty_WeightError, (state, { errorCreatingWeight }) => ({
+        ...state,
+        creatingWeight: false,
+        errorCreatingWeight
+    })),
+
+    // Update weight
+    on(actionUpdatePipeProperty_Weight, (state) => ({
+        ...state,
+        updatingWeight: true,
+        errorUpdatingWeight: null
+    })),
+    on(actionUpdatePipeProperty_WeightSuccess, (state, { id, weight }) =>
+        pipeProperty_WeightAdapter.updateOne({
+            id,
+            changes: weight
+        }, {
+            ...state,
+            updatingWeight: false,
+            updatedWeight: weight,
+            errorUpdatingWeight: null
+        })),
+    on(actionUpdatePipeProperty_WeightError, (state, { errorUpdatingWeight }) => ({
+        ...state,
+        updatingWeight: false,
+        errorUpdatingWeight
+    })),
+
+    // Reset notifications
     on(resetWeightNotifications, (state) => ({
         ...state,
         createdWeight: null,
@@ -84,8 +111,8 @@ const reducer: ActionReducer<PipeProperty_WeightState> = createReducer(
         errorLoadingWeights: null,
         errorCreatingWeight: null,
         errorUpdatingWeight: null
-      }))
-    );
+    }))
+);
 
 export function pipeProperty_WeightReducers(state: PipeProperty_WeightState | undefined, action: Action) {
     return reducer(state, action);

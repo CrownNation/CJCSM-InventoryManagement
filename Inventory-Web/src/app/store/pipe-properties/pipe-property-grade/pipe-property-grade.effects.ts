@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { catchError, map, switchMap, of } from 'rxjs';
 
 import { PipePropertiesService } from "src/app/core/services/pipe-properties-service/pipe-properties.service";
 
@@ -55,7 +54,7 @@ export class PipeProperty_GradeEffects {
       switchMap(({ id, grade }) =>
         this.pipePropertiesService.updateGrade(id, grade).pipe(
           map(() => actionUpdatePipeProperty_GradeSuccess({ id, grade })),
-          catchError(errorUpdatingGrade => of(actionUpdatePipeProperty_GradeError({ error: errorUpdatingGrade })))
+          catchError(errorUpdatingGrade => of(actionUpdatePipeProperty_GradeError({ errorUpdatingGrade: errorUpdatingGrade })))
         )
       )
     )

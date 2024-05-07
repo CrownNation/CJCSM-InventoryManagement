@@ -3,10 +3,14 @@ import { PipeProperty_ConditionState } from "./pipe-property-condition.state";
 import { PipeProperty_Condition } from "src/app/models/pipe.model";
 import { EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 import { 
+    actionCreatePipeProperty_Condition,
+    actionCreatePipeProperty_ConditionError,
     actionCreatePipeProperty_ConditionSuccess, 
     actionGetConditions, 
     actionGetConditionsError, 
     actionGetConditionsSuccess, 
+    actionUpdatePipeProperty_Condition, 
+    actionUpdatePipeProperty_ConditionError, 
     actionUpdatePipeProperty_ConditionSuccess, 
     resetConditionNotifications
 } from "./pipe-property-condition.actions";
@@ -42,40 +46,70 @@ export const initialState: PipeProperty_ConditionState = pipeProperty_ConditionA
 
 const reducer: ActionReducer<PipeProperty_ConditionState> = createReducer(
     initialState,
-    on(actionGetConditions, (state: PipeProperty_ConditionState, {}) => {
-        const newState = pipeProperty_ConditionAdapter.removeAll(state);
-        return {
-          ...newState,
-          loadingConditions: true,
-          errorLoadingConditions: null
-        };
-    }),
-    on(actionCreatePipeProperty_ConditionSuccess, (state, { condition }) => 
-        pipeProperty_ConditionAdapter.addOne(condition, {
-            ...state,
-            loadingConditions: false,
-            errorCreatingCondition: null,
-            createdCondition: condition
-        })
-    ),
-    on(actionUpdatePipeProperty_ConditionSuccess, (state, { id, condition }) => 
-        pipeProperty_ConditionAdapter.updateOne({
-            id,
-            changes: condition
-        }, state)
-    ),
-    on(actionGetConditionsSuccess, (state: PipeProperty_ConditionState, { conditions }) => 
+    // Get conditions
+    on(actionGetConditions, (state) => ({
+        ...state,
+        loadingConditions: true,
+        errorLoadingConditions: null
+    })),
+    on(actionGetConditionsSuccess, (state, { conditions }) =>
         pipeProperty_ConditionAdapter.addMany(conditions, {
             ...state,
             loadingConditions: false,
             errorLoadingConditions: null
         })
     ),
-    on(actionGetConditionsError, (state: PipeProperty_ConditionState, { errorLoadingConditions }) => ({
+    on(actionGetConditionsError, (state, { errorLoadingConditions }) => ({
         ...state,
         loadingConditions: false,
         errorLoadingConditions
     })),
+
+    // Create condition
+    on(actionCreatePipeProperty_Condition, (state) => ({
+        ...state,
+        creatingCondition: true,
+        createdCondition: null,
+        errorCreatingCondition: null
+    })),
+    on(actionCreatePipeProperty_ConditionSuccess, (state, { condition }) =>
+        pipeProperty_ConditionAdapter.addOne(condition, {
+            ...state,
+            creatingCondition: false,
+            createdCondition: condition,
+            errorCreatingCondition: null
+        })
+    ),
+    on(actionCreatePipeProperty_ConditionError, (state, { errorCreatingCondition }) => ({
+        ...state,
+        creatingCondition: false,
+        errorCreatingCondition
+    })),
+
+    // Update condition
+    on(actionUpdatePipeProperty_Condition, (state) => ({
+        ...state,
+        updatingCondition: true,
+        errorUpdatingCondition: null
+    })),
+    on(actionUpdatePipeProperty_ConditionSuccess, (state, { id, condition }) =>
+        pipeProperty_ConditionAdapter.updateOne({
+            id,
+            changes: condition
+        }, {
+            ...state,
+            updatingCondition: false,
+            updatedCondition: condition,
+            errorUpdatingCondition: null
+        })
+    ),
+    on(actionUpdatePipeProperty_ConditionError, (state, { errorUpdatingCondition }) => ({
+        ...state,
+        updatingCondition: false,
+        errorUpdatingCondition
+    })),
+
+    // Reset notifications
     on(resetConditionNotifications, (state) => ({
         ...state,
         createdCondition: null,
@@ -83,8 +117,7 @@ const reducer: ActionReducer<PipeProperty_ConditionState> = createReducer(
         errorLoadingConditions: null,
         errorCreatingCondition: null,
         errorUpdatingCondition: null
-      }))
-
+    }))
 );
 
 export function PipeProperty_ConditionReducers(state: PipeProperty_ConditionState | undefined, action: Action) {

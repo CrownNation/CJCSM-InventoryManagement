@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store, select } from '@ngrx/store';
 import { Observable, Subject, Subscription, combineLatest } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil } from 'rxjs/operators';
 import { PipeProperty_Condition } from 'src/app/models/pipe.model';
 import { AppState } from '../../store/core.state';
 
@@ -14,12 +14,13 @@ import {
   selectLoadingConditions,
   selectSelectedConditionError,
   selectCreatedCondition,
-  selectUpdatedCondition
+  selectUpdatedCondition,
 } from 'src/app/store/pipe-properties/pipe-property-condition/pipe-property-condition.selectors';
 import {
   actionCreatePipeProperty_Condition,
   actionGetConditions,
-  actionUpdatePipeProperty_Condition
+  actionUpdatePipeProperty_Condition,
+  resetConditionNotifications
 } from 'src/app/store/pipe-properties/pipe-property-condition/pipe-property-condition.actions';
 
 @Component({
@@ -80,13 +81,32 @@ export class PipePropertyConditionComponent implements OnInit, OnDestroy {
     if (this.loadingConditionsSubscription) {
       this.loadingConditionsSubscription.unsubscribe();
     }
+    this.checkAndResetNotifications();
   }
 
   selectCondition(condition: PipeProperty_Condition): void {
     this.editingCondition = condition;
     this.conditionForm.patchValue(condition);
+    // Reset notifications when a new condsition is selected
+    this.checkAndResetNotifications();
   }
 
+  // Method to reset any success or error messages
+  checkAndResetNotifications(): void {
+    combineLatest([
+      this.store.select(selectCreatedCondition),
+      this.store.select(selectUpdatedCondition),
+      this.store.select(selectErrorLoadingConditions),
+      this.store.select(selectCreatingConditionError),
+      this.store.select(selectSelectedConditionError)
+    ]).pipe(
+      take(1)
+    ).subscribe(([created, updated, loadingError, creatingError, selectedError]) => {
+      if (created || updated || loadingError || creatingError || selectedError) {
+        this.store.dispatch(resetConditionNotifications());
+      }
+    });
+  }
   saveOrUpdateCondition(): void {
     if (this.editingCondition) {
       const conditionId = this.editingCondition.pipeProperty_ConditionId;
@@ -104,5 +124,7 @@ export class PipePropertyConditionComponent implements OnInit, OnDestroy {
   resetForm(): void {
     this.editingCondition = null;
     this.conditionForm.reset({ name: '', isActive: true });
+    this.checkAndResetNotifications();
   }
+
 }

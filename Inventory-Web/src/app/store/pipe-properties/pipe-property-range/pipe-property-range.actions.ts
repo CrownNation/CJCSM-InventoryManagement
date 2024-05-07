@@ -44,7 +44,7 @@ export const actionUpdatePipeProperty_RangeSuccess = createAction(
 );
 export const actionUpdatePipeProperty_RangeError = createAction(
     `${rangesKey} Update PipeProperty_Range Error`,
-    props<{ error: HttpErrorResponse }>()
+    props<{ errorUpdatingRange: HttpErrorResponse }>()
 );
 
 // Reset notifications

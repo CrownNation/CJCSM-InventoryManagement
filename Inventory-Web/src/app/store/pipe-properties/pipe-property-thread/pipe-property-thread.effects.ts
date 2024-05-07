@@ -55,7 +55,7 @@ export class PipeProperty_ThreadEffects {
       switchMap(({ id, thread }) =>
         this.pipePropertiesService.updateThread(id, thread).pipe(
           map(() => actionUpdatePipeProperty_ThreadSuccess({ id, thread })),
-          catchError(errorUpdatingThread => of(actionUpdatePipeProperty_ThreadError({ error: errorUpdatingThread })))
+          catchError(errorUpdatingThread => of(actionUpdatePipeProperty_ThreadError({ errorUpdatingThread: errorUpdatingThread })))
         )
       )
     )

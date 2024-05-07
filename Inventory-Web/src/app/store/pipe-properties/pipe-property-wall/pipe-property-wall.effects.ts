@@ -55,7 +55,7 @@ export class PipeProperty_WallEffects {
       switchMap(({ id, wall }) =>
         this.pipePropertiesService.updateWall(id, wall).pipe(
           map(() => actionUpdatePipeProperty_WallSuccess({ id, wall })),
-          catchError(errorUpdatingWall => of(actionUpdatePipeProperty_WallError({ error: errorUpdatingWall })))
+          catchError(errorUpdatingWall => of(actionUpdatePipeProperty_WallError({ errorUpdatingWall: errorUpdatingWall })))
         )
       )
     )
