@@ -8,7 +8,7 @@ namespace Inventory_BLL.Interfaces
         // Retrieves all equipment records as a queryable object.
         IQueryable<Equipment> GetEquipmentList();
 
-        public IQueryable<DtoEquipment>? GetEquipmentWithDefinitionList();
+        public IQueryable<DtoEquipment> GetEquipmentWithDefinitionList();
 
         // Retrieves a single equipment record by its unique identifier.
         Equipment GetEquipmentById(Guid id);
