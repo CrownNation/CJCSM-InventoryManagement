@@ -90,7 +90,7 @@ namespace Inventory_API.Controllers
         }
 
 
-        [HttpGet("GeneratePdf/{tallyId}")]
+        [HttpGet("{tallyId}/GenerateTallyPdf")]
         public IActionResult GeneratePdf(Guid tallyId)
         {
             try
