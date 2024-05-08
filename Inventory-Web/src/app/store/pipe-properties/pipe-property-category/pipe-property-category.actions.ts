@@ -45,5 +45,8 @@ export const actionUpdatePipeProperty_CategorySuccess = createAction(
 
 export const actionUpdatePipeProperty_CategoryError = createAction(
     `${categoriesKey} Update PipeProperty_Category Error`,
-    props<{ error: HttpErrorResponse }>()
+    props<{ errorUpdatingCategory: HttpErrorResponse }>()
 );
+
+//Reset notifcations
+export const resetCategoryNotifications = createAction(`${categoriesKey} Reset Category Notifications`);

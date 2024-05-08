@@ -1,6 +1,9 @@
-﻿using Inventory_BLL.Interfaces;
+﻿using Inventory_BLL.BL;
+using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
+using Inventory_Documents;
 using Inventory_Dto.Dto;
+using Inventory_Models.DTO.Basic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -42,8 +45,8 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                IQueryable<DtoEquipment>? equipmentList = _equipmentBL.GetEquipmentWithDefinitionList();
-                return Ok(options.ApplyTo(equipmentList));
+                IQueryable<DtoEquipment> equipmentQuery = _equipmentBL.GetEquipmentWithDefinitionList();
+                return Ok(options.ApplyTo(equipmentQuery));
             }
             catch (Exception e)
             {
@@ -96,6 +99,33 @@ namespace Inventory_API.Controllers
             {
                 _logger.LogError($"GetEquipmentWithDefinitionById: " + e.Message);
                 return BadRequest($"There was a problem querying for the equipment with id {key}.");
+            }
+        }
+
+
+        [HttpGet("GenerateEquipmentSummaryPdf")]
+        public IActionResult GeneratePdf()
+        {
+            try
+            {
+                IQueryable<DtoEquipment> equipmentQuery =_equipmentBL.GetEquipmentWithDefinitionList();
+
+                List<DtoEquipment> equipmentList = equipmentQuery.ToList();
+
+                if (equipmentList == null)
+                    return NotFound();
+
+                EquipmentPdfGenerator generator = new EquipmentPdfGenerator();
+
+                Stream pdfStream = generator.GenerateEquipmentSummaryPDFDocuemnt(equipmentList);
+
+                String filename = $"EquipmentReport_{DateTime.Now.ToString("yyyy-MM-dd.HH-mm")}.pdf";
+                return File(pdfStream, "application/pdf", filename);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Rack GeneratePdf: " + e.Message);
+                return StatusCode(500, e.Message);
             }
         }
 

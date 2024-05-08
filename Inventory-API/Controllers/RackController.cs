@@ -1,4 +1,6 @@
-﻿using Inventory_BLL.Interfaces;
+﻿using Inventory_BLL.BL;
+using Inventory_BLL.Interfaces;
+using Inventory_Documents;
 using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -186,7 +188,6 @@ namespace Inventory_API.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoRackCreate rack)
         {
@@ -208,7 +209,32 @@ namespace Inventory_API.Controllers
 
             return CreatedAtAction("Get", new { key = DtoRack.RackId }, DtoRack);
         }
-        
+
+        [HttpGet("GenerateRackSummaryPdf")]
+        public IActionResult GeneratePdf()
+        {
+            try
+            {
+                IQueryable<DtoRack_WithPipe> rackQuery = _rackBl.GetRackListWithPipeAndCustomer();
+
+                List<DtoRack_WithPipe> rackListWithCustomer = rackQuery.ToList();
+
+                if (rackListWithCustomer == null)
+                    return NotFound();
+
+                RackPDFGenerator generator = new RackPDFGenerator();
+
+                Stream pdfStream = generator.GenerateRackSummaryPDFDocuemnt(rackListWithCustomer);
+
+                String filename = $"RackReport_{DateTime.Now.ToString("yyyy-MM-dd.HH-mm")}.pdf";
+                return File(pdfStream, "application/pdf", filename);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Rack GeneratePdf: " + e.Message);
+                return StatusCode(500, e.Message);
+            }
+        }
 
         [HttpPut("{key}")]
         public async Task<IActionResult> Put(Guid key, [FromBody] DtoRackUpdate dtoRack)

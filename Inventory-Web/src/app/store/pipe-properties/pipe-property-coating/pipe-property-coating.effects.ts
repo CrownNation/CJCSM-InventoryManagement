@@ -15,8 +15,6 @@ import {
     actionUpdatePipeProperty_CoatingSuccess,
     actionUpdatePipeProperty_CoatingError
 } from './pipe-property-coating.actions';
-import { PipeProperty_Coating } from "src/app/models/pipe.model";
-import { selectErrorLoadingCoatings } from "./pipe-property-coating.selectors";
 
 @Injectable()
 export class PipeProperty_CoatingEffects {
@@ -25,7 +23,6 @@ export class PipeProperty_CoatingEffects {
       private actions$: Actions,
       private pipePropertiesService: PipePropertiesService,
   ) {}
-
 
   loadcoatings$ = createEffect(() =>
   this.actions$.pipe(
@@ -57,7 +54,7 @@ export class PipeProperty_CoatingEffects {
       switchMap(({ id, coating }) =>
         this.pipePropertiesService.updateCoating(id, coating).pipe(
           map(() => actionUpdatePipeProperty_CoatingSuccess({ id, coating })),
-          catchError(errorUpdatingCoating => of(actionUpdatePipeProperty_CoatingError({ error: errorUpdatingCoating })))
+          catchError(errorUpdatingCoating => of(actionUpdatePipeProperty_CoatingError({ errorUpdatingCoating : errorUpdatingCoating })))
         )
       )
     )

@@ -2,45 +2,133 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { PipeProperty_Category, PipeProperty_CategoryCreate, PipeProperty_CategorySearchParams, PipeProperty_Coating, PipeProperty_CoatingCreate, PipeProperty_CoatingSearchParams } from 'src/app/models/pipe.model';
-
+import { PipeProperty_Category, PipeProperty_CategoryCreate, PipeProperty_CategorySearchParams, PipeProperty_Coating, PipeProperty_CoatingCreate, PipeProperty_CoatingSearchParams, PipeProperty_Condition, PipeProperty_ConditionCreate, PipeProperty_ConditionSearchParams, PipeProperty_Grade, PipeProperty_GradeCreate, PipeProperty_GradeSearchParams, PipeProperty_Range, PipeProperty_RangeCreate, PipeProperty_RangeSearchParams, PipeProperty_Size, PipeProperty_SizeCreate, PipeProperty_SizeSearchParams, PipeProperty_SizeUpdate, PipeProperty_Thread, PipeProperty_ThreadCreate, PipeProperty_ThreadSearchParams, PipeProperty_ThreadUpdate, PipeProperty_Wall, PipeProperty_WallCreate, PipeProperty_WallSearchParams, PipeProperty_WallUpdate, PipeProperty_Weight, PipeProperty_WeightCreate, PipeProperty_WeightSearchParams, PipeProperty_WeightUpdate } from 'src/app/models/pipe.model';
+import { tap  } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class PipePropertiesService {
 
-  private baseUrl = environment.apiUrl + 'PipeProperty_Category';
-
+  private baseUrl = environment.apiUrl;
   constructor(private readonly http: HttpClient) { }
 
 
   // --- Category ---
-  getCategory(searchParams: PipeProperty_CategorySearchParams | null): Observable<PipeProperty_Category[]> {
-    return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}`);
-  }
+  // getCategory(searchParams: PipeProperty_CategorySearchParams | null): Observable<PipeProperty_Category[]> {
 
+  //   return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}`);
+
+  // }
+  getCategory(searchParams: PipeProperty_CategorySearchParams | null): Observable<PipeProperty_Category[]> {
+    return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}PipeProperty_Category`).pipe(
+      tap(categories => console.log('Categories retrieved:', categories))
+    );
+  }
   createCategory(category: PipeProperty_CategoryCreate): Observable<PipeProperty_Category> {
-    return this.http.post<PipeProperty_Category>(this.baseUrl, category);
+    return this.http.post<PipeProperty_Category>('{this.baseUrl}PipeProperty_Category', category);
   }
   updateCategory(id: string, category: PipeProperty_Category): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${id}`, category);
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Category/${id}`, category);
   }
 
   // --- Coating ---
   getGetCoating(searchParams: PipeProperty_CoatingSearchParams | null): Observable<PipeProperty_Coating[]> {
-    return this.http.get<PipeProperty_Coating[]>(`${this.baseUrl}`);
+    return this.http.get<PipeProperty_Coating[]>(`${this.baseUrl}PipeProperty_Coating`);
   }
 
   createCoating(coating: PipeProperty_CoatingCreate): Observable<PipeProperty_Coating> {
-    return this.http.post<PipeProperty_Coating>(`${this.baseUrl}/Coating`, coating);
+    return this.http.post<PipeProperty_Coating>(`${this.baseUrl}PipeProperty_Coating`, coating);
   }
   updateCoating(id: string, coating: PipeProperty_Coating): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/Coating/${id}`, coating);
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Coating/${id}`, coating);
   }
 
+  // --- Condition ---
+  getConditions(searchParams: PipeProperty_ConditionSearchParams | null): Observable<PipeProperty_Condition[]> {
+    return this.http.get<PipeProperty_Condition[]>(`${this.baseUrl}PipeProperty_Condition`);
+  }
+  createCondition(condition: PipeProperty_ConditionCreate): Observable<PipeProperty_Condition> {
+    return this.http.post<PipeProperty_Condition>(`${this.baseUrl}PipeProperty_Condition`, condition);
+  }
+  updateCondition(id: string, condition: PipeProperty_Condition): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Condition/${id}`, condition);
+  }
 
+  // --- Grade ---
+  getGrade(searchParams: PipeProperty_GradeSearchParams | null): Observable<PipeProperty_Grade[]> {
+    return this.http.get<PipeProperty_Grade[]>(`${this.baseUrl}PipeProperty_Grade`);
+  }
+  createGrade(grade: PipeProperty_GradeCreate): Observable<PipeProperty_Grade> {
+    return this.http.post<PipeProperty_Grade>(`${this.baseUrl}PipeProperty_Grade`, grade).pipe(
+      tap(createdGrade => console.log('Grade created:', createdGrade))
+    );
+  }
+  updateGrade(id: string, grade: PipeProperty_Grade): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Grade/${id}`, grade).pipe(
+      tap(() => console.log('Grade updated:', id))
+    );
+  }
 
+  // --- Range ---
+  getRange(searchParams: PipeProperty_RangeSearchParams | null): Observable<PipeProperty_Range[]> {
+    return this.http.get<PipeProperty_Range[]>(`${this.baseUrl}PipeProperty_Range`);
+  }
+  createRange(range: PipeProperty_RangeCreate): Observable<PipeProperty_Range> {
+    return this.http.post<PipeProperty_Range>(`${this.baseUrl}PipeProperty_Range`, range).pipe(
+      tap(createdRange => console.log('Range created:', createdRange))
+    );
+  }
+  updateRange(id: string, range: PipeProperty_Range): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Range/${id}`, range).pipe(
+      tap(() => console.log('Range updated:', id))
+    );
+  }
 
+  // --- Size ---
+  getSize(searchParams: PipeProperty_SizeSearchParams | null): Observable<PipeProperty_Size[]> {
+    return this.http.get<PipeProperty_Size[]>(`${this.baseUrl}PipeProperty_Size`);
+  }
+  createSize(size: PipeProperty_SizeCreate): Observable<PipeProperty_Size> {
+    return this.http.post<PipeProperty_Size>(`${this.baseUrl}PipeProperty_Size`, size);
+  }
+  updateSize(id: string, size: PipeProperty_SizeUpdate): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Size/${id}`, size);
+  }
+
+  // --- Thread ---
+  getThread(searchParams: PipeProperty_ThreadSearchParams | null): Observable<PipeProperty_Thread[]> {
+    return this.http.get<PipeProperty_Thread[]>(`${this.baseUrl}PipeProperty_Thread`);
+  }
+  createThread(thread: PipeProperty_ThreadCreate): Observable<PipeProperty_Thread> {
+    return this.http.post<PipeProperty_Thread>(`${this.baseUrl}PipeProperty_Thread`, thread);
+  }
+  updateThread(id: string, thread: PipeProperty_ThreadUpdate): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Thread/${id}`, thread);
+  }
+
+  // --- Wall ---
+  getWall(searchParams: PipeProperty_WallSearchParams | null): Observable<PipeProperty_Wall[]> {
+    return this.http.get<PipeProperty_Wall[]>(`${this.baseUrl}PipeProperty_Wall`);
+  }
+  createWall(wall: PipeProperty_WallCreate): Observable<PipeProperty_Wall> {
+    return this.http.post<PipeProperty_Wall>(`${this.baseUrl}PipeProperty_Wall`, wall);
+  }
+  updateWall(id: string, wall: PipeProperty_WallUpdate): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Wall/${id}`, wall);
+  }
+
+  // --- Weight ---
+  getWeights(searchParams: PipeProperty_WeightSearchParams | null): Observable<PipeProperty_Weight[]> {
+    return this.http.get<PipeProperty_Weight[]>(`${this.baseUrl}PipeProperty_Weight`);
+  }
+  createWeight(weight: PipeProperty_WeightCreate): Observable<PipeProperty_Weight> {
+    return this.http.post<PipeProperty_Weight>(`${this.baseUrl}PipeProperty_Weight`, weight);
+  }
+  updateWeight(id: string, weight: PipeProperty_WeightUpdate): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Weight/${id}`, weight);
+  }
+
+    
   // --- Generic Getter ---
   getProperties<T>(propertyType: string, searchParams: any | null): Observable<T[]> {
     return this.http.get<T[]>(`${this.baseUrl}/${propertyType}`, { params: searchParams });

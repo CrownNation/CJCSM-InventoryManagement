@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PipepropertiesComponent } from './pipeproperties.component';
+import { beforeEach, describe, it } from 'node:test';
 
 describe('PipepropertiesComponent', () => {
   let component: PipepropertiesComponent;

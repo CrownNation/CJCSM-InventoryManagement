@@ -3,7 +3,6 @@ using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using System.Threading.Tasks;
 
 namespace Inventory_API.Controllers
 {

@@ -79,7 +79,7 @@ namespace Inventory_BLL.BL
 
         }
 
-        public IQueryable<DtoEquipment>? GetEquipmentWithDefinitionList()
+        public IQueryable<DtoEquipment> GetEquipmentWithDefinitionList()
         {
             try
             {

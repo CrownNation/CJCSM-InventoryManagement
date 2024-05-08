@@ -37,13 +37,14 @@ export const actionUpdatePipeProperty_Coating = createAction(
     `${coatingsKey} Update PipeProperty_Coating`,
     props<{ id: string; coating: PipeProperty_Coating }>()
 );
-
 export const actionUpdatePipeProperty_CoatingSuccess = createAction(
     `${coatingsKey} Update PipeProperty_Coating Success`,
     props<{ id: string; coating: PipeProperty_Coating }>()
 );
-
 export const actionUpdatePipeProperty_CoatingError = createAction(
     `${coatingsKey} Update PipeProperty_Coating Error`,
-    props<{ error: HttpErrorResponse }>()
+    props<{ errorUpdatingCoating: HttpErrorResponse }>()
 ); 
+
+//Reset notifcations
+export const resetCoatingNotifications = createAction(`${coatingsKey} Reset Coating Notifications`);

@@ -13,6 +13,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 
+import { MatCardModule } from '@angular/material/card';
+
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
 
@@ -33,7 +35,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { PipepropertiesModule } from './pipeproperties/pipeproperties.module';
 // import { provideStore } from '@ngrx/store';
 // import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 
@@ -58,7 +59,9 @@ import { PipepropertiesModule } from './pipeproperties/pipeproperties.module';
     MatListModule,
     MatMenuModule,
     MatButtonModule,
-    PipepropertiesModule,
+    MatIconModule,
+    MatCardModule,
+    MatCardModule,
 
     // StoreModule.forRoot({rack: rackReducers}, {}),
 

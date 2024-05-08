@@ -64,3 +64,19 @@ export const selectSelectedCategoryError = createSelector(
     selectCategoryFeature,
     (state: PipeProperty_CategoryState) => state.errorLoadingSelectedCategory
 );
+
+// Additional selectors for the update process
+export const selectUpdatingCategory = createSelector(
+  selectCategoryFeature,
+  (state: PipeProperty_CategoryState) => state.updatingCategory
+);
+
+export const selectUpdatedCategory = createSelector(
+  selectCategoryFeature,
+  (state: PipeProperty_CategoryState) => state.updatedCategory
+);
+
+export const selectUpdatingCategoryError = createSelector(
+  selectCategoryFeature,
+  (state: PipeProperty_CategoryState) => state.errorUpdatingCategory
+);

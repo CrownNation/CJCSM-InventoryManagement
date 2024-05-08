@@ -26,15 +26,18 @@ export class PipeProperty_CategoryEffects {
       private pipePropertiesService: PipePropertiesService,
   ) {}
 
-  loadCategories$ = createEffect(() =>
+loadCategories$ = createEffect(() =>
   this.actions$.pipe(
     ofType(actionGetCategories),
-    switchMap(() =>
-      this.pipePropertiesService.getCategory(null).pipe(
+    tap(() => console.log('Loading categories...')),
+    switchMap(() => {
+      console.log('Inside switchMap for loading categories');
+      return this.pipePropertiesService.getCategory(null).pipe(
+        tap(categories => console.log('Categories retrieved:', categories)),
         map(categories => actionGetCategoriesSuccess({ categories })),
         catchError(errorLoadingCategories => of(actionGetCategoriesError({ errorLoadingCategories })))
-      )
-    )
+      );
+    })
   )
 );
 
@@ -57,7 +60,7 @@ this.actions$.pipe(
   switchMap(({ id: categoryId, category: categoryUpdate }) =>
     this.pipePropertiesService.updateCategory(categoryId, categoryUpdate).pipe(
       map(() => actionUpdatePipeProperty_CategorySuccess({ id: categoryId, category: categoryUpdate})),
-      catchError(errorUpdatingCategory => of(actionUpdatePipeProperty_CategoryError({ error: errorUpdatingCategory })))
+      catchError(errorUpdatingCategory => of(actionUpdatePipeProperty_CategoryError({ errorUpdatingCategory : errorUpdatingCategory })))
     )
   )
 )

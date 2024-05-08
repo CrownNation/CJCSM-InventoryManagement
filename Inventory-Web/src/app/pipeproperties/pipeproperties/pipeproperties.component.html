@@ -1,36 +1,30 @@
-
-
 <div class="container">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="section">
-
+    <mat-tab-group (selectedIndexChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start"
+        class="section">
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon>dataset</mat-icon>
                 Category
             </ng-template>
-            <app-pipe-property-category></app-pipe-property-category>
-
         </mat-tab>
+
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon>layers</mat-icon>
                 Coating
             </ng-template>
-            <app-pipe-property-coating></app-pipe-property-coating>
-
         </mat-tab>
-
-        <mat-tab >
+        <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon>manage_search</mat-icon>
-              Condition
+                <mat-icon>manage_search</mat-icon>
+                Condition
             </ng-template>
         </mat-tab>
 
         <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon>analytics</mat-icon>
-              Grade
+                <mat-icon>analytics</mat-icon>
+                Grade
             </ng-template>
         </mat-tab>
 
@@ -66,7 +60,7 @@
                 Weight
             </ng-template>
         </mat-tab>
-
-
     </mat-tab-group>
+
+    <router-outlet></router-outlet>
 </div>
