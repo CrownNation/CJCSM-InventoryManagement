@@ -18,6 +18,7 @@ namespace Inventory_Dto.Dto
 
         public string Description { get; set; } = String.Empty;
 
+        public string RackType { get;set; }
         public int JointsPerTier { get; set; } = 0;
 
     }

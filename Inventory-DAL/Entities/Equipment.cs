@@ -26,10 +26,6 @@ namespace Inventory_DAL.Entities
         public Guid CustomerId { get; set; }
 
         [Required]
-        [ForeignKey("ShopLocation")]
-        public Guid ShopLocationId { get; set; }
-
-        [Required]
         public int Quantity { get; set; }
 
         [Required]

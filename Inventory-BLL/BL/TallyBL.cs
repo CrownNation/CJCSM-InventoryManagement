@@ -148,7 +148,6 @@ namespace Inventory_BLL.BL
                                                       LengthInMeters = equipment.LengthInMeters,
                                                       Quantity = equipment.Quantity,
                                                       RackId = equipment.RackId,
-                                                      ShopLocationId = equipment.ShopLocationId,
                                                       EquipmentDefinition = new DtoEquipmentDefinition
                                                       {
                                                           Category = ed.Category,
@@ -269,7 +268,6 @@ namespace Inventory_BLL.BL
                                                       LengthInMeters = equipment.LengthInMeters,
                                                       Quantity = equipment.Quantity,
                                                       RackId = equipment.RackId,
-                                                      ShopLocationId = equipment.ShopLocationId,
                                                       EquipmentDefinition = new DtoEquipmentDefinition
                                                       {
                                                           Category = ed.Category,

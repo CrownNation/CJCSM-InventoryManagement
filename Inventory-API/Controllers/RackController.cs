@@ -80,7 +80,7 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("WithPipe")]
-        public IActionResult GetRackListWithPipeAndCustomer(ODataQueryOptions<DtoRack_WithPipe> options)
+        public IActionResult GetRackListWithPipeAndCustomer(ODataQueryOptions<DtoRack_WithStock> options)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Inventory_API.Controllers
                     return NotFound();
                 }
 
-                IQueryable<DtoRack_WithPipe>? rackQuery = _rackBl.GetRackListWithPipeAndCustomer();
+                IQueryable<DtoRack_WithStock>? rackQuery = _rackBl.GetRackListWithPipeAndCustomer();
 
                 if (rackQuery == null)
                 {
@@ -116,7 +116,7 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{key}/WithPipe")]
-        public IActionResult GetRackWithPipeById(Guid key, ODataQueryOptions<DtoRack_WithPipe> options)
+        public IActionResult GetRackWithPipeById(Guid key, ODataQueryOptions<DtoRack_WithStock> options)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Inventory_API.Controllers
                     return NotFound();
                 }
 
-                IQueryable<DtoRack_WithPipe>? rackQuery =  _rackBl.GetRackListWithPipeAndCustomerByRackId(key);
+                IQueryable<DtoRack_WithStock>? rackQuery =  _rackBl.GetRackListWithPipeAndCustomerByRackId(key);
 
 
                 if (rackQuery == null)
@@ -215,9 +215,9 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                IQueryable<DtoRack_WithPipe> rackQuery = _rackBl.GetRackListWithPipeAndCustomer();
+                IQueryable<DtoRack_WithStock> rackQuery = _rackBl.GetRackListWithPipeAndCustomer();
 
-                List<DtoRack_WithPipe> rackListWithCustomer = rackQuery.ToList();
+                List<DtoRack_WithStock> rackListWithCustomer = rackQuery.ToList();
 
                 if (rackListWithCustomer == null)
                     return NotFound();

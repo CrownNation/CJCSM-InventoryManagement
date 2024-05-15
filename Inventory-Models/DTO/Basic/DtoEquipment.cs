@@ -24,8 +24,6 @@ namespace Inventory_Dto.Dto
         [Required]
         public Guid CustomerId { get; set; }
 
-        [Required]
-        public Guid ShopLocationId { get; set; }
 
         [Required]
         public int Quantity { get; set; }

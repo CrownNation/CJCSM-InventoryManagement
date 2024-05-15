@@ -12,6 +12,9 @@ namespace Inventory_BLL.Mappings
             CreateMap<Rack, DtoRack>();
             CreateMap<DtoRack, Rack>();
 
+            CreateMap<Rack, DtoRack_WithStock>();
+            CreateMap<DtoRack_WithStock, Rack>();
+
             // Map between the entity and the creation DTO
             CreateMap<Rack, DtoRackCreate>();
             CreateMap<DtoRackCreate, Rack>();

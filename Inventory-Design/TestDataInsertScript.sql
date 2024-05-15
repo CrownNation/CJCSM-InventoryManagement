@@ -47,12 +47,12 @@ DECLARE @Rack1Id UNIQUEIDENTIFIER = '4D7F90B7-A964-4BAA-8B52-6241A72E4DDA',
         @Rack4Id UNIQUEIDENTIFIER = '2a8cefdc-6181-4749-b9f6-f890ce90eea4',
         @Rack5Id UNIQUEIDENTIFIER = '0e0a856a-bbac-49b4-a67d-825f38e4aef7';
 
-INSERT INTO Rack (RackId, Name, ShopLocationId, JointsPerTier, Description, IsActive) VALUES
-(@Rack1Id, 'Rack 1', @ShopLocationId, 70, 'Rack1 Description', 1),
-(@Rack2Id, 'Rack 2', @ShopLocationId, 80, 'Rack2 Description', 1),
-(@Rack3Id, 'Rack 3', @ShopLocationId, 90, 'Rack3 Description', 1),
-(@Rack4Id, 'Rack 4 Equipment 1', @ShopLocationId, 100, 'For Equipment', 1),
-(@Rack5Id, 'Rack 5 Equipment 2', @ShopLocationId, 100, 'For Equipment', 1);
+INSERT INTO Rack (RackId, Name, RackType, ShopLocationId, JointsPerTier, Description, IsActive) VALUES
+(@Rack1Id, 'Rack 1', 'Pipe', @ShopLocationId, 70, 'Rack1 Description', 1),
+(@Rack2Id, 'Rack 2', 'Pipe',@ShopLocationId, 80, 'Rack2 Description', 1),
+(@Rack3Id, 'Rack 3', 'Pipe', @ShopLocationId, 90, 'Rack3 Description', 1),
+(@Rack4Id, 'Rack 4 Equipment 1', 'Equipment', @ShopLocationId, 100, 'For Equipment', 1),
+(@Rack5Id, 'Rack 5 Equipment 2', 'Equipment', @ShopLocationId, 100, 'For Equipment', 1);
 
 -- Tiers
 DECLARE @Tier1Id UNIQUEIDENTIFIER = 'F47E160F-B7C8-49B2-99B1-3E21BAA66F37',
@@ -220,76 +220,70 @@ DECLARE @Equipment1Id UNIQUEIDENTIFIER = 'dc245cb7-7497-4535-b558-9f9e097b939b',
 		@Equipment6Id UNIQUEIDENTIFIER = '540f74b5-85ca-46c5-b155-8060b7ae50ad';
 		
 		
-INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, Quantity, LengthInMeters, LengthInFeet)
 VALUES 
   (@Equipment1Id, 
    @Rack4Id, 
    @EquipmentDef1Id,
    @Customer1Id, 
-   @ShopLocationId, 
-   10,  -- Example quantity
-   100.0,  -- Example length in meters
-   328.084  -- Example length in feet
+   10, 
+   100.0,  
+   328.084  
   );		
 		
-INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, Quantity, LengthInMeters, LengthInFeet)
 VALUES 
   (@Equipment2Id, 
    @Rack4Id, 
    @EquipmentDef2Id,
    @Customer1Id, 
-   @ShopLocationId, 
-   5,  -- Example quantity
-   10.0,  -- Example length in meters
-   150.084  -- Example length in feet
+   5, 
+   10.0,  
+   150.084
   );		
 
-INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, Quantity, LengthInMeters, LengthInFeet)
 VALUES 
   (@Equipment3Id, 
    @Rack5Id, 
    @EquipmentDef3Id,
    @Customer2Id, 
-   @ShopLocationId, 
-   10,  -- Example quantity
-   100.0,  -- Example length in meters
-   328.084  -- Example length in feet
+   10,
+   100.0,
+   328.084
   );		
 
-INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, Quantity, LengthInMeters, LengthInFeet)
 VALUES 
   (@Equipment4Id, 
    @Rack5Id, 
    @EquipmentDef4Id,
-   @Customer1Id, 
-   @ShopLocationId, 
-   10,  -- Example quantity
-   100.0,  -- Example length in meters
-   328.084  -- Example length in feet
+   @Customer1Id,
+   10,
+   100.0,
+   328.084
   );
 	
-INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, Quantity, LengthInMeters, LengthInFeet)
 VALUES 
   (@Equipment5Id, 
    @Rack5Id, 
    @EquipmentDef1Id,
-   @Customer3Id, 
-   @ShopLocationId, 
-   10,  -- Example quantity
-   100.0,  -- Example length in meters
-   328.084  -- Example length in feet
+   @Customer3Id,
+   10,
+   100.0,
+   328.084
   );
   
-INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, ShopLocationId, Quantity, LengthInMeters, LengthInFeet)
+INSERT INTO Equipment (EquipmentId, RackId, EquipmentDefinitionId, CustomerId, Quantity, LengthInMeters, LengthInFeet)
 VALUES 
   (@Equipment6Id, 
    @Rack5Id, 
    @EquipmentDef2Id,
    @Customer1Id, 
-   @ShopLocationId, 
-   10,  -- Example quantity
-   100.0,  -- Example length in meters
-   328.084  -- Example length in feet
+   10,
+   100.0,
+   328.084
   );
 		
 		

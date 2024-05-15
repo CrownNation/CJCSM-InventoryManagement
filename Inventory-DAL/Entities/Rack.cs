@@ -24,6 +24,9 @@ namespace Inventory_DAL.Entities
 
         public int JointsPerTier { get; set; } = 0;
 
+        public String RackType { get; set; } = string.Empty;
+
         public ShopLocation ShopLocation { get; set; }  // Navigation property to get ShopLocationName
+
     }
 }

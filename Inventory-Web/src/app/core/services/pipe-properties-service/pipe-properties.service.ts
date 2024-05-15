@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { PipeProperty_Category, PipeProperty_CategoryCreate, PipeProperty_CategorySearchParams, PipeProperty_Coating, PipeProperty_CoatingCreate, PipeProperty_CoatingSearchParams, PipeProperty_Condition, PipeProperty_ConditionCreate, PipeProperty_ConditionSearchParams, PipeProperty_Grade, PipeProperty_GradeCreate, PipeProperty_GradeSearchParams, PipeProperty_Range, PipeProperty_RangeCreate, PipeProperty_RangeSearchParams, PipeProperty_Size, PipeProperty_SizeCreate, PipeProperty_SizeSearchParams, PipeProperty_SizeUpdate, PipeProperty_Thread, PipeProperty_ThreadCreate, PipeProperty_ThreadSearchParams, PipeProperty_ThreadUpdate, PipeProperty_Wall, PipeProperty_WallCreate, PipeProperty_WallSearchParams, PipeProperty_WallUpdate, PipeProperty_Weight, PipeProperty_WeightCreate, PipeProperty_WeightSearchParams, PipeProperty_WeightUpdate } from 'src/app/models/pipe.model';
-import { tap  } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,15 +13,8 @@ export class PipePropertiesService {
 
 
   // --- Category ---
-  // getCategory(searchParams: PipeProperty_CategorySearchParams | null): Observable<PipeProperty_Category[]> {
-
-  //   return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}`);
-
-  // }
   getCategory(searchParams: PipeProperty_CategorySearchParams | null): Observable<PipeProperty_Category[]> {
-    return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}PipeProperty_Category`).pipe(
-      tap(categories => console.log('Categories retrieved:', categories))
-    );
+    return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}PipeProperty_Category`);
   }
   createCategory(category: PipeProperty_CategoryCreate): Observable<PipeProperty_Category> {
     return this.http.post<PipeProperty_Category>('{this.baseUrl}PipeProperty_Category', category);
@@ -59,14 +51,10 @@ export class PipePropertiesService {
     return this.http.get<PipeProperty_Grade[]>(`${this.baseUrl}PipeProperty_Grade`);
   }
   createGrade(grade: PipeProperty_GradeCreate): Observable<PipeProperty_Grade> {
-    return this.http.post<PipeProperty_Grade>(`${this.baseUrl}PipeProperty_Grade`, grade).pipe(
-      tap(createdGrade => console.log('Grade created:', createdGrade))
-    );
+    return this.http.post<PipeProperty_Grade>(`${this.baseUrl}PipeProperty_Grade`, grade);
   }
   updateGrade(id: string, grade: PipeProperty_Grade): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}PipeProperty_Grade/${id}`, grade).pipe(
-      tap(() => console.log('Grade updated:', id))
-    );
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Grade/${id}`, grade);
   }
 
   // --- Range ---
@@ -74,14 +62,10 @@ export class PipePropertiesService {
     return this.http.get<PipeProperty_Range[]>(`${this.baseUrl}PipeProperty_Range`);
   }
   createRange(range: PipeProperty_RangeCreate): Observable<PipeProperty_Range> {
-    return this.http.post<PipeProperty_Range>(`${this.baseUrl}PipeProperty_Range`, range).pipe(
-      tap(createdRange => console.log('Range created:', createdRange))
-    );
+    return this.http.post<PipeProperty_Range>(`${this.baseUrl}PipeProperty_Range`, range);
   }
   updateRange(id: string, range: PipeProperty_Range): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}PipeProperty_Range/${id}`, range).pipe(
-      tap(() => console.log('Range updated:', id))
-    );
+    return this.http.put<void>(`${this.baseUrl}PipeProperty_Range/${id}`, range);
   }
 
   // --- Size ---

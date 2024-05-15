@@ -101,9 +101,6 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.Property<Guid>("RackId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ShopLocationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("EquipmentId");
 
                     b.ToTable("Equipment");
@@ -434,6 +431,10 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("RackType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ShopLocationId")
                         .HasColumnType("uniqueidentifier");

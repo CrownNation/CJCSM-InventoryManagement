@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20240321032143_20240320_InitialCreate")]
-    partial class _20240320InitialCreate
+    [Migration("20240515001551_20240514_InitialCreate")]
+    partial class _20240514InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,9 +102,6 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasColumnType("int");
 
                     b.Property<Guid>("RackId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ShopLocationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("EquipmentId");
@@ -437,6 +434,10 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("RackType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ShopLocationId")
                         .HasColumnType("uniqueidentifier");

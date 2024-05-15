@@ -11,7 +11,7 @@ namespace Inventory_Documents
     public class RackPDFGenerator
     {
 
-        public Stream GenerateRackSummaryPDFDocuemnt(List<DtoRack_WithPipe> dtoRack_WithPipeList)
+        public Stream GenerateRackSummaryPDFDocuemnt(List<DtoRack_WithStock> dtoRack_WithPipeList)
         {
 
             Document document = Document.Create(container =>
