@@ -1,3 +1,4 @@
+import { Equipment } from "./equipment.model";
 import { Pipe } from "./pipe.model";
 
 export interface Rack {
@@ -5,21 +6,24 @@ export interface Rack {
     name: string;
     shopLocationId: string;
     shopLocationName: string;
+    rackType: string;
     isActive: boolean;
     description: string;
     jointsPerTier: number;
 }
 
 
-export interface RackWithPipe {
+export interface RackWithStock {
   rackId: string;
   name: string;
   shopLocationId: string;
   shopLocationName: string;
+  rackType: string;
   isActive: boolean;
   description: string;
   jointsPerTier: number;
   pipeList: Pipe[];
+  equipmentList: Equipment[];
 }
 
 export interface RackCreate {
@@ -28,6 +32,7 @@ export interface RackCreate {
     isActive: boolean;
     description: string;
     jointsPerTier: number;
+    rackType: string;
 }
 
 export interface RackUpdate {
@@ -35,11 +40,13 @@ export interface RackUpdate {
   shopLocationId: string;
   description: string;
   jointsPerTier: number;
+  rackType: string;
 }
 
 export interface RackSearchParams {
   name: string | null;
   shopId: string | null;
+  rackType: string | null;
 }
 
 export interface TierWithPipeInfo {

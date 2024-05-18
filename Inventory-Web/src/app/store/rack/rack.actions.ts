@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Rack, RackCreate, RackSearchParams, RackWithPipe, RackWithTier } from '../../models/rack.model';
+import { Rack, RackCreate, RackSearchParams, RackWithStock, RackWithTier } from '../../models/rack.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ShopLocation } from '../../models/shop.model';
 
@@ -41,7 +41,7 @@ export const actionGetRackById = createAction(
 );
 export const actionGetRackByIdSuccess = createAction(
     `${rackKey} Get Rack By Id Success`,
-    props<{ selectedRack: RackWithPipe }>()
+    props<{ selectedRack: RackWithStock }>()
 );
 export const actionGetRackByIdError = createAction(
     `${rackKey} Get Rack By Id Error`,

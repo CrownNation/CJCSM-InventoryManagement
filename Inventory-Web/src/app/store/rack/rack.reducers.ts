@@ -47,8 +47,8 @@ const reducer: ActionReducer<RackState> = createReducer(
         const newState = rackAdapater.removeAll(state); // Needed so it refreshes the subscription fires with new data
         return {
           ...newState,
-          loadingCustomers: true,
-          errorLoadingCustomers: null
+          loadingRacks: true,
+          errorLoadingRacks: null
         };
     }),
     on(actionGetRacksSuccess, (state: RackState, { racks }) =>

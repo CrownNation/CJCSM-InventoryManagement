@@ -16,31 +16,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 import { CoreModule } from './core/core.module';
-import { AuthModule } from './auth/auth.module';
-
-
-// import { rackReducers } from './stores/rack';
-// import { reducers, metaReducers } from './store';
-// import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app.effects';
-
-import { environment } from '../environments/environment';
-// import { reducers, metaReducers } from './store';
-
-import {
-  StoreRouterConnectingModule,
-  RouterStateSerializer
-} from '@ngrx/router-store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-// import { provideStore } from '@ngrx/store';
-// import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,19 +41,6 @@ import { EffectsModule } from '@ngrx/effects';
     MatIconModule,
     MatCardModule,
     MatCardModule,
-
-    // StoreModule.forRoot({rack: rackReducers}, {}),
-
-    // StoreModule.forRoot(reducers, { metaReducers }),
-      // !environment.production ? StoreDevtoolsModule.instrument() : []
-
-    // StoreModule.forRoot(reducers, { metaReducers }),
-    // isDevMode() ? StoreDevtoolsModule.instrument() : [],
-
-    // EffectsModule.forRoot([AppEffects]),
-
-
-    
   ],
   providers: [
     // provideStore(),

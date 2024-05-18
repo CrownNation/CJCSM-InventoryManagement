@@ -21,12 +21,10 @@ export class DashboardComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
-
     this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));
     this.store.dispatch(actionGetRacksFullList({ searchParams: null }));
     this.store.dispatch(actionGetPipeDefinitionsList({ searchParams: null }));
     this.store.dispatch(actionGetShopLocations());
-
   }
 
 }

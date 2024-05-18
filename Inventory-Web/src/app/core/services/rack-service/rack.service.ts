@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Rack, RackCreate, RackSearchParams, RackWithPipe, RackWithTier } from 'src/app/models/rack.model';
+import { Rack, RackCreate, RackSearchParams, RackWithStock, RackWithTier } from 'src/app/models/rack.model';
 import { environment } from '../../../../environments/environment';
 import { ShopLocation } from '../../../models/shop.model';
 
@@ -24,9 +24,8 @@ export class RackService {
     return this.http.get<RackWithTier[]>(`${this.baseUrl}/WithTier`);
   }
 
-  getRackById(id: string): Observable<RackWithPipe[]> {
-    // Todo: This should be baseUrl/rack/{id} and it should return RackWithPipe
-    return this.http.get<RackWithPipe[]>(`${this.baseUrl}/WithPipe?$filter=rackId eq ${id}`);
+  getRackById(id: string): Observable<RackWithStock[]> {
+    return this.http.get<RackWithStock[]>(`${this.baseUrl}/${id}/WithStock`);
   }
 
   // Todo: Create and move to shop-location service

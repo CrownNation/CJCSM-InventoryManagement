@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Query.Validator;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Options;
 
 namespace Inventory_API.Controllers
 {
@@ -185,6 +187,40 @@ namespace Inventory_API.Controllers
             {
                 _logger.LogError($"GetRackListWithTiers: " + e.Message);
                 throw new Exception($"There was a problem querying for the rack wtih Tier.");
+            }
+        }
+
+        [HttpGet("{rackId}/WithStock")]
+        public IActionResult GetRackWithStockByRackId(Guid rackId, ODataQueryOptions<DtoRack_WithStock> options)
+        {
+            try
+            {
+                if (_rackBl == null)
+                {
+                    return NotFound();
+                }
+
+                IQueryable<DtoRack_WithStock>? rackQuery = _rackBl.GetRackListWithStockAndCustomerByRackId(rackId);
+
+
+                if (rackQuery == null)
+                {
+                    return NotFound();
+                }
+
+
+                return Ok(options.ApplyTo(rackQuery));
+
+
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"GetRackWithStockByRackId: " + e.Message);
+                throw new Exception($"There was a problem querying for the rack with stoxk.");
             }
         }
 

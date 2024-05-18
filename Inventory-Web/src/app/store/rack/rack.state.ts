@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { EntityState } from '@ngrx/entity';
-import { Rack, RackWithPipe, RackWithTier } from '../../models/rack.model';
+import { Rack, RackWithStock, RackWithTier } from '../../models/rack.model';
 import { ShopLocation } from '../../models/shop.model';
 
 
@@ -12,7 +12,7 @@ export interface RackState extends EntityState<any> {
     createdRack: Rack | null,
     errorCreatingRack: HttpErrorResponse | null,
 
-    selectedRack: RackWithPipe | null,
+    selectedRack: RackWithStock | null,
     errorLoadingSelectedRack: HttpErrorResponse | null,
 
     racksFullList: Rack[] | null;

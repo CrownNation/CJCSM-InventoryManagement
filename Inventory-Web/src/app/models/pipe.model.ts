@@ -199,8 +199,6 @@ export interface PipeProperty_WallSearchParams {
     wallThicknessImperial: number | null;
 }
 
-// --- Weight ---
-
 
 // --- Weight ---
 export interface PipeProperty_Weight {

@@ -53,6 +53,7 @@ export class CustomerAddComponent {
 
       if(customer && !this.isInit) {
         this.notificationService.success('Customer Created Successfully');
+        this.notificationService.error('THIS IS AN ERROR')
         this.dialogRef.close();
       }
     });

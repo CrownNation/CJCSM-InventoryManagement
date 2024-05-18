@@ -1,0 +1,12 @@
+<ng-container *ngIf="notifications$ | async as notifications">
+  <mat-card *ngIf="notifications.length > 0" class="notification-container">
+    <mat-card-header>
+      <mat-card-title>Notifications</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let notification of notifications" [ngClass]="notification.type">
+        {{ notification.message }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

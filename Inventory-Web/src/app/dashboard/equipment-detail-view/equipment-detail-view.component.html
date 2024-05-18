@@ -1,0 +1,74 @@
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+
+  <ng-container matColumnDef="quantity">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+    <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="lengthFeet">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Length (ft)</th>
+    <td mat-cell *matCellDef="let row"> {{row.lengthInFeet}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="lengthMeters">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Length (m)</th>
+    <td mat-cell *matCellDef="let row"> {{row.lengthInMeters}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+    <td mat-cell *matCellDef="let element" class="data-column-right">
+      <button mat-icon-button aria-label="expand row"
+        (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="container-description" style="padding-bottom: 2px;">
+          <div>
+            <div class="element-description">
+              <b>Category: </b>
+              <span>{{element.equipmentDefinition.category}}</span>
+            </div>
+            <div class="element-description">
+              <b>Grade: </b>
+              <span>{{element.equipmentDefinition.grade.name}}</span>
+            </div>
+          </div>
+          <div>
+            <div class="element-description">
+              <b>Size (m): </b>
+              <span>{{element.equipmentDefinition.size.sizeMetric}}</span>
+            </div>
+            <div class="element-description">
+              <b>Size (ft): </b>
+              <span>{{element.equipmentDefinition.size.sizeMetric}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="element-description">
+          <b>Description:</b> 
+          <span>{{element.equipmentDefinition.description}}</span>
+        </div>
+
+        <div class="element-description">
+          <b>Notes:</b> 
+          <span>{{element.equipmentDefinition.notes}}</span>
+        </div>
+
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="element-row"
+    [class.expanded-row]="expandedElement === element"
+    (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+</table>

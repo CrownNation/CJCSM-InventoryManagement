@@ -23,10 +23,10 @@ import { CustomerService } from './services/customer-service/customer.service';
 import { CustomerEffects } from '../store/customer/customer.effects';
 import { PipeEffects } from '../store/pipe/pipe.effects';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { NotificationService } from './notifications/notification.service';
 
 @NgModule({
-  declarations: [ ],
+  declarations: [ 
+  ],
   imports: [
     CommonModule,
     HttpClientModule,

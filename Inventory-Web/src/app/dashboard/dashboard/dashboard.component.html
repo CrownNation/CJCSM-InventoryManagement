@@ -1,16 +1,20 @@
 <div>
+    <app-notification-hub></app-notification-hub>
+</div>
+
+<div>
     <app-actions-bar></app-actions-bar>
 </div>
 
+
 <div class="container">
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="section">
-
             <mat-tab>
                 <ng-template mat-tab-label>
                     <mat-icon>plumbing</mat-icon>
                     Search by Pipe
                 </ng-template>
-                <app-pipe-search></app-pipe-search>
+                <app-search-pipe></app-search-pipe>
             </mat-tab>
 
             <mat-tab >
@@ -36,31 +40,5 @@
                 </ng-template>
                 <app-search-customer></app-search-customer>
             </mat-tab>
-
-
-
         </mat-tab-group>
 </div>
-
-
-
-
-
-<!--
-<div class="container">
-    <app-rack-list
-        *ngIf="!(loadingRacks$ | async)"
-        [racks]="racks$ | async"
-        class="section item-rack-list">
-    </app-rack-list>
-
-    <app-pipe-search class="section item-pipe-search">
-    </app-pipe-search>
-
-</div>
-
-<div class="container">
-
-
-
-</div> -->

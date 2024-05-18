@@ -31,7 +31,7 @@ namespace Inventory_Dto.Dto
         public Guid PipeProperty_GradeId { get; set; }
 
         [Required]
-        [ForeignKey("PipeProperty_GradeSize")]
+        [ForeignKey("PipeProperty_Size")]
         public Guid PipeProperty_SizeId { get; set; }
         public string? Notes { get; set; }
 

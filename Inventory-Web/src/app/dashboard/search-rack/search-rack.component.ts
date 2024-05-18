@@ -22,6 +22,7 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = [
     'name',
+    'rackType',
     'shopName',
     'actions'
   ];
@@ -36,7 +37,8 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
   shopsFullList: ShopLocation[] = [];
   searchParams: RackSearchParams | null = {
     name: null,
-    shopId: null
+    shopId: null,
+    rackType: null
   };
 
   private destroy$ = new Subject<void>();
@@ -46,7 +48,6 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
   loading$: Observable<Boolean> = this.store.select((selectLoadingRacks));
 
   racksFullList$: Observable<Rack[] | null> = this.store.select(selectRacksFullList);
-  // shopsFullList$: Observable<ShopLocation[] | null> = this.store.select(selectShopssFullList);
 
   constructor(
     private router: Router,
@@ -78,11 +79,6 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    // this.shopsFullList$.pipe(takeUntil(this.destroy$)).subscribe((shops) => {
-    //   if (shops) {
-    //     this.shopsFullList = shops;
-    //   }
-    // });
 
     this.loading$.subscribe((loading) => {
       this.loadingRacks = loading;
@@ -128,7 +124,8 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
   filter()  {
     this.searchParams = {
       name: this.rackForm.value.rack,
-      shopId: this.rackForm.value.shop
+      shopId: this.rackForm.value.shop,
+      rackType: this.rackForm.value.rackType
     };
     this.loadingRacks = true;
     this.store.dispatch(actionGetRacks({searchParams: this.searchParams}));
@@ -138,7 +135,8 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
     this.rackForm.reset();
     this.searchParams = {
       name: null,
-      shopId: null
+      shopId: null,
+      rackType: null
     };
     this.setDefaultDateCriteria();
     this.store.dispatch(actionGetRacks({searchParams: this.searchParams}));

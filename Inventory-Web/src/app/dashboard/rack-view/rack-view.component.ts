@@ -1,13 +1,11 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { RackWithPipe } from '../../models/rack.model';
+import { RackWithStock } from '../../models/rack.model'; // Update import to RackWithStock
 import { selectSelectedRack } from '../../store/rack/rack.selectors';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
-import { Pipe } from '../../models/pipe.model';
 
 @Component({
   selector: 'app-rack-view',
@@ -24,19 +22,9 @@ import { Pipe } from '../../models/pipe.model';
 export class RackViewComponent implements OnInit, OnDestroy {
 
   customerForm!: FormGroup
-  rack: RackWithPipe | null = null;
-  columnsToDisplay: string[] = [
-    'quantity',
-    // 'lengthFeet',
-    'lengthMeters',
-    'rack',
-    'tier'
-  ];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
-  expandedElement!: Pipe | null;
-  dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>;
+  rack: RackWithStock | null = null;
 
-  rack$: Observable<RackWithPipe | null> = this.store.select(selectSelectedRack);
+  rack$: Observable<RackWithStock | null> = this.store.select(selectSelectedRack);
   loading: Boolean = false;
 
   private destroy$ = new Subject<void>();
@@ -45,13 +33,9 @@ export class RackViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.rack$.pipe(takeUntil(this.destroy$)).subscribe((rack) => {
-      if (rack && rack.pipeList && rack.pipeList.length > 0) {
+      if (rack) {
         this.loading = false;
         this.rack = rack;
-
-        // Sorting the pipe list by TierNumber
-        const sortedPipes = [...rack.pipeList].sort((a, b) => a.tierNumber - b.tierNumber);
-        this.dataSource = new MatTableDataSource(sortedPipes);
       }
     });
   }
@@ -60,5 +44,4 @@ export class RackViewComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

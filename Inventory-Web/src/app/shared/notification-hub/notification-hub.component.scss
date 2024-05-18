@@ -1,0 +1,24 @@
+.notification-container {
+  margin: 1rem;
+  border: 1px solid #333333;
+  background-color: #dddddd;
+
+  mat-card-title {
+    font-size: .8rem;
+    font-weight: bold;
+  }
+
+  font-family: Tahoma, sans-serif;
+  
+  .success {
+    color: green;
+  }
+
+  .error {
+    color: red;
+  }
+
+  .info {
+    color: black;
+  }
+}

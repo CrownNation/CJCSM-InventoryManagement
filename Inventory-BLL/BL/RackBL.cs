@@ -75,12 +75,6 @@ namespace Inventory_BLL.BL
 
         public IQueryable<DtoRack_WithStock> GetRackListWithPipeAndCustomerByRackId(Guid rackId)
         {
-            System.Diagnostics.Debug.WriteLine("-----------------------------------------------");
-            System.Diagnostics.Debug.WriteLine("-----------------------------------------------");
-
-            System.Diagnostics.Debug.WriteLine("HERE WE ARE: " + rackId);
-            System.Diagnostics.Debug.WriteLine("-----------------------------------------------");
-            System.Diagnostics.Debug.WriteLine("-----------------------------------------------");
 
             var rackWithPipeQuery = from rack in _context.Rack
                                            join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
@@ -155,7 +149,107 @@ namespace Inventory_BLL.BL
             return rackWithPipeQuery;
         }
 
+        public IQueryable<DtoRack_WithStock> GetRackListWithStockAndCustomerByRackId(Guid rackId)
+        {
+            IQueryable<DtoRack_WithStock> rackWithStockQuery = from rack in _context.Rack
+                                        join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                                        where rack.RackId == rackId
+                                        orderby rack.Name
+                                        select new DtoRack_WithStock
+                                        {
+                                            Description = rack.Description,
+                                            Name = rack.Name,
+                                            RackId = rack.RackId,
+                                            ShopLocationId = rack.ShopLocationId,
+                                            IsActive = rack.IsActive,
+                                            JointsPerTier = rack.JointsPerTier,
+                                            ShopLocationName = shopLocation.Name,
+                                            RackType = rack.RackType,
+                                            PipeList = (rack.RackType == "Pipe") ? (
+                                                from pipe in _context.Pipe
+                                                join tier in _context.Tier on pipe.TierId equals tier.TierId
+                                                join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
+                                                join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
+                                                join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
+                                                join ppco in _context.PipeProperty_Coating on pd.CoatingId equals ppco.PipeProperty_CoatingId
+                                                join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
+                                                join ppgr in _context.PipeProperty_Grade on pd.GradeId equals ppgr.PipeProperty_GradeId
+                                                join ppr in _context.PipeProperty_Range on pd.RangeId equals ppr.PipeProperty_RangeId
+                                                join pps in _context.PipeProperty_Size on pd.SizeId equals pps.PipeProperty_SizeId
+                                                join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
+                                                join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
+                                                join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
+                                                where tier.RackId == rack.RackId
+                                                orderby tier.Number ascending, pipe.IndexOfPipe ascending
+                                                select new DtoPipe
+                                                {
+                                                    CustomerId = pipe.CustomerId,
+                                                    PipeId = pipe.PipeId,
+                                                    IndexOfPipe = pipe.IndexOfPipe,
+                                                    LengthInFeet = pipe.LengthInFeet,
+                                                    LengthInMeters = pipe.LengthInMeters,
+                                                    TierId = pipe.TierId,
+                                                    PipeDefinitionId = pipe.PipeDefinitionId,
+                                                    Quantity = pipe.Quantity,
+                                                    RackId = rack.RackId,
+                                                    RackName = rack.Name,
+                                                    TierNumber = tier.Number,
+                                                    PipeDefinition = new DtoPipeDefinition
+                                                    {
+                                                        PipeDefinitionId = pd.PipeDefinitionId,
+                                                        CategoryId = pd.CategoryId,
+                                                        CoatingId = pd.CoatingId,
+                                                        ConditionId = pd.ConditionId,
+                                                        GradeId = pd.GradeId,
+                                                        RangeId = pd.RangeId,
+                                                        SizeId = pd.SizeId,
+                                                        ThreadId = pd.ThreadId,
+                                                        WallId = pd.WallId,
+                                                        WeightId = pd.WeightId,
+                                                        Category = ppc,
+                                                        Coating = ppco,
+                                                        Condition = ppcon,
+                                                        Grade = ppgr,
+                                                        IsActive = pd.IsActive,
+                                                        Range = ppr,
+                                                        Size = pps,
+                                                        Thread = ppt,
+                                                        Wall = ppw,
+                                                        Weight = ppwe,
+                                                    }
+                                                }).ToList() : new List<DtoPipe>(),
+                                            EquipmentList = (rack.RackType == "Equipment") ? (
+                                                from equipment in _context.Equipment
+                                                //join customer in _context.Customer on equipment.CustomerId equals customer.CustomerId
+                                                join ed in _context.EquipmentDefinition on equipment.EquipmentDefinitionId equals ed.EquipmentDefinitionId
+                                                where equipment.RackId == rack.RackId
+                                                select new DtoEquipment
+                                                {
+                                                    CustomerId = equipment.CustomerId,
+                                                    EquipmentId = equipment.EquipmentId,
+                                                    LengthInFeet = equipment.LengthInFeet,
+                                                    LengthInMeters = equipment.LengthInMeters,
+                                                    EquipmentDefinitionId = equipment.EquipmentDefinitionId,
+                                                    Quantity = equipment.Quantity,
+                                                    RackId = rack.RackId,
+                                                    RackName = rack.Name,
+                                                    EquipmentDefinition = new DtoEquipmentDefinition
+                                                    {
+                                                        EquipmentDefinitionId = ed.EquipmentDefinitionId,
+                                                        PipeProperty_GradeId = ed.PipeProperty_GradeId,
+                                                        Grade = ed.Grade,
+                                                        PipeProperty_SizeId = ed.PipeProperty_SizeId,
+                                                        Size = ed.Size,
+                                                        Category = ed.Category,
+                                                        Description = ed.Description,
+                                                        Notes = ed.Notes,
+                                                        IsActive = ed.IsActive
+                                                    }
+                                                }).ToList() : new List<DtoEquipment>()
+                                        };
 
+            return rackWithStockQuery;
+        }
         public IQueryable<DtoRack_WithStock> GetRackListWithPipeAndCustomer()
         {
             var rackWithPipeQuery = from rack in _context.Rack

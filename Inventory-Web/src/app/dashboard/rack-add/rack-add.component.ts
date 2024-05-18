@@ -88,7 +88,8 @@ export class RackAddComponent implements OnInit, OnDestroy {
         shopLocationId: 'A671AF6A-8AA7-4D49-B08B-88003ADCA01C', //this.rackAddForm.value.shopLocation,
         isActive: true,
         description: this.rackAddForm.value.description,
-        jointsPerTier: this.rackAddForm.value.jointsPerTier
+        jointsPerTier: this.rackAddForm.value.jointsPerTier,
+        rackType: this.rackAddForm.value.rackType
       }
 
       this.isInit = false;
