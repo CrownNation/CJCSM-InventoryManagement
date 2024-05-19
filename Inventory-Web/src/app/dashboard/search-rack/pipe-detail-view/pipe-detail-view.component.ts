@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Pipe } from '../../models/pipe.model';
+import { Pipe } from 'src/app/models/pipe.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({

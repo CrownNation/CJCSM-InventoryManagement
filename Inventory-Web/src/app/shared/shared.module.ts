@@ -20,7 +20,7 @@ import { PipeViewComponent } from './pipe-view/pipe-view.component';
   exports: [
     NotificationHubComponent,
     SearchPipeComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class SharedModule { }

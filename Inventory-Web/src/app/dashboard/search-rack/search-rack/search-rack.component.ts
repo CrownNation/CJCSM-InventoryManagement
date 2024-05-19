@@ -1,17 +1,16 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Rack, RackSearchParams } from '../../models/rack.model';
+import { Rack, RackSearchParams } from '../../../models/rack.model';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { Customer } from '../../models/customer.model';
-import { ShopLocation } from '../../models/shop.model';
-import { selectLoadingRacks, selectRacks, selectRacksFullList } from '../../store/rack/rack.selectors';
+import { ShopLocation } from '../../../models/shop.model';
+import { selectLoadingRacks, selectRacks, selectRacksFullList } from '../../../store/rack/rack.selectors';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/core.state';
-import { actionGetRackById, actionGetRacks } from '../../store/rack/rack.actions';
+import { AppState } from '../../../store/core.state';
+import { actionGetRackById, actionGetRacks } from '../../../store/rack/rack.actions';
 
 @Component({
   selector: 'app-search-rack',

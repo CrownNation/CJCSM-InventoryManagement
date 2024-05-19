@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Equipment } from '../../models/equipment.model';
+import { Equipment } from '../../../models/equipment.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({

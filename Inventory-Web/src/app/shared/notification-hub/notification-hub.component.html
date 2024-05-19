@@ -1,5 +1,5 @@
 <ng-container *ngIf="notifications$ | async as notifications">
-  <mat-card *ngIf="notifications.length > 0" class="notification-container">
+  <mat-card *ngIf="notifications.length > 0" class="notification-container" @fadeSlideIn>
     <mat-card-header>
       <mat-card-title>Notifications</mat-card-title>
     </mat-card-header>

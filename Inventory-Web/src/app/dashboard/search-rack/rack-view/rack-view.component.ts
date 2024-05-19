@@ -2,10 +2,10 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { RackWithStock } from '../../models/rack.model'; // Update import to RackWithStock
-import { selectSelectedRack } from '../../store/rack/rack.selectors';
+import { RackWithStock } from '../../../models/rack.model'; // Update import to RackWithStock
+import { selectSelectedRack } from '../../../store/rack/rack.selectors';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/core.state';
+import { AppState } from '../../../store/core.state';
 
 @Component({
   selector: 'app-rack-view',
