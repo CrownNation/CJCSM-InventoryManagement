@@ -48,19 +48,6 @@ export const actionGetRackByIdError = createAction(
     props<{ errorLoadingSelectedRack: HttpErrorResponse }>()
 );
 
-// Get Full Rack List
-export const actionGetRacksFullList = createAction(
-    `${rackKey} Get Racks Full List`,
-    props<{ searchParams: RackSearchParams | null}>()
-);
-export const actionGetRacksFullListSuccess = createAction(
-    `${rackKey} Get Racks Full List Success`,
-    props<{ racksFullList: Rack[] | null}>()
-);
-export const actionGetRacksFullListError = createAction(
-    `${rackKey} Get Racks Full List Error`,
-    props<{ errorLoadingRacksList: HttpErrorResponse }>()
-);
 
 // Get Racks With Tiers
 export const actionGetRacksWithTiers = createAction(

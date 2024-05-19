@@ -3,7 +3,7 @@ import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
 import { Rack } from '../../models/rack.model';
 import { RackState } from './rack.state';
-import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksFullList, actionGetRacksFullListError, actionGetRacksFullListSuccess, actionGetRacksSuccess, actionGetRacksWithTiers, actionGetRacksWithTiersError, actionGetRacksWithTiersSuccess, actionGetShopLocations, actionGetShopLocationsError, actionGetShopLocationsSuccess } from './rack.actions';
+import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksSuccess, actionGetRacksWithTiers, actionGetRacksWithTiersError, actionGetRacksWithTiersSuccess, actionGetShopLocations, actionGetShopLocationsError, actionGetShopLocationsSuccess } from './rack.actions';
 
 
 export function sortByName(a: Rack, b: Rack): number {
@@ -104,22 +104,7 @@ const reducer: ActionReducer<RackState> = createReducer(
         errorLoadingSelectedRack
     })),
 
-    // Retrieve Racks Full List
-    on(actionGetRacksFullList, (state: RackState, { searchParams }) => ({
-        ...state,
-        racksFullList: null,
-        errorLoadingRacksList: null
-    })),
-    on(actionGetRacksFullListSuccess, (state: RackState, { racksFullList }) => ({
-        ...state,
-        racksFullList,
-        errorLoadingCustomersList: null
-    })),
-    on(actionGetRacksFullListError, (state: RackState, { errorLoadingRacksList }) => ({
-        ...state,
-        errorLoadingRacksList
-    })),
-
+  
     // Retrieve Racks With Tiers List
     on(actionGetRacksWithTiers, (state: RackState, { }) => ({
         ...state,

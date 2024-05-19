@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, switchMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { RackService } from "../../core/services/rack-service/rack.service";
-import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksFullList, actionGetRacksFullListError, actionGetRacksFullListSuccess, actionGetRacksSuccess, actionGetRacksWithTiers, actionGetRacksWithTiersError, actionGetRacksWithTiersSuccess, actionGetShopLocations, actionGetShopLocationsError, actionGetShopLocationsSuccess } from "./rack.actions";
+import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksSuccess, actionGetRacksWithTiers, actionGetRacksWithTiersError, actionGetRacksWithTiersSuccess, actionGetShopLocations, actionGetShopLocationsError, actionGetShopLocationsSuccess } from "./rack.actions";
 import { AppState } from "../core.state";
 import { Store } from "@ngrx/store";
 import { addNotification, clearNotifications } from "../notification-hub/notification-hub.actions";
@@ -80,18 +80,6 @@ export class RackEffects {
     )
   );
 
-
-  retrieveRacksFullList = createEffect( () =>
-    this.actions$.pipe(
-      ofType(actionGetRacksFullList),
-      switchMap(actionData =>
-        this.rackService.getRacks(actionData.searchParams).pipe(
-          map(racksFullList => actionGetRacksFullListSuccess({ racksFullList })),
-          catchError(errorLoadingRacksList => of(actionGetRacksFullListError({ errorLoadingRacksList })))
-        )
-      )
-    )
-  );
 
   retrieveRacksWithTiers = createEffect( () =>
     this.actions$.pipe(

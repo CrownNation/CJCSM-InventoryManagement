@@ -6,7 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { ShopLocation } from '../../../models/shop.model';
-import { selectLoadingRacks, selectRacks, selectRacksFullList } from '../../../store/rack/rack.selectors';
+import { selectLoadingRacks, selectRacks } from '../../../store/rack/rack.selectors';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/core.state';
@@ -46,7 +46,7 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
   loadingRacks: Boolean = false;
   loading$: Observable<Boolean> = this.store.select((selectLoadingRacks));
 
-  racksFullList$: Observable<Rack[] | null> = this.store.select(selectRacksFullList);
+  racksFullList$: Observable<Rack[] | null> = this.store.select(selectRacks);
 
   constructor(
     private router: Router,

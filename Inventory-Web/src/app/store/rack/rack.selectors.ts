@@ -27,7 +27,7 @@ export const selectRackState = createSelector(
 export const selectAllRacks = createSelector(selectRackFeature, selectAll);
 export const selectAllRackEntities = createSelector(selectRackFeature, selectEntities);
 
-
+// Get Racks
 export const selectRacks = createSelector(
     selectAllRackEntities,
     (racksDictionary: Dictionary<Rack>) => Object.values(racksDictionary) as Rack[]
@@ -66,6 +66,7 @@ export const selectSelectedRackError = createSelector(
 );
 
 // Full racks full list
+/*
 export const selectRacksFullList = createSelector(
     selectRackFeature,
     (state: RackState) => state.racksFullList
@@ -74,6 +75,7 @@ export const selectRacksFullListError = createSelector(
     selectRackFeature,
     (state: RackState) => state.errorLoadingRacksList
 );
+*/
 
 // Racks with tiers
 export const selectRacksWithTiers = createSelector(
