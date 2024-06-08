@@ -12,7 +12,7 @@ import { CustomerAddComponent } from './customer-add/customer-add.component';
 import { RackAddComponent } from './rack-add/rack-add.component';
 import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { SearchRackModule } from './search-rack/search-rack.module';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { SearchRackModule } from './search-rack/search-rack.module';
     DashboardRoutingModule,
     MaterialModule,
     SharedModule,
-    SearchRackModule
+    MatSortModule
   ]
 })
 export class DashboardModule { }

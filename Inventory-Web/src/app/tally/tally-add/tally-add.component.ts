@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
-import { ShopLocation } from '../../models/shop.model';
+import { ShopLocation } from '../../models/shop-location.model';
 import { Customer } from '../../models/customer.model';
 import { DtoPipeCreate, DtoTallyCreate, DtoTierWithPipe, Tally, TallyTypes } from '../../models/tally.model';
 import { actionGetCustomersFullList } from '../../store/customer/customer.actions';
@@ -11,7 +11,7 @@ import { actionGetRacksWithTiers, actionGetShopLocations } from '../../store/rac
 import { actionGetPipeDefinitionsList } from '../../store/pipe/pipe.actions';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { RackWithTier, TierWithPipeInfo } from '../../models/rack.model';
-import { selectRacksWithTiers, selectShopLocations } from '../../store/rack/rack.selectors';
+import { selectRacksWithTiers } from '../../store/rack/rack.selectors';
 import { selectCustomersFullList } from '../../store/customer/customer.selectors';
 import { PipeDefinition } from '../../models/pipe.model';
 import { selectPipeDefinitionsList } from '../../store/pipe/pipe.selectors';
@@ -21,6 +21,7 @@ import { actionCreateTally } from '../../store/tally/tally.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { selectCreatedTally, selectCreatingTally, selectCreatingTallyError } from '../../store/tally/tally.selectors';
 import { NotificationService } from '../../core/notifications/notification.service';
+import { selectAllShopLocations } from 'src/app/store/shop-location/shop-location.selectors';
 
 @Component({
   selector: 'app-tally-add',
@@ -63,7 +64,7 @@ export class TallyAddComponent {
   racksWithTiers$: Observable<RackWithTier[] | null> = this.store.select(selectRacksWithTiers);
   customersFullList$: Observable<Customer[] | null> = this.store.select(selectCustomersFullList);
   pipeDefinitionsList$: Observable<PipeDefinition[] | null> = this.store.select(selectPipeDefinitionsList);
-  shopLocationList$: Observable<ShopLocation[] | null> = this.store.select(selectShopLocations);
+  shopLocationList$: Observable<ShopLocation[] | null> = this.store.select(selectAllShopLocations);
 
   creatingTally$: Observable<Boolean> = this.store.select((selectCreatingTally));
   createdTally$: Observable<Tally | null> = this.store.select((selectCreatedTally));

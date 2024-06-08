@@ -19,6 +19,8 @@ import { pipeReducers } from './pipe/pipe.reducers';
 import { PipeProperty_CategoryState } from './pipe-properties/pipe-property-category/pipe-property-category.state';
 import { pipeProperty_CategoryReducers } from './pipe-properties/pipe-property-category/pipe-property-category.reducers';
 import { NotificationState, notificationHubReducer } from './notification-hub/notification-hub.reducers';
+import { ShopLocationState } from './shop-location/shop-location.state';
+import { shopLocationReducers } from './shop-location/shop-location.reducers';
 
 
   export const reducers: ActionReducerMap<AppState> = {
@@ -30,6 +32,7 @@ import { NotificationState, notificationHubReducer } from './notification-hub/no
     customer: customerReducers,
     pipe: pipeReducers,
     notification: notificationHubReducer,
+    shopLocation: shopLocationReducers,
     pipeProperty_Category: pipeProperty_CategoryReducers
   };
 
@@ -55,6 +58,9 @@ createFeatureSelector<PipeState>('pipe');
 
 export const selectNotificationFeature: MemoizedSelector<AppState, NotificationState> = createFeatureSelector<NotificationState>('notification');
 
+export const selectShopLocationFeature: MemoizedSelector<AppState, ShopLocationState> =
+  createFeatureSelector<ShopLocationState>('shopLocation'); 
+
 export const selectPipeProperty_CategoryFeature: MemoizedSelector<AppState, PipeProperty_CategoryState> =
 createFeatureSelector<PipeProperty_CategoryState>('pipeProperty_Category');
 
@@ -67,5 +73,6 @@ createFeatureSelector<PipeProperty_CategoryState>('pipeProperty_Category');
     customer: CustomerState,
     pipe: PipeState,
     notification: NotificationState,
+    shopLocation: ShopLocationState,
     pipeProperty_Category: PipeProperty_CategoryState
   }

@@ -241,12 +241,6 @@ export interface PipeDefinitionSearchParams {
     weightInLbsPerFoot: number;
 }
 
-export interface PipeCreate {
-    pipeProperty_WeightId: string;
-    weightInKgPerMeter: number;
-    weightInLbsPerFoot: number;
-}
-
 export interface PipeUpdate {
     pipeProperty_WeightId: string;
     weightInKgPerMeter: number;
@@ -266,8 +260,6 @@ export interface PipeDefinitionUpdate {
 }
 
 
-
-// ---------- Todo: remove these once they are not used on the pipe forms
 
 export interface PipeCreate {
     pipeDefinitionId: string;

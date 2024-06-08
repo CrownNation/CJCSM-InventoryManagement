@@ -22,6 +22,10 @@ namespace Inventory_BLL.BL
         {
             var entity = _context.Rack
                                  .Include(r => r.ShopLocation)
+                                 .OrderBy(r => r.ShopLocationId)
+                                 // Order descending so we get 'pipe' before 'equipment'
+                                 .ThenByDescending(r=>r.RackType)
+                                 .ThenBy(r=>r.Name)
                                  .AsQueryable();
 
             var racks = _mapper.ProjectTo<DtoRack>(entity);
@@ -73,7 +77,7 @@ namespace Inventory_BLL.BL
             _context.SaveChanges();
         }
 
-        public IQueryable<DtoRack_WithStock> GetRackListWithPipeAndCustomerByRackId(Guid rackId)
+        public IQueryable<DtoRack_WithStock> GetRackWithPipeAndCustomerByRackId(Guid rackId)
         {
 
             var rackWithPipeQuery = from rack in _context.Rack
@@ -250,10 +254,12 @@ namespace Inventory_BLL.BL
 
             return rackWithStockQuery;
         }
+
         public IQueryable<DtoRack_WithStock> GetRackListWithPipeAndCustomer()
         {
             var rackWithPipeQuery = from rack in _context.Rack
                                     join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                                    orderby rack.ShopLocationId, rack.RackType descending, rack.Name
                                     select new DtoRack_WithStock
                                     {
                                         Description = rack.Description,
@@ -263,6 +269,7 @@ namespace Inventory_BLL.BL
                                         IsActive = rack.IsActive,
                                         JointsPerTier = rack.JointsPerTier,
                                         ShopLocationName = shopLocation.Name,
+                                        RackType = rack.RackType,
                                         PipeList = (from pipe in _context.Pipe
                                                     join tier in _context.Tier on pipe.TierId equals tier.TierId
                                                     join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
@@ -321,14 +328,13 @@ namespace Inventory_BLL.BL
             return rackWithPipeQuery;
         }
 
-
-
         public async Task<IQueryable<DtoRack_WithTier>> GetRackListWithTiers()
         {
             try
             {
                 var rackWithTiersQuery = from rack in _context.Rack
                                          join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                                         orderby rack.ShopLocationId, rack.RackType descending, rack.Name
                                          select new DtoRack_WithTier
                                          {
                                              RackId = rack.RackId,
@@ -338,6 +344,7 @@ namespace Inventory_BLL.BL
                                              IsActive = rack.IsActive,
                                              Description = rack.Description,
                                              JointsPeTier = rack.JointsPerTier,
+                                             RackType = rack.RackType,
                                              TierList = (from tier in _context.Tier
                                                          where tier.RackId == rack.RackId
                                                          orderby tier.Number ascending

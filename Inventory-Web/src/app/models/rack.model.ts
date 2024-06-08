@@ -65,4 +65,5 @@ export interface RackWithTier {
   description: string;
   jointsPerTier: number;
   tierList: TierWithPipeInfo[];
+  rackType: string;
 }

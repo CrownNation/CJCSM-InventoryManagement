@@ -127,7 +127,7 @@ namespace Inventory_API.Controllers
                     return NotFound();
                 }
 
-                IQueryable<DtoRack_WithStock>? rackQuery =  _rackBl.GetRackListWithPipeAndCustomerByRackId(key);
+                IQueryable<DtoRack_WithStock>? rackQuery =  _rackBl.GetRackWithPipeAndCustomerByRackId(key);
 
 
                 if (rackQuery == null)

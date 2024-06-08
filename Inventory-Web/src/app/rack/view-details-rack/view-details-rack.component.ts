@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ShopLocation } from '../../models/shop.model';
+import { ShopLocation } from '../../models/shop-location.model';
 import { Rack } from '../../models/rack.model';
 
 @Component({

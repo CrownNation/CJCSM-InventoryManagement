@@ -1,97 +1,58 @@
-<table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
 
   <ng-container matColumnDef="quantity">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="quantity">Quantity</th>
     <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
   </ng-container>
 
   <ng-container matColumnDef="lengthFeet">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Length (ft)</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="lengthInFeet">Length (ft)</th>
     <td mat-cell *matCellDef="let row"> {{row.lengthInFeet}} </td>
   </ng-container>
 
   <ng-container matColumnDef="lengthMeters">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Length (m)</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="lengthInMeters">Length (m)</th>
     <td mat-cell *matCellDef="let row"> {{row.lengthInMeters}} </td>
   </ng-container>
 
   <ng-container matColumnDef="tier">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tier</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="tierNumber">Tier</th>
     <td mat-cell *matCellDef="let row"> {{row.tierNumber}} </td>
   </ng-container>
 
   <ng-container matColumnDef="expand">
     <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-    <td mat-cell *matCellDef="let element" class="data-column-right">
-      <button mat-icon-button aria-label="expand row"
-        (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-        <mat-icon *ngIf="expandedElement !== element">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+    <td mat-cell *matCellDef="let row" class="data-column-right">
+      <button mat-icon-button aria-label="expand row" (click)="toggleRow(row); $event.stopPropagation()">
+        <mat-icon *ngIf="!isRowExpanded(row)">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="isRowExpanded(row)">keyboard_arrow_up</mat-icon>
       </button>
     </td>
   </ng-container>
 
   <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-      <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+    <td mat-cell *matCellDef="let row" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div *ngIf="isRowExpanded(row)" class="element-detail">
         <div class="container-description">
-          <div>
-            <div class="element-description">
-              <b>Category: </b>
-              <span>{{element.pipeDefinition.category.name}}</span>
-            </div>
-            <div class="element-description">
-              <b>Condition: </b>
-              <span>{{element.pipeDefinition.condition.name}}</span>
-            </div>
-            <div class="element-description">
-              <b>Grade: </b>
-              <span>{{element.pipeDefinition.grade.name}}</span>
-            </div>
-            <div class="element-description">
-              <b>Range: </b>
-              <span>{{element.pipeDefinition.range.name}}</span>
-            </div>
-            <div class="element-description">
-              <b>Thread: </b>
-              <span>{{element.pipeDefinition.thread.name}}</span>
-            </div>
-            <div class="element-description">
-              <b>Weight (kg/m): </b>
-              <span>{{element.pipeDefinition.weight.weightInKgPerMeter}}</span>
-            </div>
-            <div class="element-description">
-              <b>Weight (lbs/ft): </b>
-              <span>{{element.pipeDefinition.weight.weightInLbsPerFoot}}</span>
-            </div>
+          <!-- First Column of Details -->
+          <div class="element-description-group">
+            <div class="element-description"><b>Category: </b><span>{{row.pipeDefinition.category.name}}</span></div>
+            <div class="element-description"><b>Condition: </b><span>{{row.pipeDefinition.condition.name}}</span></div>
+            <div class="element-description"><b>Grade: </b><span>{{row.pipeDefinition.grade.name}}</span></div>
+            <div class="element-description"><b>Range: </b><span>{{row.pipeDefinition.range.name}}</span></div>
+            <div class="element-description"><b>Thread: </b><span>{{row.pipeDefinition.thread.name}}</span></div>
+            <div class="element-description"><b>Weight (kg/m): </b><span>{{row.pipeDefinition.weight.weightInKgPerMeter}}</span></div>
+            <div class="element-description"><b>Weight (lbs/ft): </b><span>{{row.pipeDefinition.weight.weightInLbsPerFoot}}</span></div>
+
           </div>
-
-          <div>
-            <div class="element-description">
-              <b>Length (m): </b>
-              <span>{{element.lengthInMeters}}</span>
-            </div>
-
-            <div class="element-description">
-              <b>Length (ft): </b>
-              <span>{{element.lengthInFeet}}</span>
-            </div>
-            <div class="element-description">
-              <b>Size (m): </b>
-              <span>{{element.pipeDefinition.size.sizeMetric}}</span>
-            </div>
-            <div class="element-description">
-              <b>Size (ft): </b>
-              <span>{{element.pipeDefinition.size.sizeMetric}}</span>
-            </div>
-            <div class="element-description">
-              <b>Wall (m): </b>
-              <span>{{element.pipeDefinition.wall.wallMetric}}</span>
-            </div>
-            <div class="element-description">
-              <b>Wall (ft): </b>
-              <span>{{element.pipeDefinition.wall.wallMetric}}</span>
-            </div>
+          <!-- Second Column of Details -->
+          <div class="element-description-group">
+            <div class="element-description"><b>Length (m): </b><span>{{row.lengthInMeters}}</span></div>
+            <div class="element-description"><b>Length (ft): </b><span>{{row.lengthInFeet}}</span></div>
+            <div class="element-description"><b>Size (m): </b><span>{{row.pipeDefinition.size.sizeMetric}}</span></div>
+            <div class="element-description"><b>Size (ft): </b><span>{{row.pipeDefinition.size.sizeMetric}}</span></div>
+            <div class="element-description"><b>Wall (m): </b><span>{{row.pipeDefinition.wall.wallMetric}}</span></div>
+            <div class="element-description"><b>Wall (ft): </b><span>{{row.pipeDefinition.wall.wallMetric}}</span></div>
           </div>
         </div>
       </div>
@@ -99,9 +60,8 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="element-row"
-    [class.expanded-row]="expandedElement === element"
-    (click)="expandedElement = expandedElement === element ? null : element">
+  <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpand;" class="element-row"
+      [class.expanded-row]="isRowExpanded(row)" (click)="toggleRow(row)">
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
 </table>

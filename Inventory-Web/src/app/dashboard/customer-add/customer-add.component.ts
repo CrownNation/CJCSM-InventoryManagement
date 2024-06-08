@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ShopLocation } from '../../models/shop.model';
+import { ShopLocation } from '../../models/shop-location.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
 import { MatDialogRef } from '@angular/material/dialog';

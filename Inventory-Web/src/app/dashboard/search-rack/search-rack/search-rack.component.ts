@@ -1,16 +1,19 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Rack, RackSearchParams } from '../../../models/rack.model';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { ShopLocation } from '../../../models/shop.model';
+import { Observable, Subject, catchError, delay, of, take, takeUntil, tap } from 'rxjs';
+import { ShopLocation } from '../../../models/shop-location.model';
 import { selectLoadingRacks, selectRacks } from '../../../store/rack/rack.selectors';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/core.state';
 import { actionGetRackById, actionGetRacks } from '../../../store/rack/rack.actions';
+import { selectAllShopLocations } from 'src/app/store/shop-location/shop-location.selectors';
+import { actionGetShopLocations } from 'src/app/store/shop-location/shop-location.actions';
+import { LocalStorageService } from 'src/app/core/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-search-rack',
@@ -28,17 +31,12 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource: MatTableDataSource<Rack> = new MatTableDataSource<Rack>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
   rackForm!: FormGroup
 
   racksFullList: Rack[] = [];
   shopsFullList: ShopLocation[] = [];
-  searchParams: RackSearchParams | null = {
-    name: null,
-    shopId: null,
-    rackType: null
-  };
+  searchParams: RackSearchParams | null = null;
 
   private destroy$ = new Subject<void>();
 
@@ -50,106 +48,134 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private store: Store<AppState>)
-  {  }
+    private store: Store<AppState>,
+    private localStorageService: LocalStorageService) { }
 
 
   ngOnInit(): void {
 
     this.buildForm();
     this.loadingRacks = true;
-    this.setDefaultDateCriteria();
-    this.store.dispatch(actionGetRacks({searchParams: this.searchParams}));
+
+    this.store.dispatch(actionGetShopLocations({ searchParams: null }));
+
+    this.store.select(selectAllShopLocations).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((shopLocations) => {
+      this.shopsFullList = shopLocations;
+      this.rackForm.get('shop')!.setValue("all");
+    });
 
 
-    this.racks$.pipe(takeUntil(this.destroy$)).subscribe((racks) => {
+    this.setSearchParams();
+
+    this.racks$.pipe(
+      takeUntil(this.destroy$),
+      catchError(error => {
+        console.error('Error fetching racks:', error);
+        return of(null); // Return an observable with null to handle the error gracefully
+      })
+    ).subscribe((racks) => {
       if (racks) {
         this.dataSource = new MatTableDataSource(racks as Rack[]);
         this.loadingRacks = false;
-
-        if(racks.length > 0)
-          this.store.dispatch(actionGetRackById({rackId: racks[0].rackId}));
+        if (racks.length > 0) {
+          this.store.dispatch(actionGetRackById({ rackId: racks[0].rackId }));
+          this.applySorting();
+        } 
+      } else {
+        console.log('No racks data received'); // Log when null or undefined is received
       }
     });
 
-    this.racksFullList$.pipe(takeUntil(this.destroy$)).subscribe((racks) => {
-      if (racks) {
-        this.racksFullList = racks;
-      }
-    });
-
+    this.store.dispatch(actionGetRacks({ searchParams: this.searchParams }));
 
     this.loading$.subscribe((loading) => {
       this.loadingRacks = loading;
     });
-
   }
 
   buildForm() {
-
     this.rackForm = new FormGroup({
-      rack: new FormControl('', []),
-      shop: new FormControl('', [])
+      rackName: new FormControl(''),
+      rackType: new FormControl("all"),
+      shop: new FormControl("'all'")
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applySorting(): void {
+    if (this.sort && this.dataSource) {
+      this.dataSource.sort = this.sort;
+      this.sort.active = 'rackType';
+      this.sort.direction = 'desc';
+      this.sort.sortChange.emit({ active: this.sort.active, direction: this.sort.direction });
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+      this.dataSource.sortingDataAccessor = (item, property) => {
+        switch (property) {
+          case 'rackType': return item.rackType;
+          case 'name': return item.name;
+          default: return '';
+        }
+      };
     }
   }
 
-  setDefaultDateCriteria() {
-    if (this.searchParams) {
-      // Todo: may need to set a default shop location based on the user's shop location
+  setSearchParams(): void {
+    const formValue = this.rackForm.value;
+    let params: any = {};
+
+    if (formValue.rackName != "") {
+      params.name = formValue.rackName;
+    }
+
+    if (formValue.rackType != "all") {
+      params.rackType = formValue.rackType
+    }
+
+    if (formValue.shop != "all" && formValue.shop !== '') {
+      params.shopId = formValue.shop;
+    }
+
+    if (Object.keys(params).length > 0) {
+      this.searchParams = params as RackSearchParams;
+    } else {
+      this.searchParams = null;
     }
   }
 
+  clearShopLocationCache(): void {
+    this.localStorageService.removeItem('shopLocations'); // Clear the specific cache
+    this.store.dispatch(actionGetShopLocations({ searchParams: null }));
+  }
 
 
-  // addRack() {
-  //   console.log('add rack');
-  //   this.router.navigate(['/rack/add']);
-  // }
-
-  filter()  {
-    this.searchParams = {
-      name: this.rackForm.value.rack,
-      shopId: this.rackForm.value.shop,
-      rackType: this.rackForm.value.rackType
-    };
+  filter() {
+    this.setSearchParams();
     this.loadingRacks = true;
-    this.store.dispatch(actionGetRacks({searchParams: this.searchParams}));
+    console.log("*****************************************");
+    console.log("Filtered Search Params: " + JSON.stringify(this.searchParams, null, 2));
+
+    this.store.dispatch(actionGetRacks({ searchParams: this.searchParams }));
   }
 
   clearForm() {
     this.rackForm.reset();
-    this.searchParams = {
-      name: null,
-      shopId: null,
-      rackType: null
-    };
-    this.setDefaultDateCriteria();
-    this.store.dispatch(actionGetRacks({searchParams: this.searchParams}));
+    this.searchParams = null;
+    this.store.dispatch(actionGetRacks({ searchParams: this.searchParams }));
   }
 
   viewRack(rack: Rack) {
-    this.store.dispatch(actionGetRackById({rackId: rack.rackId}));
+    this.store.dispatch(actionGetRackById({ rackId: rack.rackId }));
   }
 
   ngOnDestroy() {
-    console.log('');
     this.destroy$.next();
     this.destroy$.complete();
-  }
 
+  }
 
 }

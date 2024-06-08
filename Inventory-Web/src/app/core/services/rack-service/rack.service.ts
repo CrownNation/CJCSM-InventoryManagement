@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable , throwError} from 'rxjs';
 import { Rack, RackCreate, RackSearchParams, RackWithStock, RackWithTier } from 'src/app/models/rack.model';
 import { environment } from '../../../../environments/environment';
-import { ShopLocation } from '../../../models/shop.model';
+import { ShopLocation } from '../../../models/shop-location.model';
+
+import { catchError, tap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +19,13 @@ export class RackService {
 
   getRacks(searchParams: RackSearchParams | null): Observable<Rack[]> {
     const queryParams = this.generateOdataParams(searchParams);
-    return this.http.get<Rack[]>(`${this.baseUrl}${queryParams}`);
+    return this.http.get<Rack[]>(`${this.baseUrl}${queryParams}`).pipe(
+      catchError(error => {
+        return throwError(() => new Error('Failed to fetch racks'));
+      })
+    );
   }
-
+  
   getRacksWithTiers(): Observable<RackWithTier[]> {
     return this.http.get<RackWithTier[]>(`${this.baseUrl}/WithTier`);
   }
@@ -46,18 +52,28 @@ export class RackService {
       return '';
     }
 
-    let odataParams = '';
+    const conditions: string[] = [];
 
+    // Use the `contains` function for substring search on rackName
     if (searchParams.name) {
-      odataParams += (odataParams ? ' and ' : '') + `rackId eq ${searchParams.name}`;
+        conditions.push(`contains(name, '${encodeURIComponent(searchParams.name)}')`);
     }
 
+    // Use the `eq` operator for exact matching on rackType
+    if (searchParams.rackType) {
+        conditions.push(`rackType eq '${encodeURIComponent(searchParams.rackType)}'`);
+    }
+
+    // Use the `eq` operator for exact matching on shop location id
     if (searchParams.shopId) {
-      odataParams += (odataParams ? ' and ' : '') + `shopLocationId eq ${searchParams.shopId}`;
+        conditions.push(`ShopLocationId eq ${encodeURIComponent(searchParams.shopId)}`);
     }
 
-    return odataParams ? '?$filter=' + odataParams : '';
-  }
+    const odataQueryString = conditions.length > 0 ? `?$filter=${conditions.join(' and ')}` : '';
 
+    // Log the constructed OData query string for debugging
+    console.log("generateOdataParams: Constructed OData query string:", odataQueryString);
+
+    return odataQueryString;}
 
 }

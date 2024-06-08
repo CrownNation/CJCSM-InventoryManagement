@@ -19,21 +19,20 @@ export class RackEffects {
   ) {}
 
  
+
   retrieveRacks = createEffect(() =>
     this.actions$.pipe(
       ofType(actionGetRacks),
-      tap(() => this.store.dispatch(clearNotifications())),  // Clear notifications before new request
+      tap(() => this.store.dispatch(clearNotifications())),
       switchMap(actionData =>
         this.rackService.getRacks(actionData.searchParams).pipe(
           map(racks => {
             this.store.dispatch(addNotification({
               notification: { message: 'Racks loaded successfully', type: 'success' }
             }));
-
             this.store.dispatch(addNotification({
               notification: { message: 'Another test message', type: 'info' }
             }));
-
             return actionGetRacksSuccess({ racks });
           }),
           catchError((error: HttpErrorResponse) => {
@@ -54,7 +53,6 @@ export class RackEffects {
       )
     )
   );
-
 
   createRack = createEffect( () =>
     this.actions$.pipe(

@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Pipe, PipeCreate, PipeDefinitionSearchParams, PipeSearchParams, PipeUpdate } from '../../../models/pipe.model';
 import { Observable } from 'rxjs';
 
+import { catchError, tap, map } from 'rxjs/operators';
+
 type NewType = PipeSearchParams;
 
 @Injectable({
@@ -22,11 +24,20 @@ export class PipeService {
 
 // {{baseUrl}}/Pipe/withDefinition?$filter=pipeDefinition/categoryId eq F20FD88E-A7E2-4920-8678-1D393C7DB2D4 and pipeDefinition/conditionId eq 1ACDA59F-9C05-4491-9FDC-F282E6022EC2
 
-getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
-    const queryParams = this.generateOdataParams(searchParams);
-    return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition${queryParams}`);
-  }
+// getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
+//     const queryParams = this.generateOdataParams(searchParams);
+//     return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition${queryParams}`);
+//   }
 
+getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
+  const queryParams = this.generateOdataParams(searchParams);
+  return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition${queryParams}`).pipe(
+    tap({
+      next: pipes => console.log('Received pipes:', pipes),
+      error: error => console.error('Error fetching pipes:', error)
+    })
+  );
+}
   getPipeById(id: string): Observable<Pipe[]> {
     return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition?$filter=pipeId eq ${id}`);
   }

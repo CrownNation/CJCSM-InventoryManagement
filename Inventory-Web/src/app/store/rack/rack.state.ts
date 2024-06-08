@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { EntityState } from '@ngrx/entity';
 import { Rack, RackWithStock, RackWithTier } from '../../models/rack.model';
-import { ShopLocation } from '../../models/shop.model';
+import { ShopLocation } from '../../models/shop-location.model';
 
 
 export interface RackState extends EntityState<any> {

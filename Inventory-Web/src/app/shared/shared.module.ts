@@ -5,6 +5,11 @@ import { SearchPipeComponent } from './search-pipe/search-pipe.component';
 import { MaterialModule } from './material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PipeViewComponent } from './pipe-view/pipe-view.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,12 +20,22 @@ import { PipeViewComponent } from './pipe-view/pipe-view.component';
   imports: [
     CommonModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule
     ],
   exports: [
     NotificationHubComponent,
     SearchPipeComponent,
     ReactiveFormsModule,
+    MatSortModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule
+
   ]
 })
 export class SharedModule { }

@@ -28,15 +28,10 @@ export class AppComponent implements OnInit{
   ];
 
   ngOnInit(): void {
-
-
   }
-
 
   onLogoutClick(){
     console.log('logout clicked');
 
   }
-
-
 }

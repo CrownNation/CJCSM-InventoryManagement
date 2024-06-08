@@ -12,11 +12,10 @@ namespace Inventory_Dto.Dto
         public Guid RackId { get; set; }
         public string Name { get; set; } = string.Empty;
         public Guid ShopLocationId { get; set; }
-
         public string ShopLocationName { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public string Description { get; set; } = String.Empty;
-
+        public string RackType { get; set; } = string.Empty;
         public int JointsPeTier { get; set; } = 0;
 
         public List<DtoTier_WithPipeInfo> TierList{ get; set; } = new List<DtoTier_WithPipeInfo>();

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppState } from '../../store/core.state';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ShopLocation } from '../../models/shop.model';
+import { ShopLocation } from '../../models/shop-location.model';
 import { Router } from '@angular/router';
 import { actionCreateRack } from '../../store/rack/rack.actions';
 import { RackCreate } from '../../models/rack.model';

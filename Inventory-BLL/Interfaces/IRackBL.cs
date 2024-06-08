@@ -6,7 +6,7 @@ namespace Inventory_BLL.Interfaces
     {
         public Task<IQueryable<DtoRack>> GetRackList();
         public IQueryable<DtoRack?> GetRackById(Guid guid);
-        public IQueryable<DtoRack_WithStock> GetRackListWithPipeAndCustomerByRackId(Guid rackId);
+        public IQueryable<DtoRack_WithStock> GetRackWithPipeAndCustomerByRackId(Guid rackId);
 
         public IQueryable<DtoRack_WithStock> GetRackListWithStockAndCustomerByRackId(Guid rackId);
 

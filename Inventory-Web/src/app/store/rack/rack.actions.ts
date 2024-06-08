@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { Rack, RackCreate, RackSearchParams, RackWithStock, RackWithTier } from '../../models/rack.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ShopLocation } from '../../models/shop.model';
+import { ShopLocation } from '../../models/shop-location.model';
 
 export const rackKey = '[Rack]';
 

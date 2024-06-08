@@ -5,12 +5,13 @@ import { AppState } from '../../store/core.state';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Rack, RackCreate } from '../../models/rack.model';
 import { actionCreateRack } from '../../store/rack/rack.actions';
-import { ShopLocation } from '../../models/shop.model';
+import { ShopLocation } from '../../models/shop-location.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectCreatedRack, selectCreatedRackError, selectCreatingRack, selectShopLocations } from '../../store/rack/rack.selectors';
+import { selectCreatedRack, selectCreatedRackError, selectCreatingRack } from '../../store/rack/rack.selectors';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { selectAllShopLocations } from 'src/app/store/shop-location/shop-location.selectors';
 
 @Component({
   selector: 'app-rack-add',
@@ -27,7 +28,7 @@ export class RackAddComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   shops: ShopLocation[] = [];
-  shopsFullList$: Observable<ShopLocation[] | null> = this.store.select(selectShopLocations);
+  shopsFullList$: Observable<ShopLocation[] | null> = this.store.select(selectAllShopLocations);
   creatingRack$: Observable<Boolean> = this.store.select((selectCreatingRack));
   createdRack$: Observable<Rack | null> = this.store.select((selectCreatedRack));
   error$: Observable<HttpErrorResponse | null> = this.store.select((selectCreatedRackError));
