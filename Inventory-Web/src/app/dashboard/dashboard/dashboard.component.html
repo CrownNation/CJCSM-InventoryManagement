@@ -1,40 +1,40 @@
 <app-notification-hub></app-notification-hub>
 
-  <app-actions-bar></app-actions-bar>
+<app-actions-bar></app-actions-bar>
 
-  <div class="container">
-    <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false" mat-align-tabs="start"
-      class="section">
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon>plumbing</mat-icon>
-          Search by Pipe
-        </ng-template>
-        <app-search-pipe></app-search-pipe>
-      </mat-tab>
+<div class="container">
+  <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false"
+    mat-align-tabs="start" class="section">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>plumbing</mat-icon>
+        Search by Pipe
+      </ng-template>
+    </mat-tab>
 
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon>assignment</mat-icon>
-          Search by Tally
-        </ng-template>
-        <app-search-tally></app-search-tally>
-      </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>assignment</mat-icon>
+        Search by Tally
+      </ng-template>
+      <app-search-tally></app-search-tally>
+    </mat-tab>
 
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon>view_list</mat-icon>
-          Search by Rack
-        </ng-template>
-        <router-outlet></router-outlet>
-      </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>view_list</mat-icon>
+        Search by Rack
+      </ng-template>
+    </mat-tab>
 
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon>group</mat-icon>
-          Search by Customer
-        </ng-template>
-        <app-search-customer></app-search-customer>
-      </mat-tab>
-    </mat-tab-group>
-  
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>group</mat-icon>
+        Search by Customer
+      </ng-template>
+      <app-search-customer></app-search-customer>
+    </mat-tab>
+  </mat-tab-group>
+
+  <router-outlet></router-outlet>
+</div>

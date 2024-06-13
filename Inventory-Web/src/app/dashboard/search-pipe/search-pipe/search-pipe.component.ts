@@ -3,14 +3,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/core.state';
+import { AppState } from '../../../store/core.state';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Pipe, PipeDefinition, PipeSearchParams } from '../../models/pipe.model';
+import { Pipe, PipeDefinition, PipeSearchParams } from '../../../models/pipe.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectLoadingPipe, selectPipe, selectPipeDefinitionsList } from '../../store/pipe/pipe.selectors';
-import { actionGetPipe, actionGetPipeById } from '../../store/pipe/pipe.actions';
-import { Rack } from '../../models/rack.model';
-import { selectRacks } from '../../store/rack/rack.selectors';
+import { selectLoadingPipe, selectPipe, selectPipeDefinitionsList } from '../../../store/pipe/pipe.selectors';
+import { actionGetPipe, actionGetPipeById } from '../../../store/pipe/pipe.actions';
+import { Rack } from '../../../models/rack.model';
+import { selectRacks } from '../../../store/rack/rack.selectors';
 
 
 @Component({

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationHubComponent } from './notification-hub/notification-hub.component';
-import { SearchPipeComponent } from './search-pipe/search-pipe.component';
 import { MaterialModule } from './material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PipeViewComponent } from './pipe-view/pipe-view.component';
@@ -14,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     NotificationHubComponent,
-    SearchPipeComponent,
     PipeViewComponent
   ],
   imports: [
@@ -27,14 +25,14 @@ import { FormsModule } from '@angular/forms';
     FormsModule
     ],
   exports: [
-    NotificationHubComponent,
-    SearchPipeComponent,
     ReactiveFormsModule,
     MatSortModule,
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
+    NotificationHubComponent,
+    PipeViewComponent
 
   ]
 })
