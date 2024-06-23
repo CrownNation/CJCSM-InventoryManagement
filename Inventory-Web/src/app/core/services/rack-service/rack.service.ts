@@ -52,27 +52,24 @@ export class RackService {
       return '';
     }
 
-    const conditions: string[] = [];
+    const odataParams: string[] = [];
 
     // Use the `contains` function for substring search on rackName
     if (searchParams.name) {
-        conditions.push(`contains(name, '${encodeURIComponent(searchParams.name)}')`);
+        odataParams.push(`contains(name, '${encodeURIComponent(searchParams.name)}')`);
     }
 
     // Use the `eq` operator for exact matching on rackType
     if (searchParams.rackType) {
-        conditions.push(`rackType eq '${encodeURIComponent(searchParams.rackType)}'`);
+        odataParams.push(`rackType eq '${encodeURIComponent(searchParams.rackType)}'`);
     }
 
     // Use the `eq` operator for exact matching on shop location id
     if (searchParams.shopId) {
-        conditions.push(`ShopLocationId eq ${encodeURIComponent(searchParams.shopId)}`);
+        odataParams.push(`ShopLocationId eq ${encodeURIComponent(searchParams.shopId)}`);
     }
 
-    const odataQueryString = conditions.length > 0 ? `?$filter=${conditions.join(' and ')}` : '';
-
-    // Log the constructed OData query string for debugging
-    console.log("generateOdataParams: Constructed OData query string:", odataQueryString);
+    const odataQueryString = odataParams.length > 0 ? `?$filter=${odataParams.join(' and ')}` : '';
 
     return odataQueryString;}
 

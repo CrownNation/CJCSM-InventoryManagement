@@ -8,21 +8,17 @@
                     <mat-panel-title>Filter options</mat-panel-title>
                 </mat-expansion-panel-header>
 
-                <form [formGroup]="customerForm" >
+                <form [formGroup]="customerForm" (ngSubmit)="onFormSubmit($event)">
                     <div class="container-filter">
 
-                        <mat-form-field appearance="outline" color="accent" >
-                            <mat-label>Customer</mat-label>
-                            <mat-select formControlName="customer">
-                                <mat-option *ngFor="let customer of customersFullList" [value]="customer.customerId">
-                                    {{customer.name}}
-                                </mat-option>
-                            </mat-select>
+                        <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Customer Name</mat-label>
+                            <input matInput formControlName="customerName" placeholder="Enter customer name" >
                         </mat-form-field>
 
                         <div class="item-buttons">
-                            <button mat-raised-button (click)="clearForm()">Clear filters</button>
-                            <button mat-raised-button color="primary" (click)="filter()">Filter</button>
+                            <button mat-raised-button type="button" (click)="clearForm()">Clear filters</button>
+                            <button mat-raised-button color="primary" type="submit">Filter</button>
                         </div>
 
                     </div>

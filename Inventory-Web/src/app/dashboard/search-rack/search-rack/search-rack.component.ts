@@ -14,6 +14,7 @@ import { actionGetRackById, actionGetRacks } from '../../../store/rack/rack.acti
 import { selectAllShopLocations } from 'src/app/store/shop-location/shop-location.selectors';
 import { actionGetShopLocations } from 'src/app/store/shop-location/shop-location.actions';
 import { LocalStorageService } from 'src/app/core/local-storage/local-storage.service';
+import { clearNotifications } from 'src/app/store/notification-hub/notification-hub.actions';
 
 @Component({
   selector: 'app-search-rack',
@@ -53,11 +54,12 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   ngOnInit(): void {
-
     this.buildForm();
     this.loadingRacks = true;
 
     this.store.dispatch(actionGetShopLocations({ searchParams: null }));
+
+    this.store.dispatch(clearNotifications());
 
     this.store.select(selectAllShopLocations).pipe(
       takeUntil(this.destroy$)
@@ -65,7 +67,6 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
       this.shopsFullList = shopLocations;
       this.rackForm.get('shop')!.setValue("all");
     });
-
 
     this.setSearchParams();
 
@@ -153,11 +154,14 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
+  onFormSubmit(event: Event) {
+    event.preventDefault(); // Prevent the form from submitting which causes the page to reload
+    this.filter();
+  }
+  
   filter() {
     this.setSearchParams();
     this.loadingRacks = true;
-    console.log("*****************************************");
-    console.log("Filtered Search Params: " + JSON.stringify(this.searchParams, null, 2));
 
     this.store.dispatch(actionGetRacks({ searchParams: this.searchParams }));
   }

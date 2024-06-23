@@ -48,8 +48,6 @@ const routes: Routes = [
         path: 'weight',
         loadChildren: () => import('./pipe-property-weight/pipe-property-weight.module').then(m => m.PipePropertyWeightModule)
       },
-
-
     ]
   }
 ];

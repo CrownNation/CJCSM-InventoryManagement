@@ -13,6 +13,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectLoadingTallies, selectTallies, selectTalliesEntities } from '../../store/tally/tally.selectors';
 import { Dictionary } from '@ngrx/entity';
 import { selectCustomersFullList } from '../../store/customer/customer.selectors';
+import { clearNotifications } from 'src/app/store/notification-hub/notification-hub.actions';
 
 @Component({
   selector: 'app-search-tally',
@@ -68,6 +69,7 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setDefaultDateCriteria();
     this.store.dispatch(actionGetTallies({searchParams: this.searchParams}));
 
+    this.store.dispatch(clearNotifications());
 
     this.tallies$.pipe(takeUntil(this.destroy$)).subscribe((tallies) => {
       if (tallies) {

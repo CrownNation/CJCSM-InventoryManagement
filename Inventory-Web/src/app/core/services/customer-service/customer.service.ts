@@ -35,13 +35,22 @@ export class CustomerService {
       return '';
     }
 
-    let odataParams = '';
 
-    if (searchParams.customerId) {
-      odataParams += (odataParams ? ' and ' : '') + `customerId eq ${searchParams.customerId}`;
+    const odataParams: string[] = [];
+
+    if (searchParams.customerName) {
+      console.log("name: " + searchParams.customerName);
+
+      odataParams.push(`contains(name, '${encodeURIComponent(searchParams.customerName)}')`);
+    }else{
+      console.log("NO NAME");
     }
 
-    return odataParams ? '?$filter=' + odataParams : '';
+    const odataQueryString = odataParams.length > 0 ? `?$filter=${odataParams.join(' and ')}` : '';
+    console.log("FILTER: " + odataQueryString);
+
+    return odataQueryString;
+
   }
 
 

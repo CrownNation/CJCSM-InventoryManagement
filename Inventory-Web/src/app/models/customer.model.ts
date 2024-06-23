@@ -43,5 +43,5 @@ export interface CustomerWithPipe {
 
 
 export interface CustomerSearchParams {
-    customerId: string | null;
+    customerName: string | null;
 }

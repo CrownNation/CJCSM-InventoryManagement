@@ -11,6 +11,7 @@ import { selectLoadingPipe, selectPipe, selectPipeDefinitionsList } from '../../
 import { actionGetPipe, actionGetPipeById } from '../../../store/pipe/pipe.actions';
 import { Rack } from '../../../models/rack.model';
 import { selectRacks } from '../../../store/rack/rack.selectors';
+import { clearNotifications } from 'src/app/store/notification-hub/notification-hub.actions';
 
 
 @Component({
@@ -59,7 +60,6 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
   pipeDefinitionsList$: Observable<PipeDefinition[] | null> = this.store.select(selectPipeDefinitionsList);
   racks$: Observable<Rack[]> = this.store.select(selectRacks);
 
-
   constructor(
     private store: Store<AppState>)
   {  }
@@ -71,6 +71,7 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadingPipe = true;
     this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));
 
+    this.store.dispatch(clearNotifications());
 
     this.pipe$.pipe(takeUntil(this.destroy$)).subscribe((pipe) => {
       if (pipe) {

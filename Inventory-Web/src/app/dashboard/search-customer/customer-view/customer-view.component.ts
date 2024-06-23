@@ -1,12 +1,12 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Customer, CustomerWithPipe } from '../../models/customer.model';
-import { Pipe } from '../../models/pipe.model';
+import { Customer, CustomerWithPipe } from '../../../models/customer.model';
+import { Pipe } from '../../../models/pipe.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { selectSelectedCustomer } from '../../store/customer/customer.selectors';
-import { AppState } from '../../store/core.state';
+import { selectSelectedCustomer } from '../../../store/customer/customer.selectors';
+import { AppState } from '../../../store/core.state';
 import { Store } from '@ngrx/store';
 
 @Component({

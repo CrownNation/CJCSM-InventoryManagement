@@ -3,12 +3,13 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Customer, CustomerSearchParams } from '../../models/customer.model';
-import { actionGetCustomerById, actionGetCustomers } from '../../store/customer/customer.actions';
+import { Customer, CustomerSearchParams } from '../../../models/customer.model';
+import { actionGetCustomerById, actionGetCustomers } from '../../../store/customer/customer.actions';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectCustomers, selectLoadingCustomers, selectCustomersFullList } from '../../store/customer/customer.selectors';
+import { selectCustomers, selectLoadingCustomers, selectCustomersFullList } from '../../../store/customer/customer.selectors';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/core.state';
+import { AppState } from '../../../store/core.state';
+import { clearNotifications } from 'src/app/store/notification-hub/notification-hub.actions';
 
 @Component({
   selector: 'app-search-customer',
@@ -34,7 +35,7 @@ export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy
 
   customersFullList: Customer[] = [];
   searchParams: CustomerSearchParams | null = {
-    customerId: null
+    customerName: null
   };
 
   private destroy$ = new Subject<void>();
@@ -54,16 +55,17 @@ export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy
 
     this.buildForm();
     this.loadingCustomers = true;
-    this.store.dispatch(actionGetCustomers({searchParams: this.searchParams}));
+    this.store.dispatch(actionGetCustomers({ searchParams: this.searchParams }));
 
+    this.store.dispatch(clearNotifications());
 
     this.customers$.pipe(takeUntil(this.destroy$)).subscribe((customers) => {
       if (customers) {
         this.dataSource = new MatTableDataSource(customers as Customer[]);
         this.loadingCustomers = false;
 
-        if(customers.length > 0)
-          this.store.dispatch(actionGetCustomerById({customerId: customers[0].customerId}));
+        if (customers.length > 0)
+          this.store.dispatch(actionGetCustomerById({ customerId: customers[0].customerId }));
       }
     });
 
@@ -82,7 +84,7 @@ export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy
   buildForm() {
 
     this.customerForm = new FormGroup({
-      customer: new FormControl('', [])
+      customerName: new FormControl('', [])
     });
   }
 
@@ -100,30 +102,47 @@ export class SearchCustomerComponent implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  filter()  {
-    this.searchParams = {
-      customerId: this.customerForm.value.customer
-    };
+  filter() {
+    this.setSearchParams();
     this.loadingCustomers = true;
-    this.store.dispatch(actionGetCustomers({searchParams: this.searchParams}));
+    this.store.dispatch(actionGetCustomers({ searchParams: this.searchParams }));
+  }
+
+
+  setSearchParams(): void {
+    const formValue = this.customerForm.value;
+    let params: any = {};
+
+    if (formValue.customerName != "") {
+      params.customerName = formValue.customerName;
+    }
+
+    if (Object.keys(params).length > 0) {
+      this.searchParams = params as CustomerSearchParams;
+    } else {
+      this.searchParams = null;
+    }
   }
 
   clearForm() {
     this.customerForm.reset();
     this.searchParams = {
-      customerId: null
+      customerName: null
     };
-    this.store.dispatch(actionGetCustomers({searchParams: this.searchParams}));
+    this.store.dispatch(actionGetCustomers({ searchParams: this.searchParams }));
+  }
+
+  onFormSubmit(event: Event) {
+    event.preventDefault(); // Prevent the form from submitting which causes the page to reload
+    this.filter();
   }
 
   viewCustomer(customer: Customer) {
-    this.store.dispatch(actionGetCustomerById({customerId: customer.customerId}));
+    this.store.dispatch(actionGetCustomerById({ customerId: customer.customerId }));
   }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-
 }
