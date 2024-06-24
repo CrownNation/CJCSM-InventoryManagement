@@ -128,6 +128,7 @@ builder.Services.AddScoped<IPipeProperty_SizeBL, PipeProperty_SizeBL>();
 builder.Services.AddScoped<IPipeProperty_ThreadBL, PipeProperty_ThreadBL>();
 builder.Services.AddScoped<IPipeProperty_WallBL, PipeProperty_WallBL>();
 builder.Services.AddScoped<IPipeProperty_WeightBL, PipeProperty_WeightBL>();
+builder.Services.AddScoped<IPipePropertiesBL, PipePropertiesBL>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // This method adds metadata about your API's endpoints to the ASP.NET Core application. It doesn't directly generate human-readable

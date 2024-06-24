@@ -31,6 +31,7 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     'tier',
     'category',
     'condition',
+    'grade',
     'actions'
   ];
   dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>
