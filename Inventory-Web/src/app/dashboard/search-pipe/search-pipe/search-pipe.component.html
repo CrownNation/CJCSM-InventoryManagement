@@ -15,52 +15,25 @@
                                 [matAutocomplete]="autoCategory">
                             <mat-autocomplete #autoCategory="matAutocomplete">
                                 <mat-option *ngFor="let category of (filteredCategories$ | async)"
-                                    [value]="category.name">
+                                    [value]="category.pipeProperty_CategoryId">
                                     {{ category.name }}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
 
-                        <!-- <mat-form-field appearance="outline" color="accent">
-                            <mat-label>Category</mat-label>
-                            <mat-select formControlName="category">
-                                <mat-option *ngFor="let category of (categories$ | async)"
-                                    [value]="category.pipeProperty_CategoryId">
-                                    {{ category.name }}
-                                </mat-option>
-                            </mat-select> </mat-form-field> -->
-                        <!-- 
-                        <mat-form-field appearance="outline" color="accent">
-                            <mat-label>Condition</mat-label>
-                            <mat-select formControlName="condition">
-                                <mat-option *ngFor="let condition of (conditions$ | async)"
-                                    [value]="condition.pipeProperty_ConditionId">
-                                    {{ condition.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
+
                         <mat-form-field appearance="outline" floatLabel="always">
                             <mat-label>Condition</mat-label>
                             <input type="text" placeholder="Select condition" matInput [formControl]="conditionControl"
                                 [matAutocomplete]="autoCondition">
                             <mat-autocomplete #autoCondition="matAutocomplete">
                                 <mat-option *ngFor="let condition of (filteredConditions$ | async)"
-                                    [value]="condition.name">
+                                    [value]="condition.pipeProperty_ConditionId">
                                     {{ condition.name }}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
 
-
-                        <!-- <mat-form-field appearance="outline" color="accent">
-                            <mat-label>Length (meters)</mat-label>
-                            <input matInput type="number" placeholder="Length (meters)" formControlName="lengthInMeters">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" color="accent">
-                            <mat-label>Length (feet)</mat-label>
-                            <input matInput type="number" placeholder="Length (feet)" formControlName="lengthInFeet">
-                        </mat-form-field> -->
 
                         <div class="item-buttons">
                             <button mat-raised-button (click)="clearForm()">Clear filters</button>
@@ -83,10 +56,7 @@
                 <td mat-cell *matCellDef="let row"> {{row.lengthInMeters}} </td>
             </ng-container>
 
-            <!-- <ng-container matColumnDef="lengthInFeet">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Length (feet)</th>
-                <td mat-cell *matCellDef="let row"> {{row.lengthInFeet}} </td>
-            </ng-container> -->
+
 
             <ng-container matColumnDef="rack">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Rack</th>

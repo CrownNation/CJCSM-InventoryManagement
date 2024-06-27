@@ -58,35 +58,15 @@ getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
     console.log()
     let odataParams = '';
 
-    if (searchParams.pipeId) {
-      odataParams += (odataParams ? ' and ' : '') + `customerId eq ${searchParams.pipeId}`;
-    }
-
-    if (searchParams.pipeDefinitionId) {
-      odataParams += (odataParams ? ' and ' : '') + `pipeDefinitionId eq ${searchParams.pipeDefinitionId}`;
-    }
-
-    if (searchParams.lengthInMeters) {
-      odataParams += (odataParams ? ' and ' : '') + `lengthInMeters eq ${searchParams.lengthInMeters}`;
-    }
-
-    if (searchParams.lengthInFeet) {
-      odataParams += (odataParams ? ' and ' : '') + `lengthInFeet eq ${searchParams.lengthInFeet}`;
-    }
-
     if (searchParams.categoryId) {
       odataParams += (odataParams ? ' and ' : '') + `pipeDefinition/categoryId eq ${searchParams.categoryId}`;
     }
-
     if (searchParams.conditionId) {
       odataParams += (odataParams ? ' and ' : '') + `pipeDefinition/conditionId eq ${searchParams.conditionId}`;
     }
 
-    if (searchParams.rackId) {
-      odataParams += (odataParams ? ' and ' : '') + `rackId eq ${searchParams.rackId}`;
-    }
 
-    console.log(odataParams);
+    console.log("params for pipe ssearch: " +odataParams);
 
     return odataParams ? '?$filter=' + odataParams : '';
   }

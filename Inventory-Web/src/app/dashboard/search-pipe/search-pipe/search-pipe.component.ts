@@ -45,13 +45,8 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
   pipeDefinitionList: PipeDefinition[] = [];
   racks: Rack[] = [];
   searchParams: PipeSearchParams | null = {
-    pipeId: null,
-    pipeDefinitionId: null,
-    lengthInMeters: null,
-    lengthInFeet: null,
     categoryId: null,
     conditionId: null,
-    rackId: null
   };
 
   // Subject to manage the unsubscription of observables on component destruction to prevent memory leaks.
@@ -87,7 +82,7 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     // Initializes observables for categories and conditions by selecting them from the store.
     this.categories$ = this.store.select(selectCategories);
     this.conditions$ = this.store.select(selectConditions);
-  
+
     // Sets up an observable for filtered properties, which reacts to changes in the categoryControl input field.
     // It starts with an empty string and filters properties based on user input.
     this.filteredCategories$ = this.categoryControl.valueChanges
@@ -96,14 +91,14 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
         map(value => this.filterCategories(value))
       );
 
-      this.filteredConditions$ = this.conditionControl.valueChanges
+    this.filteredConditions$ = this.conditionControl.valueChanges
       .pipe(
         startWith(''),
         map(value => this.filterConditions(value))
       );
 
   }
-  
+
   // Filters properties based on the user input. It converts both the input and property names to lowercase
   // and checks if the property name includes the input string, effectively performing a case-insensitive search.
   private filterCategories(value: string): PipeProperty_Category[] {
@@ -160,6 +155,7 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('Conditions loaded:', conditions);
     });
 
+
   }
 
   setupFilter(): void {
@@ -177,8 +173,8 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
   buildForm() {
 
     this.pipeForm = new FormGroup({
-      category: new FormControl('', []),
-      condition: new FormControl('', []),
+      category: this.categoryControl,
+      condition: this.conditionControl,
     });
   }
 
@@ -198,29 +194,20 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   filter() {
     this.searchParams = {
-      pipeId: null,
-      pipeDefinitionId: this.pipeForm.value.pipeType,
-      lengthInMeters: null,
-      lengthInFeet: null,
       categoryId: this.pipeForm.value.category,
       conditionId: this.pipeForm.value.condition,
-      rackId: this.pipeForm.value.rack
-
     };
     this.loadingPipe = true;
+    console.log("Current searchParams:", this.searchParams); // Log the current search parameters
+
     this.store.dispatch(actionGetPipe({ searchParams: this.searchParams }));
   }
 
   clearForm() {
     this.pipeForm.reset();
     this.searchParams = {
-      pipeId: null,
-      pipeDefinitionId: null,
-      lengthInMeters: null,
-      lengthInFeet: null,
       categoryId: null,
       conditionId: null,
-      rackId: null
     };
 
     this.store.dispatch(actionGetPipe({ searchParams: this.searchParams }));

@@ -35,14 +35,10 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    //    this.pipeProperties$ = this.store.select(selectAllPipeProperties);
-
-
   }
 
   ngOnInit(): void {
     this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));
-    this.store.dispatch(actionGetPipeDefinitionsList({ searchParams: null }));
     this.store.dispatch(actionGetTallies({ searchParams: null }));
     this.store.dispatch(actionGetAllPipeProperties());
 
