@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ShopLocationService {
     
-  private baseUrl = environment.apiUrl + 'shoplocation';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -19,7 +19,7 @@ export class ShopLocationService {
   // }
 
   getShopLocations(params: any): Observable<ShopLocation[]> {
-    const url = `${this.baseUrl}/shop-locations`; // Assuming 'shop-locations' is the endpoint
+    const url = `${this.baseUrl}shopLocation`; // Assuming 'shop-locations' is the endpoint
     console.log('Requesting shop locations from URL:', url, 'with params:', params);
     return this.http.get<ShopLocation[]>(url, { params });
   }

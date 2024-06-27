@@ -23,6 +23,7 @@ import {
   } from './shop-location.actions';
 import { AppState } from "../core.state";
 import { LocalStorageService } from "src/app/core/local-storage/local-storage.service";
+import { LocalStorageCacheService } from "src/app/core/services/local-storage-cache/local-storage-cache.service";
 
 @Injectable()
 export class ShopLocationEffects {
@@ -31,7 +32,7 @@ export class ShopLocationEffects {
       private actions$: Actions,
       private shopLocationService: ShopLocationService,
       private store: Store<AppState>,
-      private localStorageService: LocalStorageService
+      private localStorageCacheService: LocalStorageCacheService
   ) {}
 
 
@@ -40,7 +41,7 @@ export class ShopLocationEffects {
     this.actions$.pipe(
       ofType(actionGetShopLocations),
       switchMap(() => {
-        const shopLocations = this.localStorageService.getItem('shopLocations');
+        const shopLocations = this.localStorageCacheService.getFromLocalStorage('shopLocations', 3600000);
         if (shopLocations) {
           console.log('Using cached shop locations');
           return of(actionGetShopLocationsSuccess({ shopLocations }));
@@ -49,7 +50,7 @@ export class ShopLocationEffects {
           return this.shopLocationService.getShopLocations(null).pipe(
             tap(shopLocations => {
               if (shopLocations && shopLocations.length) {
-                this.localStorageService.setItem('shopLocations', shopLocations);
+                this.localStorageCacheService.saveToLocalStorage('shopLocations', shopLocations);
                 console.log('Shop locations cached');
               }
             }),

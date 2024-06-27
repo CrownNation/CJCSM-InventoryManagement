@@ -1,8 +1,7 @@
 <div class="container-tab">
 
-    <mat-card class="section-search">
+    <mat-card class="section-search" >
         <mat-accordion>
-
             <mat-expansion-panel expanded="true" class="filter-options">
                 <mat-expansion-panel-header>
                     <mat-panel-title>Filter options</mat-panel-title>
@@ -10,35 +9,48 @@
 
                 <form [formGroup]="pipeForm">
                     <div class="container-filter">
-
-                        <mat-form-field appearance="outline" color="accent">
+                        <mat-form-field appearance="outline" floatLabel="always">
                             <mat-label>Category</mat-label>
-                            <mat-select formControlName="category">
-                                <mat-option *ngFor="let pipeDefinition of pipeDefinitionList"
-                                    [value]="pipeDefinition.category?.pipeProperty_CategoryId">
-                                    {{pipeDefinition.category?.name}}
+                            <input type="text" placeholder="Select category" matInput [formControl]="categoryControl"
+                                [matAutocomplete]="autoCategory">
+                            <mat-autocomplete #autoCategory="matAutocomplete">
+                                <mat-option *ngFor="let category of (filteredCategories$ | async)"
+                                    [value]="category.name">
+                                    {{ category.name }}
                                 </mat-option>
-                            </mat-select>
+                            </mat-autocomplete>
                         </mat-form-field>
 
+                        <!-- <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Category</mat-label>
+                            <mat-select formControlName="category">
+                                <mat-option *ngFor="let category of (categories$ | async)"
+                                    [value]="category.pipeProperty_CategoryId">
+                                    {{ category.name }}
+                                </mat-option>
+                            </mat-select> </mat-form-field> -->
+                        <!-- 
                         <mat-form-field appearance="outline" color="accent">
                             <mat-label>Condition</mat-label>
                             <mat-select formControlName="condition">
-                                <mat-option *ngFor="let pipeDefinition of pipeDefinitionList"
-                                    [value]="pipeDefinition.condition?.pipeProperty_ConditionId">
-                                    {{pipeDefinition.condition?.name}}
+                                <mat-option *ngFor="let condition of (conditions$ | async)"
+                                    [value]="condition.pipeProperty_ConditionId">
+                                    {{ condition.name }}
                                 </mat-option>
                             </mat-select>
+                        </mat-form-field> -->
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Condition</mat-label>
+                            <input type="text" placeholder="Select condition" matInput [formControl]="conditionControl"
+                                [matAutocomplete]="autoCondition">
+                            <mat-autocomplete #autoCondition="matAutocomplete">
+                                <mat-option *ngFor="let condition of (filteredConditions$ | async)"
+                                    [value]="condition.name">
+                                    {{ condition.name }}
+                                </mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" color="accent">
-                            <mat-label>Rack</mat-label>
-                            <mat-select formControlName="rack">
-                                <mat-option *ngFor="let rack of racks" [value]="rack.rackId">
-                                    {{rack.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
 
                         <!-- <mat-form-field appearance="outline" color="accent">
                             <mat-label>Length (meters)</mat-label>
@@ -62,7 +74,6 @@
         </mat-accordion>
 
         <table mat-table [dataSource]="dataSource" matSort>
-
             <ng-container matColumnDef="quantity">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Qty</th>
                 <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
@@ -129,5 +140,4 @@
     </mat-card>
 
     <app-pipe-view class="section-view"></app-pipe-view>
-
 </div>

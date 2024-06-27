@@ -2,17 +2,17 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { AppState } from '../../../store/core.state';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Pipe, PipeDefinition, PipeSearchParams } from '../../../models/pipe.model';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Pipe, PipeDefinition, PipeProperty_Category, PipeProperty_Condition, PipeSearchParams } from '../../../models/pipe.model';
+import { Observable, Subject, map, startWith, takeUntil } from 'rxjs';
 import { selectLoadingPipe, selectPipe, selectPipeDefinitionsList } from '../../../store/pipe/pipe.selectors';
 import { actionGetPipe, actionGetPipeById } from '../../../store/pipe/pipe.actions';
 import { Rack } from '../../../models/rack.model';
 import { selectRacks } from '../../../store/rack/rack.selectors';
 import { clearNotifications } from 'src/app/store/notification-hub/notification-hub.actions';
-
+import { selectCategories, selectConditions } from 'src/app/store/pipe-properties/pipe-properties/pipe-properties.selectors';
 
 @Component({
   selector: 'app-search-pipe',
@@ -21,8 +21,8 @@ import { clearNotifications } from 'src/app/store/notification-hub/notification-
 })
 export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // Pipe Summary headings: Qty, Length in Meters, Rack #, Tier Number, Category
-  // Search criteria = Category, Rack, Condition
+  categoryControl = new FormControl();
+  conditionControl = new FormControl();
 
   displayedColumns: string[] = [
     'quantity',
@@ -34,6 +34,7 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     'grade',
     'actions'
   ];
+
   dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -53,24 +54,77 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     rackId: null
   };
 
+  // Subject to manage the unsubscription of observables on component destruction to prevent memory leaks.
   private destroy$ = new Subject<void>();
-  pipe$: Observable<Pipe[]> = this.store.select(selectPipe);
-  loadingPipe: Boolean = false;
-  loading$: Observable<Boolean> = this.store.select((selectLoadingPipe));
 
-  pipeDefinitionsList$: Observable<PipeDefinition[] | null> = this.store.select(selectPipeDefinitionsList);
-  racks$: Observable<Rack[]> = this.store.select(selectRacks);
+  // Observable stream for retrieving pipe data from the store, used for displaying pipe information in the UI.
+  pipe$: Observable<Pipe[]> = this.store.select(selectPipe);
+
+  // Boolean flag to track the loading state of pipe data to manage UI elements like loaders.
+  loadingPipe: Boolean = false;
+
+  // Observable stream for monitoring the loading state of pipe data, which helps in showing or hiding loading indicators.
+  loading$: Observable<Boolean> = this.store.select(selectLoadingPipe);
+
+  //-- Drop Down List Properties --//
+  // Observable streams of filtered categories and conditions for UI binding, used for dropdown filtering.
+  filteredCategories$: Observable<PipeProperty_Category[]>;
+  filteredConditions$: Observable<PipeProperty_Condition[]>;
+
+  // Local arrays to hold the full list of categories and conditions retrieved from the store or backend.
+  categories: PipeProperty_Category[] = [];
+  conditions: PipeProperty_Condition[] = [];
+
+  // Observable streams from the store for categories and conditions, 
+  // allowing the component to reactively update when store data changes.
+  categories$: Observable<PipeProperty_Category[]>;
+  conditions$: Observable<PipeProperty_Condition[]>;
+
+
 
   constructor(
-    private store: Store<AppState>)
-  {  }
+    private store: Store<AppState>) {
+    // Initializes observables for categories and conditions by selecting them from the store.
+    this.categories$ = this.store.select(selectCategories);
+    this.conditions$ = this.store.select(selectConditions);
+  
+    // Sets up an observable for filtered properties, which reacts to changes in the categoryControl input field.
+    // It starts with an empty string and filters properties based on user input.
+    this.filteredCategories$ = this.categoryControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.filterCategories(value))
+      );
 
+      this.filteredConditions$ = this.conditionControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.filterConditions(value))
+      );
+
+  }
+  
+  // Filters properties based on the user input. It converts both the input and property names to lowercase
+  // and checks if the property name includes the input string, effectively performing a case-insensitive search.
+  private filterCategories(value: string): PipeProperty_Category[] {
+    const filterValue = value.toLowerCase();
+    return this.categories.filter(category =>
+      category.name.toLowerCase().includes(filterValue)
+    );
+  }
+
+  private filterConditions(value: string): PipeProperty_Condition[] {
+    const filterValue = value.toLowerCase();
+    return this.conditions.filter(condition =>
+      condition.name.toLowerCase().includes(filterValue)
+    );
+  }
 
   ngOnInit(): void {
 
     this.buildForm();
     this.loadingPipe = true;
-    this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));
+    this.store.dispatch(actionGetPipe({ searchParams: this.searchParams }));
 
     this.store.dispatch(clearNotifications());
 
@@ -79,15 +133,8 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataSource = new MatTableDataSource(pipe as Pipe[]);
         this.loadingPipe = false;
 
-        if(pipe.length > 0)
-          this.store.dispatch(actionGetPipeById({pipeId: pipe[0].pipeId}));
-        }
-    });
-
-    this.pipeDefinitionsList$.pipe(takeUntil(this.destroy$)).subscribe((pipDefinitions) => {
-      if (pipDefinitions) {
-        console.log(pipDefinitions);
-        this.pipeDefinitionList = pipDefinitions;
+        if (pipe.length > 0)
+          this.store.dispatch(actionGetPipeById({ pipeId: pipe[0].pipeId }));
       }
     });
 
@@ -95,12 +142,36 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadingPipe = loading;
     });
 
-    this.racks$.pipe(takeUntil(this.destroy$)).subscribe((racks) => {
-      if (racks) {
-        this.racks = racks;
-      }
+    this.store.pipe(select(selectCategories)).subscribe(categories => {
+      this.categories = categories;
+      this.setupFilter();
     });
 
+    this.store.pipe(select(selectConditions)).subscribe(conditions => {
+      this.conditions = conditions;
+      this.setupFilter();
+    });
+
+    // Subscribe to categories and conditions
+    this.categories$.pipe(takeUntil(this.destroy$)).subscribe(categories => {
+      console.log('Categories loaded:', categories);
+    });
+    this.conditions$.pipe(takeUntil(this.destroy$)).subscribe(conditions => {
+      console.log('Conditions loaded:', conditions);
+    });
+
+  }
+
+  setupFilter(): void {
+    this.filteredCategories$ = this.categoryControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filterCategories(value))
+    );
+
+    this.filteredConditions$ = this.conditionControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filterConditions(value))
+    );
   }
 
   buildForm() {
@@ -108,7 +179,6 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pipeForm = new FormGroup({
       category: new FormControl('', []),
       condition: new FormControl('', []),
-      rack: new FormControl('', [])
     });
   }
 
@@ -126,7 +196,7 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  filter()  {
+  filter() {
     this.searchParams = {
       pipeId: null,
       pipeDefinitionId: this.pipeForm.value.pipeType,
@@ -138,7 +208,7 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     };
     this.loadingPipe = true;
-    this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));
+    this.store.dispatch(actionGetPipe({ searchParams: this.searchParams }));
   }
 
   clearForm() {
@@ -153,11 +223,11 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
       rackId: null
     };
 
-    this.store.dispatch(actionGetPipe({searchParams: this.searchParams}));
+    this.store.dispatch(actionGetPipe({ searchParams: this.searchParams }));
   }
 
   viewCustomer(pipe: Pipe) {
-    this.store.dispatch(actionGetPipeById({pipeId: pipe.pipeId}));
+    this.store.dispatch(actionGetPipeById({ pipeId: pipe.pipeId }));
   }
 
   ngOnDestroy() {

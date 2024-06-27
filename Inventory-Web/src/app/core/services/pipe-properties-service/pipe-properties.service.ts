@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { PipeProperty_Category, PipeProperty_CategoryCreate, PipeProperty_CategorySearchParams, PipeProperty_Coating, PipeProperty_CoatingCreate, PipeProperty_CoatingSearchParams, PipeProperty_Condition, PipeProperty_ConditionCreate, PipeProperty_ConditionSearchParams, PipeProperty_Grade, PipeProperty_GradeCreate, PipeProperty_GradeSearchParams, PipeProperty_Range, PipeProperty_RangeCreate, PipeProperty_RangeSearchParams, PipeProperty_Size, PipeProperty_SizeCreate, PipeProperty_SizeSearchParams, PipeProperty_SizeUpdate, PipeProperty_Thread, PipeProperty_ThreadCreate, PipeProperty_ThreadSearchParams, PipeProperty_ThreadUpdate, PipeProperty_Wall, PipeProperty_WallCreate, PipeProperty_WallSearchParams, PipeProperty_WallUpdate, PipeProperty_Weight, PipeProperty_WeightCreate, PipeProperty_WeightSearchParams, PipeProperty_WeightUpdate } from 'src/app/models/pipe.model';
+import { PipeProperties, PipeProperty_Category, PipeProperty_CategoryCreate, PipeProperty_CategorySearchParams, PipeProperty_Coating, PipeProperty_CoatingCreate, PipeProperty_CoatingSearchParams, PipeProperty_Condition, PipeProperty_ConditionCreate, PipeProperty_ConditionSearchParams, PipeProperty_Grade, PipeProperty_GradeCreate, PipeProperty_GradeSearchParams, PipeProperty_Range, PipeProperty_RangeCreate, PipeProperty_RangeSearchParams, PipeProperty_Size, PipeProperty_SizeCreate, PipeProperty_SizeSearchParams, PipeProperty_SizeUpdate, PipeProperty_Thread, PipeProperty_ThreadCreate, PipeProperty_ThreadSearchParams, PipeProperty_ThreadUpdate, PipeProperty_Wall, PipeProperty_WallCreate, PipeProperty_WallSearchParams, PipeProperty_WallUpdate, PipeProperty_Weight, PipeProperty_WeightCreate, PipeProperty_WeightSearchParams, PipeProperty_WeightUpdate } from 'src/app/models/pipe.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -10,6 +10,11 @@ export class PipePropertiesService {
 
   private baseUrl = environment.apiUrl;
   constructor(private readonly http: HttpClient) { }
+
+  // -- Pipe Properties General
+  getAllPipeProperties(): Observable<PipeProperties> {
+    return this.http.get<PipeProperties>(`${this.baseUrl}PipeProperties`);
+  }
 
 
   // --- Category ---
@@ -112,7 +117,7 @@ export class PipePropertiesService {
     return this.http.put<void>(`${this.baseUrl}PipeProperty_Weight/${id}`, weight);
   }
 
-    
+
   // --- Generic Getter ---
   getProperties<T>(propertyType: string, searchParams: any | null): Observable<T[]> {
     return this.http.get<T[]>(`${this.baseUrl}/${propertyType}`, { params: searchParams });
@@ -132,7 +137,7 @@ export class PipePropertiesService {
   createProperty<T>(propertyType: string, property: T): Observable<T> {
     return this.http.post<T>(`${this.baseUrl}/${propertyType}`, property);
   }
-  updateProperty<T>(propertyType: string, id: string , property: T): Observable<T> {
+  updateProperty<T>(propertyType: string, id: string, property: T): Observable<T> {
     return this.http.put<T>(`${this.baseUrl}/${propertyType}/${id}`, property);
   }
 

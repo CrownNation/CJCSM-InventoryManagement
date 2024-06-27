@@ -36,6 +36,19 @@ export interface PipeDefinition {
     weight: PipeProperty_Weight | null;
 }
 
+// -- Pipe Properties --
+export interface PipeProperties {
+    categories: PipeProperty_Category[];
+    coatings: PipeProperty_Coating[];
+    conditions: PipeProperty_Condition[];
+    grades: PipeProperty_Grade[];
+    ranges: PipeProperty_Range[];
+    sizes: PipeProperty_Size[];
+    threads: PipeProperty_Thread[];
+    walls: PipeProperty_Wall[];
+    weights: PipeProperty_Weight[];
+}
+
 export interface PipeProperty_Category {
     pipeProperty_CategoryId: string;
     name: string;

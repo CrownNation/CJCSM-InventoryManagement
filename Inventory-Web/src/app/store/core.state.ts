@@ -21,6 +21,9 @@ import { pipeProperty_CategoryReducers } from './pipe-properties/pipe-property-c
 import { NotificationState, notificationHubReducer } from './notification-hub/notification-hub.reducers';
 import { ShopLocationState } from './shop-location/shop-location.state';
 import { shopLocationReducers } from './shop-location/shop-location.reducers';
+import { PipeProperties } from '../models/pipe.model';
+import { PipePropertiesState } from './pipe-properties/pipe-properties/pipe-properties.state';
+import { pipePropertiesReducers } from './pipe-properties/pipe-properties/pipe-properties.reducers';
 
 
   export const reducers: ActionReducerMap<AppState> = {
@@ -33,7 +36,7 @@ import { shopLocationReducers } from './shop-location/shop-location.reducers';
     pipe: pipeReducers,
     notification: notificationHubReducer,
     shopLocation: shopLocationReducers,
-    pipeProperty_Category: pipeProperty_CategoryReducers
+    pipeProperties: pipePropertiesReducers
   };
 
   export const metaReducers: MetaReducer<AppState>[] = [
@@ -74,5 +77,5 @@ createFeatureSelector<PipeProperty_CategoryState>('pipeProperty_Category');
     pipe: PipeState,
     notification: NotificationState,
     shopLocation: ShopLocationState,
-    pipeProperty_Category: PipeProperty_CategoryState
+    pipeProperties: PipePropertiesState
   }

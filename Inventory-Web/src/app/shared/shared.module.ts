@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
+    MatAutocompleteModule,
     ],
   exports: [
     ReactiveFormsModule,
@@ -32,8 +34,8 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     FormsModule,
     NotificationHubComponent,
-    PipeViewComponent
-
+    PipeViewComponent,
+    MatAutocompleteModule
   ]
 })
 export class SharedModule { }

@@ -27,6 +27,7 @@ import { RackEffects } from './store/rack/rack.effects';
 import { PipeEffects } from './store/pipe/pipe.effects';
 import { TallyEffects } from './store/tally/tally.effects';
 import { CustomerEffects } from './store/customer/customer.effects';
+import { PipePropertiesEffects } from './store/pipe-properties/pipe-properties/pipe-properties.effects';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { CustomerEffects } from './store/customer/customer.effects';
       TallyEffects,
       CustomerEffects,
       ShopLocationEffects,
-      RackEffects
+      RackEffects,
+      PipePropertiesEffects
     ]),    
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

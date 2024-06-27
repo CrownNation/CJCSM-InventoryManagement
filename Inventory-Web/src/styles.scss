@@ -36,14 +36,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 0 0 20px 0;
 }
 
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
 .container-tab {
   display: flex;
   align-items: center;
@@ -52,6 +44,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   justify-content: space-between;
   gap: 15px;
 }
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
 
 .section-search {
   flex: 1 1 auto;

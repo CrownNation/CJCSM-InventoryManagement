@@ -6,7 +6,7 @@
     </mat-card-header>
 
     <mat-card-content>
-        <div class="container" *ngIf="rack">
+        <div  *ngIf="rack">
             <div class="container-row">
                 <div class="data-column-left">
                     <span>{{rack.shopLocationName}} </span>
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="container" *ngIf="rack">
+        <div *ngIf="rack">
             <h4>{{ rack.rackType === 'Pipe' ? 'Pipe' : 'Equipment' }}</h4>
             
             <ng-container *ngIf="rack.rackType === 'Pipe'">                
