@@ -22,6 +22,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { selectCreatedTally, selectCreatingTally, selectCreatingTallyError } from '../../store/tally/tally.selectors';
 import { NotificationService } from '../../core/notifications/notification.service';
 import { selectAllShopLocations } from 'src/app/store/shop-location/shop-location.selectors';
+import { MatDialog } from '@angular/material/dialog';
+import { PipeDefinitionSelectComponent } from 'src/app/shared/pipe-definition-select/pipe-definition-select.component';
 
 @Component({
   selector: 'app-tally-add',
@@ -32,13 +34,15 @@ export class TallyAddComponent {
 
   @ViewChild('lengthInMetersInput') lengthInMetersInput!: ElementRef;
 
-
   tallyAddForm!: FormGroup;
   pipeAddForm!: FormGroup;
 
   isInit: boolean = true;
   loading: Boolean = true;
   error: HttpErrorResponse | null = null;
+
+  // Used to set a flag for showing an error message when a pipe definition is not selected
+  showPipeDefinitionSelectedError: boolean = false;
 
   shops: ShopLocation[] = [];
   customers: Customer[] = [];
@@ -63,7 +67,6 @@ export class TallyAddComponent {
 
   racksWithTiers$: Observable<RackWithTier[] | null> = this.store.select(selectRacksWithTiers);
   customersFullList$: Observable<Customer[] | null> = this.store.select(selectCustomersFullList);
-  pipeDefinitionsList$: Observable<PipeDefinition[] | null> = this.store.select(selectPipeDefinitionsList);
   shopLocationList$: Observable<ShopLocation[] | null> = this.store.select(selectAllShopLocations);
 
   creatingTally$: Observable<Boolean> = this.store.select((selectCreatingTally));
@@ -73,14 +76,16 @@ export class TallyAddComponent {
   constructor(
     private store: Store<AppState>,
     private router: Router,
-    private notificationService: NotificationService)  {
+    private notificationService: NotificationService,
+    public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));
     this.store.dispatch(actionGetRacksWithTiers());
-    this.store.dispatch(actionGetPipeDefinitionsList({ searchParams: null }));
     this.store.dispatch(actionGetShopLocations());
+
+    this.store.dispatch(actionGetPipeDefinitionsList({ searchParams: null }));
 
     this.buildForm();
     this.dataSource = new MatTableDataSource(this.registeredPipes);
@@ -97,11 +102,6 @@ export class TallyAddComponent {
       }
     });
 
-    this.pipeDefinitionsList$.pipe(takeUntil(this.destroy$)).subscribe((pipDefinitions) => {
-      if (pipDefinitions) {
-        this.pipeDefinitionList = pipDefinitions;
-      }
-    });
 
     this.shopLocationList$.pipe(takeUntil(this.destroy$)).subscribe((shopLocations) => {
       if (shopLocations) {
@@ -111,7 +111,7 @@ export class TallyAddComponent {
 
     // Creating Tally
     this.error$.subscribe((error) => {
-      if(error) {
+      if (error) {
         console.error(error);
         this.error = error;
         this.notificationService.success('There was a problem creating the tally. ');
@@ -121,7 +121,7 @@ export class TallyAddComponent {
     this.createdTally$.subscribe((tally) => {
       console.log('tally: ', tally);
 
-      if(tally && !this.isInit) {
+      if (tally && !this.isInit) {
         this.notificationService.success('Tally created successfully');
         this.close();
       }
@@ -158,7 +158,7 @@ export class TallyAddComponent {
 
   createTally() {
 
-    if(this.tallyAddForm.invalid) {
+    if (this.tallyAddForm.invalid) {
       this.tallyAddForm.markAllAsTouched();
       return;
     }
@@ -169,7 +169,7 @@ export class TallyAddComponent {
       pipe.lengthInFeet = 0; // Dummy since this is calculated at the backend
       pipe.customerId = this.tallyAddForm.get('customer')?.value;
       const tier = tiersWithPipe.find(t => t.tierId === pipe.tierId);
-      if(tier) {
+      if (tier) {
         tier.pipeList.push(pipe);
       }
       else {
@@ -202,11 +202,11 @@ export class TallyAddComponent {
 
   addPipe(formDirective: any) {
 
-    if(this.selectedPipe)
+    if (this.selectedPipe)
       return;
 
 
-    if(!this.pipeAddForm.invalid ) {
+    if (!this.pipeAddForm.invalid) {
       const newPipe: DtoPipeCreate = {
         pipeDefinitionId: this.pipeAddForm.get('pipeDefinition')?.value,
         tierId: this.pipeAddForm.get('tier')?.value,
@@ -229,7 +229,7 @@ export class TallyAddComponent {
       this.clearAfterPipeAdd();
       this.formDirective = formDirective;
     }
-    else{
+    else {
       this.pipeAddForm.markAllAsTouched();
     }
   }
@@ -287,7 +287,7 @@ export class TallyAddComponent {
     this.formDirective.resetForm();
   }
 
-  cancelEdit(){
+  cancelEdit() {
     this.selectedPipe = null;
     this.pipeAddForm.reset();
     this.formDirective.resetForm();
@@ -311,7 +311,7 @@ export class TallyAddComponent {
 
   tierDisplay(tier: TierWithPipeInfo) {
 
-    if(tier.tierId === this.emptyGuid)
+    if (tier.tierId === this.emptyGuid)
       return 'New Tier'
 
     return tier.number;
@@ -322,10 +322,10 @@ export class TallyAddComponent {
   }
 
   displayTallyType(tallyType: number) {
-    if(tallyType === TallyTypes.TallyIn) {
+    if (tallyType === TallyTypes.TallyIn) {
       return 'In'
     }
-    else if(tallyType === TallyTypes.TallyOut) {
+    else if (tallyType === TallyTypes.TallyOut) {
       return 'Out'
     }
 
@@ -343,5 +343,21 @@ export class TallyAddComponent {
     this.destroy$.complete();
   }
 
+  openSelectPipeDefinitionDialog() {
+    //    const dialogRef = this.dialog.open(PipeDefinitionSelectComponent);
+    const dialogRef = this.dialog.open(PipeDefinitionSelectComponent, {
+      width: '90%', // You can use percentage
+      maxWidth: 'none',
+      maxHeight: 'none',
+      height: '90%', 
+      panelClass: 'custom-dialog-container',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // You can do something with the result here if needed
+    });
+
+  }
 
 }

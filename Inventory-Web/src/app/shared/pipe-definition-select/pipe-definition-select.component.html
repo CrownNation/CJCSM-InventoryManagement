@@ -1,0 +1,129 @@
+<div class="pipe-definition-select-container">
+  <h2 style="margin-bottom: .5rem; text-align: center;">Select Pipe Definition</h2>
+
+  <mat-tab-group>
+    <mat-tab label="Pipe Definition Search">
+      <div>
+        <mat-accordion>
+          <mat-expansion-panel expanded="true" class="filter-options">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Filter Options</mat-panel-title>
+            </mat-expansion-panel-header>
+            <form [formGroup]="pipeForm">
+              <div class="container-filter">
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Category</mat-label>
+                  <input #categoryInput type="text" placeholder="Select category" matInput
+                    [formControl]="categoryControl" [matAutocomplete]="autoCategory" (input)="filterCategories()"
+                    (focus)="filterCategories()" (blur)="onCategoryBlur()">
+                  <mat-autocomplete requireSelection autoActiveFirstOption #autoCategory="matAutocomplete" [displayWith]="displayCategory">
+                    <mat-option *ngFor="let category of filteredCategories" [value]="category">
+                      {{ category.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Condition</mat-label>
+                  <input #conditionInput type="text" placeholder="Select condition" matInput
+                    [formControl]="conditionControl" [matAutocomplete]="autoCondition" (input)="filterConditions()"
+                    (focus)="filterConditions()">
+                  <mat-autocomplete requireSelection autoActiveFirstOption #autoCondition="matAutocomplete" [displayWith]="displayCondition">
+                    <mat-option *ngFor="let condition of filteredConditions" [value]="condition">
+                      {{ condition.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </form>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <table mat-table [dataSource]="dataSource" matSort class="full-width">
+          <!-- Category Column -->
+          <ng-container matColumnDef="Category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+            <td mat-cell *matCellDef="let row"> {{ row.category?.name }}</td>
+          </ng-container>
+
+          <!-- Coating Column -->
+          <ng-container matColumnDef="Coating">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Coating</th>
+            <td mat-cell *matCellDef="let row"> {{ row.coating?.name }}</td>
+          </ng-container>
+
+          <!-- Condition Column -->
+          <ng-container matColumnDef="Condition">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Condition</th>
+            <td mat-cell *matCellDef="let row"> {{ row.condition?.name }}</td>
+          </ng-container>
+
+          <!-- Grade Column -->
+          <ng-container matColumnDef="Grade">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Grade</th>
+            <td mat-cell *matCellDef="let row"> {{ row.grade?.name }}</td>
+          </ng-container>
+
+          <!-- Range Column -->
+          <ng-container matColumnDef="Range">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Range</th>
+            <td mat-cell *matCellDef="let row"> {{ row.range?.name }}</td>
+          </ng-container>
+
+          <!-- Thread Column -->
+          <ng-container matColumnDef="Thread">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Thread</th>
+            <td mat-cell *matCellDef="let row"> {{ row.thread?.name }}</td>
+          </ng-container>
+
+          <!-- Size Metric & Imperial Columns -->
+          <ng-container matColumnDef="Size Metric">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Size (mm))</th>
+            <td mat-cell *matCellDef="let row"> {{ row.size?.sizeMetric }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Size Imperial">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Size (in)</th>
+            <td mat-cell *matCellDef="let row"> {{ row.size?.sizeImperial }}</td>
+          </ng-container>
+
+          <!-- Wall Metric & Imperial Columns -->
+          <ng-container matColumnDef="Wall Metric">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Wall (mm)</th>
+            <td mat-cell *matCellDef="let row"> {{ row.wall?.wallMetric }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Wall Imperial">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Wall (in)</th>
+            <td mat-cell *matCellDef="let row"> {{ row.wall?.wallImperial }}</td>
+          </ng-container>
+
+          <!-- Weight Metric & Imperial Columns -->
+          <ng-container matColumnDef="Weight Metric">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Weight (kg/m)</th>
+            <td mat-cell *matCellDef="let row"> {{ row.weight?.weightInKgPerMeter }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Weight Imperial">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Weight (Lbs/ft)</th>
+            <td mat-cell *matCellDef="let row"> {{ row.weight?.weightInLbsPerFoot }}</td>
+          </ng-container>
+
+          <!-- Table Row Definitions -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
+        </table>
+
+
+        <div class="actions">
+          <button mat-raised-button color="primary" (click)="selectPipeDefinition()">Select Pipe Definition</button>
+          <button mat-raised-button (click)="cancel()">Cancel</button>
+          <button mat-raised-button color="accent" (click)="newFromFilters()">New From Filters</button>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="New Pipe Definition">
+      <!-- Content for creating a new pipe definition can be added here -->
+    </mat-tab>
+  </mat-tab-group>
+</div>

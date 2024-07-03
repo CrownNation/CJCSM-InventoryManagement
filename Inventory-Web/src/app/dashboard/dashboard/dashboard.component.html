@@ -5,19 +5,19 @@
 <div class="container">
   <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabChange($event)" mat-stretch-tabs="false"
     mat-align-tabs="start" class="section">
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon>plumbing</mat-icon>
-        Search by Pipe
-      </ng-template>
-    </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon>assignment</mat-icon>
         Search by Tally
       </ng-template>
-      <app-search-tally></app-search-tally>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>plumbing</mat-icon>
+        Search by Pipe
+      </ng-template>
     </mat-tab>
 
     <mat-tab>

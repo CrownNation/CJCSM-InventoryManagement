@@ -4,15 +4,15 @@
         <mat-icon class="close-icon" (click)="close()">close</mat-icon>
     </mat-card-header>
 
-    <mat-card-content >
+    <mat-card-content>
 
-            <div class="container">
+        <div class="container">
 
-                <div class="section">
-                    <form [formGroup]="tallyAddForm">
+            <div class="section">
+                <form [formGroup]="tallyAddForm">
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Tally Type</mat-label>
-                        <mat-select formControlName='tallyType' required >
+                        <mat-select formControlName='tallyType' required>
                             <mat-option *ngFor="let tallyType of tallyTypes" [value]="tallyType">
                                 {{displayTallyType(tallyType)}}
                             </mat-option>
@@ -37,32 +37,32 @@
 
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Yard</mat-label>
-                        <mat-select formControlName='shopLocation' required >
+                        <mat-select formControlName='shopLocation' required>
                             <mat-option *ngFor="let shop of shopLocations" [value]="shop.shopLocationId">
                                 {{shop.name}}
-                                </mat-option>
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Customer</mat-label>
-                        <mat-select formControlName='customer' required >
+                        <mat-select formControlName='customer' required>
                             <mat-option *ngFor="let customer of customersFullList" [value]="customer.customerId">
                                 {{customer.name}}
-                                </mat-option>
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field >
+                    <mat-form-field>
                         <mat-label>Date</mat-label>
                         <input matInput [matDatepicker]="datepicker" formControlName="dateOfCreation">
                         <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
                         <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
                         <mat-datepicker #datepicker>
-                          <mat-datepicker-actions>
-                            <button mat-button matDatepickerCancel>Cancel</button>
-                            <button mat-raised-button color="primary" matDatepickerApply>Ok</button>
-                          </mat-datepicker-actions>
+                            <mat-datepicker-actions>
+                                <button mat-button matDatepickerCancel>Cancel</button>
+                                <button mat-raised-button color="primary" matDatepickerApply>Ok</button>
+                            </mat-datepicker-actions>
                         </mat-datepicker>
                     </mat-form-field>
 
@@ -95,43 +95,52 @@
                         <textarea matInput placeholder="Enter notes" formControlName="notes"></textarea>
                     </mat-form-field>
                 </form>
-                </div>
+            </div>
 
 
 
-                <div class="section">
-                    <form [formGroup]="pipeAddForm" (ngSubmit)="addPipe(formDirective)" #formDirective="ngForm">
+            <div class="section">
+                <form [formGroup]="pipeAddForm" (ngSubmit)="addPipe(formDirective)" #formDirective="ngForm">
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Rack</mat-label>
                         <mat-select formControlName='rack' required (selectionChange)="onRackChange($event)">
                             <mat-option *ngFor="let rack of racksWithTiers" [value]="rack.rackId">
                                 {{rack.name}}
-                                </mat-option>
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Tier</mat-label>
-                        <mat-select formControlName='tier' required >
+                        <mat-select formControlName='tier' required>
                             <mat-option *ngFor="let tier of tiers" [value]="tier.tierId">
                                 {{tierDisplay(tier)}}
-                                </mat-option>
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" color="accent">
-                        <mat-label>Pipe Type</mat-label>
-                        <mat-select formControlName='pipeDefinition' required >
-                            <mat-option *ngFor="let pipeDefinition of pipeDefinitionList" [value]="pipeDefinition.pipeDefinitionId">
-                                {{pipeDefinition.category?.name}} - {{pipeDefinition.condition?.name}}
-                                </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <div style="margin-bottom: 15px;">
+                        <mat-form-field appearance="outline" color="accent" style="margin-bottom: -1rem">
+                            <mat-label>Pipe Definition</mat-label>
+                            <input type="text" matInput placeholder="Select Pipe Definition"
+                                formControlName="pipeDefinition" step="1" readonly
+                                (click)="openSelectPipeDefinitionDialog()" required>
+                            <mat-error *ngIf="showPipeDefinitionSelectedError">
+                                Please Select a Pipe Definition
+                            </mat-error>
+                        </mat-form-field>
+
+                        <button type="button" mat-raised-button color="primary"
+                            (click)="openSelectPipeDefinitionDialog()">
+                            <mat-icon>add</mat-icon>
+                            Select Pipe Definition
+                        </button>
+                    </div>
 
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Quantity</mat-label>
                         <input type="number" matInput placeholder="Quantity" formControlName="quantity" step="1"
-                            (keydown)="preventDecimal($event)"required>
+                            (keydown)="preventDecimal($event)" required>
                         <mat-error>
                             Please provide a value for quantity
                         </mat-error>
@@ -139,8 +148,8 @@
 
                     <mat-form-field appearance="outline" color="accent">
                         <mat-label>Length in meters</mat-label>
-                        <input type="number" matInput placeholder="Weight in kg"
-                        formControlName="lengthInMeters" required #lengthInMetersInput>
+                        <input type="number" matInput placeholder="Weight in kg" formControlName="lengthInMeters"
+                            required #lengthInMetersInput>
                         <mat-error>
                             Please provide a value for length in meters
                         </mat-error>
@@ -159,17 +168,19 @@
                         <button mat-raised-button color="primary" class="item" type="submit">Add pipe</button>
                     </ng-container>
                     <ng-container *ngIf="selectedPipe">
-                        <button mat-raised-button color="primary" class="item" (click)="updatePipe()">Update pipe</button>
+                        <button mat-raised-button color="primary" class="item" (click)="updatePipe()">Update
+                            pipe</button>
                         <button mat-raised-button class="item" (click)="cancelEdit()">Cancel</button>
                     </ng-container>
 
 
                     <div class="scrollable-table">
-                        <table mat-table [dataSource]="dataSource" >
+                        <table mat-table [dataSource]="dataSource">
 
                             <ng-container matColumnDef="tallyNumber">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Pipe</th>
-                                <td mat-cell *matCellDef="let row"> {{row.quantity}} - {{row.pipeDefinition?.category?.name}} </td>
+                                <td mat-cell *matCellDef="let row"> {{row.quantity}} -
+                                    {{row.pipeDefinition?.category?.name}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="actions">
@@ -193,17 +204,17 @@
                         </div>
                     </div>
 
-                    </form>
-                </div>
-
+                </form>
             </div>
 
-            <div class="spinner-container" *ngIf="loading">
-                <mat-spinner [diameter]="30"></mat-spinner>
-            </div>
+        </div>
 
-            <button mat-raised-button color="primary" class="item" (click)="createTally()">Create Tally</button>
-            <button mat-raised-button class="item" (click)="close()">Cancel</button>
+        <div class="spinner-container" *ngIf="loading">
+            <mat-spinner [diameter]="30"></mat-spinner>
+        </div>
+
+        <button mat-raised-button color="primary" class="item" (click)="createTally()">Create Tally</button>
+        <button mat-raised-button class="item" (click)="close()">Cancel</button>
 
     </mat-card-content>
 

@@ -18,6 +18,7 @@ export interface PipeDefinition {
     pipeDefinitionId: string;
     isActive: boolean;
     categoryId: string | null;
+    coadingId: string | null;
     conditionId: string | null;
     gradeId: string | null;
     rangeId: string | null;
@@ -244,9 +245,15 @@ export interface PipeSearchParams {
 }
 
 export interface PipeDefinitionSearchParams {
-    pipeProperty_WeightId: string;
-    weightInKgPerMeter: number;
-    weightInLbsPerFoot: number;
+    categoryId: string | null;
+    coatingId: string | null;
+    conditionId: string | null;
+    gradeId: string | null;
+    rangeId: string | null;
+    sizeId: string | null;
+    threadId: string | null;
+    wallId: string | null;
+    weightId: string | null;
 }
 
 export interface PipeUpdate {

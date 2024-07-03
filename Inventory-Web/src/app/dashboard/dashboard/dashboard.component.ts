@@ -3,12 +3,10 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
 import { Observable, Subscription, of } from 'rxjs';
 import { actionGetCustomersFullList } from '../../store/customer/customer.actions';
-import { actionGetPipeDefinitionsList } from '../../store/pipe/pipe.actions';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { AppNotification } from 'src/app/models/app-notification.model';
 import { selectNotifications } from 'src/app/store/notification-hub/notification-hub.selectors';
-import { actionGetTallies } from 'src/app/store/tally/tally.actions';
-import { map, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { actionGetAllPipeProperties } from 'src/app/store/pipe-properties/pipe-properties/pipe-properties.actions';
 import { PipeProperties } from 'src/app/models/pipe.model';
 import { selectAllPipeProperties } from 'src/app/store/pipe-properties/pipe-properties/pipe-properties.selectors';
@@ -29,40 +27,55 @@ export class DashboardComponent implements OnInit {
   constructor(private store: Store<AppState>, private router: Router, private activatedRoute: ActivatedRoute) {
     this.notifications$ = this.store.select(selectNotifications);
 
-    router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        console.log('NavigationEnd:', event);
-      }
+    // Handle route changes and update the selected tab index accordingly
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.updateSelectedTabIndex();
     });
+
 
   }
 
   ngOnInit(): void {
     this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));
-    this.store.dispatch(actionGetTallies({ searchParams: null }));
     this.store.dispatch(actionGetAllPipeProperties());
 
     this.pipePropertiesSubscription = this.store.select(selectAllPipeProperties)
-    .subscribe(pipeProperties => {
-      if (pipeProperties) {
-        console.log('Categories:', pipeProperties.categories);
-      } else {
-        console.log('Categories:', 'No categories found');
-      }
-    });
+      .subscribe(pipeProperties => {
+        console.log('Pipe properties loaded:', pipeProperties ? pipeProperties.categories : 'No categories found');
+      });
+
+  }
 
 
-    this.activatedRoute.firstChild?.url.pipe(
-      map(segments => segments.length > 0 ? segments[0].path : '')
-    ).subscribe(path => {
-      this.selectedTabIndex = this.getPathIndex(path);
-    });
+  /**
+   * Updates the selected tab index based on the deepest active child route in the Angular Router's state tree.
+   * This function navigates through the route hierarchy starting from the root activated route and moving to the
+   * deepest child that has a non-empty path. It's used to synchronize the tab selection with the current route,
+   * ensuring that the correct tab is highlighted based on the URL.
+   */
+  private updateSelectedTabIndex(): void {
+    let route = this.activatedRoute;  // Start with the root of the route hierarchy.
+    let lastPath = '';  // This will hold the path of the deepest non-empty route.
+
+    // Traverse through the child routes to find the deepest non-empty route segment.
+    while (route.firstChild) {
+      route = route.firstChild;  // Move to the next child.
+      const currentPath = route.snapshot.url.map(segment => segment.path).join('/');
+      if (currentPath) lastPath = currentPath; // Only update lastPath if it's not empty, avoiding overriding with an empty path.
+    }
+
+    // Convert the final route segment into a tab index using a helper function.
+    this.selectedTabIndex = this.getPathIndex(lastPath);
+    console.log('Final route segment:', lastPath);  // Output the deepest path segment for debugging.
+    console.log('Updated tab index to:', this.selectedTabIndex);  // Output the newly set tab index for debugging.
   }
 
   getPathIndex(path: string): number {
     switch (path) {
-      case 'pipe': return 0;
-      case 'tally': return 1;
+      case 'tally': return 0;
+      case 'pipe': return 1;
       case 'rack': return 2;
       case 'customer': return 3;
       default: return 0; // Default tab index if no match
@@ -71,7 +84,7 @@ export class DashboardComponent implements OnInit {
 
   onTabChange(event: any): void {
     const index = +event.index;
-    const routes = ['pipe', 'tally', 'rack', 'customer'];
+    const routes = ['tally', 'pipe', 'rack', 'customer'];
     this.router.navigate(['/dashboard/' + routes[index]]);
   }
 

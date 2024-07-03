@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TallyDashboardComponent } from './tally-dashboard/tally-dashboard.component';
 import { TallyAddComponent } from './tally-add/tally-add.component';
+import { SearchTallyComponent } from '../dashboard/search-tally/search-tally/search-tally.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TallyAddComponent
+    component: SearchTallyComponent
   },
   {
     path: 'add',

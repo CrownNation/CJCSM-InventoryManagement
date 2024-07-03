@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../store/core.state';
-import { Tally, TallyTypes } from '../../models/tally.model';
+import { AppState } from '../../../store/core.state';
+import { Tally, TallyTypes } from '../../../models/tally.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectSelectedTally } from '../../store/tally/tally.selectors';
+import { selectSelectedTally } from '../../../store/tally/tally.selectors';
 import { MatTableDataSource } from '@angular/material/table';
-import { Pipe } from '../../models/pipe.model';
+import { Pipe } from '../../../models/pipe.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({

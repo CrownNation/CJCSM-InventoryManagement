@@ -1,18 +1,18 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Tally, TallySearchParams, TallyTypes } from '../../models/tally.model';
+import { Tally, TallySearchParams, TallyTypes } from '../../../models/tally.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { AppState } from '../../store/core.state';
+import { AppState } from '../../../store/core.state';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Customer } from '../../models/customer.model';
-import { actionGetTallies, actionGetTallyById } from '../../store/tally/tally.actions';
+import { Customer } from '../../../models/customer.model';
+import { actionGetTallies, actionGetTallyById } from '../../../store/tally/tally.actions';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectLoadingTallies, selectTallies, selectTalliesEntities } from '../../store/tally/tally.selectors';
+import { selectLoadingTallies, selectTallies, selectTalliesEntities } from '../../../store/tally/tally.selectors';
 import { Dictionary } from '@ngrx/entity';
-import { selectCustomersFullList } from '../../store/customer/customer.selectors';
+import { selectCustomersFullList } from '../../../store/customer/customer.selectors';
 import { clearNotifications } from 'src/app/store/notification-hub/notification-hub.actions';
 
 @Component({

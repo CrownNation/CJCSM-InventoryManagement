@@ -5,10 +5,11 @@ mat-card {
 
 }
 
-h4{
+h4 {
     margin-top: 20;
     margin-bottom: 0px;
 }
+
 .title-container {
     display: flex;
     justify-content: space-between;
@@ -67,5 +68,42 @@ tr.element-row:not(.expanded-row):active {
     border-bottom-width: 0;
 }
 
+mat-expansion-panel {
+    .container-filter {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: flex-start;
+        align-items: center;
+    }
 
+    .item-buttons {
+        display: flex;
+        justify-content: flex-start;
+    }
 
+    mat-form-field {
+        flex: 1 0 25%;
+        /* Manage the width and allow wrapping */
+        max-width: 275px;
+        /* Set a max-width for form fields */
+        min-width: 150px;
+    }
+
+    button {
+        margin: 0 0.75rem 0 0;
+    }
+
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .5rem;
+}
+
+.actions button {
+    flex-grow: 1;
+    margin: .1rem;
+}
