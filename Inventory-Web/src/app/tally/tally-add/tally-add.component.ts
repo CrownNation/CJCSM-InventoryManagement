@@ -8,13 +8,11 @@ import { Customer } from '../../models/customer.model';
 import { DtoPipeCreate, DtoTallyCreate, DtoTierWithPipe, Tally, TallyTypes } from '../../models/tally.model';
 import { actionGetCustomersFullList } from '../../store/customer/customer.actions';
 import { actionGetRacksWithTiers, actionGetShopLocations } from '../../store/rack/rack.actions';
-import { actionGetPipeDefinitionsList } from '../../store/pipe/pipe.actions';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { RackWithTier, TierWithPipeInfo } from '../../models/rack.model';
 import { selectRacksWithTiers } from '../../store/rack/rack.selectors';
 import { selectCustomersFullList } from '../../store/customer/customer.selectors';
 import { PipeDefinition } from '../../models/pipe.model';
-import { selectPipeDefinitionsList } from '../../store/pipe/pipe.selectors';
 import { MatSelectChange } from '@angular/material/select';
 import { MatTableDataSource } from '@angular/material/table';
 import { actionCreateTally } from '../../store/tally/tally.actions';
@@ -78,6 +76,7 @@ export class TallyAddComponent {
     private router: Router,
     private notificationService: NotificationService,
     public dialog: MatDialog) {
+
   }
 
   ngOnInit(): void {
@@ -85,7 +84,7 @@ export class TallyAddComponent {
     this.store.dispatch(actionGetRacksWithTiers());
     this.store.dispatch(actionGetShopLocations());
 
-    this.store.dispatch(actionGetPipeDefinitionsList({ searchParams: null }));
+    //this.store.dispatch(actionGetPipeDefinitionsList({ searchParams: null }));
 
     this.buildForm();
     this.dataSource = new MatTableDataSource(this.registeredPipes);
@@ -349,11 +348,22 @@ export class TallyAddComponent {
       width: '90%', // You can use percentage
       maxWidth: 'none',
       maxHeight: 'none',
-      height: '90%', 
+      height: '90%',
       panelClass: 'custom-dialog-container',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((selectedPipeDefinition: PipeDefinition | null) => {
+      if (selectedPipeDefinition) {
+        var pipeDefText: string = "";
+        pipeDefText += "Category: " + selectedPipeDefinition.category?.name;
+        pipeDefText += "- Condition: " + selectedPipeDefinition.condition?.name;
+        //add grade
+        pipeDefText += "- Grade: " + selectedPipeDefinition.grade?.name;
+        //add size both metric and imperial
+        pipeDefText += "- Size: " + selectedPipeDefinition.size?.sizeMetric + "(mm)/" + selectedPipeDefinition.size?.sizeImperial + "(in)";
+        this.pipeAddForm.get('pipeDefinition')!.setValue(pipeDefText);
+
+      }
       console.log('The dialog was closed');
       // You can do something with the result here if needed
     });

@@ -4,7 +4,6 @@ import { catchError, switchMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { PipeService } from '../../core/services/pipe-service/pipe.service';
 import { actionCreatePipe, actionCreatePipeError, actionCreatePipeSuccess, actionGetPipe, actionGetPipeById, actionGetPipeByIdError, actionGetPipeByIdSuccess, actionGetPipeDefinitionsList, actionGetPipeDefinitionsListError, actionGetPipeDefinitionsListSuccess, actionGetPipeError, actionGetPipeSuccess } from './pipe.actions';
-import { PipeDefinitionService } from '../../core/services/pipe-definition-service/pipe-definition.service';
 
 
 @Injectable()
@@ -13,7 +12,6 @@ export class PipeEffects {
   constructor(
       private actions$: Actions,
       private pipeService: PipeService,
-      private pipeDefinitionService: PipeDefinitionService,
   ) {}
 
 
@@ -52,18 +50,5 @@ export class PipeEffects {
       )
     )
   );
-
-  retrievePipeDefinitionsList = createEffect( () =>
-    this.actions$.pipe(
-      ofType(actionGetPipeDefinitionsList),
-      switchMap(actionData =>
-        this.pipeDefinitionService.getPipeDefinitions(actionData.searchParams).pipe(
-          map(pipeDefinitionsList => actionGetPipeDefinitionsListSuccess({ pipeDefinitionsList })),
-          catchError(errorLoadingPipeDefinitionsList => of(actionGetPipeDefinitionsListError({ errorLoadingPipeDefinitionsList })))
-        )
-      )
-    )
-  );
-
 
 }

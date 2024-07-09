@@ -94,22 +94,6 @@ const reducer: ActionReducer<PipeState> = createReducer(
         errorLoadingSelectedPipe
     })),
 
-    // Retrieve Pipe Definitions List
-    on(actionGetPipeDefinitionsList, (state: PipeState, { searchParams }) => ({
-        ...state,
-        pipeDefinitionsList: null,
-        errorLoadingPipeDefinitionsList: null
-    })),
-    on(actionGetPipeDefinitionsListSuccess, (state: PipeState, { pipeDefinitionsList }) => ({
-        ...state,
-        pipeDefinitionsList,
-        errorLoadingPipeDefinitionsList: null
-    })),
-    on(actionGetPipeDefinitionsListError, (state: PipeState, { errorLoadingPipeDefinitionsList }) => ({
-        ...state,
-        errorLoadingPipeDefinitionsList
-    })),
-
 
 );
 

@@ -107,3 +107,36 @@ mat-expansion-panel {
     flex-grow: 1;
     margin: .1rem;
 }
+
+.successLabel {
+    color: green;
+}
+
+.errorLabel {
+    color: red;
+}
+
+.infoLabel {
+    color: black;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+  }
+
+  // Snack bar styling
+  .snack-bar {
+    color: #333;
+    background-color: #fff;
+  }
+  .error-snack-bar {
+    color: #fff;
+    background-color: #D32F2F;
+  }
+  .confirmation-snack-bar {
+    color: #fff;
+    background-color: #4CAF50;
+  }

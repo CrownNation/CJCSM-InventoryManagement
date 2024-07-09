@@ -16,7 +16,7 @@ import {
 } from './pipe-property-wall.actions';
 
 export function sortByWallMetric(a: PipeProperty_Wall, b: PipeProperty_Wall): number {
-    return a.wallThicknessMetric - b.wallThicknessMetric;
+    return a.wallMetric - b.wallMetric;
 }
 
 export const selectId: (wall: PipeProperty_Wall) => string = (wall: PipeProperty_Wall) => wall.pipeProperty_WallId;

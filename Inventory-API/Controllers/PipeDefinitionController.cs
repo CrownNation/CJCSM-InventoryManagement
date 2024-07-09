@@ -3,6 +3,8 @@ using Inventory_Dto.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Newtonsoft.Json;
+using System.Reflection.PortableExecutable;
 
 namespace Inventory_API.Controllers
 {
@@ -32,7 +34,7 @@ namespace Inventory_API.Controllers
          catch(Exception e)
          {
             _logger.LogError($"GetPipeDefinitions: " + e.Message);
-            throw new Exception("There was a problem querying for pipe defintinos.");
+            throw new Exception("There was a problem querying for pipe defintions.");
          }
       }
 
@@ -54,6 +56,32 @@ namespace Inventory_API.Controllers
             throw new Exception($"There was a problem querying for the PipeDefinition with id {key}.");
          }
       }
+
+      [HttpPost("check-exists")]
+      public IActionResult CheckPipeDefinitionExists([FromBody] DtoPipeDefinitionSearchParams pipeDefinitionDto)
+      {
+         System.Diagnostics.Debug.WriteLine($"Received pipe definition check request with data: {JsonConvert.SerializeObject(pipeDefinitionDto)}");
+
+         if (pipeDefinitionDto == null)
+         {
+            System.Diagnostics.Debug.WriteLine("Pipe definition data is null.");
+            return BadRequest("Invalid pipe definition data.");
+         }
+
+         try
+         {
+            bool exists = _pipeDefinitionBl.CheckIfPipeDefinitionExists(pipeDefinitionDto);
+            System.Diagnostics.Debug.WriteLine($"Check exists result: {exists}");
+
+            return Ok(new { Exists = exists });
+         }
+         catch (Exception e)
+         {
+            System.Diagnostics.Debug.WriteLine($"Error checking if pipe definition exists: {e}");
+            return StatusCode(500, "There was a problem checking if the PipeDefinition exists.");
+         }
+      }
+
 
       [HttpPost]
       public async Task<IActionResult> Post([FromBody] DtoPipeDefinitionCreate pipeDefinition)

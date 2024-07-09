@@ -1,9 +1,9 @@
 import {
-    ActionReducerMap,
-    MemoizedSelector,
-    MetaReducer,
-    createFeatureSelector
-  } from '@ngrx/store';
+  ActionReducerMap,
+  MemoizedSelector,
+  MetaReducer,
+  createFeatureSelector
+} from '@ngrx/store';
 import { routerReducer, RouterReducerState } from '@ngrx/router-store';
 
 import { initStateFromLocalStorage } from '../core/meta-reducers/init-state-from-local-storage.reducer';
@@ -21,28 +21,33 @@ import { pipeProperty_CategoryReducers } from './pipe-properties/pipe-property-c
 import { NotificationState, notificationHubReducer } from './notification-hub/notification-hub.reducers';
 import { ShopLocationState } from './shop-location/shop-location.state';
 import { shopLocationReducers } from './shop-location/shop-location.reducers';
-import { PipeProperties } from '../models/pipe.model';
+import { PipeDefinition, PipeProperties } from '../models/pipe.model';
 import { PipePropertiesState } from './pipe-properties/pipe-properties/pipe-properties.state';
 import { pipePropertiesReducers } from './pipe-properties/pipe-properties/pipe-properties.reducers';
+import { PipeDefinitionState } from './pipe-definition/pipe-definition.state';
+import { pipeDefinitionReducer } from './pipe-definition/pipe-definition.reducers';
+import { EquipmentDefinitionState } from './equipment-definition/equipment-definition.state';
+import { equipmentDefinitionReducer } from './equipment-definition/equipment-definition.reducers';
 
+export const reducers: ActionReducerMap<AppState> = {
+  // auth: authReducer,
+  // settings: settingsReducer,
+  // router: routerReducer,
+  rack: rackReducers,
+  tally: tallyReducers,
+  customer: customerReducers,
+  pipe: pipeReducers,
+  notification: notificationHubReducer,
+  shopLocation: shopLocationReducers,
+  pipeProperties: pipePropertiesReducers,
+  pipeDefinition: pipeDefinitionReducer,
+  equipmentDefinition: equipmentDefinitionReducer
+};
 
-  export const reducers: ActionReducerMap<AppState> = {
-    // auth: authReducer,
-    // settings: settingsReducer,
-    // router: routerReducer,
-    rack: rackReducers,
-    tally: tallyReducers,
-    customer: customerReducers,
-    pipe: pipeReducers,
-    notification: notificationHubReducer,
-    shopLocation: shopLocationReducers,
-    pipeProperties: pipePropertiesReducers
-  };
-
-  export const metaReducers: MetaReducer<AppState>[] = [
-    initStateFromLocalStorage,
-    initStateFromSessionStorage
-  ];
+export const metaReducers: MetaReducer<AppState>[] = [
+  initStateFromLocalStorage,
+  initStateFromSessionStorage
+];
 
 
 
@@ -57,25 +62,33 @@ export const selectCustomerFeature: MemoizedSelector<AppState, CustomerState> =
   createFeatureSelector<CustomerState>('customer');
 
 export const selectPipeFeature: MemoizedSelector<AppState, PipeState> =
-createFeatureSelector<PipeState>('pipe');
+  createFeatureSelector<PipeState>('pipe');
 
 export const selectNotificationFeature: MemoizedSelector<AppState, NotificationState> = createFeatureSelector<NotificationState>('notification');
 
 export const selectShopLocationFeature: MemoizedSelector<AppState, ShopLocationState> =
-  createFeatureSelector<ShopLocationState>('shopLocation'); 
+  createFeatureSelector<ShopLocationState>('shopLocation');
+
+export const selectPipeDefinitionFeature: MemoizedSelector<AppState, PipeDefinitionState> =
+  createFeatureSelector<PipeDefinitionState>('pipeDefinition');
+
+export const selectEquipmentDefinitionFeature: MemoizedSelector<AppState, EquipmentDefinitionState> =
+  createFeatureSelector<EquipmentDefinitionState>('equipmentDefinition');
 
 export const selectPipeProperty_CategoryFeature: MemoizedSelector<AppState, PipeProperty_CategoryState> =
-createFeatureSelector<PipeProperty_CategoryState>('pipeProperty_Category');
+  createFeatureSelector<PipeProperty_CategoryState>('pipeProperty_Category');
 
-  export interface AppState {
-    // auth: AuthState;
-    // settings: SettingsState;
-    // router: RouterReducerState<RouterStateUrl>;
-    rack: RackState;
-    tally: TallyState;
-    customer: CustomerState,
-    pipe: PipeState,
-    notification: NotificationState,
-    shopLocation: ShopLocationState,
-    pipeProperties: PipePropertiesState
-  }
+export interface AppState {
+  // auth: AuthState;
+  // settings: SettingsState;
+  // router: RouterReducerState<RouterStateUrl>;
+  rack: RackState;
+  tally: TallyState;
+  customer: CustomerState,
+  pipe: PipeState,
+  notification: NotificationState,
+  shopLocation: ShopLocationState,
+  pipeProperties: PipePropertiesState,
+  pipeDefinition: PipeDefinitionState,
+  equipmentDefinition: EquipmentDefinitionState
+}

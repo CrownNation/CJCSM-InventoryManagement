@@ -11,7 +11,6 @@ export interface Equipment{
     lengthInMeters: number;
     lengthInFeet: number;
     equipmentDefinition: EquipmentDefinition;
-
 }
 
 export interface EquipmentDefinition {
@@ -24,4 +23,20 @@ export interface EquipmentDefinition {
     sizeId: string | null;
     grade: PipeProperty_Grade | null;
     size: PipeProperty_Size | null;
+}
+
+export interface EquipmentDefinitionCreate {
+    isActive: boolean;
+    category: string;
+    description: string | null;
+    notes: string | null;
+    gradeId: string | null;
+    sizeId: string | null;
+}
+
+export interface EquipmentDefinitionSearchParams {
+    category: string;
+    gradeId: string | null;
+    sizeId: string | null;
+    isActive: boolean;
 }

@@ -55,7 +55,6 @@ getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
       return '';
     }
 
-    console.log()
     let odataParams = '';
 
     if (searchParams.categoryId) {

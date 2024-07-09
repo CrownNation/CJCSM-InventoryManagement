@@ -7,7 +7,7 @@ import { AppState } from '../../../store/core.state';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Pipe, PipeDefinition, PipeProperty_Category, PipeProperty_Condition, PipeSearchParams } from '../../../models/pipe.model';
 import { Observable, Subject, map, startWith, takeUntil } from 'rxjs';
-import { selectLoadingPipe, selectPipe, selectPipeDefinitionsList } from '../../../store/pipe/pipe.selectors';
+import { selectLoadingPipe, selectPipe } from '../../../store/pipe/pipe.selectors';
 import { actionGetPipe, actionGetPipeById } from '../../../store/pipe/pipe.actions';
 import { Rack } from '../../../models/rack.model';
 import { selectRacks } from '../../../store/rack/rack.selectors';

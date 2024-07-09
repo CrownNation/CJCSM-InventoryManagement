@@ -12,7 +12,4 @@ export interface PipeState extends EntityState<any> {
 
     selectedPipe: Pipe | null;
     errorLoadingSelectedPipe: HttpErrorResponse | null
-
-    pipeDefinitionsList: PipeDefinition[] | null,
-    errorLoadingPipeDefinitionsList: HttpErrorResponse | null,
 }

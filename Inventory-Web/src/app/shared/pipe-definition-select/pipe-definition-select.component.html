@@ -1,14 +1,9 @@
 <div class="pipe-definition-select-container">
-  <h2 style="margin-bottom: .5rem; text-align: center;">Select Pipe Definition</h2>
+  <h3 style="margin-bottom: .5rem; text-align: center;">Select Pipe Definition</h3>
 
-  <mat-tab-group>
-    <mat-tab label="Pipe Definition Search">
       <div>
         <mat-accordion>
-          <mat-expansion-panel expanded="true" class="filter-options">
-            <mat-expansion-panel-header>
-              <mat-panel-title>Filter Options</mat-panel-title>
-            </mat-expansion-panel-header>
+          <mat-expansion-panel expanded="true" class="filter-options" style="padding-top: 1rem;">
             <form [formGroup]="pipeForm">
               <div class="container-filter">
                 <mat-form-field appearance="outline" floatLabel="always">
@@ -16,9 +11,22 @@
                   <input #categoryInput type="text" placeholder="Select category" matInput
                     [formControl]="categoryControl" [matAutocomplete]="autoCategory" (input)="filterCategories()"
                     (focus)="filterCategories()" (blur)="onCategoryBlur()">
-                  <mat-autocomplete requireSelection autoActiveFirstOption #autoCategory="matAutocomplete" [displayWith]="displayCategory">
+                  <mat-autocomplete autoActiveFirstOption #autoCategory="matAutocomplete"
+                    [displayWith]="displayCategory">
                     <mat-option *ngFor="let category of filteredCategories" [value]="category">
                       {{ category.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Coating</mat-label>
+                  <input #coatingInput type="text" placeholder="Select coating" matInput [formControl]="coatingControl"
+                    [matAutocomplete]="autoCoating" (input)="filterCoatings()" (focus)="filterCoatings()"
+                    (blur)="onCoatingBlur()">
+                  <mat-autocomplete autoActiveFirstOption #autoCoating="matAutocomplete" [displayWith]="displayCoating">
+                    <mat-option *ngFor="let coating of filteredCoatings" [value]="coating">
+                      {{ coating.name }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
@@ -27,14 +35,90 @@
                   <mat-label>Condition</mat-label>
                   <input #conditionInput type="text" placeholder="Select condition" matInput
                     [formControl]="conditionControl" [matAutocomplete]="autoCondition" (input)="filterConditions()"
-                    (focus)="filterConditions()">
-                  <mat-autocomplete requireSelection autoActiveFirstOption #autoCondition="matAutocomplete" [displayWith]="displayCondition">
+                    (focus)="filterConditions()" (blur)="onConditionBlur()">
+                  <mat-autocomplete autoActiveFirstOption #autoCondition="matAutocomplete"
+                    [displayWith]="displayCondition">
                     <mat-option *ngFor="let condition of filteredConditions" [value]="condition">
                       {{ condition.name }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Grade</mat-label>
+                  <input #gradeInput type="text" placeholder="Select grade" matInput [formControl]="gradeControl"
+                    [matAutocomplete]="autoGrade" (input)="filterGrades()" (focus)="filterGrades()"
+                    (blur)="onGradeBlur()">
+                  <mat-autocomplete autoActiveFirstOption #autoGrade="matAutocomplete" [displayWith]="displayGrade">
+                    <mat-option *ngFor="let grade of filteredGrades" [value]="grade">
+                      {{ grade.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Range</mat-label>
+                  <input #rangeInput type="text" placeholder="Select range" matInput [formControl]="rangeControl"
+                    [matAutocomplete]="autoRange" (input)="filterRanges()" (focus)="filterRanges()"
+                    (blur)="onRangeBlur()">
+                  <mat-autocomplete autoActiveFirstOption #autoRange="matAutocomplete" [displayWith]="displayRange">
+                    <mat-option *ngFor="let range of filteredRanges" [value]="range">
+                      {{ range.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Thread</mat-label>
+                  <input #threadInput type="text" placeholder="Select thread" matInput [formControl]="threadControl"
+                    [matAutocomplete]="autoThread" (input)="filterThreads()" (focus)="filterThreads()"
+                    (blur)="onThreadBlur()">
+                  <mat-autocomplete autoActiveFirstOption #autoThread="matAutocomplete" [displayWith]="displayThread">
+                    <mat-option *ngFor="let thread of filteredThreads" [value]="thread">
+                      {{ thread.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Size</mat-label>
+                  <input #sizeInput type="text" placeholder="Select size" matInput [formControl]="sizeControl"
+                    [matAutocomplete]="autoSize" (input)="filterSizes()" (focus)="filterSizes()" (blur)="onSizeBlur()">
+                  <mat-autocomplete autoActiveFirstOption #autoSize="matAutocomplete" [displayWith]="displaySize">
+                    <mat-option *ngFor="let size of filteredSizes" [value]="size">
+                      {{ size.sizeMetric }}(mm)&nbsp;&nbsp;/&nbsp;{{ size.sizeImperial }}(in)
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Wall</mat-label>
+                  <input #wallInput type="text" placeholder="Select wall" matInput [formControl]="wallControl"
+                    [matAutocomplete]="autoWall" (input)="filterWalls()" (focus)="filterWalls()" (blur)="onWallBlur()">
+                  <mat-autocomplete autoActiveFirstOption #autoWall="matAutocomplete" [displayWith]="displayWall">
+                    <mat-option *ngFor="let wall of filteredWalls" [value]="wall">
+                      {{ wall.wallMetric }} (mm)&nbsp;&nbsp;/&nbsp;{{ wall.wallImperial }} (in)
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" floatLabel="always">
+                  <mat-label>Weight</mat-label>
+                  <input #weightInput type="text" placeholder="Select weight" matInput [formControl]="weightControl"
+                    [matAutocomplete]="autoWeight" (input)="filterWeights()" (focus)="filterWeights()"
+                    (blur)="onWeightBlur()">
+                  <mat-autocomplete autoActiveFirstOption #autoWeight="matAutocomplete" [displayWith]="displayWeight">
+                    <mat-option *ngFor="let weight of filteredWeights" [value]="weight">
+                      {{ weight.weightInKgPerMeter }} (kg/m)&nbsp;&nbsp;/&nbsp;{{ weight.weightInLbsPerFoot }} (Lbs/ft)
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
               </div>
+              <div class="item-buttons">
+                <button mat-raised-button type="button" color="primary" (click)="filter()">Filter</button>
+                <button mat-raised-button type="button" (click)="clearForm()">Clear filters</button>
+              </div>
+
             </form>
           </mat-expansion-panel>
         </mat-accordion>
@@ -110,8 +194,13 @@
 
           <!-- Table Row Definitions -->
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
+            [class.selected]="selection.isSelected(row)"></tr>
         </table>
+        <div *ngIf="loadingPipeDefinitions" class="spinner">
+          <mat-progress-spinner color="primary" mode="indeterminate">
+          </mat-progress-spinner>
+      </div>
 
 
         <div class="actions">
@@ -119,11 +208,6 @@
           <button mat-raised-button (click)="cancel()">Cancel</button>
           <button mat-raised-button color="accent" (click)="newFromFilters()">New From Filters</button>
         </div>
+        <div #errorLabel class="errorLabel" style="display: none; text-align: center; margin-top: 5px;"></div>
       </div>
-    </mat-tab>
-
-    <mat-tab label="New Pipe Definition">
-      <!-- Content for creating a new pipe definition can be added here -->
-    </mat-tab>
-  </mat-tab-group>
 </div>

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Inventory_Dto.Dto
 {
-    public class DtoPipeDefinitionCreate
-    {
-
+   public class DtoPipeDefinitionSearchParams
+   {
       public Guid? CategoryId { get; set; }
       public Guid? CoatingId { get; set; }
       public Guid? ConditionId { get; set; }
@@ -20,7 +18,7 @@ namespace Inventory_Dto.Dto
       public Guid? WallId { get; set; }
       public Guid? WeightId { get; set; }
 
-      public bool IsActive { get; set; } = true;
+      public bool IsActive { get; set; }
 
    }
 }

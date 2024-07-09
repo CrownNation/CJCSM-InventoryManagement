@@ -22,26 +22,62 @@ export class PipeDefinitionService {
     return this.http.get<PipeDefinition>(`${this.baseUrl}/${id}`);
   }
 
-  addPipeDefinition(pipe: PipeDefinitionCreate): Observable<PipeDefinition> {
+  createPipeDefinition(pipe: PipeDefinitionCreate): Observable<PipeDefinition> {
     return this.http.post<PipeDefinition>(this.baseUrl, pipe);
   }
 
-  updatepipeDefinition(pipe: PipeDefinitionUpdate): Observable<void> {
+  updatePipeDefinition(id: string, pipe: PipeDefinition): Observable<void> {
     return this.http.post<void>(this.baseUrl, pipe);
   }
+
+  checkPipeDefinitionExists(params: PipeDefinitionSearchParams): Observable<boolean> {
+    return this.http.post<boolean>(this.baseUrl + '/check-exists', params);
+  }
+
 
   private generateOdataParams(searchParams: PipeDefinitionSearchParams | null): string {
     if (!searchParams) {
       return '';
     }
 
-    let odataParams = '';
+    const odataParams: string[] = [];
 
-    // if (searchParams.pipeId) {
-    //   odataParams += (odataParams ? ' and ' : '') + `customerId eq ${searchParams.customerId}`;
-    // }
+    // Iterate over each parameter in PipeDefinitionSearchParams and append condition if not null
+    if (searchParams.categoryId) {
+      odataParams.push(`CategoryId eq ${encodeURIComponent(searchParams.categoryId)}`);
+    }
+    if (searchParams.coatingId) {
+      odataParams.push(`CoatingId eq ${encodeURIComponent(searchParams.coatingId)}`);
+    }
+    if (searchParams.conditionId) {
+      odataParams.push(`ConditionId eq ${encodeURIComponent(searchParams.conditionId)}`);
+    }
+    if (searchParams.gradeId) {
+      odataParams.push(`GradeId eq ${encodeURIComponent(searchParams.gradeId)}`);
+    }
+    if (searchParams.rangeId) {
+      odataParams.push(`RangeId eq ${encodeURIComponent(searchParams.rangeId)}`);
+    }
+    if (searchParams.sizeId) {
+      odataParams.push(`SizeId eq ${encodeURIComponent(searchParams.sizeId)}`);
+    }
+    if (searchParams.threadId) {
+      odataParams.push(`ThreadId eq ${encodeURIComponent(searchParams.threadId)}`);
+    }
+    if (searchParams.wallId) {
+      odataParams.push(`WallId eq ${encodeURIComponent(searchParams.wallId)}`);
+    }
+    if (searchParams.weightId) {
+      odataParams.push(`WeightId eq ${encodeURIComponent(searchParams.weightId)}`);
+    }
 
-    return odataParams ? '?$filter=' + odataParams : '';
+    // Generate the full OData filter string
+    const odataFilterString = odataParams.length > 0 ? `?$filter=${odataParams.join(' and ')}` : '';
+
+    // Return the OData filter string
+    return odataFilterString;
   }
+
+
 }
 

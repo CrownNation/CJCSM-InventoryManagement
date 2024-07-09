@@ -50,13 +50,3 @@ export const selectSelectedPipeError = createSelector(
     (state: PipeState) => state.errorLoadingSelectedPipe
 );
 
-
-// Pipe Definitions List
-export const selectPipeDefinitionsList = createSelector(
-    selectPipeFeature,
-    (state: PipeState) => state.pipeDefinitionsList
-  );
-export const selectCustomersFullListError = createSelector(
-    selectPipeFeature,
-    (state: PipeState) => state.errorLoadingPipeDefinitionsList
-);

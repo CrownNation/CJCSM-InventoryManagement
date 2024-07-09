@@ -18,7 +18,7 @@ export interface PipeDefinition {
     pipeDefinitionId: string;
     isActive: boolean;
     categoryId: string | null;
-    coadingId: string | null;
+    coatingId: string | null;
     conditionId: string | null;
     gradeId: string | null;
     rangeId: string | null;
@@ -193,24 +193,24 @@ export interface PipeProperty_ThreadSearchParams {
 // --- Wall ---
 export interface PipeProperty_Wall {
     pipeProperty_WallId: string;
-    wallThicknessMetric: number; // Decimal value for wall thickness in metric units with precision up to three decimal places
-    wallThicknessImperial: number; // Decimal value for wall thickness in imperial units with precision up to three decimal places
+    wallMetric: number; // Decimal value for wall thickness in metric units with precision up to three decimal places
+    wallImperial: number; // Decimal value for wall thickness in imperial units with precision up to three decimal places
     isActive: boolean;
 }
 export interface PipeProperty_WallCreate {
-    wallThicknessMetric: number; // Wall thickness in metric units to create
-    wallThicknessImperial: number; // Wall thickness in imperial units to create
+    wallMetric: number; // Wall thickness in metric units to create
+    wallImperial: number; // Wall thickness in imperial units to create
     isActive: boolean;
 }
 export interface PipeProperty_WallUpdate {
-    wallThicknessMetric: number; // New metric wall thickness
-    wallThicknessImperial: number; // New imperial wall thickness
+    wallMetric: number; // New metric wall thickness
+    wallImperial: number; // New imperial wall thickness
     isActive: boolean;
 }
 export interface PipeProperty_WallSearchParams {
     isActive: boolean | null;
-    wallThicknessMetric: number | null;
-    wallThicknessImperial: number | null;
+    wallMetric: number | null;
+    wallImperial: number | null;
 }
 
 
@@ -254,6 +254,7 @@ export interface PipeDefinitionSearchParams {
     threadId: string | null;
     wallId: string | null;
     weightId: string | null;
+    isActive: boolean | null;
 }
 
 export interface PipeUpdate {
@@ -263,9 +264,16 @@ export interface PipeUpdate {
 }
 
 export interface PipeDefinitionCreate {
-    pipeProperty_WeightId: string;
-    weightInKgPerMeter: number;
-    weightInLbsPerFoot: number;
+    categoryId: string;
+    coatingId: string;
+    conditionId: string;
+    gradeId: string;
+    rangeId: string;
+    sizeId: string;
+    threadId: string;
+    wallId: string;
+    weightId: string;
+    isActive: boolean;
 }
 
 export interface PipeDefinitionUpdate {
