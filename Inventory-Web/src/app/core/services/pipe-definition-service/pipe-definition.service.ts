@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { PipeDefinition, PipeDefinitionCreate, PipeDefinitionSearchParams, PipeDefinitionUpdate } from '../../../models/pipe.model';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +30,13 @@ export class PipeDefinitionService {
     return this.http.post<void>(this.baseUrl, pipe);
   }
 
+  // See checkEquipmentDefinitionExists for explanation on the map aspect of this.
   checkPipeDefinitionExists(params: PipeDefinitionSearchParams): Observable<boolean> {
-    return this.http.post<boolean>(this.baseUrl + '/check-exists', params);
+    return this.http.post<{exists: boolean}>(this.baseUrl + '/check-exists', params).pipe(
+      map(response => response.exists)
+    );
   }
-
+  
 
   private generateOdataParams(searchParams: PipeDefinitionSearchParams | null): string {
     if (!searchParams) {

@@ -27,11 +27,11 @@ namespace Inventory_DAL.Entities
 
         [Required]
         [ForeignKey("PipeProperty_Grade")]
-        public Guid PipeProperty_GradeId { get; set; }
+        public Guid GradeId { get; set; }
 
         [Required]
         [ForeignKey("PipeProperty_GradeSize")]
-        public Guid PipeProperty_SizeId { get; set; }
+        public Guid SizeId { get; set; }
         public string? Notes { get; set; }
 
         // Navigation properties

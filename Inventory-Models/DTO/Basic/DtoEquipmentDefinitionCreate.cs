@@ -9,23 +9,15 @@ namespace Inventory_Dto.Dto
 {
     public class DtoEquipmentDefinitionCreate
     {
-        [Required]
-        [StringLength(60)]
-        public string Description { get; set; } 
+        public string Description { get; set; } = string.Empty;
 
-        [Required]
-        [StringLength(25)]
         public string Category { get; set; } 
 
-        [Required]
-        public Guid PipeProperty_GradeId { get; set; }
+        public Guid? GradeId { get; set; }
 
-        [Required]
-        public Guid PipeProperty_SizeId { get; set; }
+        public Guid? SizeId { get; set; }
 
-        public string? Notes { get; set; }
-
-        [Required]
+        public string Notes { get; set; } = string.Empty;
         public bool IsActive { get; set; }
 
     }

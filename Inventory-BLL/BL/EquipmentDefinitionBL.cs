@@ -2,6 +2,8 @@
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
 using Inventory_Dto.Dto;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Inventory_BLL.BL
 {
@@ -35,15 +37,54 @@ namespace Inventory_BLL.BL
             throw new KeyNotFoundException($"No equipment definition with guid {id} can be found.");
         }
 
-        public EquipmentDefinition CreateEquipmentDefinition(DtoEquipmentDefinitionCreate dto)
-        {
-            var equipmentDefinition = _mapper.Map<EquipmentDefinition>(dto);
-            _context.EquipmentDefinition.Add(equipmentDefinition);
-            _context.SaveChanges();
-            return equipmentDefinition;
-        }
+      public bool CheckIfEquipmentDefinitionExists(DtoEquipmentDefinitionSearchParams dtoEquipmentDefinition)
+      {
+         // Check if any equipment definition in the database matches all the properties of the provided DtoEquipmentDefinition
+         bool exists = _context.EquipmentDefinition.Any(ed =>
+             ed.GradeId == dtoEquipmentDefinition.GradeId &&
+             ed.SizeId == dtoEquipmentDefinition.SizeId &&
+             ed.Category == dtoEquipmentDefinition.Category
+         );
 
-        public void UpdateEquipmentDefinition(Guid id, DtoEquipmentDefinitionUpdate dto)
+         return exists;
+      }
+
+      public async Task<DtoEquipmentDefinition> CreateEquipmentDefinition(DtoEquipmentDefinitionCreate dtoEquipmentDefinitionCreate)
+      {
+         if (dtoEquipmentDefinitionCreate == null)
+            throw new ArgumentNullException(nameof(dtoEquipmentDefinitionCreate), "Create EquipmentDefinition failed. The EquipmentDefinition data is null.");
+
+
+         try
+         {
+            EquipmentDefinition equipmentDefinition = _mapper.Map<EquipmentDefinition>(dtoEquipmentDefinitionCreate);
+            equipmentDefinition.EquipmentDefinitionId = Guid.NewGuid(); // Generate new GUID for the Equipment Definition ID
+            _context.EquipmentDefinition.Add(equipmentDefinition);
+
+            // Log the data that is being saved
+            var equipmentDefinitionDetails = JsonConvert.SerializeObject(equipmentDefinition);
+            System.Diagnostics.Debug.WriteLine($"Attempting to create a new EquipmentDefinition with ID: {equipmentDefinition.EquipmentDefinitionId} and details: {equipmentDefinitionDetails}");
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<DtoEquipmentDefinition>(equipmentDefinition);
+         }
+         catch (DbUpdateException dbEx)
+         {
+            // Log database update exceptions which might involve constraints, duplicate keys, etc.
+            System.Diagnostics.Debug.WriteLine($"Database update exception: {dbEx.InnerException?.Message ?? dbEx.Message}");
+            throw new Exception("Database update failed while creating EquipmentDefinition.", dbEx);
+         }
+         catch (Exception ex)
+         {
+            // Log any other exceptions that might occur
+            System.Diagnostics.Debug.WriteLine($"An error occurred while creating a new EquipmentDefinition: {ex.Message}");
+            throw new Exception("An error occurred while creating EquipmentDefinition.", ex);
+         }
+      }
+
+
+      public void UpdateEquipmentDefinition(Guid id, DtoEquipmentDefinitionUpdate dto)
         {
             var equipmentDefinition = _context.EquipmentDefinition.Find(id);
             if (equipmentDefinition == null)

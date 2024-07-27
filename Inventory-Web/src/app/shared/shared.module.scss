@@ -2,12 +2,11 @@ mat-card {
     min-width: 500px;
     width: 100%;
     overflow-x: auto;
-
 }
 
 h4 {
     margin-top: 20;
-    margin-bottom: 0px;
+    margin-bottom: .4rem;
 }
 
 .title-container {
@@ -23,6 +22,7 @@ h4 {
     display: flex;
     flex-direction: column;
     margin: 1rem;
+    border: solid pink 3px;
 }
 
 .container-row {
@@ -125,18 +125,15 @@ mat-expansion-panel {
     justify-content: center;
     align-items: center;
     background: white;
-  }
+}
 
-  // Snack bar styling
-  .snack-bar {
-    color: #333;
-    background-color: #fff;
-  }
-  .error-snack-bar {
-    color: #fff;
-    background-color: #D32F2F;
-  }
-  .confirmation-snack-bar {
-    color: #fff;
-    background-color: #4CAF50;
-  }
+
+.mat-expansion-panel-header.mat-expanded {
+    height: 3rem;
+    ;
+}
+
+.selected {
+    background-color: rgba(0, 0, 0, 0.04); // Light grey background for selected rows
+}
+

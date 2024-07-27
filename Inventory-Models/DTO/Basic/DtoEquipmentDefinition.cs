@@ -28,11 +28,11 @@ namespace Inventory_Dto.Dto
 
         [Required]
         [ForeignKey("PipeProperty_Grade")]
-        public Guid PipeProperty_GradeId { get; set; }
+        public Guid GradeId { get; set; }
 
         [Required]
         [ForeignKey("PipeProperty_Size")]
-        public Guid PipeProperty_SizeId { get; set; }
+        public Guid SizeId { get; set; }
         public string? Notes { get; set; }
 
         public PipeProperty_Grade Grade { get; set; }

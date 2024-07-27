@@ -240,9 +240,9 @@ namespace Inventory_BLL.BL
                                                     EquipmentDefinition = new DtoEquipmentDefinition
                                                     {
                                                         EquipmentDefinitionId = ed.EquipmentDefinitionId,
-                                                        PipeProperty_GradeId = ed.PipeProperty_GradeId,
+                                                        GradeId = ed.GradeId,
                                                         Grade = ed.Grade,
-                                                        PipeProperty_SizeId = ed.PipeProperty_SizeId,
+                                                        SizeId = ed.SizeId,
                                                         Size = ed.Size,
                                                         Category = ed.Category,
                                                         Description = ed.Description,

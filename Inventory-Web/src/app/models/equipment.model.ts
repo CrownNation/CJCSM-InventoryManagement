@@ -13,6 +13,18 @@ export interface Equipment{
     equipmentDefinition: EquipmentDefinition;
 }
 
+export interface DtoEquipmentCreate{
+    equipmentId: string;
+    rackId: string;
+    equipmentDefintionId: string;
+    customerId: string;
+    shopLocationId: string;
+    quantity: number;
+    lengthInMeters: number;
+    lengthInFeet: number;
+}
+
+
 export interface EquipmentDefinition {
     equipmentDefinitionId: string;
     isActive: boolean;
@@ -35,7 +47,8 @@ export interface EquipmentDefinitionCreate {
 }
 
 export interface EquipmentDefinitionSearchParams {
-    category: string;
+    category: string | null;
+    description: string | null;
     gradeId: string | null;
     sizeId: string | null;
     isActive: boolean;

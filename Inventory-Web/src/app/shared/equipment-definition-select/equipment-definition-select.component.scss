@@ -1,0 +1,10 @@
+@import 'src/app/shared/shared.module.scss';
+
+.narrow-column {
+    width: 12.5%; /* Adjust according to your need */
+}
+
+.wide-column {
+    width: 50%; /* This column will take half the table width */
+}
+

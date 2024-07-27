@@ -136,8 +136,8 @@ namespace Inventory_BLL.BL
                                  EquipmentList = (from equipment in _context.Equipment
                                                   join te in _context.TallyEquipment on equipment.EquipmentId equals te.EquipmentId
                                                   join ed in _context.EquipmentDefinition on equipment.EquipmentDefinitionId equals ed.EquipmentDefinitionId
-                                                  join ppgr in _context.PipeProperty_Grade on ed.PipeProperty_GradeId equals ppgr.PipeProperty_GradeId
-                                                  join pps in _context.PipeProperty_Size on ed.PipeProperty_SizeId equals pps.PipeProperty_SizeId
+                                                  join ppgr in _context.PipeProperty_Grade on ed.GradeId equals ppgr.PipeProperty_GradeId
+                                                  join pps in _context.PipeProperty_Size on ed.SizeId equals pps.PipeProperty_SizeId
                                                   where te.TallyId == tally.TallyId
                                                   select new DtoEquipment
                                                   {
@@ -155,8 +155,8 @@ namespace Inventory_BLL.BL
                                                           EquipmentDefinitionId = ed.EquipmentDefinitionId,
                                                           IsActive = ed.IsActive,
                                                           Notes = ed.Notes,
-                                                          PipeProperty_GradeId = ed.PipeProperty_GradeId,
-                                                          PipeProperty_SizeId = ed.PipeProperty_SizeId,
+                                                          GradeId = ed.GradeId,
+                                                          SizeId = ed.SizeId,
                                                           Grade = ppgr,
                                                           Size = pps
                                                       }
@@ -256,8 +256,8 @@ namespace Inventory_BLL.BL
                                  EquipmentList = (from equipment in _context.Equipment
                                                   join te in _context.TallyEquipment on equipment.EquipmentId equals te.EquipmentId
                                                   join ed in _context.EquipmentDefinition on equipment.EquipmentDefinitionId equals ed.EquipmentDefinitionId
-                                                  join ppgr in _context.PipeProperty_Grade on ed.PipeProperty_GradeId equals ppgr.PipeProperty_GradeId
-                                                  join pps in _context.PipeProperty_Size on ed.PipeProperty_SizeId equals pps.PipeProperty_SizeId
+                                                  join ppgr in _context.PipeProperty_Grade on ed.GradeId equals ppgr.PipeProperty_GradeId
+                                                  join pps in _context.PipeProperty_Size on ed.SizeId equals pps.PipeProperty_SizeId
                                                   where te.TallyId == tally.TallyId
                                                   select new DtoEquipment
                                                   {
@@ -275,8 +275,8 @@ namespace Inventory_BLL.BL
                                                           EquipmentDefinitionId = ed.EquipmentDefinitionId,
                                                           IsActive = ed.IsActive,
                                                           Notes = ed.Notes,
-                                                          PipeProperty_GradeId = ed.PipeProperty_GradeId,
-                                                          PipeProperty_SizeId = ed.PipeProperty_SizeId,
+                                                          GradeId = ed.GradeId,
+                                                          SizeId = ed.SizeId,
                                                           Grade = ppgr,
                                                           Size = pps
                                                       }
@@ -315,9 +315,9 @@ namespace Inventory_BLL.BL
             List<TallyEquipment> tallyEquipmentList = new List<TallyEquipment>();
 
             // For each incoming tier with pipe (pipe is always on a tier), we create the pipe model and assign the tierId for that pipe to
-            // either an existing specified tier, the next empty tier on the rack that already exists, or create a new tier if all tiers are empty.
-            // We have pre-created tiers on the rack so we can make inserts more efficient, but we have a fail safe of creating a new tier if we ever actually use all the tiers in the pool.
-            // We also create an entry into TallyPipe to link the pipe with this tally.
+            // either an existing specified tier, the next empty tier on the rack that already exists, or create a new tier if all tiers are full.
+            // We have pre-created tiers on the rack so we can make inserts more efficient, but we have a fail safe of creating a new tier if we ever actually
+            // use all the tiers in the pool. We also create an entry into TallyPipe to link the pipe with this tally.
             foreach(DtoTier_WithPipe tierWithPipe in tallyCreate.TierWithPipeList)
             {
                 // For each pipe, create the pipe model object to insert the pipe.
@@ -328,7 +328,9 @@ namespace Inventory_BLL.BL
                     //Ignore any TierId that the pipe has since we are going to group based on what the user has set as the tier.
                     pipe.TierId = tierWithPipe.TierId;
                     pipeCreate.TierId = tierWithPipe.TierId;
+
                     //If the incoming TierId != Guid.Empty, then we get the existing tier and we get the info from that object.
+                    //Note that it will add pipe to that tier if there is already pipe there.
                     if (tierWithPipe.TierId != Guid.Empty)
                     {
                         AssignPipeToExistingNonEmptyTier(rackWithTierList, pipeCreate, pipe);

@@ -1,4 +1,4 @@
-import { Customer } from "./customer.model";
+import { DtoEquipmentCreate } from "./equipment.model";
 import { Pipe, PipeDefinition } from "./pipe.model";
 
 export enum TallyTypes {
@@ -35,7 +35,8 @@ export interface DtoTallyCreate {
   invoiceNumber?: string;
   talliedByUserId: string;
   carrierName: string;
-  tierList: DtoTierWithPipe[];
+  tierList?: DtoTierWithPipe[];
+  equipmentList?: DtoEquipmentCreate[];
 }
 
 export interface DtoTierWithPipe {

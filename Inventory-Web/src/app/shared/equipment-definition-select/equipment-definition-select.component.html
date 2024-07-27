@@ -1,0 +1,114 @@
+<div class="equipment-definition-select-container">
+    <h3 style="margin-bottom: .5rem; text-align: center;">Select Equipment Definition</h3>
+    <div>
+        <mat-accordion>
+            <mat-expansion-panel expanded="true" class="filter-options" style="padding-top: 1rem;">
+                <form [formGroup]="equipmentForm">
+                    <div class="container-filter">
+
+                        <!-- Description -->
+                        <mat-form-field appearance="outline" color="accent">
+                            <mat-label>Description</mat-label>
+                            <input matInput formControlName="description" placeholder="Description">
+                        </mat-form-field>
+
+                        <!-- Category Selection -->
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Category</mat-label>
+                            <mat-select placeholder="Select category" #categorySelect formControlName="category">
+                                <mat-option *ngFor="let category of categories" [value]="category.value">
+                                    {{ category.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <!-- Grade Selection -->
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Grade</mat-label>
+                            <input #gradeInput type="text" placeholder="Select grade" matInput
+                                formControlName="grade"  [matAutocomplete]="autoGrade" (input)="filterGrades()"
+                                (focus)="filterGrades()" (blur)="onGradeBlur()">
+                            <mat-autocomplete autoActiveFirstOption #autoGrade="matAutocomplete"
+                                [displayWith]="displayGrade">
+                                <mat-option *ngFor="let grade of filteredGrades" [value]="grade">
+                                    {{ grade.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                        <!-- Size Selection -->
+                        <mat-form-field appearance="outline" floatLabel="always">
+                            <mat-label>Size</mat-label>
+                            <input #sizeInput type="text" placeholder="Select size" matInput formControlName="size"
+                                [matAutocomplete]="autoSize" (input)="filterSizes()" (focus)="filterSizes()"
+                                (blur)="onSizeBlur()">
+                            <mat-autocomplete autoActiveFirstOption #autoSize="matAutocomplete"
+                                [displayWith]="displaySize">
+                                <mat-option *ngFor="let size of filteredSizes" [value]="size">
+                                    {{ size.sizeMetric }}(mm) / {{ size.sizeImperial }}(in)
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="item-buttons">
+                        <button mat-raised-button type="button" color="primary" (click)="filter()">Filter</button>
+                        <button mat-raised-button type="button" (click)="clearForm()">Clear filters</button>
+                    </div>
+                </form>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <table mat-table [dataSource]="dataSource" matSort>
+            <!-- Category Column -->
+            <ng-container matColumnDef="Category">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="narrow-column">Category</th>
+                <td mat-cell *matCellDef="let row" class="narrow-column"> {{ row.category }}</td>
+            </ng-container>
+
+            <!-- Grade Column -->
+            <ng-container matColumnDef="Grade">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="narrow-column">Grade</th>
+                <td mat-cell *matCellDef="let row" class="narrow-column"> {{ row.grade.name }}</td>
+            </ng-container>
+
+            <!-- Size Metric Column -->
+            <ng-container matColumnDef="Size Metric">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="narrow-column">Size (mm)</th>
+                <td mat-cell *matCellDef="let row" class="narrow-column"> {{ row.size.sizeMetric }}</td>
+            </ng-container>
+
+            <!-- Size Imperial Column -->
+            <ng-container matColumnDef="Size Imperial">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="narrow-column">Size (in)</th>
+                <td mat-cell *matCellDef="let row" class="narrow-column"> {{ row.size.sizeImperial }}</td>
+            </ng-container>
+
+            <!-- Table Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
+                [class.selected]="selection.isSelected(row)"></tr>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="Description">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="wide-column">Description</th>
+                <td mat-cell *matCellDef="let row" class="wide-column"> {{ row.description }}</td>
+            </ng-container>
+
+        </table>
+        <div *ngIf="loadingEquipmentDefinitions" class="spinner">
+            <mat-progress-spinner color="primary" mode="indeterminate">
+            </mat-progress-spinner>
+        </div>
+
+
+        <div class="actions">
+            <button mat-raised-button color="primary" (click)="selectEquipmentDefinition()">Select Equipment
+                Definition</button>
+            <button mat-raised-button (click)="cancel()">Cancel</button>
+            <button mat-raised-button color="accent" (click)="newFromFilters()">New From Filters</button>
+        </div>
+        <div #errorLabel class="errorLabel" style="display: none; text-align: center; margin-top: 5px;"></div>
+    </div>
+
+</div>

@@ -1,9 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { Store, select } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
-import { filter, take, takeUntil, tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { PipeDefinition, PipeDefinitionCreate, PipeDefinitionSearchParams, PipeProperty_Category, PipeProperty_Coating, PipeProperty_Condition, PipeProperty_Grade, PipeProperty_Range, PipeProperty_Size, PipeProperty_Thread, PipeProperty_Wall, PipeProperty_Weight } from 'src/app/models/pipe.model';
 import { AppState } from 'src/app/store/core.state';
 import { actionGetAllPipeProperties } from 'src/app/store/pipe-properties/pipe-properties/pipe-properties.actions';
@@ -106,8 +106,7 @@ export class PipeDefinitionSelectComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>,
     public dialogRef: MatDialogRef<PipeDefinitionSelectComponent>,
     private snackBar: MatSnackBar,
-    private pipeDefinitionService: PipeDefinitionService,
-    private cdr: ChangeDetectorRef
+    private pipeDefinitionService: PipeDefinitionService
   ) {
     this.categories$ = this.store.select(selectCategories);
     this.coatings$ = this.store.select(selectCoatings);
@@ -217,11 +216,7 @@ export class PipeDefinitionSelectComponent implements OnInit, OnDestroy {
   filter() {
     this.setSearchParametersFromForm();
 
-    console.log("category: " + this.pipeForm.value.category);
-    console.log("size: " + this.pipeForm.value.size);
-
     console.log("Current searchParams:", this.pipeDefinitionSearchParams); // Log the current search parameters
-    this.loadingPipeDefinitions = true;
     this.store.dispatch(actionGetPipeDefinitions({ searchParams: this.pipeDefinitionSearchParams }));
   }
 
@@ -278,21 +273,9 @@ export class PipeDefinitionSelectComponent implements OnInit, OnDestroy {
     this.store.dispatch(actionGetPipeDefinitions({ searchParams: this.pipeDefinitionSearchParams }));
   }
 
-  resetFilters(): void {
-    this.filteredCategories = [...this.categories];
-    this.filteredCoatings = [...this.coatings];
-    this.filteredConditions = [...this.conditions];
-    this.filteredGrades = [...this.grades];
-    this.filteredRanges = [...this.ranges];
-    this.filteredSizes = [...this.sizes];
-    this.filteredThreads = [...this.threads];
-    this.filteredWalls = [...this.walls];
-    this.filteredWeights = [...this.weights];
-  }
-
   selectPipeDefinition(): void {
     if (this.selection.isEmpty()) {
-      this.showError("Please select a pipe definition to continue.");
+      this.showSnackBar("Please select a pipe definition to continue.");
       return;
     }
 
@@ -332,30 +315,38 @@ export class PipeDefinitionSelectComponent implements OnInit, OnDestroy {
   
     // Server check (simulate or actual)
     this.setSearchParametersFromForm();
+
     console.log("Current search parameters:", JSON.stringify(this.pipeDefinitionSearchParams, null, 2));
 
-    this.pipeDefinitionService.checkPipeDefinitionExists(this.pipeDefinitionSearchParams).subscribe(exists => {
-      console.log("Received 'exists' value:", exists); // Log the received boolean value
-    
-      // Directly check the boolean value
-      if (exists === true) {
-        console.log("Exists is explicitly true, showing snackbar.");
-        this.showSnackBar("A pipe definition with these filters already exists on the server.", 'Close', { panelClass: ['error-snack-bar'] });
-      } else {
-        console.log("Exists is not true, it is:", exists); // Log the actual value of exists when it is not true
-        this.createPipeDefinition(this.pipeDefinitionSearchParams);
+
+    this.pipeDefinitionService.checkPipeDefinitionExists(this.pipeDefinitionSearchParams).pipe(
+      switchMap((exists: boolean) => {
+        console.log("Received 'exists' value:", exists);
+        if (exists === false) {
+          // If the pipe definition does not exist, attempt to create it
+          return this.createPipeDefinition(this.pipeDefinitionSearchParams);
+        } else {
+          // If it does exist, show a notification and complete the observable without emitting
+          this.showSnackBar("A pipe definition with these filters already exists on the server.", 'Close', { panelClass: ['error-snack-bar'] });
+          return EMPTY;
+        }
+      })
+    ).subscribe({
+      next: (result) => {
+        console.log("Pipe definition created successfully:", result);
+        this.showSnackBar("New pipe definition created successfully!", 'Close', { panelClass: ['confirmation-snack-bar'] });
         this.loadPipeDefinitions();
+      },
+      error: (error) => {
+        this.showSnackBar("Failed to create pipe definition.", 'Close', { panelClass: ['error-snack-bar'] });
+        console.error("Failed to create pipe definition:", error);
       }
-    }, error => {
-      console.error("Error when checking if pipe definition exists:", error); // Log any errors encountered during the API call
     });
-  }
-  selectRow(row: any): void {
-    console.log("Row selected:", row);
-    // Implement row selection logic
+
   }
 
-  createPipeDefinition(params: PipeDefinitionSearchParams): void {
+
+  createPipeDefinition(params: PipeDefinitionSearchParams): Observable<PipeDefinition> {
     const newDef: PipeDefinitionCreate = {
       categoryId: params.categoryId!,
       coatingId: params.coatingId!,
@@ -369,14 +360,7 @@ export class PipeDefinitionSelectComponent implements OnInit, OnDestroy {
       isActive: true
     };
   
-    this.pipeDefinitionService.createPipeDefinition(newDef).subscribe({
-      next: (res) => {
-        this.showSnackBar("New pipe definition created successfully!", 'Close', { panelClass: ['confirmation-snack-bar'] });
-      },
-      error: (err) => {
-        this.showSnackBar("Failed to create pipe definition: " + err.message, 'Close', { panelClass: ['error-snack-bar'] });
-      }
-    });
+    return this.pipeDefinitionService.createPipeDefinition(newDef);
   }
 
   showError(message: string): void {

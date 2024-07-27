@@ -85,3 +85,77 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 //   }
 
 
+// Global styles.scss
+.mat-mdc-snack-bar-container {
+  // Default snack bar styles
+
+  background-color: transparent;
+
+
+}
+
+.mat-mdc-snack-bar-container.snack-bar {
+  .mdc-snackbar__surface {  
+    background-color: #333;
+    border-radius: .5rem;
+  }
+
+  .mdc-snackbar__label {
+      color: #fff; // White text for readability
+  }
+
+  .mat-mdc-button {
+      color: #fff; // White text for readability
+      margin-left: .5rem;
+  }
+
+  .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled){
+      background-color: #777;
+      color: white;
+  }
+}
+
+.mat-mdc-snack-bar-container.error-snack-bar {
+  .mdc-snackbar__surface {  
+    background-color: #9d2b2b;
+    border-radius: .5rem;
+  }
+
+  .mdc-snackbar__label {
+      color: #fff; // White text for readability
+  }
+
+  .mat-mdc-button {
+      color: #fff; // White text for readability
+      background-color: #333;
+      margin-left: .5rem;
+  }
+
+  .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled){
+      background-color: #333;
+      color: white;
+  }
+}
+
+.mat-mdc-snack-bar-container.confirmation-snack-bar {
+
+  .mdc-snackbar__surface {  
+    background-color: #48A070;
+    border-radius: .5rem;
+  }
+
+  .mdc-snackbar__label {
+      color: #fff; // White text for readability
+  }
+
+  .mat-mdc-button {
+      color: #fff; // White text for readability
+      background-color: #333;
+      margin-left: .5rem;
+  }
+
+  .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled){
+      background-color: #333;
+      color: white;
+  }
+}

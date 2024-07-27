@@ -21,10 +21,10 @@ namespace Inventory_Dto.Dto
         public string Category { get; set; }
 
         [Required]
-        public Guid PipeProperty_GradeId { get; set; }
+        public Guid GradeId { get; set; }
 
         [Required]
-        public Guid PipeProperty_SizeId { get; set; }
+        public Guid SizeId { get; set; }
 
         public string? Notes { get; set; }
     }

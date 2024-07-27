@@ -3,21 +3,23 @@ using Inventory_Dto.Dto;
 
 namespace Inventory_BLL.Interfaces
 {
-    public interface IEquipmentDefinitionBL
-    {
-        // Gets all EquipmentDefinition entities as an IQueryable
-        public IQueryable<DtoEquipmentDefinition> GetEquipmentDefinitions();
+   public interface IEquipmentDefinitionBL
+   {
+      // Gets all EquipmentDefinition entities as an IQueryable
+      public IQueryable<DtoEquipmentDefinition> GetEquipmentDefinitions();
 
-        // Gets a single EquipmentDefinition entity by its ID
-        public IQueryable<DtoEquipmentDefinition> GetEquipmentDefinitionById(Guid id);
+      // Gets a single EquipmentDefinition entity by its ID
+      public IQueryable<DtoEquipmentDefinition> GetEquipmentDefinitionById(Guid id);
 
-        // Creates a new EquipmentDefinition entity using a DTO
-        EquipmentDefinition CreateEquipmentDefinition(DtoEquipmentDefinitionCreate equipmentDefinitionCreateDto);
+      public bool CheckIfEquipmentDefinitionExists(DtoEquipmentDefinitionSearchParams dtoEquipmentDefinition);
 
-        // Updates an existing EquipmentDefinition entity identified by its ID using a DTO
-        void UpdateEquipmentDefinition(Guid id, DtoEquipmentDefinitionUpdate equipmentDefinitionUpdateDto);
+      // Creates a new EquipmentDefinition entity using a DTO
+      public Task<DtoEquipmentDefinition> CreateEquipmentDefinition(DtoEquipmentDefinitionCreate dtoEquipmentDefinitionCreate);
 
-        // Deletes (or deactivates) an EquipmentDefinition entity identified by its ID
-        void DeactivateEquipmentDefinition(Guid id);
-    }
+      // Updates an existing EquipmentDefinition entity identified by its ID using a DTO
+      void UpdateEquipmentDefinition(Guid id, DtoEquipmentDefinitionUpdate equipmentDefinitionUpdateDto);
+
+      // Deletes (or deactivates) an EquipmentDefinition entity identified by its ID
+      void DeactivateEquipmentDefinition(Guid id);
+   }
 }

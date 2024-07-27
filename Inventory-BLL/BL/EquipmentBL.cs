@@ -40,8 +40,8 @@ namespace Inventory_BLL.BL
                 IQueryable<DtoEquipment> equipmentQuery = from equipment in _context.Equipment
                                                           join ed in _context.EquipmentDefinition on equipment.EquipmentDefinitionId equals ed.EquipmentDefinitionId
                                                           join r in _context.Rack on equipment.RackId equals r.RackId
-                                                          join ppgr in _context.PipeProperty_Grade on ed.PipeProperty_GradeId equals ppgr.PipeProperty_GradeId
-                                                          join pps in _context.PipeProperty_Size on ed.PipeProperty_SizeId equals pps.PipeProperty_SizeId
+                                                          join ppgr in _context.PipeProperty_Grade on ed.GradeId equals ppgr.PipeProperty_GradeId
+                                                          join pps in _context.PipeProperty_Size on ed.SizeId equals pps.PipeProperty_SizeId
                                                           where equipment.EquipmentId == equipmentId
                                                           select new DtoEquipment
 
@@ -59,9 +59,9 @@ namespace Inventory_BLL.BL
                                                                   Category = ed.Category,
                                                                   Description = ed.Description,
                                                                   EquipmentDefinitionId = ed.EquipmentDefinitionId,
-                                                                  PipeProperty_GradeId = ed.PipeProperty_GradeId,
+                                                                  GradeId = ed.GradeId,
                                                                   Grade = ppgr,
-                                                                  PipeProperty_SizeId = ed.PipeProperty_SizeId,
+                                                                  SizeId = ed.SizeId,
                                                                   Size = pps,
                                                                   IsActive = ed.IsActive,
                                                                   Notes = ed.Notes
@@ -85,8 +85,8 @@ namespace Inventory_BLL.BL
                 var equipmentQuery = from equipment in _context.Equipment
                                      join ed in _context.EquipmentDefinition on equipment.EquipmentDefinitionId equals ed.EquipmentDefinitionId
                                      join r in _context.Rack on equipment.RackId equals r.RackId
-                                     join ppgr in _context.PipeProperty_Grade on ed.PipeProperty_GradeId equals ppgr.PipeProperty_GradeId
-                                     join pps in _context.PipeProperty_Size on ed.PipeProperty_SizeId equals pps.PipeProperty_SizeId
+                                     join ppgr in _context.PipeProperty_Grade on ed.GradeId equals ppgr.PipeProperty_GradeId
+                                     join pps in _context.PipeProperty_Size on ed.SizeId equals pps.PipeProperty_SizeId
                                      select new DtoEquipment
                                      {
                                          CustomerId = equipment.CustomerId,
@@ -102,9 +102,9 @@ namespace Inventory_BLL.BL
                                              Category = ed.Category,
                                              Description = ed.Description,
                                              EquipmentDefinitionId = ed.EquipmentDefinitionId,
-                                             PipeProperty_GradeId = ed.PipeProperty_GradeId,
+                                             GradeId = ed.GradeId,
                                              Grade = ppgr,
-                                             PipeProperty_SizeId = ed.PipeProperty_SizeId,
+                                             SizeId = ed.SizeId,
                                              Size = pps,
                                              IsActive = ed.IsActive,
                                              Notes = ed.Notes

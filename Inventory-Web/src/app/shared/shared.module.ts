@@ -11,12 +11,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { PipeDefinitionSelectComponent } from './pipe-definition-select/pipe-definition-select.component';
+import { EquipmentDefinitionEffects } from '../store/equipment-definition/equipment-definition.effects';
+import { EquipmentDefinitionSelectComponent } from './equipment-definition-select/equipment-definition-select.component';
 
 @NgModule({
   declarations: [
     NotificationHubComponent,
     PipeViewComponent,
-    PipeDefinitionSelectComponent
+    PipeDefinitionSelectComponent,
+    EquipmentDefinitionSelectComponent
   ],
   imports: [
     CommonModule,
