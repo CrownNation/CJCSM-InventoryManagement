@@ -1,0 +1,121 @@
+{
+  "configVersion": 1,
+  "timestamp": 1722050792340,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/123.15518e79554ce600.js",
+        "/163.45ae6d45cee08f2a.js",
+        "/169.e9068e9b5693ca7e.js",
+        "/177.6e69a8fad7f733e1.js",
+        "/189.a8d11e689dcd17c1.js",
+        "/236.2a26dbca64dbf058.js",
+        "/292.a52063bd0805d448.js",
+        "/298.6e561592f30a02ed.js",
+        "/393.7c1b98f3e8884cfe.js",
+        "/431.b5c4744bffa1c903.js",
+        "/471.cbb634f4dfd947a1.js",
+        "/560.db83f8b9b140968b.js",
+        "/663.35af38d233d8d36e.js",
+        "/692.2ca0ca871f6839c6.js",
+        "/738.b6ca8348f279eb49.js",
+        "/889.99afb14b1c89a768.js",
+        "/924.d7ed919bb002e01e.js",
+        "/common.62cf91224988e9a0.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main.5de134cb5affdbef.js",
+        "/manifest.webmanifest",
+        "/polyfills.ff7377718416fd5e.js",
+        "/runtime.6565fc94299daecc.js",
+        "/styles.4c743678fd085806.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/TallyOneLogo.png",
+        "/assets/cjcsm_logo_small.png",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/123.15518e79554ce600.js": "5f924252e869a393f2d6ebab07c9294404b17922",
+    "/163.45ae6d45cee08f2a.js": "9fcdc6a9fc5139ed6b64168754d86015e0b32aa1",
+    "/169.e9068e9b5693ca7e.js": "983d88ea4b3fb69bb758b3f1e959e4be1955066f",
+    "/177.6e69a8fad7f733e1.js": "56d6bae858b6028bc4058d562f8693db30a43cef",
+    "/189.a8d11e689dcd17c1.js": "a27a9e6b74fa356620303b17ff438be2c924dc71",
+    "/236.2a26dbca64dbf058.js": "d356c0631c86e97226dfd64a76d8ac38a7e4ec69",
+    "/292.a52063bd0805d448.js": "4570831ca4a51e3552e163f054ddc06e7d7866ed",
+    "/298.6e561592f30a02ed.js": "f3f16630bdcf6c79ee8767d06b072cfaaebddf16",
+    "/393.7c1b98f3e8884cfe.js": "8fa0035472d5b5406030eb07d24d193a8ee7939f",
+    "/431.b5c4744bffa1c903.js": "71c003877ea87bba99722c736946f63b915dc634",
+    "/471.cbb634f4dfd947a1.js": "188247782cd5056fff128e8da363c7a88734f723",
+    "/560.db83f8b9b140968b.js": "75954b2928fdd31afb7ff34dacf0ae1de8515a9d",
+    "/663.35af38d233d8d36e.js": "f44772fd0be6c4ffedfdf7536cd93a91e9011f92",
+    "/692.2ca0ca871f6839c6.js": "92769dac39de43df28de1824646443b0e8b67bbc",
+    "/738.b6ca8348f279eb49.js": "04e7f1608493e9f7922d335e2f57f53f95767049",
+    "/889.99afb14b1c89a768.js": "59ac3b84fab29d3afbafd2e17d8020a80e3b7e8c",
+    "/924.d7ed919bb002e01e.js": "af2f6bebf456fa66b42f73b838cb338a5d63537f",
+    "/assets/TallyOneLogo.png": "9d3e3e4c18d5750d955391b6dbbee65a9e4aaa93",
+    "/assets/cjcsm_logo_small.png": "60ce8ee2a77396293d3687e052c6572d16e93b70",
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/common.62cf91224988e9a0.js": "f23713fa27ada94daf0e8b7a40847d3dd7cdd055",
+    "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/index.html": "5ba96d18e5067a49f35b7801be2b1cdfb4e432cd",
+    "/main.5de134cb5affdbef.js": "9cf960d724a83e0a14e235d0e7012e58709d6cdb",
+    "/manifest.webmanifest": "1caa4aaa1d7d967e004b9c909a04ced64e68414e",
+    "/polyfills.ff7377718416fd5e.js": "c4b27b8f4852c88ef7d46a00e7cb415758cba21b",
+    "/runtime.6565fc94299daecc.js": "8a011edbac4d52ff8174d670bd96c1dd7dcb655c",
+    "/styles.4c743678fd085806.css": "753a16433c26b7a5d57346c50c1b187306248382"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
