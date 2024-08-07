@@ -122,23 +122,23 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
+                    b.Property<Guid>("GradeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PipeProperty_GradeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PipeProperty_SizeId")
+                    b.Property<Guid>("SizeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("EquipmentDefinitionId");
 
-                    b.HasIndex("PipeProperty_GradeId");
+                    b.HasIndex("GradeId");
 
-                    b.HasIndex("PipeProperty_SizeId");
+                    b.HasIndex("SizeId");
 
                     b.ToTable("EquipmentDefinition");
                 });
@@ -587,13 +587,13 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 {
                     b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Grade", "Grade")
                         .WithMany()
-                        .HasForeignKey("PipeProperty_GradeId")
+                        .HasForeignKey("GradeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Inventory_DAL.Entities.PipeProperties.PipeProperty_Size", "Size")
                         .WithMany()
-                        .HasForeignKey("PipeProperty_SizeId")
+                        .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

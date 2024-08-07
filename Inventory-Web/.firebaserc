@@ -1,0 +1,10 @@
+{
+  "projects": {
+    "default": "cjcsm-tally-test",
+    "test": "cjcsm-tally-test",
+    "prod": "cjcsm-tally-prod"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

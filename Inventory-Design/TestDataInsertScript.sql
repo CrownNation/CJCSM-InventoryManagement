@@ -1,4 +1,4 @@
-USE [CJCSM-Inventory]
+USE [CJCSM-Inventory-Test]
 
 -- Customers
 DECLARE @Customer1Id UNIQUEIDENTIFIER = '88E14C54-67C8-4D0D-92B8-3D74A77DEE9A',
@@ -172,7 +172,7 @@ DECLARE @EquipmentDef1Id UNIQUEIDENTIFIER = '1512b3e7-c5dc-4720-a9c8-5b3f1313819
         @EquipmentDef3Id UNIQUEIDENTIFIER = 'b00aea53-b5f4-4880-bf69-50d9c847cea3',
         @EquipmentDef4Id UNIQUEIDENTIFIER = '953880a2-4966-431a-8b0a-6e2e066a31a9';
 
-INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, PipeProperty_GradeId, PipeProperty_SizeId, Notes)
+INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, GradeId, SizeId, Notes)
 VALUES 
   (@EquipmentDef1Id, 
    1,  -- IsActive
@@ -182,7 +182,7 @@ VALUES
    (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
    'Notes go here');
    
-INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, PipeProperty_GradeId, PipeProperty_SizeId, Notes)
+INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, GradeId, SizeId, Notes)
 VALUES 
   (@EquipmentDef2Id, 
    1,  -- IsActive
@@ -192,7 +192,7 @@ VALUES
    (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
    'Notes go here');
    
-INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, PipeProperty_GradeId, PipeProperty_SizeId, Notes)
+INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, GradeId, SizeId, Notes)
 VALUES 
   (@EquipmentDef3Id, 
    1,  -- IsActive
@@ -202,7 +202,7 @@ VALUES
    (SELECT TOP 1 PipeProperty_SizeId FROM PipeProperty_Size ORDER BY NEWID()),
    'Notes go here');
    
-INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, PipeProperty_GradeId, PipeProperty_SizeId, Notes)
+INSERT INTO EquipmentDefinition (EquipmentDefinitionId, IsActive, Description, Category, GradeId, SizeId, Notes)
 VALUES 
   (@EquipmentDef4Id, 
    1,  -- IsActive

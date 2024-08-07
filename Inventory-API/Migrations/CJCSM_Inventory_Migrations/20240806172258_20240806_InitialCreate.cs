@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     /// <inheritdoc />
-    public partial class _20240514InitialCreate : Migration
+    public partial class _20240806InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -250,22 +250,22 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Category = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
-                    PipePropertyGradeId = table.Column<Guid>(name: "PipeProperty_GradeId", type: "uniqueidentifier", nullable: false),
-                    PipePropertySizeId = table.Column<Guid>(name: "PipeProperty_SizeId", type: "uniqueidentifier", nullable: false),
+                    GradeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SizeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EquipmentDefinition", x => x.EquipmentDefinitionId);
                     table.ForeignKey(
-                        name: "FK_EquipmentDefinition_PipeProperty_Grade_PipeProperty_GradeId",
-                        column: x => x.PipePropertyGradeId,
+                        name: "FK_EquipmentDefinition_PipeProperty_Grade_GradeId",
+                        column: x => x.GradeId,
                         principalTable: "PipeProperty_Grade",
                         principalColumn: "PipeProperty_GradeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EquipmentDefinition_PipeProperty_Size_PipeProperty_SizeId",
-                        column: x => x.PipePropertySizeId,
+                        name: "FK_EquipmentDefinition_PipeProperty_Size_SizeId",
+                        column: x => x.SizeId,
                         principalTable: "PipeProperty_Size",
                         principalColumn: "PipeProperty_SizeId",
                         onDelete: ReferentialAction.Cascade);
@@ -409,14 +409,14 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EquipmentDefinition_PipeProperty_GradeId",
+                name: "IX_EquipmentDefinition_GradeId",
                 table: "EquipmentDefinition",
-                column: "PipeProperty_GradeId");
+                column: "GradeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EquipmentDefinition_PipeProperty_SizeId",
+                name: "IX_EquipmentDefinition_SizeId",
                 table: "EquipmentDefinition",
-                column: "PipeProperty_SizeId");
+                column: "SizeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PipeDefinition_CategoryId",

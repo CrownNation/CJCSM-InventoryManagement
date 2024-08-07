@@ -59,6 +59,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.json"); // Load configuration from appsettings.json
 
+// Load environment-specific configuration
+builder.Configuration.AddJsonFile(
+   $"appsettings.{ builder.Environment.EnvironmentName }.json",
+   optional: true,
+   reloadOnChange: true);    
+
 builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container. A service is a reusable component that provides app functionality.

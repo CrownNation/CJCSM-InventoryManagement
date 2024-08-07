@@ -17,7 +17,7 @@ namespace Inventory_DAL.Entities
         //add-migration [vxxxx_to_vxxxx_CamelCaseDescription_Project] -Context CjcsmSqliteContext -Output Migrations/ProjectMigrations
 
         //This command is used with the Package Manager Console(PMC) in Visual Studio
-        //Add-Migration 20240514_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
+        //Add-Migration 20240806_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
         //Update-Database
 
         //This command is used in the command-line interface (CLI) outside of Visual Studio.
@@ -72,7 +72,7 @@ namespace Inventory_DAL.Entities
         // We specificy the connection string differently when we deploy in production using the EF Core bundle.
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            string connectionString = _configuration.GetConnectionString("developmentConnection")!;
+            string connectionString = _configuration.GetConnectionString("defaultConnection")!;
 
             Console.WriteLine("Connetion String OnConfiguring: " + connectionString);
             options.UseSqlServer(connectionString);
