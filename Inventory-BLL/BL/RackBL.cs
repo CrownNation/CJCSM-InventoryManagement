@@ -335,6 +335,7 @@ namespace Inventory_BLL.BL
                 var rackWithTiersQuery = from rack in _context.Rack
                                          join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
                                          orderby rack.ShopLocationId, rack.RackType descending, rack.Name
+                                         where rack.RackType == "Pipe"
                                          select new DtoRack_WithTier
                                          {
                                              RackId = rack.RackId,
@@ -343,19 +344,22 @@ namespace Inventory_BLL.BL
                                              ShopLocationName = shopLocation.Name,
                                              IsActive = rack.IsActive,
                                              Description = rack.Description,
-                                             JointsPeTier = rack.JointsPerTier,
+                                             JointsPerTier = rack.JointsPerTier,
                                              RackType = rack.RackType,
                                              TierList = (from tier in _context.Tier
                                                          where tier.RackId == rack.RackId
+                                                         let pipeCount = _context.Pipe
+                                                                   .Where(pipe => pipe.TierId == tier.TierId)
+                                                                   .Sum(pipe => pipe.Quantity)
+                                                         // where pipeCount > 0 // Uncomment to get only tiers with pipe
+
                                                          orderby tier.Number ascending
                                                          select new DtoTier_WithPipeInfo
                                                          {
                                                              TierId = tier.TierId,
                                                              RackId = tier.RackId,
                                                              Number = tier.Number,
-                                                             PipeCount = _context.Pipe
-                                                                         .Where(pipe => pipe.TierId == tier.TierId)
-                                                                         .Sum(pipe => pipe.Quantity)
+                                                             PipeCount = pipeCount
                                                          }).ToList()
                                          };
 
@@ -368,6 +372,34 @@ namespace Inventory_BLL.BL
             }
         }
 
+public IQueryable<DtoRack> GetRackListForEquipment()
+{
+   try
+   {
+      var racksForEquipmentQuery = from rack in _context.Rack
+                               join shopLocation in _context.ShopLocation on rack.ShopLocationId equals shopLocation.ShopLocationId
+                               orderby rack.ShopLocationId, rack.RackType descending, rack.Name
+                               where rack.RackType == "Equipment"
+                               select new DtoRack
+                               {
+                                  RackId = rack.RackId,
+                                  Name = rack.Name,
+                                  ShopLocationId = rack.ShopLocationId,
+                                  ShopLocationName = shopLocation.Name,
+                                  IsActive = rack.IsActive,
+                                  Description = rack.Description,
+                                  RackType = rack.RackType,
+                               };
 
-    }
+      return racksForEquipmentQuery;
+   }
+   catch (Exception ex)
+   {
+      System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+      throw; // Rethrow the exception to let it propagate up the call stack
+   }
+}
+
+
+}
 }

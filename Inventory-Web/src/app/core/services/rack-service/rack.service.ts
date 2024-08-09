@@ -34,9 +34,8 @@ export class RackService {
     return this.http.get<RackWithStock[]>(`${this.baseUrl}/${id}/WithStock`);
   }
 
-  // Todo: Create and move to shop-location service
-  getShopLocations(): Observable<ShopLocation[]> {
-    return this.http.get<ShopLocation[]>(`${environment.apiUrl}ShopLocation`);
+  getEquipmentRacks(): Observable<Rack[]> {
+    return this.http.get<Rack[]>(`${this.baseUrl}/Equipment`);
   }
 
   addRack(rack: RackCreate): Observable<Rack> {

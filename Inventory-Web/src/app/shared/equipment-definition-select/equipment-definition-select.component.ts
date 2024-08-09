@@ -267,7 +267,33 @@ export class EquipmentDefinitionSelectComponent implements OnInit, OnDestroy {
 }
 
 
+// -- Handle double and single clicks on the table rows -- //
+// -- Single clicks will highlight / unhighlight a row, double click will select and return the row -- //
+private clickTimeout: any;
+handleClick(row: any): void {
+  if (this.clickTimeout) {
+    clearTimeout(this.clickTimeout);
+    this.clickTimeout = null;
+  }
+  this.clickTimeout = setTimeout(() => {
+    this.onSingleClick(row);
+  }, 250); // 250 milliseconds for double-click threshold
+}
 
+handleDoubleClick(row: any): void {
+  clearTimeout(this.clickTimeout);
+  this.clickTimeout = null;
+  this.onDoubleClick(row);
+}
+
+onSingleClick(row: any): void {
+  this.selection.toggle(row);
+}
+
+onDoubleClick(row: any): void {
+  this.selection.select(row);
+  this.selectEquipmentDefinition();
+} 
 
   onGradeBlur(): void {
     const inputVal = this.gradeInput.nativeElement.value;

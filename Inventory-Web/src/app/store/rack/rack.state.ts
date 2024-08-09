@@ -21,8 +21,8 @@ export interface RackState extends EntityState<any> {
     racksWithTiers: RackWithTier[] | null;
     errorLoadingRacksWithTiers: HttpErrorResponse | null;
 
-    shopLocations: ShopLocation[] | null;
-    errorLoadingShopLocations: HttpErrorResponse | null;
+    equipmentRacks: Rack[] | null;
+    errorLoadingEquipmentRacks: HttpErrorResponse | null;
 }
 
 

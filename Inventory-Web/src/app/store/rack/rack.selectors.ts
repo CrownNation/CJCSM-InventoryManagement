@@ -76,14 +76,13 @@ export const selectRacksWithTiersError = createSelector(
   (state: RackState) => state.errorLoadingRacksWithTiers
 );
 
-/* DELETE ME
-// Shop Locations
-export const selectShopLocations = createSelector(
+// Equipment Racks
+export const selectEquipmentRacks = createSelector(
   selectRackFeature,
-  (state: RackState) => state.shopLocations
+  (state: RackState) => state.equipmentRacks
 );
-export const selectShopLocationsError = createSelector(
+
+export const selectEquipmentRacksError = createSelector(
   selectRackFeature,
-  (state: RackState) => state.errorLoadingShopLocations
+  (state: RackState) => state.errorLoadingEquipmentRacks
 );
-*/

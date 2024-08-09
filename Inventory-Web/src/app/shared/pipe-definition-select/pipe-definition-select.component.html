@@ -194,8 +194,8 @@
 
           <!-- Table Row Definitions -->
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
-            [class.selected]="selection.isSelected(row)"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="handleClick(row)"
+            (dblclick)="handleDoubleClick(row)" [class.selected]="selection.isSelected(row)"></tr>
         </table>
         <div *ngIf="loadingPipeDefinitions" class="spinner">
           <mat-progress-spinner color="primary" mode="indeterminate">

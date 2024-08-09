@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Rack, RackCreate, RackSearchParams, RackWithStock, RackWithTier } from '../../models/rack.model';
+import { Rack, RackCreate, RackSearchParams, RackWithStock, RackWithTier, TierWithPipeInfo } from '../../models/rack.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ShopLocation } from '../../models/shop-location.model';
 
@@ -62,21 +62,24 @@ export const actionGetRacksWithTiersError = createAction(
     props<{ errorLoadingRacksWithTiers: HttpErrorResponse }>()
 );
 
-// Get Racks With Tiers
-export const actionGetShopLocations = createAction(
-    `${rackKey} Get Shop Locations`
+// Get Racks for Equipment
+export const actionGetEquipmentRacks = createAction(
+    `${rackKey} Get Equipment Racks`
 );
-export const actionGetShopLocationsSuccess = createAction(
-    `${rackKey} Get Shop Locations Success`,
-    props<{ shopLocations: ShopLocation[] | null}>()
+export const actionGetEquipmentRacksSuccess = createAction(
+    `${rackKey} Get Equipment Racks Success`,
+    props<{ equipmentRacks: Rack[] | null}>()
 );
-export const actionGetShopLocationsError = createAction(
-    `${rackKey} Get Shop Locations Error`,
-    props<{ errorLoadingShopLocations: HttpErrorResponse }>()
+export const actionGetEquipmentRacksError = createAction(
+    `${rackKey} Get Equipment Racks Error`,
+    props<{ errorLoadingEquipmentRacks: HttpErrorResponse }>()
 );
 
 
-
+export const addTierToRack = createAction(
+    '[Rack] Add Tier',
+    props<{ rackId: string, newTier: TierWithPipeInfo }>()
+  );
 
 
 

@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, switchMap, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { RackService } from "../../core/services/rack-service/rack.service";
-import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksSuccess, actionGetRacksWithTiers, actionGetRacksWithTiersError, actionGetRacksWithTiersSuccess, actionGetShopLocations, actionGetShopLocationsError, actionGetShopLocationsSuccess } from "./rack.actions";
+import { actionCreateRack, actionCreateRackError, actionCreateRackSuccess, actionGetEquipmentRacks, actionGetEquipmentRacksError, actionGetEquipmentRacksSuccess, actionGetRackById, actionGetRackByIdError, actionGetRackByIdSuccess, actionGetRacks, actionGetRacksError, actionGetRacksSuccess, actionGetRacksWithTiers, actionGetRacksWithTiersError, actionGetRacksWithTiersSuccess} from "./rack.actions";
 import { AppState } from "../core.state";
 import { Store } from "@ngrx/store";
 import { addNotification, clearNotifications } from "../notification-hub/notification-hub.actions";
@@ -91,16 +91,18 @@ export class RackEffects {
     )
   );
 
-  retrieveShopLocations = createEffect( () =>
+  // Racks for Equipment
+  retrieveRacksWithEquipment = createEffect(() =>
     this.actions$.pipe(
-      ofType(actionGetShopLocations),
-      switchMap(actionData =>
-        this.rackService.getShopLocations().pipe(
-          map(shopLocations => actionGetShopLocationsSuccess({ shopLocations })),
-          catchError(errorLoadingShopLocations => of(actionGetShopLocationsError({ errorLoadingShopLocations })))
+      ofType(actionGetEquipmentRacks),
+      switchMap(() =>
+        this.rackService.getEquipmentRacks().pipe(
+          map(equipmentRacks => actionGetEquipmentRacksSuccess({ equipmentRacks })),
+          catchError(errorLoadingEquipmentRacks => of(actionGetEquipmentRacksError({ errorLoadingEquipmentRacks })))
         )
       )
     )
   );
+
 
 }

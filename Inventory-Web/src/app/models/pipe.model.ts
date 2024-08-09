@@ -286,10 +286,17 @@ export interface PipeDefinitionUpdate {
 
 export interface PipeCreate {
     pipeDefinitionId: string;
-    length: number;
-    quantity: number;
+    tierId: string;
     rackId: string;
-}
+    rackName: string;
+    tierNumber: number;
+    customerId: string;
+    lengthInMeters: number;
+    lengthInFeet: number;
+    quantity: number;
+    indexOfPipe: number;
+    pipeDefinition?: PipeDefinition
+  }
 
 
 

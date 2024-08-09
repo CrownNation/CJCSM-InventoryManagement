@@ -25,9 +25,9 @@
                         <!-- Grade Selection -->
                         <mat-form-field appearance="outline" floatLabel="always">
                             <mat-label>Grade</mat-label>
-                            <input #gradeInput type="text" placeholder="Select grade" matInput
-                                formControlName="grade"  [matAutocomplete]="autoGrade" (input)="filterGrades()"
-                                (focus)="filterGrades()" (blur)="onGradeBlur()">
+                            <input #gradeInput type="text" placeholder="Select grade" matInput formControlName="grade"
+                                [matAutocomplete]="autoGrade" (input)="filterGrades()" (focus)="filterGrades()"
+                                (blur)="onGradeBlur()">
                             <mat-autocomplete autoActiveFirstOption #autoGrade="matAutocomplete"
                                 [displayWith]="displayGrade">
                                 <mat-option *ngFor="let grade of filteredGrades" [value]="grade">
@@ -84,16 +84,17 @@
                 <td mat-cell *matCellDef="let row" class="narrow-column"> {{ row.size.sizeImperial }}</td>
             </ng-container>
 
-            <!-- Table Row Definitions -->
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"
-                [class.selected]="selection.isSelected(row)"></tr>
-
             <!-- Description Column -->
             <ng-container matColumnDef="Description">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="wide-column">Description</th>
                 <td mat-cell *matCellDef="let row" class="wide-column"> {{ row.description }}</td>
             </ng-container>
+
+            <!-- Table Row Definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="handleClick(row)"
+                (dblclick)="handleDoubleClick(row)" [class.selected]="selection.isSelected(row)"></tr>
+
 
         </table>
         <div *ngIf="loadingEquipmentDefinitions" class="spinner">

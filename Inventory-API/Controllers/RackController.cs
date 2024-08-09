@@ -190,7 +190,31 @@ namespace Inventory_API.Controllers
             }
         }
 
-        [HttpGet("{rackId}/WithStock")]
+      [HttpGet("Equipment")]
+      public async Task<IActionResult> GetRacksForEquipment(ODataQueryOptions<DtoRack> options)
+      {
+         try
+         {
+            if (_rackBl == null)
+            {
+               return NotFound();
+            }
+
+            IQueryable<DtoRack> rackListQuery = _rackBl.GetRackListForEquipment();
+
+            return Ok(options.ApplyTo(rackListQuery));
+         }
+         catch (KeyNotFoundException)
+         {
+            return NotFound();
+         }
+         catch (Exception e)
+         {
+            _logger.LogError($"GetRacksForEquipment: " + e.Message);
+            throw new Exception($"There was a problem querying for the racks for equipment.");
+         }
+      }
+      [HttpGet("{rackId}/WithStock")]
         public IActionResult GetRackWithStockByRackId(Guid rackId, ODataQueryOptions<DtoRack_WithStock> options)
         {
             try

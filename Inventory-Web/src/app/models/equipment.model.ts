@@ -13,15 +13,16 @@ export interface Equipment{
     equipmentDefinition: EquipmentDefinition;
 }
 
-export interface DtoEquipmentCreate{
-    equipmentId: string;
+export interface EquipmentCreate{
     rackId: string;
-    equipmentDefintionId: string;
+    rackName: string;
+    equipmentDefinitionId: string;
     customerId: string;
     shopLocationId: string;
     quantity: number;
     lengthInMeters: number;
     lengthInFeet: number;
+    equipmentDefinition?: EquipmentDefinition;
 }
 
 
