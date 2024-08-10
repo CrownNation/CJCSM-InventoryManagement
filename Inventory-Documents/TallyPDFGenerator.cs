@@ -55,58 +55,13 @@ namespace Inventory_Documents
 
                     page.Header().Column(column =>
                     {
-                        //column.Item().SkipOnce().Element(ComposePipeHeader);
-                        //column.Item().ShowOnce().Element(ComposeEquipmentHeader);
+
                     });
 
                     page.Content()
                            .PaddingVertical(0.25f, Unit.Centimetre)
                            .Column(column =>
                            {
-                               /*           for (int i = 0; i < 4; i++)
-                                          {
-                                              Guid id = Guid.NewGuid();
-                                              Random rnd = new Random();
-                                              decimal length = rnd.Next(18, 23);
-                                              //int blah = rnd.Next(18, 26);
-                                              int size = rnd.Next(5, 15);
-                                              int weight = rnd.Next(10, 15);
-                                              int blah = 16;
-                                              for (int k = 1; k < blah; k++)
-                                              {
-                                                  test = new DtoPipe();
-                                                  test.IndexOfPipe = k;
-                                                  test.LengthInFeet = length;
-                                                  test.PipeDefinitionId = id;
-                                                  test.PipeDefinition = new DtoPipeDefinition();
-                                                  test.PipeDefinition.Size = new PipeProperty_Size();
-                                                  test.PipeDefinition.Size.SizeImperial = size;
-                                                  test.PipeDefinition.Weight = new PipeProperty_Weight();
-                                                  test.PipeDefinition.Weight.WeightInKgPerMeter = weight;
-                                                  dtoTally.PipeList.Add(test);
-                                              }
-                                          }
-
-                                          equipment = new DtoEquipment();
-                                          equipment.Quantity = 3;
-                                          equipment.Description = "4 1/2 Polycore Drift";
-                                          equipListSubset.Add(equipment);
-
-                                          equipment = new DtoEquipment();
-                                          equipment.Quantity = 1;
-                                          equipment.Description = "4 1/2 Polycore Lined 4' Pup Joint";
-                                          equipListSubset.Add(equipment);
-
-                                          equipment = new DtoEquipment();
-                                          equipment.Quantity = 10;
-                                          equipment.Description = "4 1/2 Stabbing Guide";
-                                          equipListSubset.Add(equipment);
-
-                                          equipment = new DtoEquipment();
-                                          equipment.Quantity = 5;
-                                          equipment.Description = "4 1/2 Polycore Lined 2' Pup Joint";
-                                          equipListSubset.Add(equipment);*/
-
                                column.Item().Element(ComposePipeHeader);
                                column.Item().Text(x =>
                                {
@@ -140,7 +95,7 @@ namespace Inventory_Documents
                                            totalNumberPipeDefinitionLength = pipeListSubset.Count();
                                            totalNumberPipeWeightDefinitionLength = totalNumberPipeDefinitionLength * pipeListSubset[0].PipeDefinition.Weight.WeightInKgPerMeter;
 
-                                           row.RelativeItem().Component(new CreatePipeTableComponent(pipeListSubset));
+                                           row.RelativeItem().Component(new CreateTallyPipeTableComponent(pipeListSubset));
                                            NumberOfRows += Modulus;
                                            pipeListSubset.Clear();
                                        });
@@ -159,7 +114,7 @@ namespace Inventory_Documents
                                    isEquipment = true;
                                    column.Item().PageBreak();
                                    column.Item().Element(ComposeEquipmentHeader);
-                                   column.Item().Component(new CreateEquipmentTableComponent(equipListSubset));
+                                   column.Item().Component(new CreateTallyEquipmentTableComponent(equipListSubset));
                                    column.Item().Element(ComposeEquipmentFooter);
                                }
                            });
@@ -198,7 +153,7 @@ namespace Inventory_Documents
                             table.Cell().Element(LabelStyle).Text("Weight:").FontSize(tableFontSize);
                             table.Cell().Element(InfoStyle).Text($"{dtoTally.TalliedByUserName}").FontSize(tableFontSize);
                             table.Cell().Element(LabelStyle).Text("Unit:").FontSize(tableFontSize);
-                            table.Cell().BorderRight(1).Element(InfoStyle).Text($"01/27/24").FontSize(tableFontSize);
+                            table.Cell().BorderRight(1).Element(InfoStyle).Text($"{DateTime.Now}").FontSize(tableFontSize);
                             table.Cell().Element(LabelStyle).Text("Grade:").FontSize(tableFontSize);
                             table.Cell().Element(InfoStyle).Text($"Lading #").FontSize(tableFontSize);
                             table.Cell().Element(LabelStyle).AlignRight().Text("Thread:").FontSize(tableFontSize);
