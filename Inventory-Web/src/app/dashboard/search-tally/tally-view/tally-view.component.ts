@@ -2,12 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/core.state';
-import { Tally, TallyTypes } from '../../../models/tally.model';
+import { Tally } from '../../../models/tally.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectSelectedTally } from '../../../store/tally/tally.selectors';
 import { MatTableDataSource } from '@angular/material/table';
 import { Pipe } from '../../../models/pipe.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { TallyTypes } from 'src/app/enums/tally-types.enum';
 
 @Component({
   selector: 'app-tally-view',
@@ -22,6 +23,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ],
 })
 export class TallyViewComponent implements OnInit, OnDestroy {
+
+  public TallyTypes = TallyTypes;
 
   tallyForm!: FormGroup
   tally: Tally | null = null;
@@ -68,11 +71,15 @@ export class TallyViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  displayTallyType(tallyType: number) {
-    if(tallyType === TallyTypes.TallyIn) {
+  get tallyTypeOptions(): TallyTypes[] {
+    return Object.values(TallyTypes);
+  }
+
+  displayTallyType(tallyType: TallyTypes) {
+    if(tallyType === TallyTypes.In) {
       return 'In'
     }
-    else if(tallyType === TallyTypes.TallyOut) {
+    else if(tallyType === TallyTypes.Out) {
       return 'Out'
     }
 

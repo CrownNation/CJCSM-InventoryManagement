@@ -4,8 +4,8 @@
     {
         public enum TallyTypes
         {
-            TallyIn,
-            TallyOut
+            In,
+            Out
         }
 
         public enum  EquipmentCategories

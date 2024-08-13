@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { Tally, DtoTallyCreate, TallySearchParams, TallyTypes } from '../../../models/tally.model';
+import { Tally, DtoTallyCreate, TallySearchParams } from '../../../models/tally.model';
+import { TallyTypes } from 'src/app/enums/tally-types.enum';
 
 @Injectable({
   providedIn: 'root'

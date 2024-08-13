@@ -1,0 +1,154 @@
+<div class="container-horizontal">
+    <form [formGroup]="pipeAddForm" (ngSubmit)="addPipe(pipeFormDirective)" #pipeFormDirective="ngForm">
+
+        <!-- Rack Selection -->
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Rack</mat-label>
+            <mat-select formControlName='rack' required (selectionChange)="onRackChange($event)">
+                <mat-option *ngFor="let rack of racksWithTiers" [value]="rack">
+                    {{rack.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Tier Selection -->
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Tier</mat-label>
+            <mat-select formControlName='tier' (selectionChange)="onTierChange($event)">
+                <mat-option *ngFor="let tier of tiers" [value]="tier">
+                    {{tierDisplay(tier)}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Quantity -->
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Quantity</mat-label>
+            <input type="number" matInput placeholder="Quantity" formControlName="quantity">
+            <mat-error>Please provide a value for quantity</mat-error>
+        </mat-form-field>
+
+    </form>
+</div>
+
+<!-- Pipe Table To Display Selectable Pipe-->
+<div>
+    <table mat-table [dataSource]="dataSourcePipeOnRack">
+        <!-- Pipe Properties Column -->
+        <ng-container matColumnDef="pipeProperties">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Pipe Properties</th>
+            <td mat-cell *matCellDef="let row">
+                {{ row.pipeDefinition.category?.name }} - {{ row.pipeDefinition.size.sizeMetric }}mm -
+                {{ row.pipeDefinition.condition.name }} - {{ row.pipeDefinition.grade.name }} - {{
+                row.pipeDefinition.wall.wallMetric }}mm
+            </td>
+        </ng-container>
+
+        <!-- Rack Column -->
+        <ng-container matColumnDef="rackName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Rack</th>
+            <td mat-cell *matCellDef="let row"> {{ row.rackName }} </td>
+        </ng-container>
+
+        <!-- Tier Column -->
+        <ng-container matColumnDef="tierNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tier</th>
+            <td mat-cell *matCellDef="let row"> {{ row.tierNumber }} </td>
+        </ng-container>
+
+        <!-- Length in Meters Column -->
+        <ng-container matColumnDef="lengthInMeters">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Length (m)</th>
+            <td mat-cell *matCellDef="let row"> {{ row.lengthInMeters }} </td>
+        </ng-container>
+
+        <!-- Index of Pipe Column -->
+        <ng-container matColumnDef="indexOfPipe">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Index of Pipe</th>
+            <td mat-cell *matCellDef="let row"> {{ row.indexOfPipe }} </td>
+        </ng-container>
+
+        <!-- Quantity Column -->
+        <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+            <td mat-cell *matCellDef="let row"> {{ row.quantity }} </td>
+        </ng-container>
+
+
+        <!-- Table Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsRack"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsRack;" (click)="handlePipeOnRackClick(row)"
+            [class.selected]="selectedPipeOnRack.isSelected(row)"></tr>
+    </table>
+
+    <!-- Buttons for adding/updating pipe -->
+    <div class="actions">
+        <button mat-raised-button color="primary" type="button" (click)="addPipe(pipeFormDirective)">Add
+            Pipe</button>
+    </div>
+
+    <table mat-table [dataSource]="dataSourcePipeForTally">
+        <!-- Pipe Properties Column -->
+        <ng-container matColumnDef="pipeProperties">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Pipe Properties</th>
+            <td mat-cell *matCellDef="let row">
+                {{ row.pipeDefinition.category?.name }} - {{ row.pipeDefinition.size.sizeMetric }}mm -
+                {{ row.pipeDefinition.condition.name }} - {{ row.pipeDefinition.grade.name }} - {{
+                row.pipeDefinition.wall.wallMetric }}mm
+            </td>
+        </ng-container>
+
+        <!-- Length in Meters Column -->
+        <ng-container matColumnDef="lengthInMeters">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Length (m)</th>
+            <td mat-cell *matCellDef="let row"> {{ row.lengthInMeters }} </td>
+        </ng-container>
+
+        <!-- Rack Column -->
+        <ng-container matColumnDef="rackName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Rack</th>
+            <td mat-cell *matCellDef="let row"> {{ row.rackName }} </td>
+        </ng-container>
+
+        <!-- Tier Column -->
+        <ng-container matColumnDef="tierNumber">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tier</th>
+            <td mat-cell *matCellDef="let row"> {{ row.tierNumber }} </td>
+        </ng-container>
+
+        <!-- Quantity Column -->
+        <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+            <td mat-cell *matCellDef="let row"> {{ row.quantity }} </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="right-align"></th>
+            <td mat-cell *matCellDef="let row" class="column-actions right-align">
+                <button mat-icon-button aria-label="Remove Pipe" (click)="removePipe(row)">
+                    <mat-icon aria-hidden="false" fontIcon="delete" color="accent"></mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsTally"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsTally;"></tr>
+    </table>
+
+    <div *ngIf="registeredPipes.length === 0" class="display-message">
+        No pipe have been added yet
+    </div>
+
+    <div class="actions">
+        <button mat-raised-button color="primary" (click)="updatePipe(pipeFormDirective)"
+            *ngIf="selectedPipeInTallyForEdit">Update
+            Pipe</button>
+        <button mat-raised-button (click)="cancelEdit(pipeFormDirective)"
+            *ngIf="selectedPipeInTallyForEdit">Cancel</button>
+    </div>
+
+
+</div>

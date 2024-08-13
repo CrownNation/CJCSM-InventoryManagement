@@ -23,13 +23,19 @@ import { TallyRoutingModule } from './tally-routing.module';
 import { TallyDashboardComponent } from './tally-dashboard/tally-dashboard.component';
 import { TallyListComponent } from './tally-list/tally-list.component';
 import { TallyAddComponent } from './tally-add/tally-add.component';
+import { TallyPipeInComponent } from './tally-pipe-in/tally-pipe-in.component';
+import { TallyEquipmentInComponent } from './tally-equipment-in/tally-equipment-in.component';
+import { TallyPipeOutComponent } from './tally-pipe-out/tally-pipe-out.component';
 
 
 @NgModule({
   declarations: [
     TallyDashboardComponent,
     TallyListComponent,
-    TallyAddComponent
+    TallyAddComponent,
+    TallyPipeInComponent,
+    TallyEquipmentInComponent,
+    TallyPipeOutComponent
   ],
   imports: [
     CommonModule,

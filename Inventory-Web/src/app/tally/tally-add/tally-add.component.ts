@@ -5,7 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
 import { ShopLocation } from '../../models/shop-location.model';
 import { Customer } from '../../models/customer.model';
-import { DtoTallyCreate, DtoTierWithPipe, Tally, TallyTypes } from '../../models/tally.model';
+import { DtoTallyCreate, DtoTierWithPipe, Tally} from '../../models/tally.model';
 import { actionGetCustomersFullList } from '../../store/customer/customer.actions';
 import { actionGetEquipmentRacks, actionGetRacksWithTiers, addTierToRack } from '../../store/rack/rack.actions';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -27,6 +27,10 @@ import { EquipmentCreate, EquipmentDefinition } from 'src/app/models/equipment.m
 import { actionGetShopLocations } from 'src/app/store/shop-location/shop-location.actions';
 import { v4 as uuidv4 } from 'uuid';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TallyPipeInComponent } from '../tally-pipe-in/tally-pipe-in.component';
+import { TallyEquipmentInComponent } from '../tally-equipment-in/tally-equipment-in.component';
+import { TallyTypes } from 'src/app/enums/tally-types.enum';
+import { TallyPipeOutComponent } from '../tally-pipe-out/tally-pipe-out.component';
 
 @Component({
   selector: 'app-tally-add',
@@ -34,57 +38,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./tally-add.component.scss']
 })
 export class TallyAddComponent {
+  @ViewChild('tallyPipeInRef') tallyPipeInComponent!: TallyPipeInComponent;
+  @ViewChild('tallyPipeOutRef') tallyPipeOutComponent!: TallyPipeOutComponent;
 
-  @ViewChild('lengthInMetersInput') lengthInMetersInput!: ElementRef;
+  @ViewChild('tallyEquipmentRef') tallyEquipmentInComponent!: TallyEquipmentInComponent;
 
   tallyAddForm!: FormGroup;
-  pipeAddForm!: FormGroup;
-  equipmentAddForm!: FormGroup;
 
   isInit: boolean = true;
   loading: Boolean = true;
   error: HttpErrorResponse | null = null;
 
-  // Used to set a flag for showing an error message when a pipe definition is not selected
-  showPipeDefinitionSelectedError: boolean = false;
-  showEquipmentDefinitionSelectedError: boolean = false;
 
   shops: ShopLocation[] = [];
   customers: Customer[] = [];
-  tallyTypes = Object.values(TallyTypes).filter(value => typeof value === 'number') as number[];
-  racksWithTiers: RackWithTier[] = [];
-  equipmentRacks: Rack[] = [];
+  public TallyTypes = TallyTypes;
+
+  public tallyType: TallyTypes = TallyTypes.In;  // Example use of the enum
+
   customersFullList: Customer[] = [];
-  pipeDefinitionList: PipeDefinition[] = [];
   shopLocations: ShopLocation[] = [];
   tiers: TierWithPipeInfo[] = [];
   emptyGuid = '00000000-0000-0000-0000-000000000000'; // Used for creating a new tier when sending to api
-  selectedPipe: PipeCreate | null = null;
-  selectedEquipment: EquipmentCreate | null = null;
-  selectedPipeDefinition: PipeDefinition | null = null;
-  selectedEquipmentDefinition: EquipmentDefinition | null = null;
 
-  formDirective: any;
-
-  // displayedColumns: string[] = [
-  //   'tallyNumber',
-  //   'actions'
-  // ];
-
-  //  displayedColumns = ['quantity', 'lengthInMeters', 'rack', 'tier', 'pipeProperties', 'actions'];
-  displayedColumns = ['pipeProperties', 'rackName', 'tierNumber', 'quantity', 'lengthInMeters', 'actions'];
-  displayedColumnsEquipment = ['equipmentProperties', 'name', 'quantity', 'actions'];
-
-  dataSourcePipe: MatTableDataSource<PipeCreate> = new MatTableDataSource<PipeCreate>;
-  dataSourceEquipment: MatTableDataSource<EquipmentCreate> = new MatTableDataSource<EquipmentCreate>;
-
-  registeredPipes: PipeCreate[] = [];
-  registeredEquipment: EquipmentCreate[] = [];
 
   private destroy$ = new Subject<void>();
 
-  racksWithTiers$: Observable<RackWithTier[] | null> = this.store.select(selectRacksWithTiers);
-  equipmentRacks$: Observable<Rack[] | null> = this.store.select(selectEquipmentRacks);
   customersFullList$: Observable<Customer[] | null> = this.store.select(selectCustomersFullList);
   shopLocationList$: Observable<ShopLocation[] | null> = this.store.select(selectAllShopLocations);
 
@@ -103,39 +82,9 @@ export class TallyAddComponent {
 
   ngOnInit(): void {
     this.store.dispatch(actionGetCustomersFullList({ searchParams: null }));
-    this.store.dispatch(actionGetRacksWithTiers());
     this.store.dispatch(actionGetShopLocations({ searchParams: null }));
-    this.store.dispatch(actionGetEquipmentRacks());
 
     this.buildForm();
-    this.dataSourcePipe = new MatTableDataSource(this.registeredPipes);
-    this.dataSourceEquipment = new MatTableDataSource(this.registeredEquipment);
-
-
-    // this.racksWithTiers$.pipe(
-    //   takeUntil(this.destroy$)
-    // ).subscribe((racks) => {
-    //   if (racks) {
-    //     this.racksWithTiers = racks;
-    //   }
-    // });
-    this.racksWithTiers$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe((racks) => {
-      if (racks) {
-        this.racksWithTiers = racks;
-        // Log jointsPerTier for each rack
-        racks.forEach(rack => {
-          console.log(`Rack ID: ${rack.rackId}, Joints per Tier: ${rack.jointsPerTier}`);
-        });
-      }
-    });
-
-    this.equipmentRacks$.pipe(takeUntil(this.destroy$)).subscribe((racks) => {
-      if (racks) {
-        this.equipmentRacks = racks;
-      }
-    });
 
     this.customersFullList$.pipe(takeUntil(this.destroy$)).subscribe((customers) => {
       if (customers) {
@@ -175,7 +124,7 @@ export class TallyAddComponent {
 
   buildForm() {
     this.tallyAddForm = new FormGroup({
-      tallyType: new FormControl(TallyTypes.TallyIn, [Validators.required]),
+      tallyType: new FormControl(TallyTypes.In, [Validators.required]),
       tallyNumber: new FormControl(null, [Validators.required]),
       customer: new FormControl(null, [Validators.required]),
       shopLocation: new FormControl(null, [Validators.required]),
@@ -187,22 +136,6 @@ export class TallyAddComponent {
       // weightInLbs: new FormControl(null, [Validators.required])
     });
 
-    this.pipeAddForm = new FormGroup({
-      rack: new FormControl(null, [Validators.required]),
-      tier: new FormControl(null, [Validators.required]),
-      pipeDefinition: new FormControl(null, [Validators.required]),
-      equipmentDefinition: new FormControl(null),
-      lengthInMeters: new FormControl(null, [Validators.required]),
-      // lengthInFeet: new FormControl(null, [Validators.required]),
-      quantity: new FormControl(null, [Validators.required]),
-    });
-
-    this.equipmentAddForm = new FormGroup({
-      rackEquipment: new FormControl(null, [Validators.required]),
-      equipmentDefinition: new FormControl(null, [Validators.required]),
-      quantityEquipment: new FormControl(null, [Validators.required]),
-      lengthInMetersEquipment: new FormControl(null, [Validators.required])
-    });
 
   }
 
@@ -221,7 +154,14 @@ export class TallyAddComponent {
     // This case is handled in the back end and a new tier will be assigned.
     const tiersWithPipe: DtoTierWithPipe[] = [];
 
-    this.registeredPipes.forEach(pipe => {
+    var pipeList: PipeCreate[] =  [];
+    
+    if(this.tallyType === TallyTypes.Out)
+      pipeList = this.tallyPipeOutComponent.getPipeForTallyOutList();
+    else
+      pipeList = this.tallyPipeInComponent.getPipeList();
+
+    pipeList.forEach(pipe => {
       // 1 meter is equal to 3.280839895 feet
       // Round to 3 decimal places
       // .toFixed(3) rounds the result to three decimal places as a string, parseFloat() converts the string back to a number with the rounding intact.
@@ -240,8 +180,11 @@ export class TallyAddComponent {
       }
     });
 
+    var equipmentList: EquipmentCreate[] =  this.tallyEquipmentInComponent.getEquipmentList();
+
+
     //Loop through registered equipment and set the customer id and shop location id
-    this.registeredEquipment.forEach(equipment => {
+    equipmentList.forEach(equipment => {
       equipment.customerId = this.tallyAddForm.get('customer')?.value;
       equipment.shopLocationId = this.tallyAddForm.get('shopLocation')?.value;
       equipment.lengthInFeet = parseFloat((equipment.lengthInMeters * 3.280839895).toFixed(3));
@@ -258,7 +201,7 @@ export class TallyAddComponent {
       tierWithPipeList: tiersWithPipe,
       customerId: this.tallyAddForm.get('customer')?.value,
       talliedByUserId: 'B3CFC44C-879B-43EF-B6F0-02FA0D232430', // Not used in backend, dummy data
-      equipmentList: this.registeredEquipment
+      equipmentList: equipmentList
     };
 
     this.isInit = false;
@@ -308,278 +251,40 @@ export class TallyAddComponent {
     this.store.dispatch(actionCreateTally({ tallyCreate: newTally }));
   }
 
-  addPipe(formDirective: any) {
-    if (this.selectedPipe)
-      return;
-
-    this.pipeDefinitionList.find(p => p.pipeDefinitionId === this.pipeAddForm.get('pipeDefinition')?.value)
-
-    if (!this.pipeAddForm.invalid) {
-      var selectedRack : RackWithTier | undefined = this.racksWithTiers.find(r => r.rackId === this.pipeAddForm.get('rack')?.value.rackId);
-
-      //Check for new tier selection.
-      console.log("SELECTED TIER: " + this.pipeAddForm.get('tier')?.value.tierId);
-
-      // Set these variables now, and they will be overwritten if there is a new pipe.
-      var tierIdForPipe: string = this.pipeAddForm.get('tier')?.value.tierId;
-      var tierNumberForPipe: number = this.pipeAddForm.get('tier')?.value.number;
-
-      if (this.pipeAddForm.get('tier')?.value.tierId === this.emptyGuid) {
-        console.log("NEW TIER");
-        const tierList = selectedRack ? selectedRack.tierList || [] : []; // Provide a fallback empty array if tierList is undefined
-
-        //Create a new tier and add it to the tier list with a new generated GUID
-        const newTier: TierWithPipeInfo = {
-          tierId: uuidv4(),
-          rackId: selectedRack!.rackId,
-          number: tierList.length + 1,
-          pipeCount: 0
-        };
-
-        tierIdForPipe = newTier.tierId;
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        console.log("New Tier Number: " + newTier.number);
-        tierNumberForPipe = newTier.number;
-
-        var rackId: string = selectedRack!.rackId;
-        //Add the new tier to the tiers list
-        this.store.dispatch(addTierToRack({ rackId, newTier }));
-      }
-
-      // Get the number of pipes in the selected tier
-      var pipeCount = selectedRack?.tierList.find(t => t.tierId === this.pipeAddForm.get('tier')?.value.tierId)?.pipeCount || 0;
-
-      console.log("PIPE ON TIER: " + pipeCount);
-      console.log("JOINTS PER TIER: " + selectedRack!.jointsPerTier);
-      console.log("QUANTITY: " + this.pipeAddForm.get('quantity')?.value);
-
-      if(pipeCount + this.pipeAddForm.get('quantity')?.value > selectedRack!.jointsPerTier){
-        //show message card that the tier is full
-        this.showSnackBar("Tier is full. Please select a new tier or rack.", 'Close', { duration:5000, panelClass: ['error-snack-bar'] });
-        return;
-      }
-      const newPipe: PipeCreate = {
-        pipeDefinitionId: this.selectedPipeDefinition!.pipeDefinitionId,
-        tierId: tierIdForPipe,
-        rackId: this.pipeAddForm.get('rack')?.value.rackId,
-        tierNumber: tierNumberForPipe,
-        rackName: this.pipeAddForm.get('rack')?.value.name,
-        customerId: "", // This is populated when the tally is created
-        lengthInMeters: this.pipeAddForm.get('lengthInMeters')?.value,
-        lengthInFeet: 0, // Note; This is calculated in tally create
-        quantity: this.pipeAddForm.get('quantity')?.value,
-        indexOfPipe: 0, // This is calculated at the backend
-        pipeDefinition: this.selectedPipeDefinition!
-      };
-      this.registeredPipes.push(newPipe);
-      this.dataSourcePipe.data = this.registeredPipes;
-
-      console.log("=======================================");
-      console.log("TIER NUMBER: " + newPipe.tierNumber);
-
-      console.log("=======================================");
-
-
-      formDirective.resetForm();
-    }
-    else {
-      this.pipeAddForm.markAllAsTouched();
-    }
-  }
-
-
-  addEquipment(formDirective: any) {
-    if (this.selectedEquipment)
-      return;
-
-    console.log("oooooooooooooooooooooooooooooooooooooooooooooooo");
-    console.log("EQUIPMENT DEFINITION: " + this.selectedEquipmentDefinition!.equipmentDefinitionId);
-    if (!this.equipmentAddForm.invalid) {
-      const newEquipment: EquipmentCreate = {
-        rackId: this.equipmentAddForm.get('rackEquipment')?.value.rackId,
-        rackName: this.equipmentAddForm.get('rackEquipment')?.value.name,
-        equipmentDefinitionId: this.selectedEquipmentDefinition!.equipmentDefinitionId,
-        equipmentDefinition: this.selectedEquipmentDefinition!,
-        customerId: "", // This is populated when the tally is created
-        shopLocationId: "", // This is populated when the tally is created
-        quantity: this.equipmentAddForm.get('quantityEquipment')?.value,
-        lengthInMeters: this.equipmentAddForm.get('lengthInMetersEquipment')?.value,
-        lengthInFeet: 0 // Note: this is calculated in tally create
-      };
-
-      //display the new equipment's rack id and name
-      console.log("rackId: " + newEquipment.rackId);
-      console.log("rackName: " + newEquipment.rackName);
-      this.registeredEquipment.push(newEquipment);
-      this.dataSourceEquipment.data = this.registeredEquipment;
-
-      formDirective.resetForm();
-
-    } else {
-      this.equipmentAddForm.markAllAsTouched();
-    }
-  }
-
-  editPipe(pipe: PipeCreate) {
-    this.pipeAddForm.patchValue({
-      rack: pipe.rackId,
-      tier: pipe.tierId,
-      pipeDefinition: pipe.pipeDefinitionId,
-      lengthInMeters: pipe.lengthInMeters,
-      quantity: pipe.quantity
-    }, {
-      onlySelf: true,
-      emitEvent: false
-    });
-
-    this.selectedPipe = pipe;
-  }
-
-  updatePipe() {
-
-    const newPipe: PipeCreate = {
-      pipeDefinitionId: this.pipeAddForm.get('pipeDefinition')?.value,
-      tierId: this.pipeAddForm.get('tier')?.value.tierId,
-      rackId: this.pipeAddForm.get('rack')?.value.rackId,
-      tierNumber: this.pipeAddForm.get('tier')?.value.number,
-      rackName: this.pipeAddForm.get('rack')?.value.name,
-      customerId: this.tallyAddForm.get('customer')?.value,
-      lengthInMeters: this.pipeAddForm.get('lengthInMeters')?.value,
-      lengthInFeet: this.pipeAddForm.get('lengthInFeet')?.value, // Note; This is calculated at the backend
-      quantity: this.pipeAddForm.get('quantity')?.value,
-      indexOfPipe: 1, // This is calculated at the backend
-      pipeDefinition: this.pipeDefinitionList.find(p => p.pipeDefinitionId === this.pipeAddForm.get('pipeDefinition')?.value)
-    };
-
-    const index = this.registeredPipes.indexOf(this.selectedPipe as PipeCreate);
-    this.registeredPipes[index] = newPipe;
-    this.dataSourcePipe.data = this.registeredPipes;
-
-    this.selectedPipe = null;
-
-    this.pipeAddForm.reset();
-    this.formDirective.resetForm();
-  }
-
-  cancelEdit() {
-    this.selectedPipe = null;
-    this.pipeAddForm.reset();
-    this.formDirective.resetForm();
-  }
-
-  removePipe(row: any) {
-    this.registeredPipes = this.registeredPipes.filter(pipe => pipe !== row);
-    this.dataSourcePipe.data = this.registeredPipes;
-  }
-
-  removeEquipment(row: any) {
-    this.registeredEquipment = this.registeredEquipment.filter(equipment => equipment !== row);
-    this.dataSourceEquipment.data = this.registeredEquipment;
-  }
-
-  onRackChange(event: MatSelectChange) {
-    console.log("RACK ID: " + event.value.rackId);
-
-    const selectedRack = this.racksWithTiers.find(r => r.rackId === event.value.rackId);
-    const tierList = selectedRack ? selectedRack.tierList || [] : []; // Provide a fallback empty array if tierList is undefined
-    const newTier: TierWithPipeInfo = {
-      tierId: this.emptyGuid,
-      rackId: event.value.rackId,
-      number: 0,
-      pipeCount: 0
-    };
-    this.tiers = [newTier, ...tierList];
-  }
-
-
-  tierDisplay(tier: TierWithPipeInfo) {
-
-    if (tier.tierId === this.emptyGuid)
-      return 'New Tier'
-
-    return tier.number + " (#Pipe: " + tier.pipeCount + ")";
-  }
-
   close(): void {
     this.router.navigate(['/dashboard']);
   }
 
-  displayTallyType(tallyType: number) {
-    if (tallyType === TallyTypes.TallyIn) {
+  get tallyTypeOptions(): TallyTypes[] {
+    return Object.values(TallyTypes);
+  }
+
+  displayTallyType(tallyType: TallyTypes) {
+    if (tallyType === TallyTypes.In) {
       return 'In'
     }
-    else if (tallyType === TallyTypes.TallyOut) {
+    else if (tallyType === TallyTypes.Out) {
       return 'Out'
     }
 
     return ''
   }
 
-  preventDecimal(event: KeyboardEvent) {
-    if (event.key === '.' || event.key === '-') {
-      event.preventDefault();
-    }
+  onTallyTypeChange(event: MatSelectChange): void {
+    this.tallyType = event.value;
+    console.log("TALLY TYPE: " + this.tallyType);
   }
 
+  cancelEdit(){
+
+  }
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  openSelectPipeDefinitionDialog() {
-    const dialogRef = this.dialog.open(PipeDefinitionSelectComponent, {
-      width: '90%', // You can use percentage
-      maxWidth: 'none',
-      maxHeight: 'none',
-      height: '90%',
-      panelClass: 'custom-dialog-container',
-      autoFocus: false
-    });
+ 
 
-    dialogRef.afterClosed().subscribe((selectedPipeDefinition: PipeDefinition | null) => {
-      if (selectedPipeDefinition) {
-        var pipeDefText: string = "";
-        pipeDefText += "Category: " + selectedPipeDefinition.category?.name;
-        pipeDefText += "- Condition: " + selectedPipeDefinition.condition?.name;
-        //add grade
-        pipeDefText += "- Grade: " + selectedPipeDefinition.grade?.name;
-        //add size both metric and imperial
-        pipeDefText += "- Size: " + selectedPipeDefinition.size?.sizeMetric + "(mm)/" + selectedPipeDefinition.size?.sizeImperial + "(in)";
-        this.pipeAddForm.get('pipeDefinition')!.setValue(pipeDefText);
-        this.selectedPipeDefinition = selectedPipeDefinition;
-
-      }
-      console.log('The dialog was closed');
-      // You can do something with the result here if needed
-    });
-  }
-
-  openSelectEquipmentDefinitionDialog() {
-    const dialogRef = this.dialog.open(EquipmentDefinitionSelectComponent, {
-      width: '90%', // You can use percentage
-      maxWidth: 'none', // This ensures the dialog can expand full width if necessary
-      maxHeight: 'none', // This ensures the dialog can expand full height if necessary
-      height: '90%',
-      panelClass: 'custom-dialog-container',
-      autoFocus: false // This prevents the dialog from focusing on the first input field, otherwise drop down opens
-    });
-
-    dialogRef.afterClosed().subscribe((selectedEquipmentDefinition: EquipmentDefinition | null) => {
-      if (selectedEquipmentDefinition) {
-        var equipmentDefText: string = "";
-        equipmentDefText += "Category: " + selectedEquipmentDefinition.category;
-        equipmentDefText += " - Grade: " + selectedEquipmentDefinition.grade!.name;
-        equipmentDefText += " - Size: " + selectedEquipmentDefinition.size!.sizeMetric + "(mm)/" + selectedEquipmentDefinition.size!.sizeImperial + "(in)";
-        equipmentDefText += " - Description: " + (selectedEquipmentDefinition.description || "N/A");
-        // Here, assuming you have a form control for equipment definition on your form
-        this.equipmentAddForm.get('equipmentDefinition')!.setValue(equipmentDefText);
-        this.selectedEquipmentDefinition = selectedEquipmentDefinition;
-
-      }
-      console.log('The dialog was closed');
-      // Additional actions can be performed here with the selected equipment definition
-    });
-  }
 
   showSnackBar(message: string, action: string = 'Close', config: any = { duration: 5000, panelClass: ['snack-bar'] }) {
     this.snackBar.open(message, action, config);

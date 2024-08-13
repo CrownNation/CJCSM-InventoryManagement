@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Tally, TallySearchParams, TallyTypes } from '../../../models/tally.model';
+import { Tally, TallySearchParams } from '../../../models/tally.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,6 +14,7 @@ import { selectLoadingTallies, selectTallies, selectTalliesEntities } from '../.
 import { Dictionary } from '@ngrx/entity';
 import { selectCustomersFullList } from '../../../store/customer/customer.selectors';
 import { clearNotifications } from 'src/app/store/notification-hub/notification-hub.actions';
+import { TallyTypes } from 'src/app/enums/tally-types.enum';
 
 @Component({
   selector: 'app-search-tally',
@@ -36,7 +37,7 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort!: MatSort;
 
   tallyForm!: FormGroup
-  tallyTypes = Object.values(TallyTypes).filter(value => typeof value === 'number') as number[];
+  public TallyTypes = TallyTypes;
 
   customers: Customer[] = [];
   customersFullList: Customer[] = [];
@@ -92,6 +93,10 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadingTallies = loading;
     });
 
+  }
+
+  get tallyTypeOptions(): TallyTypes[] {
+    return Object.values(TallyTypes);
   }
 
   buildForm() {
@@ -181,11 +186,11 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Todo: move to a helper function
-  displayTallyType(tallyType: number) {
-    if(tallyType === TallyTypes.TallyIn) {
+  displayTallyType(tallyType: TallyTypes) {
+    if(tallyType === TallyTypes.In) {
       return 'In'
     }
-    else if(tallyType === TallyTypes.TallyOut) {
+    else if(tallyType === TallyTypes.Out) {
       return 'Out'
     }
 

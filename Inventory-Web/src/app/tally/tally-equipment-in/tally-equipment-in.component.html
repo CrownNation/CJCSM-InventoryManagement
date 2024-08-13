@@ -1,0 +1,98 @@
+<div class="container-horizontal">
+    <form [formGroup]="equipmentAddForm" (ngSubmit)="addEquipment(equipmentFormDirective)"
+        #equipmentFormDirective="ngForm">
+        <!-- Equipment Definition -->
+        <div class="three-col">
+            <mat-form-field appearance="outline" color="accent" style="margin-bottom: -1rem;">
+                <mat-label>Equipment Definition</mat-label>
+                <input type="text" matInput placeholder="Select Equipment Definition"
+                    formControlName="equipmentDefinition" readonly
+                    (click)="openSelectEquipmentDefinitionDialog()" required>
+                <mat-error *ngIf="showEquipmentDefinitionSelectedError">
+                    Please Select an Equipment Definition
+                </mat-error>
+            </mat-form-field>
+            <button type="button" mat-raised-button color="primary"
+                (click)="openSelectEquipmentDefinitionDialog()">
+                <mat-icon>add</mat-icon> Select Equipment Definition
+            </button>
+        </div>
+
+        <!-- Rack Selection -->
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Rack</mat-label>
+            <mat-select formControlName='rackEquipment' required>
+                <mat-option *ngFor="let rack of equipmentRacks" [value]="rack">
+                    {{rack.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Quantity -->
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Quantity</mat-label>
+            <input type="number" matInput placeholder="Quantity" formControlName="quantityEquipment"
+                required>
+            <mat-error>Please provide a value for quantity</mat-error>
+        </mat-form-field>
+
+        <!-- Length in meters -->
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Length in meters</mat-label>
+            <input type="number" matInput placeholder="Length in meters"
+                formControlName="lengthInMetersEquipment" required>
+            <mat-error>Please provide a value for length in meters</mat-error>
+        </mat-form-field>
+
+        <!-- Buttons for adding/updating equipment -->
+        <div class="actions">
+            <button mat-raised-button color="primary" type="submit" *ngIf="!selectedEquipment">Add
+                Equipment</button>
+            <button mat-raised-button color="primary" *ngIf="selectedEquipment">Update
+                Equipment</button>
+            <button mat-raised-button (click)="cancelEdit(equipmentFormDirective)" *ngIf="selectedEquipment">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<!-- Equipment Table -->
+<div>
+    <table mat-table [dataSource]="dataSourceEquipment">
+
+        <!-- Equipment Properties Column -->
+        <ng-container matColumnDef="equipmentProperties">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Equipment Properties</th>
+            <td mat-cell *matCellDef="let row">
+                {{ row.equipmentDefinition?.category }} - {{ row.equipmentDefinition?.grade?.name }} -
+                {{ row.equipmentDefinition?.size?.sizeMetric }}mm
+            </td>
+        </ng-container>
+
+        <!-- Rack Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Rack</th>
+            <td mat-cell *matCellDef="let row"> {{ row.rackName }} </td>
+        </ng-container>
+
+        <!-- Quantity Column -->
+        <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+            <td mat-cell *matCellDef="let row"> {{ row.quantity }} </td>
+        </ng-container>
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="right-align"></th>
+            <td mat-cell *matCellDef="let row" class="column-actions right-align">
+                <button mat-icon-button aria-label="Remove equipment" (click)="removeEquipment(row)">
+                    <mat-icon aria-hidden="false" fontIcon="delete" color="accent"></mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsEquipment"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsEquipment;"></tr>
+    </table>
+    <div *ngIf="registeredEquipment.length === 0" class="display-message">
+        No equipemnt has been added yet
+    </div>
+</div>

@@ -1,10 +1,7 @@
+import { TallyTypes } from "../enums/tally-types.enum";
 import { EquipmentCreate } from "./equipment.model";
 import { Pipe, PipeCreate } from "./pipe.model";
 
-export enum TallyTypes {
-    TallyIn = 0,
-    TallyOut = 1
-}
 
 export interface Tally {
     tallyId: string;

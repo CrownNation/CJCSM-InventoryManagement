@@ -159,3 +159,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
       color: white;
   }
 }
+
+/* For some reason flex is by default auto which makes dropdowns too tall. Need to do it globally or it gets overwritten. */
+.container-horizontal .mat-mdc-text-field-wrapper {
+  height: auto;
+  flex: none !important;
+}
