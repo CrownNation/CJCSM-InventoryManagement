@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Inventory_DAL.Entities.PipeProperties;
 
+// This object is used for inventory management. It represents a pipe that is stored in a rack in the yard.
 namespace Inventory_DAL.Entities
 {
     public class Pipe

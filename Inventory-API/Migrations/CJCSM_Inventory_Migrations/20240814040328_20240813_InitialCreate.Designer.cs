@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
 {
     [DbContext(typeof(InventoryContext))]
-    [Migration("20240806172258_20240806_InitialCreate")]
-    partial class _20240806InitialCreate
+    [Migration("20240814040328_20240813_InitialCreate")]
+    partial class _20240813InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,6 +146,35 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.ToTable("EquipmentDefinition");
                 });
 
+            modelBuilder.Entity("Inventory_DAL.Entities.EquipmentForTally", b =>
+                {
+                    b.Property<Guid>("EquipmentForTallyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EquipmentDefinitionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("LengthInMeters")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("RackId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TallyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EquipmentForTallyId");
+
+                    b.ToTable("EquipmentForTally");
+                });
+
             modelBuilder.Entity("Inventory_DAL.Entities.Pipe", b =>
                 {
                     b.Property<Guid>("PipeId")
@@ -237,6 +266,38 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     b.HasIndex("WeightId");
 
                     b.ToTable("PipeDefinition");
+                });
+
+            modelBuilder.Entity("Inventory_DAL.Entities.PipeForTally", b =>
+                {
+                    b.Property<Guid>("PipeForTallyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("IndexOfPipe")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("LengthInMeters")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("PipeDefinitionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TallyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PipeForTallyId");
+
+                    b.ToTable("PipeForTally");
                 });
 
             modelBuilder.Entity("Inventory_DAL.Entities.PipeProperties.PipeProperty_Category", b =>

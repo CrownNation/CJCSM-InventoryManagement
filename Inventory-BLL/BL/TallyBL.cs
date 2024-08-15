@@ -2,12 +2,7 @@
 using CJCSM_Common;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
-using Inventory_Documents;
 using Inventory_Dto.Dto;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Diagnostics;
-using System.Xml.Linq;
 using static CJCSM_Common.ApplicationEnums;
 
 namespace Inventory_BLL.BL
@@ -315,6 +310,8 @@ namespace Inventory_BLL.BL
          List<Equipment> equipmentList = new List<Equipment>();
          List<TallyEquipment> tallyEquipmentList = new List<TallyEquipment>();
          List<Tier> newTierList = new List<Tier>();
+         List<PipeForTally> pipeForTallyList = new List<PipeForTally>();
+         List<EquipmentForTally> equipmentForTallyList = new List<EquipmentForTally>();
 
          // For each incoming tier with pipe (pipe is always on a tier), we create the pipe model and assign the tierId for that pipe to
          // either an existing specified tier, the next empty tier on the rack that already exists, or create a new tier if all tiers are full.
@@ -378,8 +375,23 @@ namespace Inventory_BLL.BL
 
                }
 
-
                pipeList.Add(pipe);
+
+               // Create the PipeForTally object for the tally history using the new tier.
+               PipeForTally pipeForTally = new PipeForTally
+               {
+                  CustomerId = pipe.CustomerId,
+                  PipeDefinitionId = pipe.PipeDefinitionId,
+                  LengthInMeters = pipe.LengthInMeters,
+                  Quantity = pipe.Quantity,
+                  PipeForTallyId = Guid.NewGuid(),
+                  TallyId = tally.TallyId,
+                  TierId = pipeCreate.TierId,
+                  IndexOfPipe = pipe.IndexOfPipe
+               };
+
+               pipeForTallyList.Add(pipeForTally);
+
 
                //Create TallyPipe entry to link the pipe to this tally.
                TallyPipe tallyPipe = new TallyPipe
@@ -407,6 +419,18 @@ namespace Inventory_BLL.BL
                EquipmentId = equipment.EquipmentId
             };
             tallyEquipmentList.Add(tallyEquipment);
+
+            EquipmentForTally equipmentForTally = new EquipmentForTally
+            {
+               CustomerId = equipmentCreate.CustomerId,
+               EquipmentDefinitionId = equipmentCreate.EquipmentDefinitionId,
+               LengthInMeters = equipmentCreate.LengthInMeters,
+               Quantity = equipmentCreate.Quantity,
+               EquipmentForTallyId = Guid.NewGuid(),
+               TallyId = tally.TallyId,
+               RackId = equipmentCreate.RackId
+            };
+            equipmentForTallyList.Add(equipmentForTally);
          }
 
          // This is the actual transaction that inserts the Tally, Pipe, TallyPipe, Equipment, and TallyEquipment.
@@ -421,6 +445,8 @@ namespace Inventory_BLL.BL
                _context.TallyPipe.AddRange(tallyPipeList);
                _context.Equipment.AddRange(equipmentList);
                _context.TallyEquipment.AddRange(tallyEquipmentList);
+               _context.PipeForTally.AddRange(pipeForTallyList);
+               _context.EquipmentForTally.AddRange(equipmentForTallyList);
 
                // Save changes within the transaction
                await _context.SaveChangesAsync();

@@ -37,6 +37,8 @@ static IEdmModel GetEdmModel()
    builder.EntitySet<PipeDefinition>("PipeDefinition");
    builder.EntitySet<Pipe>("Pipe");
    builder.EntitySet<Tally>("Tally");
+   builder.EntitySet<PipeForTally>("PipeForTally");
+   builder.EntitySet<EquipmentForTally>("EquipmentForTally");
    builder.EntitySet<TallyPipe>("TallyPipe");
    builder.EntitySet<ShopLocation>("ShopLocation");
    builder.EntitySet<Equipment>("Equipment");
@@ -121,6 +123,8 @@ builder.Services.AddScoped<ITierBL, TierBL>();
 builder.Services.AddScoped<IPipeDefinitionBL, PipeDefinitionBL>();
 builder.Services.AddScoped<IPipeBL, PipeBL>();
 builder.Services.AddScoped<ITallyBL, TallyBL>();
+builder.Services.AddScoped<IPipeForTallyBL, PipeForTallyBL>();
+builder.Services.AddScoped<IEquipmentForTallyBL, EquipmentForTallyBL>();
 builder.Services.AddScoped<ITallyPipeBL, TallyPipeBL>();
 builder.Services.AddScoped<IShopLocationBL, ShopLocationBL>();
 builder.Services.AddScoped<IEquipmentBL, EquipmentBL>();

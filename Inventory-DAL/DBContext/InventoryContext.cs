@@ -17,7 +17,7 @@ namespace Inventory_DAL.Entities
         //add-migration [vxxxx_to_vxxxx_CamelCaseDescription_Project] -Context CjcsmSqliteContext -Output Migrations/ProjectMigrations
 
         //This command is used with the Package Manager Console(PMC) in Visual Studio
-        //Add-Migration 20240806_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
+        //Add-Migration 20240813_InitialCreate -Context InventoryContext -OutputDir Migrations/CJCSM_Inventory_Migrations
         //Update-Database
 
         //This command is used in the command-line interface (CLI) outside of Visual Studio.
@@ -51,7 +51,11 @@ namespace Inventory_DAL.Entities
         public virtual DbSet<Tally> Tally { get; set; }
         public virtual DbSet<TallyPipe> TallyPipe { get; set; }
 
-        public virtual DbSet<Equipment> Equipment { get; set; }
+      public virtual DbSet<PipeForTally> PipeForTally { get; set; }
+      public virtual DbSet<EquipmentForTally> EquipmentForTally { get; set; }
+
+
+      public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<EquipmentDefinition> EquipmentDefinition { get; set; }
         public virtual DbSet<TallyEquipment> TallyEquipment { get; set; }
 
