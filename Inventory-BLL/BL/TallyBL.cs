@@ -177,6 +177,17 @@ namespace Inventory_BLL.BL
 
       public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyWithPipeQuery()
       {
+         System.Diagnostics.Debug.WriteLine("______________________________________________________________________");
+         System.Diagnostics.Debug.WriteLine("______________________________________________________________________");
+         System.Diagnostics.Debug.WriteLine("______________________________________________________________________");
+         System.Diagnostics.Debug.WriteLine("____________________ /\\_/\\___________________________________________");
+         System.Diagnostics.Debug.WriteLine("____________________( o.o )___________________________________________");
+         System.Diagnostics.Debug.WriteLine("_____________________> ^ <_____________________________________________");
+         System.Diagnostics.Debug.WriteLine("______________________________________________________________________");
+         System.Diagnostics.Debug.WriteLine("______________________________________________________________________");
+         System.Diagnostics.Debug.WriteLine("______________________________________________________________________");
+
+
          var tallyQuery = from tally in _context.Tally
                           join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
                           join shopLocation in _context.ShopLocation on tally.ShopLocationId equals shopLocation.ShopLocationId
@@ -195,12 +206,11 @@ namespace Inventory_BLL.BL
                              TallyId = tally.TallyId,
                              TallyNumber = tally.TallyNumber,
                              TallyType = (ApplicationEnums.TallyTypes)tally.TallyType,
-                             PipeList = (from pipe in _context.Pipe
-                                         join tp in _context.TallyPipe on pipe.PipeId equals tp.PipeId
-                                         join tier in _context.Tier on pipe.TierId equals tier.TierId
+                             PipeList = (from pft in _context.PipeForTally
+                                         join tier in _context.Tier on pft.TierId equals tier.TierId
                                          join rack in _context.Rack on tier.RackId equals rack.RackId
-                                         join customer in _context.Customer on pipe.CustomerId equals customer.CustomerId
-                                         join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
+                                         join customer in _context.Customer on pft.CustomerId equals customer.CustomerId
+                                         join pd in _context.PipeDefinition on pft.PipeDefinitionId equals pd.PipeDefinitionId
                                          join ppc in _context.PipeProperty_Category on pd.CategoryId equals ppc.PipeProperty_CategoryId
                                          join ppco in _context.PipeProperty_Coating on pd.CoatingId equals ppco.PipeProperty_CoatingId
                                          join ppcon in _context.PipeProperty_Condition on pd.ConditionId equals ppcon.PipeProperty_ConditionId
@@ -210,17 +220,16 @@ namespace Inventory_BLL.BL
                                          join ppt in _context.PipeProperty_Thread on pd.ThreadId equals ppt.PipeProperty_ThreadId
                                          join ppw in _context.PipeProperty_Wall on pd.WallId equals ppw.PipeProperty_WallId
                                          join ppwe in _context.PipeProperty_Weight on pd.WeightId equals ppwe.PipeProperty_WeightId
-                                         where tp.TallyId == tally.TallyId
-                                         select new DtoPipe
+                                         where pft.TallyId == tally.TallyId
+                                         select new DtoPipeForTally
                                          {
-                                            CustomerId = pipe.CustomerId,
-                                            PipeId = pipe.PipeId,
-                                            IndexOfPipe = pipe.IndexOfPipe,
-                                            LengthInFeet = pipe.LengthInFeet,
-                                            LengthInMeters = pipe.LengthInMeters,
-                                            TierId = pipe.TierId,
-                                            PipeDefinitionId = pipe.PipeDefinitionId,
-                                            Quantity = pipe.Quantity,
+                                            CustomerId = pft.CustomerId,
+                                            PipeForTallyId = pft.PipeForTallyId,
+                                            IndexOfPipe = pft.IndexOfPipe,
+                                            LengthInMeters = pft.LengthInMeters,
+                                            TierId = pft.TierId,
+                                            PipeDefinitionId = pft.PipeDefinitionId,
+                                            Quantity = pft.Quantity,
                                             RackId = rack.RackId,
                                             RackName = rack.Name,
                                             TierNumber = tier.Number,
@@ -249,21 +258,19 @@ namespace Inventory_BLL.BL
                                             }
                                          }).ToList(),
 
-                             EquipmentList = (from equipment in _context.Equipment
-                                              join te in _context.TallyEquipment on equipment.EquipmentId equals te.EquipmentId
-                                              join ed in _context.EquipmentDefinition on equipment.EquipmentDefinitionId equals ed.EquipmentDefinitionId
+                             EquipmentList = (from eft in _context.EquipmentForTally
+                                              join ed in _context.EquipmentDefinition on eft.EquipmentDefinitionId equals ed.EquipmentDefinitionId
                                               join ppgr in _context.PipeProperty_Grade on ed.GradeId equals ppgr.PipeProperty_GradeId
                                               join pps in _context.PipeProperty_Size on ed.SizeId equals pps.PipeProperty_SizeId
-                                              where te.TallyId == tally.TallyId
-                                              select new DtoEquipment
+                                              where eft.TallyId == tally.TallyId
+                                              select new DtoEquipmentForTally
                                               {
-                                                 CustomerId = equipment.CustomerId,
-                                                 EquipmentDefinitionId = equipment.EquipmentDefinitionId,
-                                                 EquipmentId = equipment.EquipmentId,
-                                                 LengthInFeet = equipment.LengthInFeet,
-                                                 LengthInMeters = equipment.LengthInMeters,
-                                                 Quantity = equipment.Quantity,
-                                                 RackId = equipment.RackId,
+                                                 CustomerId = eft.CustomerId,
+                                                 EquipmentDefinitionId = eft.EquipmentDefinitionId,
+                                                 EquipmentForTallyId = eft.EquipmentForTallyId,
+                                                 LengthInMeters = eft.LengthInMeters,
+                                                 Quantity = eft.Quantity,
+                                                 RackId = eft.RackId,
                                                  EquipmentDefinition = new DtoEquipmentDefinition
                                                  {
                                                     Category = ed.Category,
@@ -277,19 +284,20 @@ namespace Inventory_BLL.BL
                                                     Size = pps
                                                  }
                                               }).ToList(),
-                             WeightInKg = (from pipe in _context.Pipe
-                                           join tp in _context.TallyPipe on pipe.PipeId equals tp.PipeId
-                                           join tier in _context.Tier on pipe.TierId equals tier.TierId
-                                           join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
-                                           where tp.TallyId == tally.TallyId
-                                           select pipe.Quantity * pipe.LengthInMeters * pd.Weight.WeightInKgPerMeter).Sum(),
+                             WeightInKg = (from pipeForTally in _context.PipeForTally
+                                           join pft in _context.PipeForTally on pipeForTally.TallyId equals tally.TallyId
+                                           join tier in _context.Tier on pipeForTally.TierId equals tier.TierId
+                                           join pd in _context.PipeDefinition on pipeForTally.PipeDefinitionId equals pd.PipeDefinitionId
+                                           where pft.TallyId == tally.TallyId
+                                           select pipeForTally.Quantity * pipeForTally.LengthInMeters * pd.Weight.WeightInKgPerMeter).Sum(),
 
-                             WeightInLbs = (from pipe in _context.Pipe
-                                            join tp in _context.TallyPipe on pipe.PipeId equals tp.PipeId
-                                            join tier in _context.Tier on pipe.TierId equals tier.TierId
-                                            join pd in _context.PipeDefinition on pipe.PipeDefinitionId equals pd.PipeDefinitionId
-                                            where tp.TallyId == tally.TallyId
-                                            select pipe.Quantity * pipe.LengthInFeet * pd.Weight.WeightInLbsPerFoot).Sum()
+                             // 1 m = 3.28084 ft
+                             WeightInLbs = (from pipeForTally in _context.PipeForTally
+                                            join pft in _context.PipeForTally on pipeForTally.TallyId equals pft.TallyId
+                                            join tier in _context.Tier on pipeForTally.TierId equals tier.TierId
+                                            join pd in _context.PipeDefinition on pipeForTally.PipeDefinitionId equals pd.PipeDefinitionId
+                                            where pft.TallyId == tally.TallyId
+                                            select pipeForTally.Quantity * pipeForTally.LengthInMeters * 3.28084m * pd.Weight.WeightInLbsPerFoot).Sum()
                           };
          return tallyQuery;
       }

@@ -28,8 +28,8 @@ namespace Inventory_Dto.Dto
         public DateTimeOffset DateOfCreation { get; set; }
         public string? Notes { get; set; }
 
-        public List<DtoPipe> PipeList { get; set; }
-        public List<DtoEquipment> EquipmentList {  get; set; }
+        public List<DtoPipeForTally> PipeList { get; set; }
+        public List<DtoEquipmentForTally> EquipmentList {  get; set; }
         public string? InvoiceNumber { get; set; }
 
         public Guid TalliedByUserId { get; set; }
