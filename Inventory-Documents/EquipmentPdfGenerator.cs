@@ -1,16 +1,7 @@
 ﻿using Inventory_Dto.Dto;
-using Inventory_Models.Dto;
-using Inventory_Models.DTO.Basic;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Inventory_Documents
 {

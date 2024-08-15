@@ -1,8 +1,6 @@
-﻿using Inventory_Dto.Dto;
-using QuestPDF.Fluent;
+﻿using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using System.Diagnostics.Metrics;
 
 namespace Inventory_Documents
 {

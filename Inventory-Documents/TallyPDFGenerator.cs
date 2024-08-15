@@ -1,6 +1,4 @@
 ﻿using Inventory_Dto.Dto;
-﻿using Inventory_DAL.Entities.PipeProperties;
-using Inventory_Dto.Dto;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -22,12 +20,9 @@ namespace Inventory_Documents
             Document document = Document.Create(container =>
             {
                 List<DtoPipe> pipeList = new List<DtoPipe>();
-                bool isEquipment = true;
                 int Modulus = 0;
                 int NumberOfRows = 0;
                 int NumberOfPages = 1;
-                DtoEquipment equipment;
-                DtoPipe test;
 
                 container.Page(page =>
                 {
@@ -109,9 +104,8 @@ namespace Inventory_Documents
                                }
                                column.Item().Element(ComposeFooter);
 
-                               if (isEquipment == true)
+                               if (dtoTally.EquipmentList.Count > 0)
                                {
-                                   isEquipment = true;
                                    column.Item().PageBreak();
                                    column.Item().Element(ComposeEquipmentHeader);
                                    column.Item().Component(new CreateTallyEquipmentTableComponent(equipListSubset));
