@@ -14,7 +14,7 @@ namespace Inventory_BLL.Interfaces
 
       public IQueryable<DtoRack> GetRackListForEquipment();
 
-      public Task<IQueryable<DtoRack_WithTier>> GetRackListWithTiers();
+      public Task<IQueryable<DtoRack_WithTier>> GetPipeRackListWithTiers();
 
       public Task<DtoRack> CreateRack(DtoRackCreate rack);
       public Task UpdateRack(DtoRackUpdate dtoRack, Guid guid);

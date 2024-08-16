@@ -28,7 +28,7 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithPipeQuery();
+                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithStockQuery();
 
                 if (tallyQuery == null)
                 {
@@ -95,7 +95,7 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithPipeQuery();
+                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithStockQuery();
 
                 DtoTally_WithPipeAndCustomer? dto = tallyQuery.ToList().FirstOrDefault();
 
@@ -122,9 +122,16 @@ namespace Inventory_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)  
         {
-            if (!ModelState.IsValid)
+         System.Diagnostics.Debug.WriteLine("**************************");
+         System.Diagnostics.Debug.WriteLine("**************************");
+         System.Diagnostics.Debug.WriteLine("**************************");
+         System.Diagnostics.Debug.WriteLine("**************************");
+
+         if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+            System.Diagnostics.Debug.WriteLine("BAD VALIDATION!");
+
+            return BadRequest(ModelState);
             }
 
             DtoTally_WithPipeAndCustomer DtoTally;

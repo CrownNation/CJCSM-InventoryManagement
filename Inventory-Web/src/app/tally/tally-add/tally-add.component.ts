@@ -165,7 +165,6 @@ export class TallyAddComponent {
       // 1 meter is equal to 3.280839895 feet
       // Round to 3 decimal places
       // .toFixed(3) rounds the result to three decimal places as a string, parseFloat() converts the string back to a number with the rounding intact.
-      pipe.lengthInFeet = parseFloat((pipe.lengthInMeters * 3.280839895).toFixed(3));
       pipe.customerId = this.tallyAddForm.get('customer')?.value;
 
       const tier = tiersWithPipe.find(t => t.tierId === pipe.tierId);
@@ -187,7 +186,6 @@ export class TallyAddComponent {
     equipmentList.forEach(equipment => {
       equipment.customerId = this.tallyAddForm.get('customer')?.value;
       equipment.shopLocationId = this.tallyAddForm.get('shopLocation')?.value;
-      equipment.lengthInFeet = parseFloat((equipment.lengthInMeters * 3.280839895).toFixed(3));
     });
 
     const newTally: DtoTallyCreate = {

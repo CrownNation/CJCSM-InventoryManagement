@@ -11,6 +11,10 @@ namespace Inventory_Dto.Dto
    public class DtoPipeCreate
    {
       public Guid PipeDefinitionId { get; set; }
+
+      // This is only used in the creation of TallyOut objects. This references the PipeId of the pipe selected in the tally out.
+      public Guid PipeId { get; set; }
+
       public Guid TierId { get; set; }
 
       public int TierNumber { get; set; } = 0;

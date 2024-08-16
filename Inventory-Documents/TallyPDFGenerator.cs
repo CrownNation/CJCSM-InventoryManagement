@@ -11,15 +11,15 @@ namespace Inventory_Documents
         decimal totalPipeDefinitionLength = 0;
         int totalNumberPipeDefinitionLength = 0;
         decimal totalNumberPipeWeightDefinitionLength = 0;
-        List<DtoPipe> pipeListSubset;
-        List<DtoEquipment> equipListSubset = new List<DtoEquipment>();
+        List<DtoPipeForTally> pipeListSubset;
+        List<DtoEquipmentForTally> equipListSubset = new List<DtoEquipmentForTally>();
         public Stream GenerateTallyPDFDocuemnt(DtoTally_WithPipeAndCustomer dtoTally)
         {
             System.Diagnostics.Debug.WriteLine("IN TallyPDFGenerator");
 
             Document document = Document.Create(container =>
             {
-                List<DtoPipe> pipeList = new List<DtoPipe>();
+                List<DtoPipeForTally> pipeList = new List<DtoPipeForTally>();
                 int Modulus = 0;
                 int NumberOfRows = 0;
                 int NumberOfPages = 1;

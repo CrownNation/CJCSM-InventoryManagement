@@ -286,6 +286,7 @@ export interface PipeDefinitionUpdate {
 
 export interface PipeCreate {
     pipeDefinitionId: string;
+    pipeId: string;
     tierId: string;
     rackId: string;
     rackName: string;

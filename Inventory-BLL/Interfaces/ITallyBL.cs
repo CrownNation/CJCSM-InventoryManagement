@@ -9,7 +9,7 @@ namespace Inventory_BLL.Interfaces
     {
         IQueryable<DtoTally_WithPipeAndCustomer> GetTallies();
         public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyWithPipeAndEquipmentByIdQuery(Guid tallyId);
-        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyWithPipeQuery();
+        public IQueryable<DtoTally_WithPipeAndCustomer> GetTallyWithStockQuery();
         Task<DtoTally_WithPipeAndCustomer> CreateTallyWithPipe(DtoTallyCreate tallyWithPipe);
         Task UpdateTally(DtoTallyUpdate tally, Guid guid);
         void DeleteTally(Guid guid);

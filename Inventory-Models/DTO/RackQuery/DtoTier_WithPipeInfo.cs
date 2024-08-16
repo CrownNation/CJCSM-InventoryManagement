@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace Inventory_Dto.Dto
 {
-    public class DtoTier_WithPipeInfo
-    {
-        public Guid TierId { get; set; }
-        public Guid RackId { get; set; }
-        public int Number { get; set; }
+   public class DtoTier_WithPipeInfo
+   {
+      public Guid TierId { get; set; }
+      public Guid RackId { get; set; }
+      public int Number { get; set; }
 
-        public int PipeCount { get; set; }
+      public int PipeCount { get; set; }
 
-    }
+      public List<Guid> PipeIds { get; set; }
+
+
+   }
 }

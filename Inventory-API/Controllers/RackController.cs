@@ -161,7 +161,7 @@ namespace Inventory_API.Controllers
                     return NotFound();
                 }
 
-                IQueryable<DtoRack_WithTier>? rackList = await _rackBl.GetRackListWithTiers();
+                IQueryable<DtoRack_WithTier>? rackList = await _rackBl.GetPipeRackListWithTiers();
 
                 if (rackList == null)
                 {

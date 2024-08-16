@@ -328,7 +328,7 @@ namespace Inventory_BLL.BL
             return rackWithPipeQuery;
         }
 
-        public async Task<IQueryable<DtoRack_WithTier>> GetRackListWithTiers()
+        public async Task<IQueryable<DtoRack_WithTier>> GetPipeRackListWithTiers()
         {
             try
             {
@@ -359,7 +359,11 @@ namespace Inventory_BLL.BL
                                                              TierId = tier.TierId,
                                                              RackId = tier.RackId,
                                                              Number = tier.Number,
-                                                             PipeCount = pipeCount
+                                                             PipeCount = pipeCount,
+                                                             PipeIds = _context.Pipe
+                                                                        .Where(pipe => pipe.TierId == tier.TierId)
+                                                                        .Select(pipe => pipe.PipeId)
+                                                                        .ToList()
                                                          }).ToList()
                                          };
 

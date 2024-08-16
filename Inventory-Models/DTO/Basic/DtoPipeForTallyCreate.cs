@@ -5,6 +5,9 @@ namespace Inventory_Dto.Dto
    // This object is to capture a snapshot of the pipe at the time of the tally. It represents pipe coming in or going out of the inventory.
    public class DtoPipeForTallyCreate
    {
+      // This is used in tally out to grab the id of the outgoing pipe
+      public Guid PipeId { get; set; }
+
       public Guid PipeDefinitionId { get; set; }
       public Guid TallyId { get; set; }
       public Guid TierId { get; set; }

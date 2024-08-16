@@ -7,9 +7,9 @@ namespace Inventory_Documents
 {
     public class CreateTallyPipeTableComponent : IComponent
     {
-        public List<DtoPipe> pipeList;
+        public List<DtoPipeForTally> pipeList;
 
-        public CreateTallyPipeTableComponent(List<DtoPipe> pipeList)
+        public CreateTallyPipeTableComponent(List<DtoPipeForTally> pipeList)
         {
             this.pipeList = pipeList;
         }

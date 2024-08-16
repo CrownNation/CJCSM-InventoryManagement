@@ -1,4 +1,5 @@
-﻿using QuestPDF.Fluent;
+﻿using Inventory_Dto.Dto;
+using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
@@ -10,7 +11,7 @@ namespace Inventory_Documents
         int headerFontSize = 11;
         int contentFontSize = 11;
  
-        public Stream GenerateRackSummaryPDFDocuemnt(List<DtoRack_WithPipe> dtoRack_WithPipeList)
+        public Stream GenerateRackSummaryPDFDocuemnt(List<DtoRack_WithStock> dtoRack_WithPipeList)
         {
 
             Document document = Document.Create(container =>

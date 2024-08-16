@@ -140,6 +140,7 @@ export class TallyPipeInComponent {
         return;
       }
       const newPipe: PipeCreate = {
+        pipeId: "",
         pipeDefinitionId: this.selectedPipeDefinition!.pipeDefinitionId,
         tierId: tierIdForPipe,
         rackId: this.pipeAddForm.get('rack')?.value.rackId,
@@ -202,6 +203,7 @@ export class TallyPipeInComponent {
   updatePipe(formDirective: any) {
 
     const newPipe: PipeCreate = {
+      pipeId: "",
       pipeDefinitionId: this.pipeAddForm.get('pipeDefinition')?.value,
       tierId: this.pipeAddForm.get('tier')?.value.tierId,
       rackId: this.pipeAddForm.get('rack')?.value.rackId,

@@ -7,9 +7,9 @@ namespace Inventory_Documents
 {
     public class CreateTallyEquipmentTableComponent : IComponent
     {
-        public List<DtoEquipment> equipmentList;
+        public List<DtoEquipmentForTally> equipmentList;
 
-        public CreateTallyEquipmentTableComponent(List<DtoEquipment> equipmentList)
+        public CreateTallyEquipmentTableComponent(List<DtoEquipmentForTally> equipmentList)
         {
             this.equipmentList = equipmentList;
         }

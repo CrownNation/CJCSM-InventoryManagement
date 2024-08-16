@@ -32,10 +32,10 @@ export class TallyPipeOutComponent {
   private localPipeList: Pipe[] = [];
 
   dataSourcePipeOnRack: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>();
-  dataSourcePipeForTally: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>();
+  dataSourcePipeForTally: MatTableDataSource<PipeCreate> = new MatTableDataSource<PipeCreate>();
 
   // These are pipes registered to for the tally
-  registeredPipes: Pipe[] = [];
+  registeredPipes: PipeCreate[] = [];
 
   // Local storage for all racks with their corresponding pipe lists
   private localRacksWithStock: Record<string, RackWithStock> = {};
@@ -233,7 +233,7 @@ export class TallyPipeOutComponent {
         }
 
         // Create a new pipe entry for the tally
-        const newPipe: Pipe = {
+        const newPipe: PipeCreate = {
           pipeId: pipeOnRack.pipeId,
           pipeDefinitionId: pipeOnRack.pipeDefinitionId,
           tierId: pipeOnRack.tierId,
