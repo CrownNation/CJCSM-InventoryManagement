@@ -16,8 +16,8 @@ import { TallyTypes } from 'src/app/enums/tally-types.enum';
   styleUrls: ['./tally-view.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -26,42 +26,45 @@ export class TallyViewComponent implements OnInit, OnDestroy {
 
   public TallyTypes = TallyTypes;
 
-  tallyForm!: FormGroup
+  tallyForm!: FormGroup;
   tally: Tally | null = null;
-  columnsToDisplay : string[] = [
+  columnsToDisplay: string[] = [
     'quantity',
-    // 'lengthFeet',
     'lengthMeters',
     'rack',
     'tier'
   ];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement!: Pipe | null;
-  dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>;
+  dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>();
 
   tally$: Observable<Tally | null> = this.store.select(selectSelectedTally);
   loading: Boolean = false;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store<AppState>) {  }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
+    this.buildForm();
 
+    // Subscribe to tally data
     this.tally$.pipe(takeUntil(this.destroy$)).subscribe((tally) => {
       if (tally) {
         this.loading = false;
         this.tally = tally;
         this.dataSource = new MatTableDataSource(tally.pipeList as Pipe[]);
+        console.log("Tally data received:", tally);
+        console.log("CUSTOMER: " + tally.customerName);
+
+        // Update the form with the fetched tally details
+        this.patchFormWithTallyDetails(tally);
       }
     });
-
-    this.buildForm();
   }
 
-
+  // Build the form with controls
   buildForm() {
-
     this.tallyForm = new FormGroup({
       tallyType: new FormControl('', []),
       tallyNumber: new FormControl('', []),
@@ -71,15 +74,30 @@ export class TallyViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Patch the form with values from the tally
+  patchFormWithTallyDetails(tally: Tally) {
+    if (tally === undefined) {
+      console.log("TALLY INFO: Tally is null");
+    } else {
+      console.log("TALLY INFO: " + tally.customerName);
+    }
+    this.tallyForm.patchValue({
+      tallyType: tally.tallyType,
+      tallyNumber: tally.tallyNumber,
+      customer: tally.customerName,
+      dateStart: tally.dateOfCreation
+    });
+  }
+
   get tallyTypeOptions(): TallyTypes[] {
     return Object.values(TallyTypes);
   }
 
   displayTallyType(tallyType: TallyTypes) {
-    if(tallyType === TallyTypes.In) {
+    if (tallyType === TallyTypes.In) {
       return 'In'
     }
-    else if(tallyType === TallyTypes.Out) {
+    else if (tallyType === TallyTypes.Out) {
       return 'Out'
     }
 

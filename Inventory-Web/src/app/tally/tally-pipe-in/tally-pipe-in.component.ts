@@ -140,7 +140,7 @@ export class TallyPipeInComponent {
         return;
       }
       const newPipe: PipeCreate = {
-        pipeId: "",
+        pipeId: "",  // This is only used in tally out to identify the existing pipe for the tally out
         pipeDefinitionId: this.selectedPipeDefinition!.pipeDefinitionId,
         tierId: tierIdForPipe,
         rackId: this.pipeAddForm.get('rack')?.value.rackId,

@@ -1,5 +1,3 @@
-
-
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
@@ -27,8 +25,13 @@ export class TallyPipeOutComponent {
 
   pipeAddForm!: FormGroup;
 
-  //Local copies of the rack and pipe data list are used so we can manipulate the data without affecting the store
+  // Holds the rack and pipe on the rack so we can look them up if we need to add them back to the rack if the user
+  // removes them from the tally (after having added them).
   private localRackWithStock: RackWithStock | null = null;
+  // localPipeList is a copy of the pipes on a selected rack that we can manipulate without affecting the store
+  // 1. We use this to populate the pipe list on the rack display table.
+  // 2. We can remove pipes from this list when a rack is selected to remove pipe that are already in the tally.
+  // 3. We can add pipes back to this list when a pipe is removed from the tally (meaning they go back on the rack).
   private localPipeList: Pipe[] = [];
 
   dataSourcePipeOnRack: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>();
@@ -36,9 +39,6 @@ export class TallyPipeOutComponent {
 
   // These are pipes registered to for the tally
   registeredPipes: PipeCreate[] = [];
-
-  // Local storage for all racks with their corresponding pipe lists
-  private localRacksWithStock: Record<string, RackWithStock> = {};
 
   selectedPipeInTallyForEdit: Pipe | null = null;
 
@@ -55,7 +55,7 @@ export class TallyPipeOutComponent {
   racksWithTiers: RackWithTier[] = [];
   tiers: TierWithPipeInfo[] = [];
 
-  // This is the selected rack with its pipes
+  // This is the selected rack from the store - ie. the rack in the store when you dispatch 'actionGetRackById'
   selectedRack$!: Observable<RackWithStock | null>;
 
   private destroy$ = new Subject<void>();
@@ -105,7 +105,7 @@ export class TallyPipeOutComponent {
 
         // Remove pipes that are already in the tally
         this.localPipeList = this.localPipeList.filter(
-          pipe => !this.registeredPipes.some(tallyPipe => tallyPipe.pipeId === pipe.pipeId)
+          pipe => !this.registeredPipes.some(p => p.pipeId === pipe.pipeId)
         );
 
         // Reset the pipe data source with the filtered list
@@ -156,6 +156,7 @@ export class TallyPipeOutComponent {
     }
 
     // If the pipe does not belong to the current rack or tier, we proceed with re-adding it to the rack's list
+    // First, find the pipe in question from the localPipeList
     const existingPipeInRack = this.localPipeList.find(
       pipe => pipe.pipeDefinitionId === row.pipeDefinitionId &&
         pipe.rackId === row.rackId &&
@@ -166,7 +167,7 @@ export class TallyPipeOutComponent {
       // If it exists, update the quantity
       existingPipeInRack.quantity += row.quantity;
     } else {
-      // If it does not exist, find the original pipe from the racksWithTiers
+      // If it does not exist in the localPipeList, we have to add it back in, so find the original pipe from the racksWithTiers (which holds all racks and tiers).
       const originalPipeInRack = this.racksWithTiers
         .flatMap(rack => rack.tierList)
         .flatMap(tier => tier.tierId === row.tierId && tier.rackId === row.rackId ? this.localRackWithStock!.pipeList : [])
@@ -214,84 +215,87 @@ export class TallyPipeOutComponent {
     //If we're editing, then we don't add a new pipe.
     if (this.selectedPipeInTallyForEdit) return;
 
-    if (!this.pipeAddForm.invalid) {
-      const selectedPipesOnRack = this.selectedPipeOnRack.selected;
+    // Check if the form is valid, if not, mark all fields as touched (so they show their error as well so we can see all missing fields) and return
+    if (this.pipeAddForm.invalid) {
+      this.pipeAddForm.markAllAsTouched();
+      return;
+    }
 
-      if (selectedPipesOnRack.length === 0) {
-        this.showSnackBar("Please select at least one pipe.", 'Close', { duration: 5000, panelClass: ['error-snack-bar'] });
+    const selectedPipesOnRack = this.selectedPipeOnRack.selected;
+
+    if (selectedPipesOnRack.length === 0) {
+      this.showSnackBar("Please select at least one pipe.", 'Close', { duration: 5000, panelClass: ['error-snack-bar'] });
+      return;
+    }
+
+    selectedPipesOnRack.forEach(pipeOnRack => {
+      const moveQuantity = selectedPipesOnRack.length === 1
+        ? this.pipeAddForm.get('quantity')?.value
+        : pipeOnRack.quantity;
+
+      if (moveQuantity > pipeOnRack.quantity) {
+        this.showSnackBar(`Not enough quantity on the selected tier for ${pipeOnRack.pipeDefinition.category?.name}.`, 'Close', { duration: 5000, panelClass: ['error-snack-bar'] });
         return;
       }
 
-      selectedPipesOnRack.forEach(pipeOnRack => {
-        const moveQuantity = selectedPipesOnRack.length === 1
-          ? this.pipeAddForm.get('quantity')?.value
-          : pipeOnRack.quantity;
+      // Create a new pipe entry for the tally
+      const newPipe: PipeCreate = {
+        pipeId: pipeOnRack.pipeId,
+        pipeDefinitionId: pipeOnRack.pipeDefinitionId,
+        tierId: pipeOnRack.tierId,
+        rackId: pipeOnRack.rackId,
+        tierNumber: pipeOnRack.tierNumber,
+        rackName: pipeOnRack.rackName,
+        customerId: pipeOnRack.customerId,
+        lengthInMeters: pipeOnRack.lengthInMeters,
+        lengthInFeet: pipeOnRack.lengthInFeet,
+        quantity: moveQuantity,
+        indexOfPipe: 0,
+        pipeDefinition: pipeOnRack.pipeDefinition
+      };
 
-        if (moveQuantity > pipeOnRack.quantity) {
-          this.showSnackBar(`Not enough quantity on the selected tier for ${pipeOnRack.pipeDefinition.category?.name}.`, 'Close', { duration: 5000, panelClass: ['error-snack-bar'] });
-          return;
+      // Add the new pipe to the tally list
+      this.registeredPipes.push(newPipe);
+      this.dataSourcePipeForTally.data = [...this.registeredPipes];
+
+      // Find the pipe in the local list and update its quantity
+      const localPipeIndex = this.localPipeList.findIndex(p => p.pipeId === pipeOnRack.pipeId);
+      if (localPipeIndex > -1) {
+        // Create a new object that is a copy of the localPipe
+        const localPipe = { ...this.localPipeList[localPipeIndex] };
+
+        localPipe.quantity -= moveQuantity;
+
+        if (localPipe.quantity <= 0) {
+          // Remove the pipe from the local list if its quantity is zero or less
+          this.localPipeList.splice(localPipeIndex, 1);
+        } else {
+          // Replace the original pipe in the local list with the updated pipe
+          this.localPipeList[localPipeIndex] = localPipe;
         }
-
-        // Create a new pipe entry for the tally
-        const newPipe: PipeCreate = {
-          pipeId: pipeOnRack.pipeId,
-          pipeDefinitionId: pipeOnRack.pipeDefinitionId,
-          tierId: pipeOnRack.tierId,
-          rackId: pipeOnRack.rackId,
-          tierNumber: pipeOnRack.tierNumber,
-          rackName: pipeOnRack.rackName,
-          customerId: pipeOnRack.customerId,
-          lengthInMeters: pipeOnRack.lengthInMeters,
-          lengthInFeet: pipeOnRack.lengthInFeet,
-          quantity: moveQuantity,
-          indexOfPipe: 0,
-          pipeDefinition: pipeOnRack.pipeDefinition
-        };
-
-        // Add the new pipe to the tally list
-        this.registeredPipes.push(newPipe);
-        this.dataSourcePipeForTally.data = [...this.registeredPipes];
-
-        // Find the pipe in the local list and update its quantity
-        const localPipeIndex = this.localPipeList.findIndex(p => p.pipeDefinitionId === pipeOnRack.pipeDefinitionId);
-        if (localPipeIndex > -1) {
-          // Create a new object that is a copy of the localPipe
-          const localPipe = { ...this.localPipeList[localPipeIndex] };
-
-          localPipe.quantity -= moveQuantity;
-
-          if (localPipe.quantity <= 0) {
-            // Remove the pipe from the local list if its quantity is zero or less
-            this.localPipeList.splice(localPipeIndex, 1);
-          } else {
-            // Replace the original pipe in the local list with the updated pipe
-            this.localPipeList[localPipeIndex] = localPipe;
-          }
-        }
-
-      });
-
-      // Update the pipe data source with the local pipe list
-      this.dataSourcePipeOnRack.data = [...this.localPipeList];
-
-      // Apply tier filter if a tier is selected
-      const selectedTierId = this.pipeAddForm.get('tier')?.value?.tierId;
-      if (selectedTierId) {
-        this.filterPipesByTier(selectedTierId);
       }
 
-      // Clear the selection & quantity field
-      this.selectedPipeOnRack.clear();
-      this.pipeAddForm.get('quantity')?.reset();
+    });
 
-    } else {
-      this.pipeAddForm.markAllAsTouched();
+    // Update the pipe data source with the local pipe list
+    this.dataSourcePipeOnRack.data = [...this.localPipeList];
+
+    // Apply tier filter if a tier is selected
+    const selectedTierId = this.pipeAddForm.get('tier')?.value?.tierId;
+    if (selectedTierId) {
+      this.filterPipesByTier(selectedTierId);
     }
+
+    // Clear the selection & quantity field
+    this.selectedPipeOnRack.clear();
+    this.pipeAddForm.get('quantity')?.reset();
   }
 
   handlePipeOnRackClick(row: Pipe) {
     this.selectedPipeOnRack.toggle(row);
 
+    // Change the quantity field based on the number of items selected. Quantity is only used if a single item is selected.
+    // If 1 item is selected, we use the quantity, otherwise we set it to null (ie empty)
     if (this.selectedPipeOnRack.selected.length > 1) {
       this.pipeAddForm.get('quantity')?.setValue(null);
     } else if (this.selectedPipeOnRack.selected.length === 1) {

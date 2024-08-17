@@ -23,6 +23,8 @@ export class TallyEquipmentInComponent {
 
   // Used to set a flag for showing an error message when a pipe definition is not selected
   showEquipmentDefinitionSelectedError: boolean = false;
+
+  // This is used to populate the equipment rack drop down
   equipmentRacks: Rack[] = [];
 
   selectedEquipment: EquipmentCreate | null = null;
@@ -78,6 +80,7 @@ export class TallyEquipmentInComponent {
     console.log("EQUIPMENT DEFINITION: " + this.selectedEquipmentDefinition!.equipmentDefinitionId);
     if (!this.equipmentAddForm.invalid) {
       const newEquipment: EquipmentCreate = {
+        equipmentId: "", // This is only used in tally out to identify the existing equipment for the tally out
         rackId: this.equipmentAddForm.get('rackEquipment')?.value.rackId,
         rackName: this.equipmentAddForm.get('rackEquipment')?.value.name,
         equipmentDefinitionId: this.selectedEquipmentDefinition!.equipmentDefinitionId,

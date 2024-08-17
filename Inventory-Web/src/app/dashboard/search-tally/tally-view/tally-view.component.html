@@ -30,6 +30,7 @@
 
             <p>{{tally.notes}}</p>
 
+            <div *ngIf="tally.pipeList.length>0">
             <h4>Pipe</h4>
             <table mat-table
                 [dataSource]="dataSource" multiTemplateDataRows
@@ -144,10 +145,7 @@
                 </tr>
                 <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
             </table>
-
-            <form [formGroup]="tallyForm">
-            </form>
-
+        </div>
         </div>
 
     </mat-card-content>

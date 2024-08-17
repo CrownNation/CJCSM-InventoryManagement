@@ -15,6 +15,8 @@ export interface Equipment{
 
 export interface EquipmentCreate{
     rackId: string;
+    // Used to hold the id of the equipmentId of the item in inventory used to create the equipmentForTally object
+    equipmentId: string;
     rackName: string;
     equipmentDefinitionId: string;
     customerId: string;

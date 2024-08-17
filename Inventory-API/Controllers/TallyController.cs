@@ -65,18 +65,18 @@ namespace Inventory_API.Controllers
         }
 
         [HttpGet("{tallyId}")]
-        public IActionResult Get(Guid tallyId, ODataQueryOptions<DtoTally_WithPipeAndCustomer> options)
+        public IActionResult Get(Guid tallyId)
         {
             try
             {
-                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithPipeAndEquipmentByIdQuery(tallyId);
+                DtoTally_WithPipeAndCustomer? tally = _tallyBl.GetTallyWithPipeAndEquipmentByIdQuery(tallyId).FirstOrDefault();
 
-                if (tallyQuery == null)
+                if (tally == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(options.ApplyTo(tallyQuery));
+                return Ok(tally);
             }
             catch (KeyNotFoundException)
             {
@@ -122,15 +122,9 @@ namespace Inventory_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DtoTallyCreate tally)  
         {
-         System.Diagnostics.Debug.WriteLine("**************************");
-         System.Diagnostics.Debug.WriteLine("**************************");
-         System.Diagnostics.Debug.WriteLine("**************************");
-         System.Diagnostics.Debug.WriteLine("**************************");
 
          if (!ModelState.IsValid)
             {
-            System.Diagnostics.Debug.WriteLine("BAD VALIDATION!");
-
             return BadRequest(ModelState);
             }
 

@@ -26,6 +26,7 @@ import { TallyAddComponent } from './tally-add/tally-add.component';
 import { TallyPipeInComponent } from './tally-pipe-in/tally-pipe-in.component';
 import { TallyEquipmentInComponent } from './tally-equipment-in/tally-equipment-in.component';
 import { TallyPipeOutComponent } from './tally-pipe-out/tally-pipe-out.component';
+import { TallyEquipmentOutComponent } from './tally-equipment-out/tally-equipment-out.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TallyPipeOutComponent } from './tally-pipe-out/tally-pipe-out.component
     TallyAddComponent,
     TallyPipeInComponent,
     TallyEquipmentInComponent,
-    TallyPipeOutComponent
+    TallyPipeOutComponent,
+    TallyEquipmentOutComponent
   ],
   imports: [
     CommonModule,

@@ -5,7 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
 import { ShopLocation } from '../../models/shop-location.model';
 import { Customer } from '../../models/customer.model';
-import { DtoTallyCreate, DtoTierWithPipe, Tally} from '../../models/tally.model';
+import { DtoTallyCreate, DtoTierWithPipe, Tally } from '../../models/tally.model';
 import { actionGetCustomersFullList } from '../../store/customer/customer.actions';
 import { actionGetEquipmentRacks, actionGetRacksWithTiers, addTierToRack } from '../../store/rack/rack.actions';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -31,6 +31,7 @@ import { TallyPipeInComponent } from '../tally-pipe-in/tally-pipe-in.component';
 import { TallyEquipmentInComponent } from '../tally-equipment-in/tally-equipment-in.component';
 import { TallyTypes } from 'src/app/enums/tally-types.enum';
 import { TallyPipeOutComponent } from '../tally-pipe-out/tally-pipe-out.component';
+import { TallyEquipmentOutComponent } from '../tally-equipment-out/tally-equipment-out.component';
 
 @Component({
   selector: 'app-tally-add',
@@ -41,7 +42,8 @@ export class TallyAddComponent {
   @ViewChild('tallyPipeInRef') tallyPipeInComponent!: TallyPipeInComponent;
   @ViewChild('tallyPipeOutRef') tallyPipeOutComponent!: TallyPipeOutComponent;
 
-  @ViewChild('tallyEquipmentRef') tallyEquipmentInComponent!: TallyEquipmentInComponent;
+  @ViewChild('tallyEquipmentInRef') tallyEquipmentInComponent!: TallyEquipmentInComponent;
+  @ViewChild('tallyEquipmentOutRef') tallyEquipmentOutComponent!: TallyEquipmentOutComponent;
 
   tallyAddForm!: FormGroup;
 
@@ -154,9 +156,9 @@ export class TallyAddComponent {
     // This case is handled in the back end and a new tier will be assigned.
     const tiersWithPipe: DtoTierWithPipe[] = [];
 
-    var pipeList: PipeCreate[] =  [];
-    
-    if(this.tallyType === TallyTypes.Out)
+    var pipeList: PipeCreate[] = [];
+
+    if (this.tallyType === TallyTypes.Out)
       pipeList = this.tallyPipeOutComponent.getPipeForTallyOutList();
     else
       pipeList = this.tallyPipeInComponent.getPipeList();
@@ -179,7 +181,12 @@ export class TallyAddComponent {
       }
     });
 
-    var equipmentList: EquipmentCreate[] =  this.tallyEquipmentInComponent.getEquipmentList();
+    var equipmentList: EquipmentCreate[] = [];
+
+    if (this.tallyType === TallyTypes.Out)
+      equipmentList = this.tallyEquipmentOutComponent.getEquipmentList();
+    else
+      equipmentList = this.tallyEquipmentInComponent.getEquipmentList();
 
 
     //Loop through registered equipment and set the customer id and shop location id
@@ -273,7 +280,7 @@ export class TallyAddComponent {
     console.log("TALLY TYPE: " + this.tallyType);
   }
 
-  cancelEdit(){
+  cancelEdit() {
 
   }
   ngOnDestroy() {
@@ -281,7 +288,7 @@ export class TallyAddComponent {
     this.destroy$.complete();
   }
 
- 
+
 
 
   showSnackBar(message: string, action: string = 'Close', config: any = { duration: 5000, panelClass: ['snack-bar'] }) {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Tally, DtoTallyCreate, TallySearchParams } from '../../../models/tally.model';
 import { TallyTypes } from 'src/app/enums/tally-types.enum';
 
@@ -22,7 +22,7 @@ export class TallyService {
   getTallyById(id: string): Observable<Tally> {
     return this.http.get<Tally>(`${this.baseUrl}/${id}`);
   }
-
+ 
   addTally(tally: DtoTallyCreate): Observable<Tally> {
     return this.http.post<Tally>(this.baseUrl, tally);
   }

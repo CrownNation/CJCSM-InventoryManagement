@@ -85,7 +85,7 @@
             </mat-expansion-panel>
 
             <!-- Pipe Section -->
-            <mat-expansion-panel style="margin-bottom: 1rem;" expanded="true">
+            <mat-expansion-panel style="margin-bottom: 1rem;">
                 <mat-expansion-panel-header>
                     <mat-panel-title>Pipe Details</mat-panel-title>
                 </mat-expansion-panel-header>
@@ -94,11 +94,12 @@
             </mat-expansion-panel>
 
             <!-- Equipment Section -->
-            <mat-expansion-panel style="margin-bottom: 1rem;">
+            <mat-expansion-panel style="margin-bottom: 1rem;" expanded="true">
                 <mat-expansion-panel-header>
                     <mat-panel-title>Equipment Details</mat-panel-title>
                 </mat-expansion-panel-header>
-               <app-tally-equipment-in #tallyEquipmentRef></app-tally-equipment-in>
+               <app-tally-equipment-in *ngIf="tallyType === TallyTypes.In" #tallyEquipmentInRef></app-tally-equipment-in>
+               <app-tally-equipment-out *ngIf="tallyType === TallyTypes.Out" #tallyEquipmentOutRef></app-tally-equipment-out>
 
             </mat-expansion-panel>
         </mat-accordion>

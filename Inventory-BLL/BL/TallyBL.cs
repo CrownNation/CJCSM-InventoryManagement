@@ -311,8 +311,6 @@ namespace Inventory_BLL.BL
          tally.TallyId = Guid.NewGuid();
 
          List<PipeForTally> pipeForTallyList = new List<PipeForTally>();
-         List<Equipment> equipmentList = new List<Equipment>();
-         List<TallyEquipment> tallyEquipmentList = new List<TallyEquipment>();
          List<EquipmentForTally> equipmentForTallyList = new List<EquipmentForTally>();
 
          foreach (DtoTier_WithPipe tierWithPipe in tallyCreate.TierWithPipeList)
@@ -348,10 +346,24 @@ namespace Inventory_BLL.BL
          foreach (DtoEquipmentCreate equipmentCreate in tallyCreate.EquipmentList)
          {
             Equipment equipment = MapEquipment(equipmentCreate);
-            equipmentList.Add(equipment);
+
+            // Find the equipment in the database
+            Equipment? existingEquipment = _context.Equipment.Where(e => e.EquipmentId == equipmentCreate.EquipmentId).FirstOrDefault();
+            if (existingEquipment == null)
+               throw new Exception("The equipment for the tally out could not be found in ProcessTallyOut. EquipmentID: " + equipmentCreate.EquipmentId);
+
+            if(existingEquipment.Quantity  == equipmentCreate.Quantity)
+               {
+               // Remove the equipment from the rack
+               _context.Equipment.Remove(existingEquipment);
+            }
+            else
+            {
+               // Update the quantity of the equipment on the rack
+               existingEquipment.Quantity -= equipmentCreate.Quantity;
+            }
 
             equipmentForTallyList.Add(CreateEquipmentForTally(equipment, tally.TallyId));
-            tallyEquipmentList.Add(CreateTallyEquipment(tally.TallyId, equipment.EquipmentId));
          }
 
 
@@ -361,8 +373,6 @@ namespace Inventory_BLL.BL
             {
                _context.Tally.Add(tally);
                _context.PipeForTally.AddRange(pipeForTallyList);
-               _context.Equipment.AddRange(equipmentList);
-               _context.TallyEquipment.AddRange(tallyEquipmentList);
                _context.EquipmentForTally.AddRange(equipmentForTallyList);
 
                // Save changes within the transaction
