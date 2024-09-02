@@ -27,12 +27,13 @@ export class RackEffects {
       switchMap(actionData =>
         this.rackService.getRacks(actionData.searchParams).pipe(
           map(racks => {
+            /* Uncomment to display success message
             this.store.dispatch(addNotification({
               notification: { message: 'Racks loaded successfully', type: 'success' }
             }));
             this.store.dispatch(addNotification({
               notification: { message: 'Another test message', type: 'info' }
-            }));
+            })); */
             return actionGetRacksSuccess({ racks });
           }),
           catchError((error: HttpErrorResponse) => {
