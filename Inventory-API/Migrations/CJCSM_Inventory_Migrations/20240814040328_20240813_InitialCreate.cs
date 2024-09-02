@@ -21,7 +21,7 @@ namespace InventoryAPI.Migrations.CJCSMInventoryMigrations
                     Address2 = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     ProvinceState = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(30)", maxLength: 2, nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),

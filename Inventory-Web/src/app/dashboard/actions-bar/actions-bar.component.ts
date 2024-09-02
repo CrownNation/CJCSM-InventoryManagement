@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TallyAddComponent } from '../../tally/tally-add/tally-add.component';
 import { CustomerAddComponent } from '../customer-add/customer-add.component';
 import { RackAddComponent } from '../rack-add/rack-add.component';
 import { Router } from '@angular/router';

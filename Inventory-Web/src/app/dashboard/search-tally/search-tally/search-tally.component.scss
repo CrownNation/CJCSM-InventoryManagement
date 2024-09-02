@@ -1,3 +1,10 @@
+// The CSS selectors like .mat-column-quantity, .mat-column-lengthInMeters, etc., 
+// correspond to classes that Angular Material automatically assigns to each table column based on the matColumnDef
+// names specified in the table's HTML.
+.mat-column-tallyNumber { width: 15%; min-width: 50px;}
+.mat-column-tallyType { width: 5%; }
+.mat-column-date { width: 12%; }
+
 mat-card-header{
     display: flex;
     justify-content: space-between;

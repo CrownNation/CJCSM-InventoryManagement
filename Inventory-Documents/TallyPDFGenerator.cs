@@ -5,450 +5,94 @@ using QuestPDF.Infrastructure;
 
 namespace Inventory_Documents
 {
-    public class TallyPDFGenerator
-    {
-        string path = Path.GetFullPath("CJCSM_Logo_Transparent_ORIGINAL.png");
-        decimal totalPipeDefinitionLength = 0;
-        int totalNumberPipeDefinitionLength = 0;
-        decimal totalNumberPipeWeightDefinitionLength = 0;
-        List<DtoPipeForTally> pipeListSubset;
-        List<DtoEquipmentForTally> equipListSubset = new List<DtoEquipmentForTally>();
-        public Stream GenerateTallyPDFDocuemnt(DtoTally_WithPipeAndCustomer dtoTally)
-        {
-            System.Diagnostics.Debug.WriteLine("IN TallyPDFGenerator");
+   public class TallyPDFGenerator
+   {
+      // I got this number by trial and error. First, generate the PDF as normal.
+      // Then, use the tally or pipe section, and modify the padding top after you comment out all sections that generate before that section.
+      // Compare the padding top to the original document by switching between the files (or in PS) to see the difference between the original section locaiton
+      // and the location using only the padding number.
+      // The goal here is to find the distance (using padding) from the top of the page to the location the section you want to know the distance to.
+      int HEADER_AND_TALLY_SECTION_HEIGHT = 210;
 
-            Document document = Document.Create(container =>
-            {
-                List<DtoPipeForTally> pipeList = new List<DtoPipeForTally>();
-                int Modulus = 0;
-                int NumberOfRows = 0;
-                int NumberOfPages = 1;
+      decimal totalPipeDefinitionLength = 0;
+      int totalNumberPipeDefinitionLength = 0;
+      decimal totalNumberPipeWeightDefinitionLength = 0;
+      List<DtoPipeForTally> pipeListSubset;
+      List<DtoEquipmentForTally> equipListSubset = new List<DtoEquipmentForTally>();
 
-                container.Page(page =>
-                {
-                    page.Size(PageSizes.A4);
-                    page.Margin(2, Unit.Centimetre);
-                    page.PageColor(Colors.White);
-                    page.DefaultTextStyle(x => x.FontSize(20));
+      TallyHeaderFooterGenerator _tallyHeaderFooterGenerator;
+      PipeSectionPDFGenerator _pipeSectionPDFGenerator;
+      TallySectionPDFGenerator _tallySectionPDFGenerator;
+      EquipmentSectionPDFGenerator _equipmentSectionPDFGenerator;
 
-                    page.Header()
-                        .Text($"Tally #: {dtoTally.TallyNumber}")
-                        .SemiBold().FontSize(36).FontColor(Colors.Blue.Medium);
+      public Stream GenerateTallyPDFDocuemnt(DtoTally_WithPipeAndCustomer dtoTally)
+      {
+         _tallyHeaderFooterGenerator = new TallyHeaderFooterGenerator();
+         _pipeSectionPDFGenerator = new PipeSectionPDFGenerator(_tallyHeaderFooterGenerator);
+         _tallySectionPDFGenerator = new TallySectionPDFGenerator();
+         _equipmentSectionPDFGenerator = new EquipmentSectionPDFGenerator(_tallyHeaderFooterGenerator);
 
-                    page.Content()
-                        .PaddingVertical(1, Unit.Centimetre)
-                        .Column(x =>
-                        {
-                            x.Spacing(20);
+         Document document = Document.Create(container =>
+         {
+            List<DtoPipeForTally> pipeList = new List<DtoPipeForTally>();
 
-                            x.Item().Text($"Customer: {dtoTally.CustomerName}");
-                            x.Item().Image(Placeholders.Image(200, 100));
-                        });
+            container.Page(page =>
+               {
+                  page.Size(PageSizes.Letter);
+                  page.Margin(0);
+                  page.PageColor(Colors.White);
+                  page.DefaultTextStyle(x => x.FontSize(DocumentConstants.FONT_SIZE_STANDARD));
 
-                    page.Footer()
-                        .AlignCenter();
+                  page.Header()
+                     .PaddingTop(1, Unit.Centimetre)
+                     .PaddingLeft(1, Unit.Centimetre)
+                     .PaddingRight(1, Unit.Centimetre)
+                     .PaddingBottom(DocumentConstants.VERTICAL_SPACE_SMALL_HEIGHT_IN_POINTS)
+                     .Background(Colors.White)
+                     .Element(container => _tallyHeaderFooterGenerator.GeneratePDFHeader(container, dtoTally));
 
-                    page.Header().Column(column =>
-                    {
+                  page.Content()
+                            .PaddingTop(0, Unit.Centimetre)
+                            .PaddingLeft(1, Unit.Centimetre)
+                            .PaddingRight(1, Unit.Centimetre)
+                            .PaddingBottom(DocumentConstants.VERTICAL_SPACE_SMALL_HEIGHT_IN_POINTS)
+                            .Column(column =>
+                            {
+                               column.Item().Element(container => _tallySectionPDFGenerator.GenerateTallySection(container, dtoTally));
 
-                    });
+                               int currentYPosition = HEADER_AND_TALLY_SECTION_HEIGHT;
+                               column.Item().Element(container => _pipeSectionPDFGenerator.GeneratePipeSection(container, currentYPosition, dtoTally));
 
-                    page.Content()
-                           .PaddingVertical(0.25f, Unit.Centimetre)
-                           .Column(column =>
-                           {
-                               column.Item().Element(ComposePipeHeader);
-                               column.Item().Text(x =>
+                               column.Item().Element(container => _equipmentSectionPDFGenerator.GenerateEquipmentSection(container, currentYPosition, dtoTally));
+                               
+                               // Uncomment this to generate heights for test purposes
+                               // Will need to comment out the sections above
+
+                               //Full page height
+                               /*
+                               column.Item().Element(element =>
                                {
-                                   x.Span("").FontSize(10);
+                                  element
+                                      .Height(720)      // Page height excluding footer (ie. usable page height)
+                                      .Width(50)        // Set width to 50 points
+                                      .Background(Colors.Grey.Lighten2); // Optional: Add background color for visibility
                                });
-
-                               List<Guid> ids = dtoTally.PipeList.Select(ids => ids.PipeDefinitionId).Distinct().ToList();
-
-                               for (int i = 0; i < ids.Count; i++)
-                               {
-                                   pipeListSubset = dtoTally.PipeList.Where(p => p.PipeDefinitionId == ids[i]).ToList();
-                                   Modulus = (pipeListSubset.Count + 3) / 4;
-                                   Modulus += 4;
-
-                                   if (NumberOfRows + Modulus > 25)
-                                   {
-                                       NumberOfRows = 0;
-                                       column.Item().PageBreak();
-                                       column.Item().Element(ComposePipeHeader);
-                                       column.Item().Text(x =>
-                                       {
-                                           x.Span("").FontSize(10);
-                                       });
-                                       NumberOfPages++;
-                                   }
-                                   column.Item().Element(ComposeTableHeader);
-
-                                   column.Item().Row(row =>
-                                       {
-                                           totalPipeDefinitionLength = pipeListSubset.Sum(x => x.LengthInFeet);
-                                           totalNumberPipeDefinitionLength = pipeListSubset.Count();
-                                           totalNumberPipeWeightDefinitionLength = totalNumberPipeDefinitionLength * pipeListSubset[0].PipeDefinition.Weight.WeightInKgPerMeter;
-
-                                           row.RelativeItem().Component(new CreateTallyPipeTableComponent(pipeListSubset));
-                                           NumberOfRows += Modulus;
-                                           pipeListSubset.Clear();
-                                       });
-
-                                   column.Item().Element(ComposeTableFooter);
-                                   column.Item().Text(x =>
-                                   {
-                                       x.Span("").FontSize(10);
-                                   });
-                                   Modulus++;
-                               }
-                               column.Item().Element(ComposeFooter);
-
-                               if (dtoTally.EquipmentList.Count > 0)
-                               {
-                                   column.Item().PageBreak();
-                                   column.Item().Element(ComposeEquipmentHeader);
-                                   column.Item().Component(new CreateTallyEquipmentTableComponent(equipListSubset));
-                                   column.Item().Element(ComposeEquipmentFooter);
-                               }
-                           });
-
-                    page.Footer().Column(column =>
-                    {
-                        column.Item().AlignCenter()
-                        .Text(x =>
-                        {
-                            x.Span("Page ");
-                            x.CurrentPageNumber();
-                        });
-                    });
-                });
-
-                void ComposeTableHeader(QuestPDF.Infrastructure.IContainer container)
-                {
-                    var tableFontSize = 11;
-
-                    container.Column(column =>
-                    {
-                        column.Item().Border(1).Table(table =>
-                        {
-                            table.ColumnsDefinition(columns =>
-                            {
-                                columns.ConstantColumn(88);
-                                columns.ConstantColumn(89);
-                                columns.ConstantColumn(88);
-                                columns.ConstantColumn(89);
-                                columns.ConstantColumn(88);
-                                columns.RelativeColumn();
+                               */
                             });
 
-                            table.Cell().Element(LabelStyle).AlignRight().Text("Size:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).AlignRight().Text($"{pipeListSubset[0].PipeDefinition.Size.SizeImperial}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Weight:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"{dtoTally.TalliedByUserName}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Unit:").FontSize(tableFontSize);
-                            table.Cell().BorderRight(1).Element(InfoStyle).Text($"{DateTime.Now}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Grade:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"Lading #").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).AlignRight().Text("Thread:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).AlignRight().Text($"{dtoTally.CarrierName}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Range:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"{dtoTally.ShopLocationName}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Condition:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"Used").FontSize(tableFontSize);
+                  page.Footer()
+                     .AlignBottom()
+                     .Padding(0)
+                     .Height(1.5f, Unit.Centimetre)
+                     .Background(Colors.Grey.Lighten2)
+                     .Element(container => _tallyHeaderFooterGenerator.GeneratePDFFooter(container));
 
-                            static QuestPDF.Infrastructure.IContainer LabelStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.Background(Colors.Grey.Lighten2).AlignLeft().MinHeight(20);
-                            }
-
-                            static QuestPDF.Infrastructure.IContainer InfoStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.Background(Colors.White).AlignLeft().MinHeight(20);
-                            }
-                        });
-                    });
-                }
-
-                void ComposeTableFooter(QuestPDF.Infrastructure.IContainer container)
-                {
-                    var tableFontSize = 11;
-
-                    container.Column(column =>
-                    {
-
-                        column.Item().Table(table =>
-                        {
-                            table.ColumnsDefinition(columns =>
-                            {
-                                columns.ConstantColumn(210);
-                                columns.ConstantColumn(55);
-                                columns.RelativeColumn();
-                                columns.ConstantColumn(55);
-                                columns.RelativeColumn();
-                                columns.ConstantColumn(55);
-                                columns.RelativeColumn();
-                            });
-
-                            table.Cell().Element(InfoStyle).Text("").FontSize(11);
-                            table.Cell().BorderLeft(1).BorderBottom(1).Element(LabelStyle).Text("# JTs:").FontSize(14);
-                            table.Cell().BorderBottom(1).Element(InfoStyle).Text(totalNumberPipeDefinitionLength.ToString()).FontSize(14);
-                            table.Cell().BorderBottom(1).Element(LabelStyle).Text("Length:").FontSize(14);
-                            table.Cell().BorderBottom(1).Element(InfoStyle).Text(totalPipeDefinitionLength.ToString()).FontSize(14);
-                            table.Cell().BorderBottom(1).Element(LabelStyle).Text("Weight:").FontSize(14);
-                            table.Cell().BorderRight(1).BorderBottom(1).Element(InfoStyle).Text(totalNumberPipeWeightDefinitionLength.ToString()).FontSize(14);
-
-                            static QuestPDF.Infrastructure.IContainer LabelStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.Background(Colors.Grey.Lighten2).AlignCenter().AlignMiddle().PaddingLeft(2);
-                            }
-
-                            static QuestPDF.Infrastructure.IContainer InfoStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.Background(Colors.White).AlignLeft().AlignMiddle();
-                            }
-                        });
-
-                    });
-                }
-
-                void ComposePipeHeader(QuestPDF.Infrastructure.IContainer container)
-                {
-                    var titleStyle = TextStyle.Default.FontSize(25).SemiBold();
-                    var tableFontSize = 11;
-
-                    container.Column(column =>
-                    {
-                        column.Item().Row(row =>
-                        {
-                            row.RelativeItem(.75f).Width(8, Unit.Centimetre).Image(path);
-
-                            row.RelativeItem().MinHeight(50).MinWidth(300).AlignLeft()
-                                .Text($"{dtoTally.TallyType}  Tally #{dtoTally.TallyNumber}")
-                                .BackgroundColor(Colors.Grey.Darken1)
-                                .Style(titleStyle);
-                        });
-
-                        column.Item().Table(table =>
-                {
-                    table.ColumnsDefinition(columns =>
-                {
-                    columns.ConstantColumn(88);
-                    columns.ConstantColumn(88);
-                    columns.ConstantColumn(88);
-                    columns.ConstantColumn(88);
-                    columns.ConstantColumn(88);
-                    columns.ConstantColumn(88);
-                });
-
-                    table.Cell().Element(LabelStyle).AlignRight().Text("Invoice Number:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).AlignRight().Text($"{dtoTally.InvoiceNumber}").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).Text("Tallied by:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).Text($"{dtoTally.TalliedByUserName}").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).Text("Date:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).Text($"01/27/24").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).Text("Bill Lading:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).Text($"Lading #").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).AlignRight().Text("Carrier Name:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).AlignRight().Text($"{dtoTally.CarrierName}").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).Text("Yard:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).Text($"{dtoTally.ShopLocationName}").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).Text("Rack:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).Text($"1").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).AlignRight().Text("Customer Name:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).AlignRight().Text($"{dtoTally.CustomerName}").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).AlignRight().Text("Length:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).AlignRight().Text($"1000 m").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).AlignRight().Text("Pieces:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).AlignRight().Text($"10").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).AlignRight().Text("Weight:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).AlignRight().Text($"{dtoTally.WeightInKg} Kgs").FontSize(tableFontSize);
-                    table.Cell().Element(LabelStyle).AlignRight().Text("Weight:").FontSize(tableFontSize);
-                    table.Cell().Element(InfoStyle).AlignRight().Text($"{Math.Round(dtoTally.WeightInLbs, 5, MidpointRounding.ToZero)} lbs").FontSize(tableFontSize);
+               });
 
 
-                    static QuestPDF.Infrastructure.IContainer LabelStyle(QuestPDF.Infrastructure.IContainer container)
-                    {
-                        return container.Background(Colors.Grey.Lighten2).AlignLeft().MinHeight(20);
-                    }
-
-                    static QuestPDF.Infrastructure.IContainer InfoStyle(QuestPDF.Infrastructure.IContainer container)
-                    {
-                        return container.Background(Colors.White).AlignLeft().MinHeight(20);
-                    }
-                });
-                    });
-                }
-
-                void ComposeFooter(QuestPDF.Infrastructure.IContainer container)
-                {
-                    container.Column(column =>
-                    {
-                        column.Spacing(10);
-                        if (!string.IsNullOrWhiteSpace(dtoTally.Notes))
-                            column.Item().PaddingTop(0.25f).Element(ComposeComments);
-
-                        column.Spacing(5);
-
-                        column.Item().Table(table =>
-                        {
-                            table.ColumnsDefinition(columns =>
-                            {
-                                columns.ConstantColumn(51);
-                                columns.ConstantColumn(40);
-                                columns.ConstantColumn(5);
-                                columns.ConstantColumn(91);
-                                columns.ConstantColumn(5);
-                                columns.ConstantColumn(40);
-                                columns.RelativeColumn();
-                                columns.ConstantColumn(50);
-                                columns.RelativeColumn();
-                                columns.ConstantColumn(50);
-                                columns.RelativeColumn();
-                            });
-
-                            table.Cell().Element(LabelStyle).Text("Charge To:").FontSize(10);
-                            table.Cell().BorderBottom(1).Element(CellStyle).Text("").FontSize(11);
-                            table.Cell().BorderBottom(1).Element(CellStyle).Text("").FontSize(11);
-                            table.Cell().BorderBottom(1).Element(CellStyle).Text("").FontSize(11);
-                            table.Cell().Element(CellStyle).Text("").FontSize(10);
-                            table.Cell().RowSpan(2).Element(LabelStyle).Text("# JTs:").FontSize(11);
-                            table.Cell().RowSpan(2).Element(InfoStyle).Text(totalNumberPipeDefinitionLength.ToString()).FontSize(10);
-                            table.Cell().RowSpan(2).Element(LabelStyle).Text("Length:").FontSize(11);
-                            table.Cell().RowSpan(2).Element(InfoStyle).Text(totalPipeDefinitionLength.ToString()).FontSize(10);
-                            table.Cell().RowSpan(2).Element(LabelStyle).Text("Weight:").FontSize(11);
-                            table.Cell().RowSpan(2).Element(InfoStyle).Text(totalNumberPipeWeightDefinitionLength.ToString()).FontSize(10);
-                            table.Cell().ColumnSpan(2).BorderBottom(1).Element(CellStyle).Text("Driver").ExtraLight().FontSize(8);
-                            table.Cell().Element(CellStyle).Text("").FontSize(10);
-                            table.Cell().BorderBottom(1).Element(CellStyle).Text("Received").ExtraLight().FontSize(8);
-                            table.Cell().Element(CellStyle).Text("").FontSize(10);
-                            table.Cell().Element(InfoStyle).Text("").FontSize(10);
-                            table.Cell().Element(InfoStyle).Text("").FontSize(10);
-                            table.Cell().Element(InfoStyle).Text("").FontSize(10);
-                            table.Cell().Element(InfoStyle).Text("").FontSize(10);
-                            table.Cell().Element(InfoStyle).Text("").FontSize(10);
-                            table.Cell().Element(InfoStyle).Text("").FontSize(10);
-
-                            static QuestPDF.Infrastructure.IContainer CellStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.AlignCenter().MinHeight(11);
-                            }
-
-                            static QuestPDF.Infrastructure.IContainer LabelStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.Background(Colors.Grey.Lighten2).AlignLeft().AlignMiddle();
-                            }
-
-                            static QuestPDF.Infrastructure.IContainer InfoStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.Background(Colors.White).AlignLeft().AlignMiddle();
-                            }
-                        });
-                    });
-                }
-
-                void ComposeComments(QuestPDF.Infrastructure.IContainer container)
-                {
-                    container.Background(Colors.Grey.Lighten3).MinHeight(60).Column(column =>
-                    {
-                        column.Item().Text("Notes").FontSize(11);
-                        column.Item().Text(dtoTally.Notes).FontSize(9);
-                        column.Spacing(2);
-                    });
-                }
-
-                void ComposeEquipmentHeader(QuestPDF.Infrastructure.IContainer container)
-                {
-                    var titleStyle = TextStyle.Default.FontSize(25).SemiBold();
-                    var tableFontSize = 11;
-
-                    container.Column(column =>
-                    {
-                        column.Item().Row(row =>
-                        {
-                            row.RelativeItem(.75f).Width(8, Unit.Centimetre).Image(path);
-
-                            row.RelativeItem().MinHeight(50).MinWidth(300).AlignLeft()
-                                .Text($"{dtoTally.TallyType}  Tally #{dtoTally.TallyNumber}")
-                                .BackgroundColor(Colors.Grey.Darken1)
-                                .Style(titleStyle);
-                        });
-
-                        column.Item().Table(table =>
-                        {
-                            table.ColumnsDefinition(columns =>
-                            {
-                                columns.ConstantColumn(88);
-                                columns.ConstantColumn(88);
-                                columns.ConstantColumn(88);
-                                columns.ConstantColumn(88);
-                                columns.ConstantColumn(88);
-                                columns.ConstantColumn(88);
-                            });
-                            table.Cell().Element(LabelStyle).AlignRight().Text("From:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).AlignRight().Text($"{dtoTally.InvoiceNumber}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Ship Date:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"{dtoTally.TalliedByUserName}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Tracking:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"01/27/24").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Ship To:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"Lading #").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).AlignRight().Text("Location:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).AlignRight().Text($"{dtoTally.CarrierName}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("AFE No.:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"{dtoTally.ShopLocationName}").FontSize(tableFontSize);
-                            table.Cell().Element(LabelStyle).Text("Dispacher:").FontSize(tableFontSize);
-                            table.Cell().Element(InfoStyle).Text($"1").FontSize(tableFontSize);
-
-                            static QuestPDF.Infrastructure.IContainer LabelStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.Background(Colors.Grey.Lighten2).AlignLeft().MinHeight(20);
-                            }
-
-                            static QuestPDF.Infrastructure.IContainer InfoStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.Background(Colors.White).AlignLeft().MinHeight(20);
-                            }
-                        });
-                    });
-                }
-
-                void ComposeEquipmentFooter(QuestPDF.Infrastructure.IContainer container)
-                {
-                    container.Column(column =>
-                    {
-                        column.Item().Table(table =>
-                        {
-                            table.ColumnsDefinition(columns =>
-                            {
-                                columns.RelativeColumn();
-                                columns.ConstantColumn(50);
-                                columns.RelativeColumn();
-                            });
-
-                            table.Cell().BorderBottom(1).Element(CellStyle).Text("").FontSize(15);
-                            table.Cell().Element(CellStyle).Text("").FontSize(15);
-                            table.Cell().BorderBottom(1).Element(CellStyle).Text("").FontSize(15);
-                            table.Cell().Element(CellStyle).Text("Material Received").FontSize(11);
-                            table.Cell().Element(CellStyle).Text("").FontSize(15);
-                            table.Cell().Element(CellStyle).Text("Material Delivered").FontSize(11);
-                            table.Cell().BorderBottom(1).Element(CellStyle).Text("").FontSize(15);
-                            table.Cell().Element(CellStyle).Text("").FontSize(15);
-                            table.Cell().BorderBottom(1).Element(CellStyle).Text("").FontSize(15);
-                            table.Cell().Element(CellStyle).Text("Date").FontSize(11);
-                            table.Cell().Element(CellStyle).Text("").FontSize(15);
-                            table.Cell().Element(CellStyle).Text("Date").FontSize(11);
-
-                            static QuestPDF.Infrastructure.IContainer CellStyle(QuestPDF.Infrastructure.IContainer container)
-                            {
-                                return container.AlignCenter().MinHeight(11);
-                            }
-                        });
-                    });
-                }
-            });
-            MemoryStream stream = new MemoryStream(document.GeneratePdf());
-            return stream;
-        }
-    }
+         });
+         MemoryStream stream = new MemoryStream(document.GeneratePdf());
+         return stream;
+      }
+   }
 }

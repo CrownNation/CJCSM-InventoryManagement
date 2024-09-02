@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
@@ -60,7 +60,10 @@ export class TallyPipeOutComponent {
 
   private destroy$ = new Subject<void>();
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>, private snackBar: MatSnackBar) {
+  constructor(public dialog: MatDialog,
+    private store: Store<AppState>,
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef) {
     this.buildForm();
   }
 
@@ -151,27 +154,29 @@ export class TallyPipeOutComponent {
     const currentTierId = this.pipeAddForm.get('tier')?.value?.tierId;
 
     // If the pipe doesn't belong to the current rack or tier, return early and do nothing
-    if (row.rackId !== currentRackId || currentTierId == null || row.tierId !== currentTierId) {
+    if (row.rackId !== currentRackId || (currentTierId != null && row.tierId !== currentTierId)) {
       return;
     }
 
     // If the pipe does not belong to the current rack or tier, we proceed with re-adding it to the rack's list
     // First, find the pipe in question from the localPipeList
     const existingPipeInRack = this.localPipeList.find(
-      pipe => pipe.pipeDefinitionId === row.pipeDefinitionId &&
+      pipe => pipe.pipeId === row.pipeId &&
         pipe.rackId === row.rackId &&
         pipe.tierId === row.tierId
     );
 
     if (existingPipeInRack) {
       // If it exists, update the quantity
+      console.log("NUMBER: " + existingPipeInRack.quantity + " NEW: " + row.quantity);
       existingPipeInRack.quantity += row.quantity;
     } else {
+      console.log("MATES");
       // If it does not exist in the localPipeList, we have to add it back in, so find the original pipe from the racksWithTiers (which holds all racks and tiers).
       const originalPipeInRack = this.racksWithTiers
         .flatMap(rack => rack.tierList)
         .flatMap(tier => tier.tierId === row.tierId && tier.rackId === row.rackId ? this.localRackWithStock!.pipeList : [])
-        .find(pipe => pipe.pipeDefinitionId === row.pipeDefinitionId);
+        .find(pipe => pipe.pipeId === row.pipeId);
 
       if (originalPipeInRack) {
         // Recreate the original pipe with correct properties and add it to the localPipeList

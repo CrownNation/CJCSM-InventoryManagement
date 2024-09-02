@@ -173,6 +173,23 @@ if (builder.Environment.IsDevelopment())
    });
    builder.Configuration["EnvironmentName"] = "Develolpment";
 }
+else if (builder.Environment.EnvironmentName == "Test")
+{
+   builder.Services.AddCors(options =>
+   {
+      options.AddPolicy("TestCorsPolicy", builder =>
+      {
+         //builder.WithOrigins(
+         //     "https://cjcsm-tally-test.webp.app",
+         //     "https://cjcsm-tally-test.firebaseapp.com"
+         // )
+         builder.WithOrigins("*")
+          .AllowAnyMethod()
+          .AllowAnyHeader();
+      });
+   });
+   builder.Configuration["EnvironmentName"] = "Test";
+}
 else
 {
    builder.Services.AddCors(options =>

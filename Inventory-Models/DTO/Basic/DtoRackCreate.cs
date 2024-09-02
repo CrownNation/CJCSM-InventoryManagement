@@ -13,6 +13,10 @@ namespace Inventory_Dto.Dto
         [StringLength(50)]
         public string Name { get; set; } = String.Empty;
         [Required(ErrorMessage = "A shop location is required")]
+
+        [StringLength(10)]
+        public string RackType { get; set; } = String.Empty;
+
         public Guid ShopLocationId { get; set; }
 
         public bool IsActive { get; set; }

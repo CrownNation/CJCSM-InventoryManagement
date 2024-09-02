@@ -47,6 +47,15 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
   searchParams: PipeSearchParams | null = {
     categoryId: null,
     conditionId: null,
+    coatingId: null,
+    gradeId: null,
+    isActive: null,
+    rangeId: null,
+    sizeId: null,
+    threadId: null,
+    wallId: null,
+    weightId: null
+
   };
 
   // Subject to manage the unsubscription of observables on component destruction to prevent memory leaks.
@@ -196,6 +205,16 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchParams = {
       categoryId: this.pipeForm.value.category,
       conditionId: this.pipeForm.value.condition,
+      coatingId: null,
+      gradeId: null,
+      isActive: null,
+      rangeId: null,
+      sizeId: null,
+      threadId: null,
+      wallId: null,
+      weightId: null
+      
+
     };
     this.loadingPipe = true;
     console.log("Current searchParams:", this.searchParams); // Log the current search parameters
@@ -208,6 +227,14 @@ export class SearchPipeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchParams = {
       categoryId: null,
       conditionId: null,
+      coatingId: null,
+      gradeId: null,
+      isActive: null,
+      rangeId: null,
+      sizeId: null,
+      threadId: null,
+      wallId: null,
+      weightId: null
     };
 
     this.store.dispatch(actionGetPipe({ searchParams: this.searchParams }));

@@ -16,7 +16,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { AddRackComponent } from './add-rack/add-rack.component';
 import { ViewRackComponent } from './view-rack/view-rack.component';
 import { ViewDetailsRackComponent } from './view-details-rack/view-details-rack.component';
 import { TierListComponent } from './tier-list/tier-list.component';
@@ -27,7 +26,6 @@ import { PipeModule } from '../pipe/pipe.module';
 @NgModule({
   declarations: [
     RackListComponent,
-    AddRackComponent,
     ViewRackComponent,
     ViewDetailsRackComponent,
     TierListComponent,

@@ -4,23 +4,30 @@
         <mat-icon class="close-icon" (click)="closeDialog()">close</mat-icon>
     </mat-card-header>
 
-    <mat-card-content >
-        <div >
+    <mat-card-content>
+        <div>
             <form [formGroup]="rackAddForm">
 
                 <mat-form-field appearance="outline" color="accent">
                     <mat-label>Rack Name</mat-label>
-                    <input matInput placeholder="Rack name" formControlName="name" required>
-                    <mat-error>
+                    <input matInput placeholder="Rack name" formControlName="name">
+                    <mat-error *ngIf="rackAddForm.get('name')!.touched && rackAddForm.get('name')!.invalid">
                         Please provide a rack name
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" color="accent" >
+                <mat-form-field appearance="outline" color="accent">
+                    <mat-label>Rack Type</mat-label>
+                    <mat-select formControlName="rackType">
+                        <mat-option *ngFor="let type of rackTypeOptions" [value]="type">{{ type }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" color="accent">
                     <mat-label>Shop</mat-label>
                     <mat-select formControlName="shopLocation">
                         <mat-option *ngFor="let shop of shops" [value]="shop.shopLocationId">
-                        {{shop.name}}
+                            {{shop.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -29,13 +36,8 @@
                     <mat-label>Joints per tier</mat-label>
                     <input matInput placeholder="Joints per tier" formControlName="jointsPerTier" rqeuired>
                     <mat-error>
-                        Please provide a city
+                        Please provide joints per tier
                     </mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" color="accent">
-                    <mat-label>Rack Type</mat-label>
-                    <input matInput placeholder="Rack Type" formControlName="rackType">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" color="accent">
@@ -48,7 +50,9 @@
                 </div>
 
                 <button mat-raised-button color="primary" class="item" (click)="addRack()">Add Rack</button>
-                <button mat-raised-button class="item" (click)="closeDialog()">Cancel</button>
+
+                <button mat-raised-button class="item" type="button" (click)="closeDialog()"
+                    form="nonexistentForm">Cancel--</button>
             </form>
         </div>
 

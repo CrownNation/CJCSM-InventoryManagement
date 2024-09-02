@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Pipe, PipeCreate, PipeDefinitionSearchParams, PipeSearchParams, PipeUpdate } from '../../../models/pipe.model';
+import { Pipe, PipeCreate, PipeSearchParams, PipeUpdate } from '../../../models/pipe.model';
 import { Observable } from 'rxjs';
 
 import { catchError, tap, map } from 'rxjs/operators';
+import { ODataFilterBuilder } from '../../utilities/odata/ODataFilterBuilder';
 
 type NewType = PipeSearchParams;
 
@@ -30,7 +31,9 @@ export class PipeService {
 //   }
 
 getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
-  const queryParams = this.generateOdataParams(searchParams);
+
+  const queryParams = ODataFilterBuilder.generatePipeODataParams(searchParams);
+
   return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition${queryParams}`).pipe(
     tap({
       next: pipes => console.log('Received pipes:', pipes),
@@ -50,23 +53,23 @@ getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
     return this.http.post<void>(this.baseUrl, pipe);
   }
 
-  private generateOdataParams(searchParams: PipeSearchParams | null): string {
-    if (!searchParams) {
-      return '';
-    }
+  // private generateOdataParams(searchParams: PipeSearchParams | null): string {
+  //   if (!searchParams) {
+  //     return '';
+  //   }
 
-    let odataParams = '';
+  //   let odataParams = '';
 
-    if (searchParams.categoryId) {
-      odataParams += (odataParams ? ' and ' : '') + `pipeDefinition/categoryId eq ${searchParams.categoryId}`;
-    }
-    if (searchParams.conditionId) {
-      odataParams += (odataParams ? ' and ' : '') + `pipeDefinition/conditionId eq ${searchParams.conditionId}`;
-    }
+  //   if (searchParams.categoryId) {
+  //     odataParams += (odataParams ? ' and ' : '') + `pipeDefinition/categoryId eq ${searchParams.categoryId}`;
+  //   }
+  //   if (searchParams.conditionId) {
+  //     odataParams += (odataParams ? ' and ' : '') + `pipeDefinition/conditionId eq ${searchParams.conditionId}`;
+  //   }
 
 
-    console.log("params for pipe ssearch: " +odataParams);
+  //   console.log("params for pipe search: " +odataParams);
 
-    return odataParams ? '?$filter=' + odataParams : '';
-  }
+  //   return odataParams ? '?$filter=' + odataParams : '';
+  // }
 }

@@ -15,6 +15,7 @@ import { selectAllShopLocations } from 'src/app/store/shop-location/shop-locatio
 import { actionGetShopLocations } from 'src/app/store/shop-location/shop-location.actions';
 import { LocalStorageService } from 'src/app/core/local-storage/local-storage.service';
 import { clearNotifications } from 'src/app/store/notification-hub/notification-hub.actions';
+import { RackTypes } from 'src/app/enums/rack-types.enum';
 
 @Component({
   selector: 'app-search-rack',
@@ -47,6 +48,9 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
 
   racksFullList$: Observable<Rack[] | null> = this.store.select(selectRacks);
 
+  // To hold rack options from the RackTypes enum
+  rackTypeOptions: string[] = [];
+
   constructor(
     private router: Router,
     private store: Store<AppState>,
@@ -55,6 +59,9 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.buildForm();
+
+    this.rackTypeOptions = Object.values(RackTypes);
+
     this.loadingRacks = true;
 
     this.store.dispatch(actionGetShopLocations({ searchParams: null }));
@@ -154,11 +161,6 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  onFormSubmit(event: Event) {
-    event.preventDefault(); // Prevent the form from submitting which causes the page to reload
-    this.filter();
-  }
-  
   filter() {
     this.setSearchParams();
     this.loadingRacks = true;

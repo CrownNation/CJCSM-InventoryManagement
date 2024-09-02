@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { actionGetRacksWithTiers, addTierToRack } from 'src/app/store/rack/rack.actions';
 import { AppState } from 'src/app/store/core.state';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { empty, Observable, Subject, takeUntil } from 'rxjs';
 import { selectRacksWithTiers } from 'src/app/store/rack/rack.selectors';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PipeCreate, PipeDefinition } from 'src/app/models/pipe.model';
@@ -34,7 +34,7 @@ export class TallyPipeInComponent {
 
   selectedPipe: PipeCreate | null = null;
 
-  emptyGuid = '00000000-0000-0000-0000-000000000000'; // Used for creating a new tier when sending to api
+  emptyGuid = '00000000-0000-0000-0000-000000000000'; // Used for creating a new tier when sending to api & filler for pipeId on tally in
 
   displayedColumns = ['pipeProperties', 'rackName', 'tierNumber', 'quantity', 'lengthInMeters', 'actions'];
 
@@ -140,7 +140,7 @@ export class TallyPipeInComponent {
         return;
       }
       const newPipe: PipeCreate = {
-        pipeId: "",  // This is only used in tally out to identify the existing pipe for the tally out
+        pipeId: this.emptyGuid,  // This is only used in tally out to identify the existing pipe for the tally out
         pipeDefinitionId: this.selectedPipeDefinition!.pipeDefinitionId,
         tierId: tierIdForPipe,
         rackId: this.pipeAddForm.get('rack')?.value.rackId,
@@ -203,7 +203,7 @@ export class TallyPipeInComponent {
   updatePipe(formDirective: any) {
 
     const newPipe: PipeCreate = {
-      pipeId: "",
+      pipeId: this.emptyGuid,  // This is only used in tally out to identify the existing pipe for the tally out
       pipeDefinitionId: this.pipeAddForm.get('pipeDefinition')?.value,
       tierId: this.pipeAddForm.get('tier')?.value.tierId,
       rackId: this.pipeAddForm.get('rack')?.value.rackId,

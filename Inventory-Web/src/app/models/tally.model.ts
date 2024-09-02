@@ -1,5 +1,5 @@
 import { TallyTypes } from "../enums/tally-types.enum";
-import { EquipmentCreate } from "./equipment.model";
+import { Equipment, EquipmentCreate } from "./equipment.model";
 import { Pipe, PipeCreate } from "./pipe.model";
 
 
@@ -14,6 +14,7 @@ export interface Tally {
     dateOfCreation: Date;
     notes?: string;
     pipeList: Pipe[];
+    equipmentList: Equipment[];
     invoiceNumber?: string;
     talliedByUserId: string;
     talliedByUserName: string;

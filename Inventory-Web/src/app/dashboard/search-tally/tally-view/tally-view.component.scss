@@ -1,7 +1,27 @@
+
+@use '@angular/material' as mat;
+
+.pdf-icon {
+  cursor: pointer;       /* Makes the icon clickable */
+  color: #419868;
+  width: auto;
+  height: auto;
+  font-size: 40pt;
+}
+
+.pdf-icon:hover {
+  color: black;        /* Changes color when hovered */
+}
+
+
 mat-card {
     min-width: 500px;
-    padding: 1rem;
     width: 100%;
+}
+
+.section-view {
+  margin: 0;
+  padding: 0;
 }
 
 mat-card-title {
@@ -75,7 +95,7 @@ span {
 }
 
 h4 {
-    margin: 0.5rem 1rem 0.5rem 0;
+  margin: .5rem 0 0 0;
 }
 
 .column-actions {
@@ -117,10 +137,6 @@ mat-expansion-panel {
     button {
         margin-right: 1.5rem;
     }
-}
-
-table {
-    margin-top: 1rem;
 }
 
 

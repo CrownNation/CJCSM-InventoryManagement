@@ -53,7 +53,6 @@ export class CustomerAddComponent {
 
       if(customer && !this.isInit) {
         this.notificationService.success('Customer Created Successfully');
-        this.notificationService.error('THIS IS AN ERROR')
         this.dialogRef.close();
       }
     });
@@ -66,26 +65,26 @@ export class CustomerAddComponent {
   buildForm() {
     this.customerAddForm = new FormGroup({
       name: new FormControl(null, [Validators.required]),
-      address1: new FormControl(null, ),
-      address2: new FormControl(null),
-      city: new FormControl(null),
-      provinceState: new FormControl(null),
-      postalCode: new FormControl(null),
-      email: new FormControl(null, [Validators.email]),
+      address1: new FormControl(null, [Validators.required]),
+      address2: new FormControl(null), // Not required
+      city: new FormControl(null, [Validators.required]),
+      provinceState: new FormControl(null, [Validators.required]),
+      country: new FormControl(null, [Validators.required]),
+      postalCode: new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [Validators.email]), // Not required, but must be a valid email if provided
     });
   }
-
   addCustomer() {
 
     if(this.customerAddForm.valid) {
-
       const customerCreate: CustomerCreate = {
         name: this.customerAddForm.value.name,
         address1: this.customerAddForm.value.address1,
         address2: this.customerAddForm.value.address2,
         city: this.customerAddForm.value.city,
-        provinceState: this.customerAddForm.value.provinceState,
-        postalCode: this.customerAddForm.value.postalCode,
+        provinceState: this.customerAddForm.value.provinceState.toUpperCase(),
+        country: this.customerAddForm.value.country,
+        postalCode: this.customerAddForm.value.postalCode.toUpperCase(),
         email: this.customerAddForm.value.email,
       }
 

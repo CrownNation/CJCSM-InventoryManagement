@@ -9,6 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Pipe } from '../../../models/pipe.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { TallyTypes } from 'src/app/enums/tally-types.enum';
+import { Equipment } from 'src/app/models/equipment.model';
+import { DocumentGeneratorService } from 'src/app/core/services/document-generator-service/document-generator.service';
 
 @Component({
   selector: 'app-tally-view',
@@ -29,21 +31,28 @@ export class TallyViewComponent implements OnInit, OnDestroy {
   tallyForm!: FormGroup;
   tally: Tally | null = null;
   columnsToDisplay: string[] = [
-    'quantity',
+    'pipeProperties',
     'lengthMeters',
-    'rack',
-    'tier'
+    'quantity',
   ];
+
+  columnsToDisplayEquipment: string[] = ['equipmentProperties', 'quantity'];
+
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  columnsToDisplayWithExpandEquipment = [...this.columnsToDisplayEquipment, 'expand'];
+  
   expandedElement!: Pipe | null;
-  dataSource: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>();
+  dataSourcePipe: MatTableDataSource<Pipe> = new MatTableDataSource<Pipe>();
+  dataSourceEquipment: MatTableDataSource<Equipment> = new MatTableDataSource<Equipment>();
 
   tally$: Observable<Tally | null> = this.store.select(selectSelectedTally);
   loading: Boolean = false;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>,
+    private documentGeneratorService: DocumentGeneratorService
+  ) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -53,9 +62,11 @@ export class TallyViewComponent implements OnInit, OnDestroy {
       if (tally) {
         this.loading = false;
         this.tally = tally;
-        this.dataSource = new MatTableDataSource(tally.pipeList as Pipe[]);
+        this.dataSourcePipe = new MatTableDataSource(tally.pipeList as Pipe[]);
         console.log("Tally data received:", tally);
         console.log("CUSTOMER: " + tally.customerName);
+        console.log("EQUIPMENT: " + tally.equipmentList.length);
+        this.dataSourceEquipment = new MatTableDataSource(tally.equipmentList as Equipment[]);
 
         // Update the form with the fetched tally details
         this.patchFormWithTallyDetails(tally);
@@ -109,4 +120,27 @@ export class TallyViewComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  generatePdf(tally: Tally) {
+    this.documentGeneratorService.generateTallyPdf(tally.tallyId).subscribe(
+      (blob: Blob) => {
+        const date = new Date(); // Get the current date and time
+        const formattedDate = date.toISOString().slice(0, 16).replace(/[-T:]/g, '.'); // Format the date as 'yyyy-MM-dd.HH-mm'
+ 
+        const filename = `TallyReport_${tally.tallyNumber}_${formattedDate}.pdf`; // Construct the filename
+  
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename; // Use the constructed filename
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      (error: any) => {
+        console.error('Error generating PDF:', error);
+      }
+    );
+  }
+  
 }

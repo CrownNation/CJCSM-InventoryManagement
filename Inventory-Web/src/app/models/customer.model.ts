@@ -21,6 +21,7 @@ export interface CustomerCreate {
     address2?: string;
     city?: string;
     provinceState?: string;
+    country?: string;
     postalCode?: string;
     email?: string;
 }

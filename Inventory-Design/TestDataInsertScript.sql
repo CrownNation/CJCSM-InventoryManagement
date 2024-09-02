@@ -161,10 +161,10 @@ INSERT INTO Pipe (PipeId, PipeDefinitionId, CustomerId, TierId, LengthInMeters, 
 (@Pipe3Id, @PipeDef3Id, @Customer1Id, @Tier3Id, 5.8, 19.0289, 9, 1),
 (@Pipe4Id, @PipeDef4Id, @Customer2Id, @Tier4Id, 6.1, 20.0131, 11,1),
 (@Pipe5Id, @PipeDef1Id, @Customer2Id, @Tier5Id, 5.9, 19.3579, 7,1),
-(@Pipe6Id, @PipeDef3Id, @Customer3Id, @Tier6Id, 6.3, 20.669, 6,1),
-(@Pipe7Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.9, 19.3579, 7,1),
-(@Pipe8Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.95, 19.521, 7,2),
-(@Pipe9Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.85, 19.192, 7,3);
+(@Pipe6Id, @PipeDef3Id, @Customer3Id, @Tier5Id, 6.3, 20.669, 6,8),
+(@Pipe7Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.85, 19.3579, 7,1),
+(@Pipe8Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.9, 19.521, 7,8),
+(@Pipe9Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.95, 19.192, 7,15);
 
 
 -- Equipment
@@ -250,10 +250,10 @@ INSERT INTO PipeForTally (PipeForTallyId, TallyId, PipeDefinitionId, CustomerId,
 (@PipeForTally3Id, @Tally2Id, @PipeDef3Id, @Customer1Id, @Tier3Id, 5.8, 9, 1),
 (@PipeForTally4Id, @Tally2Id, @PipeDef4Id, @Customer2Id, @Tier4Id, 6.1, 11, 1),
 (@PipeForTally5Id, @Tally2Id, @PipeDef1Id, @Customer2Id, @Tier5Id, 5.9, 7, 1),
-(@PipeForTally6Id, @Tally2Id, @PipeDef3Id, @Customer3Id, @Tier6Id, 6.3, 6, 1),
-(@PipeForTally7Id, @Tally3Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.9, 7, 1),
-(@PipeForTally8Id, @Tally3Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.95, 7, 2),
-(@PipeForTally9Id, @Tally3Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.85, 7, 3);
+(@PipeForTally6Id, @Tally2Id, @PipeDef3Id, @Customer3Id, @Tier5Id, 6.3, 6, 8),
+(@PipeForTally7Id, @Tally3Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.85, 7, 1),
+(@PipeForTally8Id, @Tally3Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.9, 7, 8),
+(@PipeForTally9Id, @Tally3Id, @PipeDef1Id, @Customer3Id, @Tier6Id, 5.95, 7, 15);
 
 -- Equipment for Tally --
 DECLARE @EquipmentForTally1Id UNIQUEIDENTIFIER = 'A3B1F1AA-2B66-4F5D-9A11-FFECC25B1A9F';

@@ -2,7 +2,6 @@ mat-card {
     min-width: 500px;
     width: 100%;
     overflow-x: auto;
-    background-color: #eeeeee;
 }
 
 mat-card-title {
@@ -10,6 +9,10 @@ mat-card-title {
     font-size: 1.5rem;
 }
 
+
+h2{
+    margin: 0;
+}
 
 h4 {
     margin-top: 20;
@@ -44,7 +47,7 @@ h4 {
     display: flex;
     flex-direction: column;
     flex: 1;
-
+    align-items: flex-start;
 }
 
 // Align the content to the right for the rightmost column.
@@ -101,8 +104,6 @@ mat-expansion-panel {
     button {
         margin: 0 0.75rem 0 0;
     }
-
-
 }
 
 button {

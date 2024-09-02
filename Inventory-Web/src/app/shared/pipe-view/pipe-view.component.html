@@ -11,6 +11,11 @@
     </mat-card-header>
 
     <mat-card-content>
+
+        <div *ngIf="!pipe">
+            <span>Please select a pipe entry.</span>
+        </div>
+
         <div class="container" *ngIf="pipe">
             <div class="container-row">
 

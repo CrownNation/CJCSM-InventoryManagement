@@ -67,9 +67,9 @@ namespace Inventory_API.Controllers
         [HttpGet("{tallyId}")]
         public IActionResult Get(Guid tallyId)
         {
-            try
-            {
-                DtoTally_WithPipeAndCustomer? tally = _tallyBl.GetTallyWithPipeAndEquipmentByIdQuery(tallyId).FirstOrDefault();
+         try
+         {
+                DtoTally_WithPipeAndCustomer? tally = _tallyBl.GetTallyWithPipeAndEquipmentByTallyId(tallyId);
 
                 if (tally == null)
                 {
@@ -95,18 +95,16 @@ namespace Inventory_API.Controllers
         {
             try
             {
-                IQueryable<DtoTally_WithPipeAndCustomer> tallyQuery = _tallyBl.GetTallyWithStockQuery();
+            DtoTally_WithPipeAndCustomer? dtoTally = _tallyBl.GetTallyWithPipeAndEquipmentByTallyId(tallyId);
 
-                DtoTally_WithPipeAndCustomer? dto = tallyQuery.ToList().FirstOrDefault();
-
-                TallyPDFGenerator generator = new TallyPDFGenerator();
+            TallyPDFGenerator generator = new TallyPDFGenerator();
                 
-                if(dto == null)
+                if(dtoTally == null)
                     return NotFound();
 
-                Stream pdfStream = generator.GenerateTallyPDFDocuemnt(dto);
+                Stream pdfStream = generator.GenerateTallyPDFDocuemnt(dtoTally);
 
-                String filename = $"TallyReport_{dto.TallyNumber}_{DateTime.Now.ToString("yyyy-MM-dd.HH-mm")}.pdf";
+                String filename = $"TallyReport_{dtoTally.TallyNumber}_{DateTime.Now.ToString("yyyy-MM-dd.HH-mm")}.pdf";
                 return File(pdfStream, "application/pdf", filename);
 
             }

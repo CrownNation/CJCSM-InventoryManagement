@@ -241,7 +241,15 @@ export interface PipeProperty_WeightSearchParams {
 // --- Pipe ---
 export interface PipeSearchParams {
     categoryId: string | null;
+    coatingId: string | null;
     conditionId: string | null;
+    gradeId: string | null;
+    rangeId: string | null;
+    sizeId: string | null;
+    threadId: string | null;
+    wallId: string | null;
+    weightId: string | null;
+    isActive: boolean | null;
 }
 
 export interface PipeDefinitionSearchParams {

@@ -4,11 +4,7 @@ export const environment = {
     production: false,
     appName: 'CJCSM Inventory Test',
     envName: 'Test',
-    apiUrl: 'tally-api-test',    
-    cognito:{
-      userPoolId:'ca-central-1_V6ktp1b5L',
-      userPoolWebClientId: '2eei3n17p7umeq2hntufsgnoh6'
-    },
+    apiUrl: 'https://66.51.121.134/CJCSM_Tally_API_Test/',    
     versions: {
         app: packageJson.version,
         angular: packageJson.dependencies['@angular/core'],

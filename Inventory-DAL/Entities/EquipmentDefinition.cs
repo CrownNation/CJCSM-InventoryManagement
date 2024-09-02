@@ -18,7 +18,7 @@ namespace Inventory_DAL.Entities
         public bool IsActive { get; set; } = true;
 
         [Required]
-        [StringLength(60)]
+        [StringLength(150)]
         public string Description { get; set; } = string.Empty;
 
         [Required]

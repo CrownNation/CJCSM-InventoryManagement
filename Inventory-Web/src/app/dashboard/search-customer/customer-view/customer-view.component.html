@@ -10,6 +10,10 @@
     </mat-card-header>
 
     <mat-card-content>
+        <div *ngIf="!customer" class="container">
+            <span>Please select a customer.</span>
+        </div>
+
         <div class="container" *ngIf="customer">
             <div class="container-row">
 
@@ -34,11 +38,6 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
                     <td mat-cell *matCellDef="let row"> {{row.quantity}} </td>
                 </ng-container>
-
-                <!-- <ng-container matColumnDef="lengthFeet">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Feet</th>
-                    <td mat-cell *matCellDef="let row"> {{row.lengthInFeet}} </td>
-                </ng-container> -->
 
                 <ng-container matColumnDef="lengthMeters">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Meters</th>
@@ -139,8 +138,6 @@
                 <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
             </table>
 
-            <!-- <form [formGroup]="customerForm">
-            </form> -->
 
         </div>
 

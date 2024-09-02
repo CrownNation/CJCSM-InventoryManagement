@@ -38,6 +38,9 @@ export class TallyEquipmentInComponent {
   displayedColumnsEquipment = ['equipmentProperties', 'name', 'quantity', 'actions'];
 
   private destroy$ = new Subject<void>();
+  
+  emptyGuid = '00000000-0000-0000-0000-000000000000'; // Used for creating a new tier when sending to api & filler for pipeId on tally in
+
 
   constructor(
     private store: Store<AppState>,
@@ -80,7 +83,7 @@ export class TallyEquipmentInComponent {
     console.log("EQUIPMENT DEFINITION: " + this.selectedEquipmentDefinition!.equipmentDefinitionId);
     if (!this.equipmentAddForm.invalid) {
       const newEquipment: EquipmentCreate = {
-        equipmentId: "", // This is only used in tally out to identify the existing equipment for the tally out
+        equipmentId: this.emptyGuid, // This is only used in tally out to identify the existing equipment for the tally out
         rackId: this.equipmentAddForm.get('rackEquipment')?.value.rackId,
         rackName: this.equipmentAddForm.get('rackEquipment')?.value.name,
         equipmentDefinitionId: this.selectedEquipmentDefinition!.equipmentDefinitionId,

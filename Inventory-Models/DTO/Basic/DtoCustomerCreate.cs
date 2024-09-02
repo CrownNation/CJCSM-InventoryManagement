@@ -20,6 +20,9 @@ namespace Inventory_Dto.Dto
       [StringLength(2)]
       public string? ProvinceState { get; set; }
 
+      [StringLength(30)]
+      public string? Country{ get; set; }
+
       [StringLength(6)] 
       public string? PostalCode { get; set; }
 

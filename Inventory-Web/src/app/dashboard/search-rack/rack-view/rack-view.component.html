@@ -1,24 +1,33 @@
 <mat-card>
     <mat-card-header>
         <div *ngIf="rack" class="title-container">
-            <span>{{rack.name}}</span>
+            {{rack.name}}
         </div>
+        <div *ngIf="rack" class="data-column-right">
+            <div *ngIf="rack.rackType === 'Pipe'">
+                <b>Jts/Tier: </b>
+                <span>{{rack.jointsPerTier}} </span>
+            </div>
+        </div>
+
+        <div *ngIf="!rack" class="title-container">
+            Rack Information
+        </div>
+
     </mat-card-header>
 
     <mat-card-content>
-        <div  *ngIf="rack">
+        <div *ngIf="!rack">
+            <span>Please select a rack.</span>
+        </div>
+
+        <div *ngIf="rack">
             <div class="container-row">
                 <div class="data-column-left">
-                    <span>{{rack.shopLocationName}} </span>
+                    <span>{{rack.shopLocationName}}</span>
                     <span>{{rack.description}}</span>
                 </div>
 
-                <div class="data-column-right">
-                    <div *ngIf="rack.rackType === 'Pipe'">
-                        <b>Jts/Tier: </b>
-                        <span>{{rack.jointsPerTier}} </span>
-                    </div>
-                </div>
             </div>
         </div>
 

@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Rack, RackCreate } from '../../models/rack.model';
 import { actionCreateRack } from '../../store/rack/rack.actions';
 import { ShopLocation } from '../../models/shop-location.model';
@@ -12,6 +12,7 @@ import { NotificationService } from '../../core/notifications/notification.servi
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { selectAllShopLocations } from 'src/app/store/shop-location/shop-location.selectors';
+import { RackTypes } from 'src/app/enums/rack-types.enum';
 
 @Component({
   selector: 'app-rack-add',
@@ -33,14 +34,24 @@ export class RackAddComponent implements OnInit, OnDestroy {
   createdRack$: Observable<Rack | null> = this.store.select((selectCreatedRack));
   error$: Observable<HttpErrorResponse | null> = this.store.select((selectCreatedRackError));
 
+  // To hold rack options from the RackTypes enum
+  rackTypeOptions: string[] = [];
+
+  existingRack: Rack | null = null; // To hold the passed rack data if any
+
   constructor(
     private store: Store<AppState>,
     public dialogRef: MatDialogRef<RackAddComponent>,
-    private notificationService: NotificationService)  {
+    private notificationService: NotificationService,
+    @Inject(MAT_DIALOG_DATA) public data: { rack?: Rack } // Inject the data passed from the parent
+  ) {
+    this.existingRack = data.rack || null; // Assign the rack data if provided
   }
 
   ngOnInit(): void {
     this.buildForm();
+
+    this.rackTypeOptions = Object.values(RackTypes);
 
     this.shopsFullList$.pipe(takeUntil(this.destroy$)).subscribe((shops) => {
       if (shops) {
@@ -49,16 +60,16 @@ export class RackAddComponent implements OnInit, OnDestroy {
     });
 
     this.error$.subscribe((error) => {
-      if(error) {
+      if (error) {
         console.error(error);
         this.error = error;
-        this.notificationService.success('There was a problem creating the customer. ');
+        this.notificationService.error('There was a problem creating the rack. ');
       }
     });
 
     this.createdRack$.subscribe((rack) => {
 
-      if(rack && !this.isInit) {
+      if (rack && !this.isInit) {
         this.notificationService.success('Rack Created Successfully');
         this.dialogRef.close();
       }
@@ -67,7 +78,9 @@ export class RackAddComponent implements OnInit, OnDestroy {
     this.creatingRack$.subscribe((loading) => {
       this.loading = loading;
     });
-
+    if (this.existingRack) {
+      this.populateForm(this.existingRack);
+    }
   }
 
 
@@ -76,17 +89,18 @@ export class RackAddComponent implements OnInit, OnDestroy {
       name: new FormControl(null, [Validators.required]),
       shopLocation: new FormControl(null, [Validators.required]),
       jointsPerTier: new FormControl(null, [Validators.required]),
+      rackType: new FormControl(null, [Validators.required]),
       description: new FormControl(null),
     });
   }
 
   addRack() {
 
-    if(this.rackAddForm.valid) {
+    if (this.rackAddForm.valid) {
 
       const rackCreate: RackCreate = {
         name: this.rackAddForm.value.name,
-        shopLocationId: 'A671AF6A-8AA7-4D49-B08B-88003ADCA01C', //this.rackAddForm.value.shopLocation,
+        shopLocationId: this.rackAddForm.get('shopLocation')?.value,
         isActive: true,
         description: this.rackAddForm.value.description,
         jointsPerTier: this.rackAddForm.value.jointsPerTier,
@@ -94,8 +108,12 @@ export class RackAddComponent implements OnInit, OnDestroy {
       }
 
       this.isInit = false;
-      this.store.dispatch(actionCreateRack({ rackCreate }));
-    }
+      if (this.existingRack) {
+        // Call update action instead of create
+        //this.store.dispatch(actionUpdateRack({ rackId: this.existingRack.rackId, rackUpdate: rackCreate }));
+      } else {
+        this.store.dispatch(actionCreateRack({ rackCreate }));
+      }    }
     else {
       this.rackAddForm.markAllAsTouched();
     }
@@ -109,6 +127,18 @@ export class RackAddComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  populateForm(rack: Rack) {
+    this.rackAddForm.patchValue({
+      name: rack.name,
+      shopLocation: rack.shopLocationId,
+      jointsPerTier: rack.jointsPerTier,
+      rackType: rack.rackType,
+      description: rack.description,
+    });
+  }
+
+
 
 }
 
