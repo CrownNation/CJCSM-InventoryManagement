@@ -158,6 +158,10 @@ builder.Services.AddControllers().AddJsonOptions(options =>
    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true; // Optionally, make property names case-insensitive
 });
 
+Console.WriteLine("....................................................");
+Console.WriteLine($"OUR Environment: {builder.Environment.EnvironmentName}");
+Console.WriteLine("....................................................");
+
 // Configure CORS policies. Browsers won't let you make AJAX requests to a different domain unless that domain has CORS enabled.
 // So we set up which domains we can make requests to.
 if (builder.Environment.IsDevelopment())
@@ -166,9 +170,9 @@ if (builder.Environment.IsDevelopment())
    {
       options.AddPolicy("DevCorsPolicy", builder =>
        {
-          builder.WithOrigins("*")
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
+          builder.AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader();
        });
    });
    builder.Configuration["EnvironmentName"] = "Develolpment";
@@ -183,9 +187,9 @@ else if (builder.Environment.EnvironmentName == "Test")
          //     "https://cjcsm-tally-test.webp.app",
          //     "https://cjcsm-tally-test.firebaseapp.com"
          // )
-         builder.WithOrigins("*")
-          .AllowAnyMethod()
-          .AllowAnyHeader();
+         builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
       });
    });
    builder.Configuration["EnvironmentName"] = "Test";
@@ -196,11 +200,7 @@ else
    {
       options.AddPolicy("ProdCorsPolicy", builder =>
        {
-          builder.WithOrigins(
-               "https://www.inventory.cjcsm-inspection.com"
-           //,"https://api.example.com"
-           // Add more allowed origins here
-           )
+          builder.AllowAnyOrigin()
            .AllowAnyMethod()
            .AllowAnyHeader();
        });
@@ -231,6 +231,10 @@ if (app.Environment.IsDevelopment())
 {
    app.UseCors("DevCorsPolicy");
 }
+else if (app.Environment.EnvironmentName == "Test")
+{
+   app.UseCors("TestCorsPolicy");
+}
 else
 {
    app.UseCors("ProdCorsPolicy");
@@ -251,5 +255,13 @@ app.UseAuthorization();
 // Maps to: Get action method in CustomerController with a parameter named key (customerId)
 app.MapControllers();
 
+// ** Modify the app to listen on the port specified by the PORT environment variable **
+if(builder.Environment.EnvironmentName == "Test")
+{
+   var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+   app.Urls.Add($"http://0.0.0.0:{port}");
+}
+
 // This starts the application and begins listening for requests.
 app.Run();
+

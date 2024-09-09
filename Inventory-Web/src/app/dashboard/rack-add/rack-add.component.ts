@@ -37,7 +37,7 @@ export class RackAddComponent implements OnInit, OnDestroy {
   // To hold rack options from the RackTypes enum
   rackTypeOptions: string[] = [];
 
-  existingRack: Rack | null = null; // To hold the passed rack data if any
+  existingRack: Rack | null = null; // To hold the passed rack data if any. Used to update existing rack.
 
   constructor(
     private store: Store<AppState>,
@@ -113,7 +113,8 @@ export class RackAddComponent implements OnInit, OnDestroy {
         //this.store.dispatch(actionUpdateRack({ rackId: this.existingRack.rackId, rackUpdate: rackCreate }));
       } else {
         this.store.dispatch(actionCreateRack({ rackCreate }));
-      }    }
+      }
+    }
     else {
       this.rackAddForm.markAllAsTouched();
     }

@@ -4,7 +4,7 @@ export const environment = {
     production: false,
     appName: 'CJCSM Inventory Dev',
     envName: 'development',
-    apiUrl: 'https://localhost:7040/',       
+    apiUrl: 'https://localhost:7040/',
     cognito: {
       region: 'us-east-2',
       userPoolId:'us-east-2_RyeY0OlTL',

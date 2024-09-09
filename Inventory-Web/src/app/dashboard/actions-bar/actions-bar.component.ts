@@ -21,19 +21,19 @@ export class ActionsBarComponent {
   }
 
   openAddCustomerDialog(): void {
-    const dialogRef = this.dialog.open(CustomerAddComponent);
+    const dialogRef = this.dialog.open(CustomerAddComponent, {
+      data: { customer: null }});
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       // You can do something with the result here if needed
     });
   }
 
   openAddRackDialog(): void {
-    const dialogRef = this.dialog.open(RackAddComponent);
+    const dialogRef = this.dialog.open(RackAddComponent, {
+      data: { rack: null }});
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       // You can do something with the result here if needed
     });
   }

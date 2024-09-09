@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ShopLocation } from '../../models/shop-location.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/core.state';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Customer, CustomerCreate } from '../../models/customer.model';
 import { actionCreateCustomer } from '../../store/customer/customer.actions';
 import { Observable, Subject } from 'rxjs';
@@ -29,12 +29,16 @@ export class CustomerAddComponent {
   createdCustomer$: Observable<Customer | null> = this.store.select((selectCreatedCustomer));
   error$: Observable<HttpErrorResponse | null> = this.store.select((selectCreatingCustomerError));
 
+  existingCustomer: Customer | null = null; // To hold the passed customer data if any. Used to update existing customer.
+
   // Todo: Handle errors on this and closing form with the closing on success
 
   constructor(
     private store: Store<AppState>,
     public dialogRef: MatDialogRef<CustomerAddComponent>,
-    private notificationService: NotificationService)  {
+    private notificationService: NotificationService,
+    @Inject(MAT_DIALOG_DATA) public data: { customer?: Customer }){ // Inject the data passed from the parent
+    this.existingCustomer = data.customer || null; // Assign the customer data if provided
   }
 
   ngOnInit(): void {

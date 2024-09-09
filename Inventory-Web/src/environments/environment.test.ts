@@ -4,7 +4,7 @@ export const environment = {
     production: false,
     appName: 'CJCSM Inventory Test',
     envName: 'Test',
-    apiUrl: 'https://66.51.121.134/CJCSM_Tally_API_Test/',    
+    apiUrl: 'https://cjcsm-tally-test-api-471278581662.us-west1.run.app/',    
     versions: {
         app: packageJson.version,
         angular: packageJson.dependencies['@angular/core'],

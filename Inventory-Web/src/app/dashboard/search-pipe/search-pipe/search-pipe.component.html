@@ -15,7 +15,7 @@
                                 [matAutocomplete]="autoCategory">
                             <mat-autocomplete #autoCategory="matAutocomplete">
                                 <mat-option *ngFor="let category of (filteredCategories$ | async)"
-                                    [value]="category.pipeProperty_CategoryId">
+                                    [value]="category.name">
                                     {{ category.name }}
                                 </mat-option>
                             </mat-autocomplete>
@@ -28,7 +28,7 @@
                                 [matAutocomplete]="autoCondition">
                             <mat-autocomplete #autoCondition="matAutocomplete">
                                 <mat-option *ngFor="let condition of (filteredConditions$ | async)"
-                                    [value]="condition.pipeProperty_ConditionId">
+                                    [value]="condition.name">
                                     {{ condition.name }}
                                 </mat-option>
                             </mat-autocomplete>
