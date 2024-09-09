@@ -16,6 +16,7 @@ export class TallyService {
 
   getTallies(searchParams: TallySearchParams | null): Observable<Tally[]> {
     const queryParams = this.generateOdataParams(searchParams);
+    console.log("params for tally search: " + queryParams);
     return this.http.get<Tally[]>(`${this.baseUrl}${queryParams}`);
   }
 
@@ -44,9 +45,9 @@ export class TallyService {
     }
 
     if (searchParams.tallyNumber) {
-      odataParams += (odataParams ? ' and ' : '') + `TallyNumber eq '${searchParams.tallyNumber}'`;
+      odataParams += (odataParams ? ' and ' : '') + `contains(TallyNumber, '${searchParams.tallyNumber}')`;
     }
-
+    
     if (searchParams.customerId) {
       odataParams += (odataParams ? ' and ' : '') + `CustomerId eq ${searchParams.customerId}`;
     }

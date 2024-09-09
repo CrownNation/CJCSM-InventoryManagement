@@ -21,26 +21,28 @@ export class PipeService {
 
   // {{baseUrl}}/Tally/?$filter=pipeList/any(pipe: pipe/pipeDefinition/gradeId eq e11bf57c-a56f-47a8-aba2-37b8b3b94370)
 
-// let url = `${this.baseUrl}/pipe/WithDefinition?$filter=pipeDefinition/categoryId eq ${categoryId} and pipeDefinition/conditionId eq ${conditionId}`;
+  // let url = `${this.baseUrl}/pipe/WithDefinition?$filter=pipeDefinition/categoryId eq ${categoryId} and pipeDefinition/conditionId eq ${conditionId}`;
 
-// {{baseUrl}}/Pipe/withDefinition?$filter=pipeDefinition/categoryId eq F20FD88E-A7E2-4920-8678-1D393C7DB2D4 and pipeDefinition/conditionId eq 1ACDA59F-9C05-4491-9FDC-F282E6022EC2
+  // {{baseUrl}}/Pipe/withDefinition?$filter=pipeDefinition/categoryId eq F20FD88E-A7E2-4920-8678-1D393C7DB2D4 and pipeDefinition/conditionId eq 1ACDA59F-9C05-4491-9FDC-F282E6022EC2
 
-// getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
-//     const queryParams = this.generateOdataParams(searchParams);
-//     return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition${queryParams}`);
-//   }
+  // getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
+  //     const queryParams = this.generateOdataParams(searchParams);
+  //     return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition${queryParams}`);
+  //   }
 
-getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
+  getPipe(searchParams: PipeSearchParams | null): Observable<Pipe[]> {
 
-  const queryParams = ODataFilterBuilder.generatePipeODataParams(searchParams);
+    const queryParams = ODataFilterBuilder.generatePipeODataParams(searchParams);
 
-  return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition${queryParams}`).pipe(
-    tap({
-      next: pipes => console.log('Received pipes:', pipes),
-      error: error => console.error('Error fetching pipes:', error)
-    })
-  );
-}
+    console.log("params for pipe search: " + queryParams);
+    return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition${queryParams}`).pipe(
+      tap({
+        next: pipes => console.log('Received pipes:', pipes),
+        error: error => console.error('Error fetching pipes:', error)
+      })
+    );
+  }
+
   getPipeById(id: string): Observable<Pipe[]> {
     return this.http.get<Pipe[]>(`${this.baseUrl}/WithDefinition?$filter=pipeId eq ${id}`);
   }

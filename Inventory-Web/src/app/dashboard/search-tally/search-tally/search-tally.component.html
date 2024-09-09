@@ -21,7 +21,8 @@
 
                         <mat-form-field appearance="outline" color="accent">
                             <mat-label>Tally Number</mat-label>
-                            <input matInput type="string" placeholder="Tally Number" formControlName="tallyNumber">
+                            <input matInput type="string" placeholder="Tally Number" formControlName="tallyNumber"
+                            (keyup.enter)="filter()">
                         </mat-form-field>
 
 
@@ -51,8 +52,8 @@
 
 
                         <div class="item-buttons">
-                            <button mat-raised-button (click)="clearForm()">Clear filters</button>
-                            <button mat-raised-button color="primary" (click)="filter()">Filter</button>
+                            <button mat-raised-button (click)="clearForm()" type="button">Clear filters</button>
+                            <button mat-raised-button color="primary" (click)="filter()" type="button">Filter</button>
                         </div>
 
                     </div>

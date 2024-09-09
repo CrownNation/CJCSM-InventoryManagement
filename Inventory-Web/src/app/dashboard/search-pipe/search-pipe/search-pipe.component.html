@@ -1,6 +1,6 @@
 <div class="container-tab">
 
-    <mat-card class="section-search" >
+    <mat-card class="section-search">
         <mat-accordion>
             <mat-expansion-panel expanded="true" class="filter-options">
                 <mat-expansion-panel-header>
@@ -9,13 +9,15 @@
 
                 <form [formGroup]="pipeForm">
                     <div class="container-filter">
+
                         <mat-form-field appearance="outline" floatLabel="always">
                             <mat-label>Category</mat-label>
-                            <input type="text" placeholder="Select category" matInput [formControl]="categoryControl"
-                                [matAutocomplete]="autoCategory">
-                            <mat-autocomplete #autoCategory="matAutocomplete">
-                                <mat-option *ngFor="let category of (filteredCategories$ | async)"
-                                    [value]="category.name">
+                            <input #categoryInput type="text" placeholder="Select category" matInput
+                                [formControl]="categoryControl" [matAutocomplete]="autoCategory"
+                                (input)="filterCategories()" (focus)="filterCategories()" (blur)="onCategoryBlur()">
+                            <mat-autocomplete autoActiveFirstOption #autoCategory="matAutocomplete"
+                                [displayWith]="displayCategory">
+                                <mat-option *ngFor="let category of filteredCategories" [value]="category">
                                     {{ category.name }}
                                 </mat-option>
                             </mat-autocomplete>
@@ -24,15 +26,17 @@
 
                         <mat-form-field appearance="outline" floatLabel="always">
                             <mat-label>Condition</mat-label>
-                            <input type="text" placeholder="Select condition" matInput [formControl]="conditionControl"
-                                [matAutocomplete]="autoCondition">
-                            <mat-autocomplete #autoCondition="matAutocomplete">
-                                <mat-option *ngFor="let condition of (filteredConditions$ | async)"
-                                    [value]="condition.name">
+                            <input #conditionInput type="text" placeholder="Select condition" matInput
+                                [formControl]="conditionControl" [matAutocomplete]="autoCondition"
+                                (input)="filterConditions()" (focus)="filterConditions()" (blur)="onConditionBlur()">
+                            <mat-autocomplete autoActiveFirstOption #autoCondition="matAutocomplete"
+                                [displayWith]="displayCondition">
+                                <mat-option *ngFor="let condition of filteredConditions" [value]="condition">
                                     {{ condition.name }}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
+
 
 
                         <div class="item-buttons">
