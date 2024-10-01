@@ -22,7 +22,7 @@ export class PipePropertiesService {
     return this.http.get<PipeProperty_Category[]>(`${this.baseUrl}PipeProperty_Category`);
   }
   createCategory(category: PipeProperty_CategoryCreate): Observable<PipeProperty_Category> {
-    return this.http.post<PipeProperty_Category>('{this.baseUrl}PipeProperty_Category', category);
+    return this.http.post<PipeProperty_Category>(`${this.baseUrl}PipeProperty_Category`, category);
   }
   updateCategory(id: string, category: PipeProperty_Category): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}PipeProperty_Category/${id}`, category);

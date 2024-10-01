@@ -31,6 +31,7 @@ namespace Inventory_BLL.BL
          var tallyQuery = from tally in _context.Tally
                           join customer in _context.Customer on tally.CustomerId equals customer.CustomerId
                           join shopLocation in _context.ShopLocation on tally.ShopLocationId equals shopLocation.ShopLocationId
+                          orderby tally.DateOfCreation descending
                           select new DtoTally_WithPipeAndCustomer
                           {
                              CustomerId = tally.CustomerId,

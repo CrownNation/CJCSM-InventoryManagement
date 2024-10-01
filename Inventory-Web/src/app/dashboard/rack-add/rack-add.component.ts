@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { selectAllShopLocations } from 'src/app/store/shop-location/shop-location.selectors';
 import { RackTypes } from 'src/app/enums/rack-types.enum';
+import { actionGetShopLocations } from 'src/app/store/shop-location/shop-location.actions';
 
 @Component({
   selector: 'app-rack-add',
@@ -51,11 +52,23 @@ export class RackAddComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildForm();
 
-    this.rackTypeOptions = Object.values(RackTypes);
+    this.store.dispatch(actionGetShopLocations({ searchParams: null }));
 
-    this.shopsFullList$.pipe(takeUntil(this.destroy$)).subscribe((shops) => {
-      if (shops) {
-        this.shops = shops;
+    this.rackTypeOptions = Object.values(RackTypes);
+    console.log("INIT RACK ADD");
+
+    this.shopsFullList$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (shops) => {
+        console.log("NUM SHOPS: " + shops?.length);
+        console.log("Shops loaded:", shops);  // Log the shop locations received
+        if (shops) {
+          this.shops = shops;
+        }
+      },
+      error: (error) => {
+        console.error("Error loading shops:", error);  // Log any errors that occur while fetching shops
       }
     });
 

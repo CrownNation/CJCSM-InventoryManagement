@@ -61,9 +61,11 @@ namespace Inventory_Documents
                                column.Item().Element(container => _tallySectionPDFGenerator.GenerateTallySection(container, dtoTally));
 
                                int currentYPosition = HEADER_AND_TALLY_SECTION_HEIGHT;
-                               column.Item().Element(container => _pipeSectionPDFGenerator.GeneratePipeSection(container, currentYPosition, dtoTally));
+                               if(dtoTally.PipeList.Count > 0)
+                                  column.Item().Element(container => _pipeSectionPDFGenerator.GeneratePipeSection(container, currentYPosition, dtoTally));
 
-                               column.Item().Element(container => _equipmentSectionPDFGenerator.GenerateEquipmentSection(container, currentYPosition, dtoTally));
+                               if(dtoTally.EquipmentList.Count > 0)
+                                  column.Item().Element(container => _equipmentSectionPDFGenerator.GenerateEquipmentSection(container, currentYPosition, dtoTally));
                                
                                // Uncomment this to generate heights for test purposes
                                // Will need to comment out the sections above

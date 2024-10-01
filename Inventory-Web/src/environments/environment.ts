@@ -22,5 +22,15 @@ export const environment = {
       angularCli: packageJson.devDependencies['@angular/cli'],
       typescript: packageJson.devDependencies['typescript'],
       cypress: packageJson.devDependencies['cypress']
-    }
+    },
+    firebaseConfig: {
+      apiKey: "AIzaSyCcmTwVO6nmNfYmOqvOw8xM02-B7WWDCv0",
+      authDomain: "cjcsm-test-auth.firebaseapp.com",
+      projectId: "cjcsm-test-auth",
+      storageBucket: "cjcsm-test-auth.appspot.com",
+      messagingSenderId: "968917081415",
+      appId: "1:968917081415:web:5e4d9de8e1922d15618062",
+      measurementId: "G-KWFZ80LV3W"
+  }
+
   };

@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Customer } from '../../../models/customer.model';
 import { actionGetTallies, actionGetTallyById } from '../../../store/tally/tally.actions';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 import { selectLoadingTallies, selectTallies, selectTalliesEntities } from '../../../store/tally/tally.selectors';
 import { Dictionary } from '@ngrx/entity';
 import { selectCustomersFullList } from '../../../store/customer/customer.selectors';
@@ -72,17 +72,33 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.store.dispatch(clearNotifications());
 
-    this.tallies$.pipe(takeUntil(this.destroy$)).subscribe((tallies) => {
-      if (tallies) {
-        this.dataSource = new MatTableDataSource(tallies as Tally[]);
+    // TODO: Uncomment once tallies are ordered correctly on the server
+    // this.tallies$.pipe(takeUntil(this.destroy$)).subscribe((tallies) => {
+    //   if (tallies) {
+    //     this.dataSource = new MatTableDataSource(tallies as Tally[]);
+    //     this.loadingTallies = false;
+
+    //     if(tallies.length > 0)
+    //       this.store.dispatch(actionGetTallyById({tallyId: tallies[0].tallyId}));
+
+    //   }
+    // });
+
+    //TODO: Remove this once tallies are ordered correctly on the server and this won't be needed.
+    this.tallies$.pipe(
+      takeUntil(this.destroy$),
+      map(tallies => tallies.sort((a, b) => new Date(b.dateOfCreation).getTime() - new Date(a.dateOfCreation).getTime()))
+    ).subscribe((sortedTallies) => {
+      if (sortedTallies) {
+        this.dataSource = new MatTableDataSource(sortedTallies);
         this.loadingTallies = false;
-
-        if(tallies.length > 0)
-          this.store.dispatch(actionGetTallyById({tallyId: tallies[0].tallyId}));
-
+    
+        if(sortedTallies.length > 0) {
+          this.store.dispatch(actionGetTallyById({tallyId: sortedTallies[0].tallyId}));
+        }
       }
     });
-
+    
     this.customersFullList$.pipe(takeUntil(this.destroy$)).subscribe((customers) => {
       if (customers) {
         this.customersFullList = customers;
