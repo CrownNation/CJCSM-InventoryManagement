@@ -11,11 +11,11 @@
 @import './theme-palettes.scss';
 
 
-$cjcsm-primary: mat.define-palette($cjcsm-gray);
-$cjcsm-accent: mat.define-palette($cjcsm-red);
-$cjcsm-warn: mat.define-palette($cjcsm-warn);
+$cjcsm-primary: mat.m2-define-palette($cjcsm-gray);
+$cjcsm-accent: mat.m2-define-palette($cjcsm-red);
+$cjcsm-warn: mat.m2-define-palette($cjcsm-warn);
 
-$cjcsm-theme: mat.define-light-theme((
+$cjcsm-theme: mat.m2-define-light-theme((
   color: (
     primary: $cjcsm-primary,
     accent: $cjcsm-accent,
