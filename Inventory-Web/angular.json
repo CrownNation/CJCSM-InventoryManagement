@@ -105,10 +105,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Inventory-Web:build:production"
+              "buildTarget": "Inventory-Web:build:production"
             },
             "development": {
-              "browserTarget": "Inventory-Web:build:development"
+              "buildTarget": "Inventory-Web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -116,7 +116,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Inventory-Web:build"
+            "buildTarget": "Inventory-Web:build"
           }
         },
         "test": {
