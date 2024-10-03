@@ -5,11 +5,6 @@ export const environment = {
     appName: 'CJCSM Inventory Dev',
     envName: 'development',
     apiUrl: 'https://localhost:7040/',
-    cognito: {
-      region: 'us-east-2',
-      userPoolId:'us-east-2_RyeY0OlTL',
-      userPoolWebClientId: '5ijnmuh5jnbtsj3f8gtik1770m'
-    },
     versions: {
         app: packageJson.version,
         angular: packageJson.dependencies['@angular/core'],
@@ -22,6 +17,16 @@ export const environment = {
         angularCli: packageJson.devDependencies['@angular/cli'],
         typescript: packageJson.devDependencies['typescript'],
         cypress: packageJson.devDependencies['cypress']
-      }
+      },
+      firebaseConfig: {
+        apiKey: "AIzaSyCcmTwVO6nmNfYmOqvOw8xM02-B7WWDCv0",
+        authDomain: "cjcsm-test-auth.firebaseapp.com",
+        projectId: "cjcsm-test-auth",
+        storageBucket: "cjcsm-test-auth.appspot.com",
+        messagingSenderId: "968917081415",
+        appId: "1:968917081415:web:5e4d9de8e1922d15618062",
+        measurementId: "G-KWFZ80LV3W"
+    }
+
   };
   

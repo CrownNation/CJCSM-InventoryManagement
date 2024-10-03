@@ -2,7 +2,6 @@ using Inventory_BLL.BL;
 using Inventory_BLL.Interfaces;
 using Inventory_DAL.Entities;
 using Inventory_DAL.Entities.PipeProperties;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.Edm;
@@ -10,6 +9,10 @@ using Microsoft.OData.ModelBuilder;
 using QuestPDF.Infrastructure;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 //Set up QuestPDF license to community in order to generate PDFs
 QuestPDF.Settings.License = LicenseType.Community;
@@ -61,6 +64,7 @@ static IEdmModel GetEdmModel()
 //Creates the DI container for the application. A DI Container is a framework for implementing automatic dependency injection.
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Configuration.AddJsonFile("appsettings.json"); // Load configuration from appsettings.json
 
 // Load environment-specific configuration
@@ -70,6 +74,12 @@ builder.Configuration.AddJsonFile(
    reloadOnChange: true);
 
 builder.Configuration.AddEnvironmentVariables();
+
+// Initialize Firebase Admin SDK
+FirebaseApp.Create(new AppOptions()
+{
+   Credential = GoogleCredential.FromFile("cjcsm-test-auth-firebase-adminsdk-frezo-30ff2024df.json")
+});
 
 // Add services to the container. A service is a reusable component that provides app functionality.
 // Services are registered in the app's DI container and then consumed throughout the app.
@@ -211,9 +221,82 @@ else
 }
 
 
+//// Authentication
+//string firebaseAuthorityUrl = builder.Configuration["AppSettings:FirebaseAuthorityUrl"] ?? throw new ArgumentNullException("FirebaseAuthorityUrl is not set in the configuration");
+//string firebaseAppId = builder.Configuration["AppSettings:FirebaseAppId"] ?? throw new ArgumentNullException("FirebaseAppId is not set in the configuration");
+
+
+
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+//{
+//   options.Authority = firebaseAuthorityUrl;
+//   options.TokenValidationParameters = new TokenValidationParameters
+//   {
+//      ValidateIssuer = true,
+//      ValidIssuer = firebaseAuthorityUrl,
+//      ValidateAudience = true,
+//      ValidAudience = firebaseAppId,
+//      ValidateLifetime = true
+//   };
+//});
+
+// Firebase Authentication - Add JWT Bearer authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+       options.Authority = "https://securetoken.google.com/cjcsm-test-auth";
+       options.TokenValidationParameters = new TokenValidationParameters
+       {
+          ValidateIssuer = true,
+          ValidIssuer = "https://securetoken.google.com/cjcsm-test-auth",
+          ValidateAudience = true,
+          ValidAudience = "cjcsm-test-auth",
+          ValidateLifetime = true
+       };
+
+       // Custom token validation to handle Firebase-specific validations
+       options.Events = new JwtBearerEvents
+       {
+          OnMessageReceived = context =>
+          {
+             // Retrieve token from the Authorization header (or custom header if necessary)
+             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+             if (!string.IsNullOrEmpty(token))
+             {
+                context.Token = token;
+                System.Diagnostics.Debug.WriteLine($"Token: {token}");
+             }
+             return Task.CompletedTask;
+          },
+          OnAuthenticationFailed = context =>
+          {
+             System.Diagnostics.Debug.WriteLine($"AUTHENTICATION FAILED");
+
+             // Handle authentication failure here
+             return Task.CompletedTask;
+          },
+          OnTokenValidated = context =>
+          {
+             System.Diagnostics.Debug.WriteLine($"VALIDATED");
+
+             // Additional custom token validation can be added here
+             return Task.CompletedTask;
+          }
+       };
+    });
+
+
+
+//System.Diagnostics.Debug.WriteLine("....................................................");
+//System.Diagnostics.Debug.WriteLine($"FirebaseAuthorityUrl: {firebaseAuthorityUrl}");
+//System.Diagnostics.Debug.WriteLine($"FirebaseAppId: {firebaseAppId}");
+//System.Diagnostics.Debug.WriteLine("....................................................");
+
 
 // This method is used to create a new instance of the application's host. The host is responsible for app startup and lifetime management.
 var app = builder.Build();
+
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -242,7 +325,11 @@ else
 
 // This is responsible for enforcing authorization policies on incoming requests. It checks whether the authenticated user is authorized
 // to access the requested resource or perform the requested action. Authorization determines what a user is allowed to do after they have
-// been authenticated.
+// been authenticated
+//
+// NOTE: UseAuthentication() HAS TO HAPPEN BEFORE UserAuthorization() or you will get 401 authentication failed.
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 // The app.MapControllers(); method is used to map incoming HTTP requests to the appropriate controller actions in an ASP.NET Core application.
@@ -256,7 +343,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // ** Modify the app to listen on the port specified by the PORT environment variable **
-if(builder.Environment.EnvironmentName == "Test")
+if (builder.Environment.EnvironmentName == "Test")
 {
    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
    app.Urls.Add($"http://0.0.0.0:{port}");

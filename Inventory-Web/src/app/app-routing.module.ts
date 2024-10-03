@@ -1,6 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { NgModule } from '@angular/core';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   },
@@ -34,6 +36,7 @@ const routes: Routes = [
   },
   {
     path: 'pipeproperties',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./pipeproperties/pipeproperties.module').then(m => m.PipepropertiesModule)
   },
   // {

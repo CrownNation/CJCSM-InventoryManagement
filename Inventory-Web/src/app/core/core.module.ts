@@ -11,7 +11,6 @@ import {
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from '../app.effects';
 import { AuthModule } from '../auth/auth.module';
 import { metaReducers, reducers } from '../store/core.state';
 import { LoginComponent } from '../auth/login/login.component';
@@ -24,25 +23,28 @@ import { CustomerEffects } from '../store/customer/customer.effects';
 import { PipeEffects } from '../store/pipe/pipe.effects';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-@NgModule({ declarations: [],
-    exports: [
-        HttpClientModule,
-        LoginComponent
-    ], imports: [CommonModule,
-        AuthModule,
-        MatSnackBarModule,
-        // ngrx
-        StoreModule.forRoot(reducers, { metaReducers }),
-        StoreRouterConnectingModule.forRoot(),
-        EffectsModule.forRoot([
-            RackEffects,
-            TallyEffects,
-            CustomerEffects,
-            PipeEffects
-        ]),
-        environment.production ? [] : StoreDevtoolsModule.instrument({
-            name: 'CJCSM Inventory'
-        })], providers: [RackService, TallyService, CustomerService, provideHttpClient(withInterceptorsFromDi())] })
+@NgModule({
+  declarations: [],
+  exports: [
+    LoginComponent
+  ],
+  imports: [CommonModule,
+    AuthModule,
+    MatSnackBarModule,
+    // ngrx
+    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreRouterConnectingModule.forRoot(),
+    EffectsModule.forRoot([
+      RackEffects,
+      TallyEffects,
+      CustomerEffects,
+      PipeEffects
+    ]),
+    environment.production ? [] : StoreDevtoolsModule.instrument({
+      name: 'CJCSM Inventory'
+      , connectInZone: true
+    })], providers: [RackService, TallyService, CustomerService, provideHttpClient(withInterceptorsFromDi())]
+})
 
 export class CoreModule {
   constructor(
@@ -54,4 +56,4 @@ export class CoreModule {
       throw new Error('CoreModule is already loaded. Import only in AppModule');
     }
   }
- }
+}

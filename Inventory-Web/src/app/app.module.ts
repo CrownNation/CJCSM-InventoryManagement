@@ -12,7 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { MatButtonModule } from '@angular/material/button';
-import { MatCard, MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 
 import { CoreModule } from './core/core.module';
 
@@ -30,12 +30,19 @@ import { CustomerEffects } from './store/customer/customer.effects';
 import { PipePropertiesEffects } from './store/pipe-properties/pipe-properties/pipe-properties.effects';
 import { PipeDefinitionEffects } from './store/pipe-definition/pipe-definition.effects';
 import { EquipmentDefinitionEffects } from './store/equipment-definition/equipment-definition.effects';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from "@angular/fire/compat";
+import { AngularFireAuthModule } from "@angular/fire/compat/auth";
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    AngularFireAuthModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -70,11 +77,16 @@ import { EquipmentDefinitionEffects } from './store/equipment-definition/equipme
       autoPause: true, // Pauses recording actions and state changes when the extension window is not open
       trace: false, // If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
-    })
+      connectInZone: true})
     
   ],
   providers: [
-    LocalStorageService
+    LocalStorageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
