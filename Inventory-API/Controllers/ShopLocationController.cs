@@ -1,14 +1,16 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Inventory_API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ShopLocationController : ODataController
+   [ApiController]
+   [Route("[controller]")]
+   [Authorize]
+   public class ShopLocationController : ODataController
     {
         private readonly ILogger<ShopLocationController> _logger;
         private readonly IShopLocationBL _shopLocationBl;

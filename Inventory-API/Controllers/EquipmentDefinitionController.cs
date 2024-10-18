@@ -9,11 +9,13 @@ using System;
 using System.Linq;
 using Inventory_Dto.Dto;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Inventory_API.Controllers
 {
    [ApiController]
    [Route("[controller]")]
+   [Authorize]
    public class EquipmentDefinitionController : ODataController
    {
       private readonly ILogger<EquipmentDefinitionController> _logger;

@@ -1,5 +1,6 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_Dto.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -8,6 +9,8 @@ namespace Inventory_API.Controllers
 {
    [ApiController]
    [Route("[controller]")]
+   [Authorize]
+
    public class PipeForTallyController : ODataController
    {
       private readonly ILogger<PipeForTallyController> _logger;

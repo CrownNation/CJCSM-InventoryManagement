@@ -1,5 +1,6 @@
 ﻿using Inventory_BLL.Interfaces;
 using Inventory_Models.DTO.Basic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -8,7 +9,8 @@ namespace Inventory_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TallyEquipmentController : ODataController
+    [Authorize]
+   public class TallyEquipmentController : ODataController
     {
         private readonly ILogger<TallyEquipmentController> _logger;
         private readonly ITallyEquipmentBL _tallyEquipmentBL;
