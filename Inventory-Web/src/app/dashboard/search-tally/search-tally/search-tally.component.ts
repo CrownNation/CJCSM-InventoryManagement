@@ -222,5 +222,10 @@ export class SearchTallyComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  
+  onFormSubmit(event: Event) {
+    event.preventDefault(); // Prevent the form from submitting which causes the page to reload
+    this.filter();
+  }
 
 }

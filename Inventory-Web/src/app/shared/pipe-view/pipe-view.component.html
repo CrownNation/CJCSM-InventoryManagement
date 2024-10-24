@@ -12,90 +12,31 @@
 
     <mat-card-content>
 
-        <div *ngIf="!pipe">
+        <div *ngIf="!pipe" class="container">
             <span>Please select a pipe entry.</span>
         </div>
 
-        <div class="container" *ngIf="pipe">
+        <div *ngIf="pipe">
             <div class="container-row">
 
-                <div class="container-description">
-                    <div>
-                        <div class="element-description">
-                            <b>Category: </b>
-                            <span>{{pipe.pipeDefinition.category?.name}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Condition: </b>
-                            <span>{{pipe.pipeDefinition.condition?.name}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Grade: </b>
-                            <span>{{pipe.pipeDefinition.grade?.name}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Range: </b>
-                            <span>{{pipe.pipeDefinition.range?.name}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Thread: </b>
-                            <span>{{pipe.pipeDefinition.thread?.name}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Weight (kg/m): </b>
-                            <span>{{pipe.pipeDefinition.weight?.weightInKgPerMeter}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Weight (lbs/ft): </b>
-                            <span>{{pipe.pipeDefinition.weight?.weightInLbsPerFoot}}</span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="element-description">
-                            <b>Length (ft): </b>
-                            <span>{{pipe.lengthInFeet}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Size (m): </b>
-                            <span>{{pipe.pipeDefinition.size?.sizeMetric}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Size (ft): </b>
-                            <span>{{pipe.pipeDefinition.size?.sizeMetric}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Wall (cm): </b>
-                            <span>{{pipe.pipeDefinition.wall?.wallMetric}}</span>
-                        </div>
-                        <div class="element-description">
-                            <b>Wall (in): </b>
-                            <span>{{pipe.pipeDefinition.wall?.wallImperial}}</span>
-                        </div>
-                    </div>
+                <div class="data-column-left">
+                    <span><b>Category:</b> {{pipe.pipeDefinition.category?.name}}</span>
+                    <span><b>Condition:</b> {{pipe.pipeDefinition.condition?.name}}</span>
+                    <span><b>Grade:</b> {{pipe.pipeDefinition.grade?.name}}</span>
+                    <span><b>Range:</b> {{pipe.pipeDefinition.range?.name}}</span>
+                    <span><b>Thread:</b> {{pipe.pipeDefinition.thread?.name}}</span>
+                    <span><b>Weight (kg/m):</b> {{pipe.pipeDefinition.weight?.weightInKgPerMeter}}</span>
+                    <span><b>Weight (lbs/ft):</b> {{pipe.pipeDefinition.weight?.weightInLbsPerFoot}}</span>
                 </div>
-
-
-                <!-- <div class="data-column-left">
-
-                    <span>{{pipe.pipeDefinition.category?.name}} </span>
-                    <span>{{pipe.pipeDefinition.condition?.name}} </span>
-                    <span>{{pipe.pipeDefinition.grade?.name}} </span>
-                    <span>{{pipe.pipeDefinition.thread?.name}} </span>
-                    <span>{{pipe.pipeDefinition.weight?.weightInKgPerMeter}} kg/m</span>
-                    <span>{{pipe.pipeDefinition.weight?.weightInLbsPerFoot}} lbs/ft</span>
-
-                </div>
-
+            
                 <div class="data-column-right">
-                    <span>{{pipe.lengthInMeters}} m </span>
-                    <span>{{pipe.lengthInFeet}} ft </span>
-                    <span>{{pipe.pipeDefinition.size?.sizeMetric}} (size metric) </span>
-                    <span>{{pipe.pipeDefinition.size?.sizeImperial}} (size imperial)</span>
-                    <span>{{pipe.pipeDefinition.wall?.wallMetric}} (wall metric)</span>
-                    <span>{{pipe.pipeDefinition.wall?.wallImperial}} (wall imperial) </span>
-
-                </div> -->
+                    <span><b>Length (ft):</b> {{pipe.lengthInFeet}}</span>
+                    <span><b>Size (m):</b> {{pipe.pipeDefinition.size?.sizeMetric}}</span>
+                    <span><b>Size (ft):</b> {{pipe.pipeDefinition.size?.sizeImperial}}</span>
+                    <span><b>Wall (cm):</b> {{pipe.pipeDefinition.wall?.wallMetric}}</span>
+                    <span><b>Wall (in):</b> {{pipe.pipeDefinition.wall?.wallImperial}}</span>
+                </div> 
+                
             </div>
 
 
@@ -106,9 +47,7 @@
 
 
     <div *ngIf="loading" class="spinner">
-        <mat-progress-spinner
-        color="primary"
-        mode="indeterminate">
+        <mat-progress-spinner color="primary" mode="indeterminate">
         </mat-progress-spinner>
     </div>
 

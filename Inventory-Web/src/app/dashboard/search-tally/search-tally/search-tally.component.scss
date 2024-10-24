@@ -1,71 +1,13 @@
+@import 'src/app/shared/shared.module.scss';
+
 // The CSS selectors like .mat-column-quantity, .mat-column-lengthInMeters, etc., 
 // correspond to classes that Angular Material automatically assigns to each table column based on the matColumnDef
 // names specified in the table's HTML.
 .mat-column-tallyNumber { width: 15%; min-width: 50px;}
 .mat-column-tallyType { width: 5%; }
-.mat-column-date { width: 12%; }
+.mat-column-date { width: 12%; min-width: 120px;}
+.mat-column-shopName{width: 15%;}
+.mat-column-actions{width: 10%;}
 
-mat-card-header{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-mat-card-title {
-    font-weight: 700;
-    font-size: 1.5rem;
-}
-
-mat-form-field {
-    display: block;
-}
-
-h4 {
-    margin: 0.5rem 1rem 0.5rem 0;
-}
-
-.column-actions {
-    width: 0;
-}
-
-.spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: white;
-  }
-
-mat-expansion-panel {
-    margin: 1rem 0 1rem 0;
-
-    .container-filter {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .item-buttons {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    mat-form-field {
-        margin-right: 1rem;
-        width: 12rem;
-    }
-
-    .date-field {
-        width: auto;
-    }
-
-    button {
-        margin-right: 1.5rem;
-    }
-}
-
-table {
-    margin-top: 1rem;
-}
 
 

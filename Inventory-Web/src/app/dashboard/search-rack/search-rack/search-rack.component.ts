@@ -184,4 +184,10 @@ export class SearchRackComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  
+  onFormSubmit(event: Event) {
+    event.preventDefault(); // Prevent the form from submitting which causes the page to reload
+    this.filter();
+  }
+
 }

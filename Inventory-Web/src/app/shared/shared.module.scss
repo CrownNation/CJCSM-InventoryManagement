@@ -1,6 +1,7 @@
 mat-card {
+    display: flex;
+    flex: 1;
     min-width: 500px;
-    width: 100%;
     overflow-x: auto;
 }
 
@@ -9,8 +10,25 @@ mat-card-title {
     font-size: 1.5rem;
 }
 
+mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+}
 
-h2{
+.mat-mdc-card-content,
+.mat-mdc-card-header {
+    padding-left: 1.8rem !important;
+    padding-right: 1.8rem !important;
+}
+
+
+.mat-mdc-card-header {
+    padding-top: 1.2rem !important;
+}
+
+
+h2 {
     margin: 0;
 }
 
@@ -57,6 +75,9 @@ h4 {
     align-items: flex-end;
 }
 
+span {
+    padding-bottom: 5px;
+}
 
 // This makes the rows zero height until they are clicked
 tr.detail-row {
@@ -88,9 +109,9 @@ mat-expansion-panel {
         align-items: center;
     }
 
-    .item-buttons {
+    .filter-buttons {
         display: flex;
-        justify-content: flex-start;
+        justify-content: flex-end;
     }
 
     mat-form-field {
@@ -102,7 +123,9 @@ mat-expansion-panel {
     }
 
     button {
-        margin: 0 0.75rem 0 0;
+        margin: 0;
+        margin-left: .3rem;
+
     }
 }
 
@@ -156,7 +179,6 @@ button {
 
 .mat-expansion-panel-header.mat-expanded {
     height: 3rem;
-    ;
 }
 
 .selected {
